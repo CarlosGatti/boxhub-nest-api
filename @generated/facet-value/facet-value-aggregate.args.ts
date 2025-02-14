@@ -1,0 +1,48 @@
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
+import { FacetValueWhereInput } from './facet-value-where.input';
+import { Type } from 'class-transformer';
+import { FacetValueOrderByWithRelationInput } from './facet-value-order-by-with-relation.input';
+import { Prisma } from '@prisma/client';
+import { FacetValueWhereUniqueInput } from './facet-value-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { FacetValueCountAggregateInput } from './facet-value-count-aggregate.input';
+import { FacetValueAvgAggregateInput } from './facet-value-avg-aggregate.input';
+import { FacetValueSumAggregateInput } from './facet-value-sum-aggregate.input';
+import { FacetValueMinAggregateInput } from './facet-value-min-aggregate.input';
+import { FacetValueMaxAggregateInput } from './facet-value-max-aggregate.input';
+
+@ArgsType()
+export class FacetValueAggregateArgs {
+
+    @Field(() => FacetValueWhereInput, {nullable:true})
+    @Type(() => FacetValueWhereInput)
+    where?: FacetValueWhereInput;
+
+    @Field(() => [FacetValueOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<FacetValueOrderByWithRelationInput>;
+
+    @Field(() => FacetValueWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<FacetValueWhereUniqueInput, 'id'>;
+
+    @Field(() => Int, {nullable:true})
+    take?: number;
+
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+
+    @Field(() => FacetValueCountAggregateInput, {nullable:true})
+    _count?: FacetValueCountAggregateInput;
+
+    @Field(() => FacetValueAvgAggregateInput, {nullable:true})
+    _avg?: FacetValueAvgAggregateInput;
+
+    @Field(() => FacetValueSumAggregateInput, {nullable:true})
+    _sum?: FacetValueSumAggregateInput;
+
+    @Field(() => FacetValueMinAggregateInput, {nullable:true})
+    _min?: FacetValueMinAggregateInput;
+
+    @Field(() => FacetValueMaxAggregateInput, {nullable:true})
+    _max?: FacetValueMaxAggregateInput;
+}
