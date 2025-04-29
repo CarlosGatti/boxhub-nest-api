@@ -1,14 +1,32 @@
-import { AppModule } from './app/app.module';
 import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app/app.module';
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // carrega o .env
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const allowedOrigins = [
+    process.env.FRONTEND_URL_LOCAL,
+    process.env.FRONTEND_URL_PROD,
+    'https://www.defined.one', // manual também pode
+  ];
+
   app.enableCors({
-    origin: ['https://www.k-hub.us','http://localhost:3001', 'http://192.168.0.4:3001'], // especifique os domínios permitidos
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // especifique os métodos HTTP permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'], // especifique os cabeçalhos permitidos
-    credentials: true, // permitir credenciais do cliente (por exemplo, cookies)
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
+
   await app.listen(3000);
 }
+
 bootstrap();
