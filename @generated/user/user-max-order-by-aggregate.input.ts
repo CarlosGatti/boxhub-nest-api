@@ -52,7 +52,4 @@ export class UserMaxOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    familyId?: keyof typeof SortOrder;
 }

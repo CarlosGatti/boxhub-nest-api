@@ -6,7 +6,7 @@ export enum ContainerScalarFieldEnum {
     description = "description",
     qrCode = "qrCode",
     code = "code",
-    familyId = "familyId",
+    storageId = "storageId",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }

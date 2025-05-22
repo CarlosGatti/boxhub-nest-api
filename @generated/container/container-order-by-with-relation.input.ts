@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
-import { FamilyOrderByWithRelationInput } from '../family/family-order-by-with-relation.input';
+import { StorageOrderByWithRelationInput } from '../storage/storage-order-by-with-relation.input';
 import { CategoryOrderByRelationAggregateInput } from '../category/category-order-by-relation-aggregate.input';
 import { ItemOrderByRelationAggregateInput } from '../item/item-order-by-relation-aggregate.input';
 
@@ -24,7 +24,7 @@ export class ContainerOrderByWithRelationInput {
     code?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    familyId?: keyof typeof SortOrder;
+    storageId?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
@@ -32,8 +32,8 @@ export class ContainerOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: keyof typeof SortOrder;
 
-    @Field(() => FamilyOrderByWithRelationInput, {nullable:true})
-    family?: FamilyOrderByWithRelationInput;
+    @Field(() => StorageOrderByWithRelationInput, {nullable:true})
+    storage?: StorageOrderByWithRelationInput;
 
     @Field(() => CategoryOrderByRelationAggregateInput, {nullable:true})
     categories?: CategoryOrderByRelationAggregateInput;

@@ -8,25 +8,25 @@ import { PublicationComment } from "../../@generated/publication-comment/publica
 import { QrcodeService } from "./qrcode.service";
 import { UseGuards } from "@nestjs/common";
 import { User } from "@prisma/client";
-import { Family } from "@generated/family/family.model";
 import { Item } from "@generated/item/item.model";
 import { Container } from "@generated/container/container.model";
 import { DashboardData } from "./dashboard.dto";
+import { Storage } from "@generated/storage/storage.model";
 
-@Resolver(() => Family)
+@Resolver(() => Storage)
 export class QrcodeResolver {
   constructor(private readonly qrcodeService: QrcodeService) {}
 
-  @Query(() => Family)
+  @Query(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async getFamily(@Args("id") id: number) {
-    return this.qrcodeService.getFamily(id);
+  async getStorage(@Args("id") id: number) {
+    return this.qrcodeService.getStorage(id);
   }
 
-  @Query(() => [Family])
+  @Query(() => [Storage])
   @UseGuards(JwtAuthGuard)
-  async getAllFamilies() {
-    return this.qrcodeService.getAllFamilies();
+  async getAllStorages() {
+    return this.qrcodeService.getAllStorages();
   }
 
   //get container by code
@@ -43,41 +43,46 @@ export class QrcodeResolver {
     return this.qrcodeService.getContainerById(id);
   }
 
-  //create a family
-  @Mutation(() => Family)
+  @Mutation(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async createFamily(@Args("name") name: string) {
-    return this.qrcodeService.createFamily(name);
+  async createStorage(@Args("name") name: string, @CurrentUser() user: any) {
+    return this.qrcodeService.createStorage(name, user.id);
   }
 
-  //delete a family
-  @Mutation(() => Family)
+  @Query(() => [Storage])
   @UseGuards(JwtAuthGuard)
-  async removeFamily(@Args("id") id: number) {
-    return this.qrcodeService.removeFamily(id);
+  async getMyStorages(@CurrentUser() user: User) {
+    return this.qrcodeService.getUserStorages(user.id);
   }
 
-  //add a member to a family
-  @Mutation(() => Family)
+  //delete a storage
+  @Mutation(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async addMemberToFamily(
-    @Args("familyId") familyId: number,
+  async removeStorage(@Args("id") id: number) {
+    return this.qrcodeService.removeStorage(id);
+  }
+
+  //add a member to a storage
+  @Mutation(() => Storage)
+  @UseGuards(JwtAuthGuard)
+  async addMemberToStorage(
+    @Args("storageId") storageId: number,
     @Args("userId") userId: number
   ) {
-    return this.qrcodeService.addMemberToFamily(familyId, userId);
+    return this.qrcodeService.addMemberToStorage(storageId, userId);
   }
 
   @Mutation(() => BaseResult)
   @UseGuards(JwtAuthGuard)
   async createContainer(
-    @Args("familyId") familyId: number,
+    @Args("storageId") storageId: number,
     @Args("name") name: string,
     @Args("description") description: string,
     @Args("qrCode") qrCode: string,
     @Args("code") code: string
   ): Promise<BaseResult> {
     return this.qrcodeService.createContainer(
-      familyId,
+      storageId,
       name,
       description,
       qrCode,
@@ -114,9 +119,9 @@ export class QrcodeResolver {
   @Query(() => [Item])
   @UseGuards(JwtAuthGuard)
   async getAllItems(@CurrentUser() user: User) {
-      const items = await this.qrcodeService.getAllItemsByUser(user.id);
-      console.log('Fetched Items:', items);
-      return items;
+    const items = await this.qrcodeService.getAllItemsByUser(user.id);
+    console.log("Fetched Items:", items);
+    return items;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -124,5 +129,4 @@ export class QrcodeResolver {
   async getDashboardData(@CurrentUser() user: User) {
     return this.qrcodeService.getDashboardData(user.id);
   }
-
 }

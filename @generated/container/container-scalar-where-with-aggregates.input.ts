@@ -32,7 +32,7 @@ export class ContainerScalarWhereWithAggregatesInput {
     code?: StringWithAggregatesFilter;
 
     @Field(() => IntWithAggregatesFilter, {nullable:true})
-    familyId?: IntWithAggregatesFilter;
+    storageId?: IntWithAggregatesFilter;
 
     @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
     createdAt?: DateTimeWithAggregatesFilter;

@@ -31,9 +31,7 @@ export class UserService {
 
   async me(user: User): Promise<MeDto> {
     const data = await this.prismaService.user.findUnique({
-      where: {
-        id: user.id,
-      },
+      where: { id: user.id },
       include: {
         adminCommunities: {
           include: {
@@ -64,23 +62,22 @@ export class UserService {
             follower: true,
           },
         },
-        family: {
+        storageMemberships: {
           include: {
-            members: true,
+            storage: true,
           },
         },
       },
     });
 
-    const peopleImFollowing = data?.following.flatMap(
-      ({ following }) => following,
-    );
-    const peopleFollowingMe = data?.followers.map(({ follower }) => follower);
+    if (!data) {
+      throw new Error('User not found');
+    }
 
     return {
       ...data,
-      peopleImFollowing,
-      peopleFollowingMe,
+      peopleImFollowing: data.following.map((f) => f.following),
+      peopleFollowingMe: data.followers.map((f) => f.follower),
     } as MeDto;
   }
 

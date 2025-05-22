@@ -12,7 +12,7 @@ import { PostOrderByRelationAggregateInput } from '../post/post-order-by-relatio
 import { PublicationOrderByRelationAggregateInput } from '../publication/publication-order-by-relation-aggregate.input';
 import { PublicationCommentOrderByRelationAggregateInput } from '../publication-comment/publication-comment-order-by-relation-aggregate.input';
 import { PublicationLikeOrderByRelationAggregateInput } from '../publication-like/publication-like-order-by-relation-aggregate.input';
-import { FamilyOrderByWithRelationInput } from '../family/family-order-by-with-relation.input';
+import { StorageMemberOrderByRelationAggregateInput } from '../storage-member/storage-member-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -65,9 +65,6 @@ export class UserOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: keyof typeof SortOrder;
 
-    @Field(() => SortOrderInput, {nullable:true})
-    familyId?: SortOrderInput;
-
     @Field(() => CommunityOrderByRelationAggregateInput, {nullable:true})
     adminCommunities?: CommunityOrderByRelationAggregateInput;
 
@@ -101,6 +98,6 @@ export class UserOrderByWithRelationInput {
     @Field(() => PublicationLikeOrderByRelationAggregateInput, {nullable:true})
     allPublicationLikes?: PublicationLikeOrderByRelationAggregateInput;
 
-    @Field(() => FamilyOrderByWithRelationInput, {nullable:true})
-    family?: FamilyOrderByWithRelationInput;
+    @Field(() => StorageMemberOrderByRelationAggregateInput, {nullable:true})
+    storageMemberships?: StorageMemberOrderByRelationAggregateInput;
 }

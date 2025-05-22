@@ -6,7 +6,6 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { EnumRoleFieldUpdateOperationsInput } from '../prisma/enum-role-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
-import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { CommunityUncheckedUpdateManyWithoutOwnerNestedInput } from '../community/community-unchecked-update-many-without-owner-nested.input';
 import { CommunityMemberUncheckedUpdateManyWithoutUserNestedInput } from '../community-member/community-member-unchecked-update-many-without-user-nested.input';
 import { EventUncheckedUpdateManyWithoutOwnerNestedInput } from '../event/event-unchecked-update-many-without-owner-nested.input';
@@ -18,6 +17,7 @@ import { PostUncheckedUpdateManyWithoutAuthorNestedInput } from '../post/post-un
 import { PublicationUncheckedUpdateManyWithoutUserNestedInput } from '../publication/publication-unchecked-update-many-without-user-nested.input';
 import { PublicationCommentUncheckedUpdateManyWithoutUserNestedInput } from '../publication-comment/publication-comment-unchecked-update-many-without-user-nested.input';
 import { PublicationLikeUncheckedUpdateManyWithoutUserNestedInput } from '../publication-like/publication-like-unchecked-update-many-without-user-nested.input';
+import { StorageMemberUncheckedUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateInput {
@@ -70,9 +70,6 @@ export class UserUncheckedUpdateInput {
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
-    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
-    familyId?: NullableIntFieldUpdateOperationsInput;
-
     @Field(() => CommunityUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
     adminCommunities?: CommunityUncheckedUpdateManyWithoutOwnerNestedInput;
 
@@ -105,4 +102,7 @@ export class UserUncheckedUpdateInput {
 
     @Field(() => PublicationLikeUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     allPublicationLikes?: PublicationLikeUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => StorageMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    storageMemberships?: StorageMemberUncheckedUpdateManyWithoutUserNestedInput;
 }

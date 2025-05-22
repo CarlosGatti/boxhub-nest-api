@@ -22,7 +22,7 @@ export class ContainerUncheckedCreateWithoutCategoriesInput {
     code!: string;
 
     @Field(() => Int, {nullable:false})
-    familyId!: number;
+    storageId!: number;
 
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;

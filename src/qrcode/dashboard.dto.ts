@@ -11,6 +11,10 @@ export class RecentContainer {
 
 @ObjectType()
 export class DashboardData {
+
+  @Field(() => Int)
+  totalStorages: number;
+
   @Field(() => Int)
   totalContainers: number;
 

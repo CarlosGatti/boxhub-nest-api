@@ -11,7 +11,7 @@ import { FollowsCreateNestedManyWithoutFollowingInput } from '../follows/follows
 import { PostCreateNestedManyWithoutAuthorInput } from '../post/post-create-nested-many-without-author.input';
 import { PublicationCreateNestedManyWithoutUserInput } from '../publication/publication-create-nested-many-without-user.input';
 import { PublicationCommentCreateNestedManyWithoutUserInput } from '../publication-comment/publication-comment-create-nested-many-without-user.input';
-import { FamilyCreateNestedOneWithoutMembersInput } from '../family/family-create-nested-one-without-members.input';
+import { StorageMemberCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutAllPublicationLikesInput {
@@ -91,6 +91,6 @@ export class UserCreateWithoutAllPublicationLikesInput {
     @Field(() => PublicationCommentCreateNestedManyWithoutUserInput, {nullable:true})
     allPublicationComments?: PublicationCommentCreateNestedManyWithoutUserInput;
 
-    @Field(() => FamilyCreateNestedOneWithoutMembersInput, {nullable:true})
-    family?: FamilyCreateNestedOneWithoutMembersInput;
+    @Field(() => StorageMemberCreateNestedManyWithoutUserInput, {nullable:true})
+    storageMemberships?: StorageMemberCreateNestedManyWithoutUserInput;
 }

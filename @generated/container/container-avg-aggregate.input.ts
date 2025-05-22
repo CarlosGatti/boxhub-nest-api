@@ -8,5 +8,5 @@ export class ContainerAvgAggregateInput {
     id?: true;
 
     @Field(() => Boolean, {nullable:true})
-    familyId?: true;
+    storageId?: true;
 }

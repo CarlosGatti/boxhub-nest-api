@@ -19,14 +19,29 @@ CREATE TYPE "MembershipStatus" AS ENUM ('PENDING', 'ACCEPTED', 'DECLINED', 'CANC
 -- CreateEnum
 CREATE TYPE "TypeOfDeparture" AS ENUM ('VOLUNTARY', 'INVOLUNTARY', 'RETIREMENT', 'OTHER');
 
+-- CreateEnum
+CREATE TYPE "StorageRole" AS ENUM ('ADMIN', 'MEMBER');
+
 -- CreateTable
-CREATE TABLE "Family" (
+CREATE TABLE "Storage" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Family_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Storage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StorageMember" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "storageId" INTEGER NOT NULL,
+    "role" "StorageRole" NOT NULL DEFAULT 'MEMBER',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "StorageMember_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -36,7 +51,7 @@ CREATE TABLE "Container" (
     "description" TEXT NOT NULL,
     "qrCode" TEXT NOT NULL,
     "code" TEXT NOT NULL,
-    "familyId" INTEGER NOT NULL,
+    "storageId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -87,7 +102,6 @@ CREATE TABLE "User" (
     "githubUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "familyId" INTEGER,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -344,6 +358,9 @@ CREATE TABLE "_ContainerCategories" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "StorageMember_userId_storageId_key" ON "StorageMember"("userId", "storageId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Container_code_key" ON "Container"("code");
 
 -- CreateIndex
@@ -398,13 +415,16 @@ CREATE UNIQUE INDEX "_ContainerCategories_AB_unique" ON "_ContainerCategories"("
 CREATE INDEX "_ContainerCategories_B_index" ON "_ContainerCategories"("B");
 
 -- AddForeignKey
-ALTER TABLE "Container" ADD CONSTRAINT "Container_familyId_fkey" FOREIGN KEY ("familyId") REFERENCES "Family"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StorageMember" ADD CONSTRAINT "StorageMember_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StorageMember" ADD CONSTRAINT "StorageMember_storageId_fkey" FOREIGN KEY ("storageId") REFERENCES "Storage"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Container" ADD CONSTRAINT "Container_storageId_fkey" FOREIGN KEY ("storageId") REFERENCES "Storage"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_containerId_fkey" FOREIGN KEY ("containerId") REFERENCES "Container"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_familyId_fkey" FOREIGN KEY ("familyId") REFERENCES "Family"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Follows" ADD CONSTRAINT "Follows_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

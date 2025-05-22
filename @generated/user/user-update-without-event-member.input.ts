@@ -15,7 +15,7 @@ import { PostUpdateManyWithoutAuthorNestedInput } from '../post/post-update-many
 import { PublicationUpdateManyWithoutUserNestedInput } from '../publication/publication-update-many-without-user-nested.input';
 import { PublicationCommentUpdateManyWithoutUserNestedInput } from '../publication-comment/publication-comment-update-many-without-user-nested.input';
 import { PublicationLikeUpdateManyWithoutUserNestedInput } from '../publication-like/publication-like-update-many-without-user-nested.input';
-import { FamilyUpdateOneWithoutMembersNestedInput } from '../family/family-update-one-without-members-nested.input';
+import { StorageMemberUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutEventMemberInput {
@@ -95,6 +95,6 @@ export class UserUpdateWithoutEventMemberInput {
     @Field(() => PublicationLikeUpdateManyWithoutUserNestedInput, {nullable:true})
     allPublicationLikes?: PublicationLikeUpdateManyWithoutUserNestedInput;
 
-    @Field(() => FamilyUpdateOneWithoutMembersNestedInput, {nullable:true})
-    family?: FamilyUpdateOneWithoutMembersNestedInput;
+    @Field(() => StorageMemberUpdateManyWithoutUserNestedInput, {nullable:true})
+    storageMemberships?: StorageMemberUpdateManyWithoutUserNestedInput;
 }

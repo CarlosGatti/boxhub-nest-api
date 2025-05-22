@@ -2,7 +2,6 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
-import { Int } from '@nestjs/graphql';
 import { Community } from '../community/community.model';
 import { CommunityMember } from '../community-member/community-member.model';
 import { Event } from '../event/event.model';
@@ -13,7 +12,7 @@ import { Post } from '../post/post.model';
 import { Publication } from '../publication/publication.model';
 import { PublicationComment } from '../publication-comment/publication-comment.model';
 import { PublicationLike } from '../publication-like/publication-like.model';
-import { Family } from '../family/family.model';
+import { StorageMember } from '../storage-member/storage-member.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -67,9 +66,6 @@ export class User {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date;
 
-    @Field(() => Int, {nullable:true})
-    familyId!: number | null;
-
     @Field(() => [Community], {nullable:true})
     adminCommunities?: Array<Community>;
 
@@ -103,8 +99,8 @@ export class User {
     @Field(() => [PublicationLike], {nullable:true})
     allPublicationLikes?: Array<PublicationLike>;
 
-    @Field(() => Family, {nullable:true})
-    family?: Family | null;
+    @Field(() => [StorageMember], {nullable:true})
+    storageMemberships?: Array<StorageMember>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

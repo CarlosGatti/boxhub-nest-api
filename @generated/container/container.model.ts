@@ -2,7 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { Family } from '../family/family.model';
+import { Storage } from '../storage/storage.model';
 import { Category } from '../category/category.model';
 import { Item } from '../item/item.model';
 import { ContainerCount } from './container-count.output';
@@ -26,7 +26,7 @@ export class Container {
     code!: string;
 
     @Field(() => Int, {nullable:false})
-    familyId!: number;
+    storageId!: number;
 
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
@@ -34,8 +34,8 @@ export class Container {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date;
 
-    @Field(() => Family, {nullable:false})
-    family?: Family;
+    @Field(() => Storage, {nullable:false})
+    storage?: Storage;
 
     @Field(() => [Category], {nullable:true})
     categories?: Array<Category>;

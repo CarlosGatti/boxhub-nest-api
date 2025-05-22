@@ -16,8 +16,7 @@ export enum UserScalarFieldEnum {
     twitterUrl = "twitterUrl",
     githubUrl = "githubUrl",
     createdAt = "createdAt",
-    updatedAt = "updatedAt",
-    familyId = "familyId"
+    updatedAt = "updatedAt"
 }
 
 

@@ -9,5 +9,5 @@ export class ContainerSumAggregate {
     id?: number;
 
     @Field(() => Int, {nullable:true})
-    familyId?: number;
+    storageId?: number;
 }

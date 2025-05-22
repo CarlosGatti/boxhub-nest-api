@@ -69,5 +69,5 @@ export class UserScalarWhereInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => IntNullableFilter, {nullable:true})
-    familyId?: IntNullableFilter;
+    storageId?: IntNullableFilter;
 }

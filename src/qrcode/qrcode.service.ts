@@ -14,40 +14,81 @@ import { nanoid } from "nanoid";
 export class QrcodeService {
   constructor(private prismaService: PrismaService) {}
 
-  async getAllFamilies() {
-    return await this.prismaService.family.findMany({
+  async getAllStorages() {
+    return await this.prismaService.storage.findMany({
+      include: {
+        members: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getUserStorages(userId: number) {
+    const memberships = await this.prismaService.storageMember.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        storage: {
+          include: {
+            containers: {
+              include: {
+                items: true,
+              },
+            },
+            members: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return memberships.map((membership) => membership.storage);
+  }
+
+  async getStorage(id: number) {
+    return await this.prismaService.storage.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  async createStorage(name: string, userId: number) {
+    return await this.prismaService.storage.create({
+      data: {
+        name,
+        members: {
+          create: {
+            user: {
+              connect: { id: userId },
+            },
+            role: "ADMIN",
+          },
+        },
+      },
       include: {
         members: true,
       },
     });
   }
 
-  async getFamily(id: number) {
-    return await this.prismaService.family.findUnique({
+  async removeStorage(id: number) {
+    return await this.prismaService.storage.delete({
       where: {
         id: id,
       },
     });
   }
 
-  async createFamily(name: string) {
-    return await this.prismaService.family.create({
-      data: {
-        name: name,
-      },
-    });
-  }
-
-  async removeFamily(id: number) {
-    return await this.prismaService.family.delete({
-      where: {
-        id: id,
-      },
-    });
-  }
-
-  async addMemberToFamily(familyId: number, userId: number) {
-    return await this.prismaService.family.update({
+  async addMemberToStorage(familyId: number, userId: number) {
+    return await this.prismaService.storage.update({
       where: {
         id: familyId,
       },
@@ -62,7 +103,7 @@ export class QrcodeService {
   }
 
   async createContainer(
-    familyId: number,
+    storageId: number,
     name: string,
     description: string,
     qrCode: string,
@@ -75,8 +116,8 @@ export class QrcodeService {
           description,
           qrCode,
           code,
-          family: {
-            connect: { id: familyId },
+          storage: {
+            connect: { id: storageId },
           },
         },
       });
@@ -102,7 +143,7 @@ export class QrcodeService {
         code: code,
       },
       include: {
-        family: true,
+        storage: true,
         items: true,
       },
     });
@@ -114,12 +155,12 @@ export class QrcodeService {
         id: id,
       },
       include: {
-        family: true,
+        storage: true,
         items: true,
       },
     });
   }
-  
+
   async createItem(
     name: string,
     description: string,
@@ -159,41 +200,48 @@ export class QrcodeService {
 
   async getAllContainersByUser(userId: number) {
     return this.prismaService.container.findMany({
-        where: { family: { members: { some: { id: userId } } } },
-        include: { items: true },
+      where: { storage: { members: { some: { id: userId } } } },
+      include: { items: true },
     });
-}
+  }
 
-async getAllItemsByUser(userId: number) {
-    console.log('User ID:', userId);
+  async getAllItemsByUser(userId: number) {
+    console.log("User ID:", userId);
     return this.prismaService.item.findMany({
-        where: {
-            container: {
-                family: {
-                    members: {
-                        some: { id: userId }, // Verifica se o usuário é membro da família
-                    },
-                },
+      where: {
+        container: {
+          storage: {
+            members: {
+              some: { id: userId }, // Verifica se o usuário é membro da família
             },
+          },
         },
-        include: {
-            container: {
-                select: {
-                    id: true,
-                    name: true,
-                },
-            },
+      },
+      include: {
+        container: {
+          select: {
+            id: true,
+            name: true,
+          },
         },
+      },
     });
-}
+  }
 
+  async getDashboardData(userId: number) {
+    const totalStorages = await this.prismaService.storage.count({
+      where: {
+        members: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+    });
 
-
-
-async getDashboardData(userId: number) {
     const totalContainers = await this.prismaService.container.count({
       where: {
-        family: {
+        storage: {
           members: {
             some: {
               id: userId,
@@ -206,7 +254,7 @@ async getDashboardData(userId: number) {
     const totalItems = await this.prismaService.item.count({
       where: {
         container: {
-          family: {
+          storage: {
             members: {
               some: {
                 id: userId,
@@ -216,31 +264,27 @@ async getDashboardData(userId: number) {
         },
       },
     });
-
     const recentContainers = await this.prismaService.container.findMany({
       where: {
-        family: {
+        storage: {
           members: {
             some: {
-              id: userId,
+              userId: userId,
             },
           },
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
       take: 5,
     });
 
     return {
+      totalStorages,
       totalContainers,
       totalItems,
       recentContainers,
     };
   }
-
-
-  
-
 }

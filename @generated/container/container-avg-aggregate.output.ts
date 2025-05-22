@@ -9,5 +9,5 @@ export class ContainerAvgAggregate {
     id?: number;
 
     @Field(() => Float, {nullable:true})
-    familyId?: number;
+    storageId?: number;
 }

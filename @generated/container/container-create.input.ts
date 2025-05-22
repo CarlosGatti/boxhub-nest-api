@@ -1,6 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { FamilyCreateNestedOneWithoutContainersInput } from '../family/family-create-nested-one-without-containers.input';
+import { StorageCreateNestedOneWithoutContainersInput } from '../storage/storage-create-nested-one-without-containers.input';
 import { CategoryCreateNestedManyWithoutContainersInput } from '../category/category-create-nested-many-without-containers.input';
 import { ItemCreateNestedManyWithoutContainerInput } from '../item/item-create-nested-many-without-container.input';
 
@@ -25,8 +25,8 @@ export class ContainerCreateInput {
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
 
-    @Field(() => FamilyCreateNestedOneWithoutContainersInput, {nullable:false})
-    family!: FamilyCreateNestedOneWithoutContainersInput;
+    @Field(() => StorageCreateNestedOneWithoutContainersInput, {nullable:false})
+    storage!: StorageCreateNestedOneWithoutContainersInput;
 
     @Field(() => CategoryCreateNestedManyWithoutContainersInput, {nullable:true})
     categories?: CategoryCreateNestedManyWithoutContainersInput;

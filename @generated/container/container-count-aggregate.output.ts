@@ -21,7 +21,7 @@ export class ContainerCountAggregate {
     code!: number;
 
     @Field(() => Int, {nullable:false})
-    familyId!: number;
+    storageId!: number;
 
     @Field(() => Int, {nullable:false})
     createdAt!: number;

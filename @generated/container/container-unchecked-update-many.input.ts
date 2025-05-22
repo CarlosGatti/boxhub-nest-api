@@ -23,7 +23,7 @@ export class ContainerUncheckedUpdateManyInput {
     code?: StringFieldUpdateOperationsInput;
 
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    familyId?: IntFieldUpdateOperationsInput;
+    storageId?: IntFieldUpdateOperationsInput;
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;

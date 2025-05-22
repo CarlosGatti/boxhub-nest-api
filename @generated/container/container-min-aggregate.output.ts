@@ -21,7 +21,7 @@ export class ContainerMinAggregate {
     code?: string;
 
     @Field(() => Int, {nullable:true})
-    familyId?: number;
+    storageId?: number;
 
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;

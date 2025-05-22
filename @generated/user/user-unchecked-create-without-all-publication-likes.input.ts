@@ -12,6 +12,7 @@ import { FollowsUncheckedCreateNestedManyWithoutFollowingInput } from '../follow
 import { PostUncheckedCreateNestedManyWithoutAuthorInput } from '../post/post-unchecked-create-nested-many-without-author.input';
 import { PublicationUncheckedCreateNestedManyWithoutUserInput } from '../publication/publication-unchecked-create-nested-many-without-user.input';
 import { PublicationCommentUncheckedCreateNestedManyWithoutUserInput } from '../publication-comment/publication-comment-unchecked-create-nested-many-without-user.input';
+import { StorageMemberUncheckedCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutAllPublicationLikesInput {
@@ -64,9 +65,6 @@ export class UserUncheckedCreateWithoutAllPublicationLikesInput {
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
 
-    @Field(() => Int, {nullable:true})
-    familyId?: number;
-
     @Field(() => CommunityUncheckedCreateNestedManyWithoutOwnerInput, {nullable:true})
     adminCommunities?: CommunityUncheckedCreateNestedManyWithoutOwnerInput;
 
@@ -96,4 +94,7 @@ export class UserUncheckedCreateWithoutAllPublicationLikesInput {
 
     @Field(() => PublicationCommentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     allPublicationComments?: PublicationCommentUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => StorageMemberUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    storageMemberships?: StorageMemberUncheckedCreateNestedManyWithoutUserInput;
 }

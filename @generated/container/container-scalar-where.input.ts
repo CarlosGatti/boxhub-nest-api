@@ -32,7 +32,7 @@ export class ContainerScalarWhereInput {
     code?: StringFilter;
 
     @Field(() => IntFilter, {nullable:true})
-    familyId?: IntFilter;
+    storageId?: IntFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: DateTimeFilter;

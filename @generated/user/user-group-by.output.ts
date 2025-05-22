@@ -59,9 +59,6 @@ export class UserGroupBy {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date | string;
 
-    @Field(() => Int, {nullable:true})
-    familyId?: number;
-
     @Field(() => UserCountAggregate, {nullable:true})
     _count?: UserCountAggregate;
 

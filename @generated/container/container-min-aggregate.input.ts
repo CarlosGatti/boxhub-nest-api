@@ -20,7 +20,7 @@ export class ContainerMinAggregateInput {
     code?: true;
 
     @Field(() => Boolean, {nullable:true})
-    familyId?: true;
+    storageId?: true;
 
     @Field(() => Boolean, {nullable:true})
     createdAt?: true;

@@ -37,4 +37,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     allPublicationLikes?: number;
+
+    @Field(() => Int, {nullable:false})
+    storageMemberships?: number;
 }

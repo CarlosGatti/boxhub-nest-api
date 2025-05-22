@@ -13,13 +13,27 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Family {
-  id          Int          @id @default(autoincrement())
-  name        String
-  members     User[]       @relation("FamilyMembers")
-  containers  Container[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+model Storage {
+  id         Int              @id @default(autoincrement())
+  name       String
+  members    StorageMember[]  // ← Relacionamento M:N com usuários
+  containers Container[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+model StorageMember {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  storageId  Int
+  role       StorageRole @default(MEMBER)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id])
+  storage    Storage  @relation(fields: [storageId], references: [id])
+
+  @@unique([userId, storageId])
 }
 
 model Container {
@@ -28,8 +42,8 @@ model Container {
   description String
   qrCode      String        // QR Code para identificação
   code        String        @unique // Código para identificação adicional
-  familyId    Int
-  family      Family        @relation(fields: [familyId], references: [id])
+  storageId    Int
+  storage      Storage        @relation(fields: [storageId], references: [id])
   categories  Category[]    @relation("ContainerCategories")
   items       Item[]
   createdAt   DateTime      @default(now())
@@ -86,8 +100,7 @@ model User {
   publications           Publication[]
   allPublicationComments PublicationComment[]
   allPublicationLikes    PublicationLike[]
-  familyId    Int?
-  family      Family?      @relation("FamilyMembers", fields: [familyId], references: [id])
+  storageMemberships     StorageMember[] 
   @@index([email], map: "userEmail")
 
 }
@@ -389,5 +402,10 @@ enum TypeOfDeparture {
   INVOLUNTARY
   RETIREMENT
   OTHER // Quando selecionado "Outro", o campo `otherDetails` pode ser usado para especificação
+}
+
+enum StorageRole {
+  ADMIN
+  MEMBER
 }
 

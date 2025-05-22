@@ -26,7 +26,7 @@ export class ContainerGroupBy {
     code!: string;
 
     @Field(() => Int, {nullable:false})
-    familyId!: number;
+    storageId!: number;
 
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;

@@ -6,7 +6,6 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
 import { EnumRoleFilter } from '../prisma/enum-role-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { CommunityListRelationFilter } from '../community/community-list-relation-filter.input';
 import { CommunityMemberListRelationFilter } from '../community-member/community-member-list-relation-filter.input';
 import { EventListRelationFilter } from '../event/event-list-relation-filter.input';
@@ -17,7 +16,7 @@ import { PostListRelationFilter } from '../post/post-list-relation-filter.input'
 import { PublicationListRelationFilter } from '../publication/publication-list-relation-filter.input';
 import { PublicationCommentListRelationFilter } from '../publication-comment/publication-comment-list-relation-filter.input';
 import { PublicationLikeListRelationFilter } from '../publication-like/publication-like-list-relation-filter.input';
-import { FamilyNullableRelationFilter } from '../family/family-nullable-relation-filter.input';
+import { StorageMemberListRelationFilter } from '../storage-member/storage-member-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -79,9 +78,6 @@ export class UserWhereInput {
     @Field(() => DateTimeFilter, {nullable:true})
     updatedAt?: DateTimeFilter;
 
-    @Field(() => IntNullableFilter, {nullable:true})
-    familyId?: IntNullableFilter;
-
     @Field(() => CommunityListRelationFilter, {nullable:true})
     adminCommunities?: CommunityListRelationFilter;
 
@@ -115,6 +111,6 @@ export class UserWhereInput {
     @Field(() => PublicationLikeListRelationFilter, {nullable:true})
     allPublicationLikes?: PublicationLikeListRelationFilter;
 
-    @Field(() => FamilyNullableRelationFilter, {nullable:true})
-    family?: FamilyNullableRelationFilter;
+    @Field(() => StorageMemberListRelationFilter, {nullable:true})
+    storageMemberships?: StorageMemberListRelationFilter;
 }

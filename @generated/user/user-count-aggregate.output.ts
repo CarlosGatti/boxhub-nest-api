@@ -54,8 +54,5 @@ export class UserCountAggregate {
     updatedAt!: number;
 
     @Field(() => Int, {nullable:false})
-    familyId!: number;
-
-    @Field(() => Int, {nullable:false})
     _all!: number;
 }

@@ -9,5 +9,5 @@ export class ContainerSumOrderByAggregateInput {
     id?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    familyId?: keyof typeof SortOrder;
+    storageId?: keyof typeof SortOrder;
 }

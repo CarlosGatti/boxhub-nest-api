@@ -3,7 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { FamilyRelationFilter } from '../family/family-relation-filter.input';
+import { StorageRelationFilter } from '../storage/storage-relation-filter.input';
 import { CategoryListRelationFilter } from '../category/category-list-relation-filter.input';
 import { ItemListRelationFilter } from '../item/item-list-relation-filter.input';
 
@@ -35,7 +35,7 @@ export class ContainerWhereInput {
     code?: StringFilter;
 
     @Field(() => IntFilter, {nullable:true})
-    familyId?: IntFilter;
+    storageId?: IntFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: DateTimeFilter;
@@ -43,8 +43,8 @@ export class ContainerWhereInput {
     @Field(() => DateTimeFilter, {nullable:true})
     updatedAt?: DateTimeFilter;
 
-    @Field(() => FamilyRelationFilter, {nullable:true})
-    family?: FamilyRelationFilter;
+    @Field(() => StorageRelationFilter, {nullable:true})
+    storage?: StorageRelationFilter;
 
     @Field(() => CategoryListRelationFilter, {nullable:true})
     categories?: CategoryListRelationFilter;

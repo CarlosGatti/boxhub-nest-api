@@ -53,7 +53,4 @@ export class UserMaxAggregate {
 
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
-
-    @Field(() => Int, {nullable:true})
-    familyId?: number;
 }
