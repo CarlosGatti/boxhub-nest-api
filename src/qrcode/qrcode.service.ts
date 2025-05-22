@@ -233,7 +233,7 @@ export class QrcodeService {
       where: {
         members: {
           some: {
-            id: userId,
+            userId: userId,
           },
         },
       },
@@ -244,7 +244,7 @@ export class QrcodeService {
         storage: {
           members: {
             some: {
-              id: userId,
+              userId: userId,
             },
           },
         },
@@ -257,7 +257,7 @@ export class QrcodeService {
           storage: {
             members: {
               some: {
-                id: userId,
+                userId: userId,
               },
             },
           },
