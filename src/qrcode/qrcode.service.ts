@@ -204,29 +204,30 @@ export class QrcodeService {
       include: { items: true },
     });
   }
-
-  async getAllItemsByUser(userId: number) {
-    console.log("User ID:", userId);
-    return this.prismaService.item.findMany({
-      where: {
-        container: {
-          storage: {
-            members: {
-              some: { id: userId }, // Verifica se o usuário é membro da família
+async getAllItemsByUser(userId: number) {
+  return this.prismaService.item.findMany({
+    where: {
+      container: {
+        storage: {
+          members: {
+            some: {
+              userId: userId, // ← CORRETO
             },
           },
         },
       },
-      include: {
-        container: {
-          select: {
-            id: true,
-            name: true,
-          },
+    },
+    include: {
+      container: {
+        select: {
+          id: true,
+          name: true,
         },
       },
-    });
-  }
+    },
+  });
+}
+
 
   async getDashboardData(userId: number) {
     const totalStorages = await this.prismaService.storage.count({
