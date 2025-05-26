@@ -102,6 +102,10 @@ CREATE TABLE "User" (
     "githubUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isPremium" BOOLEAN NOT NULL DEFAULT false,
+    "subscriptionId" TEXT,
+    "expiresAt" TIMESTAMP(3),
+    "willExpireAt" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

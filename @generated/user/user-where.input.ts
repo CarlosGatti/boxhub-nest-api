@@ -6,6 +6,7 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
 import { EnumRoleFilter } from '../prisma/enum-role-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
+import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { CommunityListRelationFilter } from '../community/community-list-relation-filter.input';
 import { CommunityMemberListRelationFilter } from '../community-member/community-member-list-relation-filter.input';
 import { EventListRelationFilter } from '../event/event-list-relation-filter.input';
@@ -77,6 +78,18 @@ export class UserWhereInput {
 
     @Field(() => DateTimeFilter, {nullable:true})
     updatedAt?: DateTimeFilter;
+
+    @Field(() => BoolFilter, {nullable:true})
+    isPremium?: BoolFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    subscriptionId?: StringNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    expiresAt?: DateTimeNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    willExpireAt?: DateTimeNullableFilter;
 
     @Field(() => CommunityListRelationFilter, {nullable:true})
     adminCommunities?: CommunityListRelationFilter;

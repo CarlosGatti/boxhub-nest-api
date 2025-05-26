@@ -51,4 +51,16 @@ export class UserMaxAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     updatedAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    isPremium?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    subscriptionId?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    expiresAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    willExpireAt?: true;
 }

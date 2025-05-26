@@ -89,6 +89,10 @@ model User {
   githubUrl              String?
   createdAt              DateTime             @default(now())
   updatedAt              DateTime             @updatedAt
+  isPremium      Boolean  @default(false)
+  subscriptionId String?  // LemonSqueezy ID
+  expiresAt      DateTime?
+  willExpireAt   DateTime?
   adminCommunities       Community[]
   memberCommunities      CommunityMember[]
   events                 Event[]

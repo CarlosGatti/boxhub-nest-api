@@ -59,6 +59,18 @@ export class UserGroupBy {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date | string;
 
+    @Field(() => Boolean, {nullable:false})
+    isPremium!: boolean;
+
+    @Field(() => String, {nullable:true})
+    subscriptionId?: string;
+
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    willExpireAt?: Date | string;
+
     @Field(() => UserCountAggregate, {nullable:true})
     _count?: UserCountAggregate;
 

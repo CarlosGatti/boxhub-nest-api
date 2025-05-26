@@ -66,6 +66,18 @@ export class UserUncheckedCreateInput {
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
 
+    @Field(() => Boolean, {nullable:true})
+    isPremium?: boolean;
+
+    @Field(() => String, {nullable:true})
+    subscriptionId?: string;
+
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    willExpireAt?: Date | string;
+
     @Field(() => CommunityUncheckedCreateNestedManyWithoutOwnerInput, {nullable:true})
     adminCommunities?: CommunityUncheckedCreateNestedManyWithoutOwnerInput;
 

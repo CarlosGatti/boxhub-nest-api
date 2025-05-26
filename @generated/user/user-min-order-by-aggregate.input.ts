@@ -52,4 +52,16 @@ export class UserMinOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    isPremium?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    subscriptionId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    expiresAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    willExpireAt?: keyof typeof SortOrder;
 }

@@ -54,5 +54,17 @@ export class UserCountAggregate {
     updatedAt!: number;
 
     @Field(() => Int, {nullable:false})
+    isPremium!: number;
+
+    @Field(() => Int, {nullable:false})
+    subscriptionId!: number;
+
+    @Field(() => Int, {nullable:false})
+    expiresAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    willExpireAt!: number;
+
+    @Field(() => Int, {nullable:false})
     _all!: number;
 }

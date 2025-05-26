@@ -6,6 +6,7 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { EnumRoleFieldUpdateOperationsInput } from '../prisma/enum-role-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { CommunityUncheckedUpdateManyWithoutOwnerNestedInput } from '../community/community-unchecked-update-many-without-owner-nested.input';
 import { CommunityMemberUncheckedUpdateManyWithoutUserNestedInput } from '../community-member/community-member-unchecked-update-many-without-user-nested.input';
 import { EventUncheckedUpdateManyWithoutOwnerNestedInput } from '../event/event-unchecked-update-many-without-owner-nested.input';
@@ -68,6 +69,18 @@ export class UserUncheckedUpdateWithoutEventTicketInput {
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isPremium?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    subscriptionId?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    willExpireAt?: NullableDateTimeFieldUpdateOperationsInput;
 
     @Field(() => CommunityUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
     adminCommunities?: CommunityUncheckedUpdateManyWithoutOwnerNestedInput;

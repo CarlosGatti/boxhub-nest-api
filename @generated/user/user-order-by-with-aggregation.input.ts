@@ -59,6 +59,18 @@ export class UserOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     updatedAt?: keyof typeof SortOrder;
 
+    @Field(() => SortOrder, {nullable:true})
+    isPremium?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    subscriptionId?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    expiresAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    willExpireAt?: SortOrderInput;
+
     @Field(() => UserCountOrderByAggregateInput, {nullable:true})
     _count?: UserCountOrderByAggregateInput;
 

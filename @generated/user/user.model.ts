@@ -66,6 +66,18 @@ export class User {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date;
 
+    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    isPremium!: boolean;
+
+    @Field(() => String, {nullable:true})
+    subscriptionId!: string | null;
+
+    @Field(() => Date, {nullable:true})
+    expiresAt!: Date | null;
+
+    @Field(() => Date, {nullable:true})
+    willExpireAt!: Date | null;
+
     @Field(() => [Community], {nullable:true})
     adminCommunities?: Array<Community>;
 
