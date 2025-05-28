@@ -84,7 +84,6 @@ export class UserService {
   async createUser(data: UserCreateInput): Promise<User> {
     const user = await this.prismaService.user.create({
       data: {
-        // cpf: data.cpf,
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -98,12 +97,14 @@ export class UserService {
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
+      loginUrl: process.env.FRONTEND_URL_PROD + '/account/login',
+      year: new Date().getFullYear(),
     };
 
     this.mailService.send({
       path: 'welcome',
       to: data.email,
-      subject: 'WeSocial - Bem vindo',
+      subject: 'Welcome to BoxHub',
       variables,
     });
 

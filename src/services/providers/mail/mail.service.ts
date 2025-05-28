@@ -5,9 +5,9 @@ import { IMailSendDTO, MailPath, TemplateInterface } from './dto/mail.dto';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { MailEntity } from './entities/mail.entity';
+import { createTemplate } from './template-class/template';
 import handlebars from 'handlebars';
 import { resolve } from 'node:path';
-import { createTemplate } from './template-class/template';
 
 @Injectable()
 class MailService implements MailEntity {
