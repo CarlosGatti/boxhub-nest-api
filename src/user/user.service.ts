@@ -95,19 +95,17 @@ export class UserService {
       },
     });
 
-    // TODO: Uncomment this when the mail template is ready
+    const variables = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
 
-    // const variables = {
-    //   firstName: user.firstName,
-    //   lastName: user.lastName,
-    // };
-
-    // this.mailService.send({
-    //   path: 'welcome',
-    //   to: data.email,
-    //   subject: 'WeSocial - Bem vindo',
-    //   variables,
-    // });
+    this.mailService.send({
+      path: 'welcome',
+      to: data.email,
+      subject: 'WeSocial - Bem vindo',
+      variables,
+    });
 
     return user;
   }

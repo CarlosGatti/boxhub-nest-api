@@ -41,11 +41,13 @@ export class AuthResolver {
 
   @Mutation(() => BaseResult, { name: 'requestPasswordReset' })
   requestPasswordReset(@Args('email') email: string) {
+    console.log('Requesting password reset for:', email);
     return this.authService.requestPasswordReset(email);
   }
 
   @Mutation(() => BaseResult, { name: 'resetPassword' })
   resetPassword(@Args('token') token: string, @Args('password') password: string) {
+    console.log('Resetting password with token:', token);
     return this.authService.resetPassword(token, password);
   }
 

@@ -113,15 +113,15 @@ export class AuthService {
     const token = this.createJwt(user).token;
 
     const variables = {
-      title: "Wesocial - Nova senha",
-      passwordResetUrl: "https://localhost:3001/account/reset-password",
+      title: "BoxHub - New Password Request",
+      passwordResetUrl: process.env.FRONTEND_URL_LOCAL + `/account/reset-password`,
       passwordResetToken: token,
     };
 
     const wasSent = this.mailService.send({
       path: 'forgot_password',
       to: user.email,
-      subject: 'WeSocial - Recuperação de senha',
+      subject: 'BoxHub - New Password Request',
       variables,
     });
 

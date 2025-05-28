@@ -1,5 +1,6 @@
+import { Attachments, MailPath, TemplateInterface } from '../dto/mail.dto';
+
 import { resolve } from 'node:path';
-import { MailPath, TemplateInterface, Attachments } from '../dto/mail.dto';
 
 class Template implements TemplateInterface {
   get file() {
