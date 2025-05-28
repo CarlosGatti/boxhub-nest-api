@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to BoxHub</title>
     <style>
+      @media only screen and (max-width: 480px) {
+        .header img {
+          width: 120px !important;
+          height: auto !important;
+        }
+      }
+    </style>
+    <style>
       body {
         margin: 0;
         padding: 0;
@@ -25,7 +33,10 @@
         background-color: #ffffff;
       }
       .header img {
-        height: 48px;
+        width: 120px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
       }
       .content {
         padding: 0 32px 24px;
@@ -74,7 +85,10 @@
   <body>
     <div class="container">
       <div class="header">
-        <img src="https://defined.one/image/brand/rh-blue.png" alt="BoxHub Logo" />
+        <img
+          src="https://defined.one/image/brand/rh-blue.png"
+          alt="BoxHub Logo"
+        />
       </div>
 
       <div class="content">
