@@ -1,24 +1,24 @@
-import { Prisma, User } from '@prisma/client';
-import { SearchDto, SearchUserDto, UsersToMap } from './dto/search.dto';
+import { Prisma, User } from "@prisma/client";
+import { SearchDto, SearchUserDto, UsersToMap } from "./dto/search.dto";
 
-import { BaseResult } from '../models/base-error.dto';
-import { CreateUserWithoutPassword } from './dto/createUser.dto';
-import { Injectable } from '@nestjs/common';
-import { MailService } from 'src/services/providers/mail/mail.service';
-import { MeDto } from './dto/me.dto';
-import { MyUserFollowings } from './dto/suggestedUser.dto';
-import { PaginationArgs } from '../shared/types/pagination.input';
-import { PrismaService } from '../prisma.service';
-import { UserCreateInput } from '../../@generated/user/user-create.input';
-import { UserUpdateInput } from '../../@generated/user/user-update.input';
-import { generate } from 'generate-password';
-import { hashSync } from 'bcrypt';
+import { BaseResult } from "../models/base-error.dto";
+import { CreateUserWithoutPassword } from "./dto/createUser.dto";
+import { Injectable } from "@nestjs/common";
+import { MailService } from "src/services/providers/mail/mail.service";
+import { MeDto } from "./dto/me.dto";
+import { MyUserFollowings } from "./dto/suggestedUser.dto";
+import { PaginationArgs } from "../shared/types/pagination.input";
+import { PrismaService } from "../prisma.service";
+import { UserCreateInput } from "../../@generated/user/user-create.input";
+import { UserUpdateInput } from "../../@generated/user/user-update.input";
+import { generate } from "generate-password";
+import { hashSync } from "bcrypt";
 
 @Injectable()
 export class UserService {
   constructor(
     private mailService: MailService,
-    private readonly prismaService: PrismaService,
+    private readonly prismaService: PrismaService
   ) {}
 
   async users(): Promise<User[]> {
@@ -71,7 +71,7 @@ export class UserService {
     });
 
     if (!data) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     return {
@@ -82,6 +82,9 @@ export class UserService {
   }
 
   async createUser(data: UserCreateInput): Promise<User> {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 14);
+
     const user = await this.prismaService.user.create({
       data: {
         email: data.email,
@@ -91,20 +94,23 @@ export class UserService {
         password: hashSync(data.password, 10),
         profilePicture: data.profilePicture,
         public: data.public,
+        expiresAt,
+        willExpireAt: expiresAt,
+        isPremium: false, // Default to false, can be updated later
       },
     });
 
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
-      loginUrl: process.env.FRONTEND_URL_PROD + '/account/login',
+      loginUrl: process.env.FRONTEND_URL_PROD + "/account/login",
       year: new Date().getFullYear(),
     };
 
     this.mailService.send({
-      path: 'welcome',
+      path: "welcome",
       to: data.email,
-      subject: 'Welcome to BoxHub',
+      subject: "Welcome to BoxHub",
       variables,
     });
 
@@ -112,7 +118,7 @@ export class UserService {
   }
 
   async createUserWithoutPassword(
-    data: CreateUserWithoutPassword,
+    data: CreateUserWithoutPassword
   ): Promise<BaseResult> {
     const password = generate({
       numbers: true,
@@ -120,7 +126,7 @@ export class UserService {
     });
 
     const variables = {
-      title: 'We Social - Sua senha',
+      title: "We Social - Sua senha",
       password,
     };
 
@@ -134,35 +140,35 @@ export class UserService {
 
       if (id) {
         await this.mailService.send({
-          path: 'send_password',
+          path: "send_password",
           to: data.email,
-          subject: 'We Social - Sua senha',
+          subject: "We Social - Sua senha",
           variables,
         });
       }
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         return {
-          message: 'Já existe uma conta com esse email.',
+          message: "Já existe uma conta com esse email.",
           success: false,
         };
       }
 
       return {
-        message: 'Não foi possível criar usuário, tente novamente',
+        message: "Não foi possível criar usuário, tente novamente",
         success: false,
       };
     }
 
     return {
-      message: 'Foi enviado e-mail para o usuário com a senha',
+      message: "Foi enviado e-mail para o usuário com a senha",
       success: true,
     };
   }
 
   async updateUser(
     currentUser: User,
-    updateOneUserArgs: UserUpdateInput,
+    updateOneUserArgs: UserUpdateInput
   ): Promise<User> {
     return this.prismaService.user.update({
       where: {
@@ -187,13 +193,13 @@ export class UserService {
     currentUser: User,
     pagination?: PaginationArgs,
     text?: string,
-    id?: number,
+    id?: number
   ): Promise<SearchDto> {
     const defaultWhereCondition = {
       public: true,
     };
 
-    const fields: Prisma.UserFindManyArgs['select'] = {
+    const fields: Prisma.UserFindManyArgs["select"] = {
       id: true,
       firstName: true,
       lastName: true,
@@ -242,19 +248,19 @@ export class UserService {
             {
               firstName: {
                 contains: text,
-                mode: 'insensitive',
+                mode: "insensitive",
               },
             },
             {
               lastName: {
                 contains: text,
-                mode: 'insensitive',
+                mode: "insensitive",
               },
             },
             {
               nickname: {
                 contains: text,
-                mode: 'insensitive',
+                mode: "insensitive",
               },
             },
           ],
@@ -268,7 +274,7 @@ export class UserService {
     return {
       users: await this.mapUsersForSearch(
         currentUser,
-        results as Partial<UsersToMap[]>,
+        results as Partial<UsersToMap[]>
       ),
       count: results.length,
       ...(pagination
@@ -315,7 +321,7 @@ export class UserService {
 
   private async isFollowing(
     followerId: number,
-    followingId: number,
+    followingId: number
   ): Promise<boolean> {
     const following = await this.prismaService.follows.findFirst({
       where: {
@@ -330,14 +336,14 @@ export class UserService {
   //TODO - remove type any in the future
   private async mapUsersForSearch(
     currentUser: User,
-    users: Partial<UsersToMap[]>,
+    users: Partial<UsersToMap[]>
   ): Promise<any> {
     return users
       .filter((user) => user?.id !== currentUser.id)
       .map(async (user) => {
         const isFollowing: boolean | undefined = await this.isFollowing(
           currentUser.id,
-          user!.id,
+          user!.id
         );
 
         return {
@@ -398,7 +404,7 @@ export class UserService {
     const myFollowingUsersId = myFollowingUsers.map((item) => item.id);
 
     const mySuggestedUsers = followingFromMyFollowingUsers.filter(
-      ({ id }) => !myFollowingUsersId.includes(id),
+      ({ id }) => !myFollowingUsersId.includes(id)
     );
 
     return mySuggestedUsers;

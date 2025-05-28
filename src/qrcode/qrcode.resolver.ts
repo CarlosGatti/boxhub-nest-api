@@ -12,7 +12,7 @@ import { Item } from "@generated/item/item.model";
 import { Container } from "@generated/container/container.model";
 import { DashboardData } from "./dashboard.dto";
 import { Storage } from "@generated/storage/storage.model";
-
+import { ProGuard } from "src/auth/guards/pro.guard";
 @Resolver(() => Storage)
 export class QrcodeResolver {
   constructor(private readonly qrcodeService: QrcodeService) {}
@@ -24,7 +24,7 @@ export class QrcodeResolver {
   }
 
   @Query(() => [Storage])
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ProGuard)
   async getAllStorages() {
     return this.qrcodeService.getAllStorages();
   }
