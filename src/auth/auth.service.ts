@@ -114,7 +114,7 @@ export class AuthService {
 
     const variables = {
       title: "BoxHub - New Password Request",
-      passwordResetUrl: process.env.FRONTEND_URL_LOCAL + `/account/reset-password`,
+      passwordResetUrl: process.env.FRONTEND_URL_PROD + `/account/reset-password`,
       passwordResetToken: token,
     };
 
