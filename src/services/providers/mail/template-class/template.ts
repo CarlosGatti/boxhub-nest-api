@@ -124,6 +124,25 @@ class SendPassword extends Template {
   }
 }
 
+class Contact extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'contact-us',
+      'body.hbs',
+    );
+  }
+}
+
+
 export function createTemplate(templateType: MailPath) {
   switch (templateType) {
     case 'welcome':
@@ -134,6 +153,9 @@ export function createTemplate(templateType: MailPath) {
 
     case 'send_password':
       return new SendPassword();
+
+    case 'contact_us':
+      return new Contact();
 
     default:
       return new Template();

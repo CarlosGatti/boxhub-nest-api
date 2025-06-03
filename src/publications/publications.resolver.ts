@@ -13,10 +13,18 @@ import { User } from '@prisma/client';
 import { BaseResult } from '../models/base-error.dto';
 import { PublicationComment } from '../../@generated/publication-comment/publication-comment.model';
 import { PaginationArgs } from '../shared/types/pagination.input';
+import { MailService } from 'src/services/providers/mail/mail.service';
+
 
 @Resolver(() => Publication)
 export class PublicationResolver {
-  constructor(private readonly publicationService: PublicationService) {}
+
+
+
+  constructor(
+    private readonly publicationService: PublicationService,
+    private readonly mailService: MailService, // Inject the MailService
+  ) {}
 
   @Query(() => PublicationResult, { name: 'publication' })
   @UseGuards(JwtAuthGuard)
@@ -106,4 +114,32 @@ export class PublicationResolver {
       pagination,
     );
   }
+
+  
+@Mutation(() => BaseResult)
+async sendEmail(
+  @Args('to') to: string,
+  @Args('subject') subject: string,
+  @Args('message') message: string,
+  @Args('name') name: string,
+  @Args('email') email: string,
+): Promise<BaseResult> {  
+  try {
+    await this.mailService.send({
+      to,
+      subject,
+      variables: {name, email, message }, // Ajuste conforme o template
+      path: 'contact_us', // Use o template correto
+    });
+    return { success: true, message: 'Email enviado com sucesso.' };
+  } catch (error) {
+    return { success: false, message: 'Erro ao enviar email.' };
+  }
 }
+
+
+  
+}
+
+
+

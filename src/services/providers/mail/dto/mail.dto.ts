@@ -4,7 +4,7 @@ interface Attachments {
   cid: string;
 }
 
-type MailPath = 'welcome' | 'forgot_password' | 'send_password';
+type MailPath = 'welcome' | 'forgot_password' | 'send_password' | 'contact_us';
 
 interface IMailSendDTO {
   to: string;

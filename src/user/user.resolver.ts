@@ -12,6 +12,7 @@ import { PaginationArgs } from "../shared/types/pagination.input";
 import { UserCreateInput } from "../../@generated/user/user-create.input";
 import { CreateUserWithoutPassword } from "./dto/createUser.dto";
 import { BaseResult } from "../models/base-error.dto";
+import { ProGuard } from "src/auth/guards/pro.guard";
 
 @Resolver()
 export class UserResolver {
@@ -44,7 +45,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { name: "updateUser" })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ProGuard)
   updateUser(
     @CurrentUser() currentUser: User,
     @Args("data") data: UserUpdateInput
