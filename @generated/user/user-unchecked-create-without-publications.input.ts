@@ -13,6 +13,7 @@ import { PostUncheckedCreateNestedManyWithoutAuthorInput } from '../post/post-un
 import { PublicationCommentUncheckedCreateNestedManyWithoutUserInput } from '../publication-comment/publication-comment-unchecked-create-nested-many-without-user.input';
 import { PublicationLikeUncheckedCreateNestedManyWithoutUserInput } from '../publication-like/publication-like-unchecked-create-nested-many-without-user.input';
 import { StorageMemberUncheckedCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-unchecked-create-nested-many-without-user.input';
+import { LogUncheckedCreateNestedManyWithoutUserInput } from '../log/log-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutPublicationsInput {
@@ -109,4 +110,7 @@ export class UserUncheckedCreateWithoutPublicationsInput {
 
     @Field(() => StorageMemberUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     storageMemberships?: StorageMemberUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => LogUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    logs?: LogUncheckedCreateNestedManyWithoutUserInput;
 }

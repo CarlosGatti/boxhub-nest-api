@@ -3,8 +3,7 @@ import { Args, Float, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { BaseResult } from "../models/base-error.dto";
 import { CurrentUser } from "../user/current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { PaginationArgs } from "../shared/types/pagination.input";
-import { PublicationComment } from "../../@generated/publication-comment/publication-comment.model";
+import { Context } from '@nestjs/graphql';
 import { QrcodeService } from "./qrcode.service";
 import { UseGuards } from "@nestjs/common";
 import { User } from "@prisma/client";
@@ -72,23 +71,29 @@ export class QrcodeResolver {
     return this.qrcodeService.addMemberToStorage(storageId, userId);
   }
 
-  @Mutation(() => BaseResult)
-  @UseGuards(JwtAuthGuard)
-  async createContainer(
-    @Args("storageId") storageId: number,
-    @Args("name") name: string,
-    @Args("description") description: string,
-    @Args("qrCode") qrCode: string,
-    @Args("code") code: string
-  ): Promise<BaseResult> {
-    return this.qrcodeService.createContainer(
-      storageId,
-      name,
-      description,
-      qrCode,
-      code
-    );
-  }
+@Mutation(() => BaseResult)
+@UseGuards(JwtAuthGuard)
+async createContainer(
+  @Args('storageId') storageId: number,
+  @Args('name') name: string,
+  @Args('description') description: string,
+  @Args('qrCode') qrCode: string,
+  @Args('code') code: string,
+  @CurrentUser() user: User,
+  @Context() context: any
+): Promise<BaseResult> {
+  const ipAddress = context.req.ip || context.req.headers['x-forwarded-for'] || '';
+
+  return this.qrcodeService.createContainer(
+    storageId,
+    name,
+    description,
+    qrCode,
+    code,
+    user.id,
+    ipAddress
+  );
+}
 
   //criar item
   @Mutation(() => BaseResult)

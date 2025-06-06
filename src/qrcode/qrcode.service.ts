@@ -1,13 +1,13 @@
-import { CommunityPrivacy, User } from "@prisma/client";
-
 import { BaseResult } from "../models/base-error.dto";
 import { CurrentUser } from "src/user/current-user.decorator";
 import { Family } from "@generated/family/family.model";
 import { Injectable } from "@nestjs/common";
 import { Item } from "@generated/item/item.model";
+import { LogAction } from '@prisma/client';
 import { PaginationArgs } from "../shared/types/pagination.input";
 import { PrismaService } from "../prisma.service";
 import { UseGuards } from "@nestjs/common";
+import { createLog } from "../services/create-log";
 import { nanoid } from "nanoid";
 
 @Injectable()
@@ -107,7 +107,9 @@ export class QrcodeService {
     name: string,
     description: string,
     qrCode: string,
-    code: string
+    code: string,
+    userId: number,
+    ipAddress: string
   ): Promise<BaseResult> {
     try {
       await this.prismaService.container.create({
@@ -121,6 +123,15 @@ export class QrcodeService {
           },
         },
       });
+
+      await createLog({
+      action: LogAction.CONTAINER_CREATED,
+      userId,
+      details: `Container criado: ${name}`,
+      route: 'createContainer', // Pode colocar uma string descritiva
+      metadata: { containerId: nanoid(), storageId, name, description, qrCode, code },
+      ipAddress
+    });
 
       return {
         success: true,

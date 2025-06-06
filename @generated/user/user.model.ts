@@ -2,17 +2,8 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
-import { Community } from '../community/community.model';
-import { CommunityMember } from '../community-member/community-member.model';
-import { Event } from '../event/event.model';
-import { EventMember } from '../event-member/event-member.model';
-import { EventTicket } from '../event-ticket/event-ticket.model';
-import { Follows } from '../follows/follows.model';
-import { Post } from '../post/post.model';
-import { Publication } from '../publication/publication.model';
-import { PublicationComment } from '../publication-comment/publication-comment.model';
-import { PublicationLike } from '../publication-like/publication-like.model';
 import { StorageMember } from '../storage-member/storage-member.model';
+import { Log } from '../log/log.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -78,41 +69,11 @@ export class User {
     @Field(() => Date, {nullable:true})
     willExpireAt!: Date | null;
 
-    @Field(() => [Community], {nullable:true})
-    adminCommunities?: Array<Community>;
-
-    @Field(() => [CommunityMember], {nullable:true})
-    memberCommunities?: Array<CommunityMember>;
-
-    @Field(() => [Event], {nullable:true})
-    events?: Array<Event>;
-
-    @Field(() => [EventMember], {nullable:true})
-    eventMember?: Array<EventMember>;
-
-    @Field(() => [EventTicket], {nullable:true})
-    eventTicket?: Array<EventTicket>;
-
-    @Field(() => [Follows], {nullable:true})
-    following?: Array<Follows>;
-
-    @Field(() => [Follows], {nullable:true})
-    followers?: Array<Follows>;
-
-    @Field(() => [Post], {nullable:true})
-    posts?: Array<Post>;
-
-    @Field(() => [Publication], {nullable:true})
-    publications?: Array<Publication>;
-
-    @Field(() => [PublicationComment], {nullable:true})
-    allPublicationComments?: Array<PublicationComment>;
-
-    @Field(() => [PublicationLike], {nullable:true})
-    allPublicationLikes?: Array<PublicationLike>;
-
     @Field(() => [StorageMember], {nullable:true})
     storageMemberships?: Array<StorageMember>;
+
+    @Field(() => [Log], {nullable:true})
+    logs?: Array<Log>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

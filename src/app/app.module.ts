@@ -3,14 +3,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from '../auth/auth.module';
-import { CommunityModule } from '../community/community.module';
-import { EventModule } from '../event/event.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
-import { PublicationsModule } from '../publications/publications.module';
 import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { TimelineModule } from '../publications/timeline/timeline.module';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -33,10 +29,6 @@ import { UserModule } from '../user/user.module';
     }),
     AuthModule,
     UserModule,
-    TimelineModule,
-    PublicationsModule,
-    CommunityModule,
-    EventModule,
     QrcodeModule,
   ],
   controllers: [AppController],

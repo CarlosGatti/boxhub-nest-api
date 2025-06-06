@@ -7,16 +7,17 @@ import { UseGuards } from "@nestjs/common";
 import { User } from "../../@generated/user/user.model";
 import { UserService } from "./user.service";
 import { UserUpdateInput } from "../../@generated/user/user-update.input";
-import { SearchDto } from "./dto/search.dto";
 import { PaginationArgs } from "../shared/types/pagination.input";
 import { UserCreateInput } from "../../@generated/user/user-create.input";
 import { CreateUserWithoutPassword } from "./dto/createUser.dto";
 import { BaseResult } from "../models/base-error.dto";
 import { ProGuard } from "src/auth/guards/pro.guard";
-
+import { MailService } from "src/services/providers/mail/mail.service";
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+              private readonly mailService: MailService
+  ) {}
 
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
@@ -53,40 +54,32 @@ export class UserResolver {
     return this.userService.updateUser(currentUser, data);
   }
 
-  @Query(() => SearchDto, { nullable: true })
-  @UseGuards(JwtAuthGuard)
-  search(
-    @CurrentUser() currentUser: User,
-    @Args("term", { nullable: true }) term?: string,
-    @Args("userId", { nullable: true }) userId?: number,
-    @Args("pagination", { nullable: true }) pagination?: PaginationArgs
-  ) {
-    return this.userService.search(currentUser, pagination, term, userId);
-  }
-
-  @Mutation(() => Boolean, { name: "followUser" })
-  @UseGuards(JwtAuthGuard)
-  followUser(@Args("userId") userId: number, @CurrentUser() currentUser: User) {
-    return this.userService.followUser(userId, currentUser.id);
-  }
-
-  @Mutation(() => Boolean, { name: "unfollowUser" })
-  @UseGuards(JwtAuthGuard)
-  unfollowUser(
-    @Args("userId") userId: number,
-    @CurrentUser() currentUser: User
-  ) {
-    return this.userService.unfollowUser(userId, currentUser.id);
-  }
-
-  @Query(() => [User], { name: "suggestedUsers" })
-  @UseGuards(JwtAuthGuard)
-  suggestedUsers(@CurrentUser() currentUser: User) {
-    return this.userService.suggestedUsers(currentUser);
-  }
-
   @Mutation(() => BaseResult, { name: "createUserWithoutPassword" })
   createUserWithoutPassword(@Args("data") data: CreateUserWithoutPassword) {
     return this.userService.createUserWithoutPassword(data);
   }
+
+
+    
+@Mutation(() => BaseResult)
+async sendEmail(
+  @Args('to') to: string,
+  @Args('subject') subject: string,
+  @Args('message') message: string,
+  @Args('name') name: string,
+  @Args('email') email: string,
+): Promise<BaseResult> {  
+  try {
+    await this.mailService.send({
+      to,
+      subject,
+      variables: {name, email, message }, // Ajuste conforme o template
+      path: 'contact_us', // Use o template correto
+    });
+    return { success: true, message: 'Email enviado com sucesso.' };
+  } catch (error) {
+    return { success: false, message: 'Erro ao enviar email.' };
+  }
+}
+
 }

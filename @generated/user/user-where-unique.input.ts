@@ -8,17 +8,8 @@ import { BoolFilter } from '../prisma/bool-filter.input';
 import { EnumRoleFilter } from '../prisma/enum-role-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
-import { CommunityListRelationFilter } from '../community/community-list-relation-filter.input';
-import { CommunityMemberListRelationFilter } from '../community-member/community-member-list-relation-filter.input';
-import { EventListRelationFilter } from '../event/event-list-relation-filter.input';
-import { EventMemberListRelationFilter } from '../event-member/event-member-list-relation-filter.input';
-import { EventTicketListRelationFilter } from '../event-ticket/event-ticket-list-relation-filter.input';
-import { FollowsListRelationFilter } from '../follows/follows-list-relation-filter.input';
-import { PostListRelationFilter } from '../post/post-list-relation-filter.input';
-import { PublicationListRelationFilter } from '../publication/publication-list-relation-filter.input';
-import { PublicationCommentListRelationFilter } from '../publication-comment/publication-comment-list-relation-filter.input';
-import { PublicationLikeListRelationFilter } from '../publication-like/publication-like-list-relation-filter.input';
 import { StorageMemberListRelationFilter } from '../storage-member/storage-member-list-relation-filter.input';
+import { LogListRelationFilter } from '../log/log-list-relation-filter.input';
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -92,39 +83,9 @@ export class UserWhereUniqueInput {
     @Field(() => DateTimeNullableFilter, {nullable:true})
     willExpireAt?: DateTimeNullableFilter;
 
-    @Field(() => CommunityListRelationFilter, {nullable:true})
-    adminCommunities?: CommunityListRelationFilter;
-
-    @Field(() => CommunityMemberListRelationFilter, {nullable:true})
-    memberCommunities?: CommunityMemberListRelationFilter;
-
-    @Field(() => EventListRelationFilter, {nullable:true})
-    events?: EventListRelationFilter;
-
-    @Field(() => EventMemberListRelationFilter, {nullable:true})
-    eventMember?: EventMemberListRelationFilter;
-
-    @Field(() => EventTicketListRelationFilter, {nullable:true})
-    eventTicket?: EventTicketListRelationFilter;
-
-    @Field(() => FollowsListRelationFilter, {nullable:true})
-    following?: FollowsListRelationFilter;
-
-    @Field(() => FollowsListRelationFilter, {nullable:true})
-    followers?: FollowsListRelationFilter;
-
-    @Field(() => PostListRelationFilter, {nullable:true})
-    posts?: PostListRelationFilter;
-
-    @Field(() => PublicationListRelationFilter, {nullable:true})
-    publications?: PublicationListRelationFilter;
-
-    @Field(() => PublicationCommentListRelationFilter, {nullable:true})
-    allPublicationComments?: PublicationCommentListRelationFilter;
-
-    @Field(() => PublicationLikeListRelationFilter, {nullable:true})
-    allPublicationLikes?: PublicationLikeListRelationFilter;
-
     @Field(() => StorageMemberListRelationFilter, {nullable:true})
     storageMemberships?: StorageMemberListRelationFilter;
+
+    @Field(() => LogListRelationFilter, {nullable:true})
+    logs?: LogListRelationFilter;
 }

@@ -17,6 +17,7 @@ import { PostUpdateManyWithoutAuthorNestedInput } from '../post/post-update-many
 import { PublicationUpdateManyWithoutUserNestedInput } from '../publication/publication-update-many-without-user-nested.input';
 import { PublicationLikeUpdateManyWithoutUserNestedInput } from '../publication-like/publication-like-update-many-without-user-nested.input';
 import { StorageMemberUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-update-many-without-user-nested.input';
+import { LogUpdateManyWithoutUserNestedInput } from '../log/log-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutAllPublicationCommentsInput {
@@ -110,4 +111,7 @@ export class UserUpdateWithoutAllPublicationCommentsInput {
 
     @Field(() => StorageMemberUpdateManyWithoutUserNestedInput, {nullable:true})
     storageMemberships?: StorageMemberUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogUpdateManyWithoutUserNestedInput, {nullable:true})
+    logs?: LogUpdateManyWithoutUserNestedInput;
 }

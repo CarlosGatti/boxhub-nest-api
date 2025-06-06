@@ -18,6 +18,7 @@ import { PostUncheckedUpdateManyWithoutAuthorNestedInput } from '../post/post-un
 import { PublicationCommentUncheckedUpdateManyWithoutUserNestedInput } from '../publication-comment/publication-comment-unchecked-update-many-without-user-nested.input';
 import { PublicationLikeUncheckedUpdateManyWithoutUserNestedInput } from '../publication-like/publication-like-unchecked-update-many-without-user-nested.input';
 import { StorageMemberUncheckedUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-unchecked-update-many-without-user-nested.input';
+import { LogUncheckedUpdateManyWithoutUserNestedInput } from '../log/log-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutPublicationsInput {
@@ -114,4 +115,7 @@ export class UserUncheckedUpdateWithoutPublicationsInput {
 
     @Field(() => StorageMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     storageMemberships?: StorageMemberUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    logs?: LogUncheckedUpdateManyWithoutUserNestedInput;
 }

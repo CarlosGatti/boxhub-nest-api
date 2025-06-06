@@ -93,277 +93,38 @@ model User {
   subscriptionId         String?  // LemonSqueezy ID
   expiresAt              DateTime?
   willExpireAt           DateTime? //Expiração futura agendada
-  adminCommunities       Community[]
-  memberCommunities      CommunityMember[]
-  events                 Event[]
-  eventMember            EventMember[]
-  eventTicket            EventTicket[]
-  following              Follows[]            @relation("follower")
-  followers              Follows[]            @relation("following")
-  posts                  Post[]
-  publications           Publication[]
-  allPublicationComments PublicationComment[]
-  allPublicationLikes    PublicationLike[]
   storageMemberships     StorageMember[] 
+  logs                   Log[]
   @@index([email], map: "userEmail")
 
 }
 
-
-model Follows {
-  id          Int      @id @default(autoincrement())
-  followerId  Int
-  followingId Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  follower    User     @relation("follower", fields: [followerId], references: [id])
-  following   User     @relation("following", fields: [followingId], references: [id])
-
-  @@index([followerId], map: "followerId")
-  @@index([followingId], map: "followingId")
-}
-
-model Publication {
-  id          Int                  @id @default(autoincrement())
-  description String
-  published   Boolean              @default(true)
-  userId      Int?
-  postId      Int
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  visibility  Visibility           @default(PUBLIC)
-  eventId     Int?
-  communityId Int?
-  community   Community?           @relation(fields: [communityId], references: [id])
-  event       Event?               @relation(fields: [eventId], references: [id])
-  post        Post                 @relation(fields: [postId], references: [id])
-  user        User?                @relation(fields: [userId], references: [id])
-  comments    PublicationComment[]
-  likes       PublicationLike[]
-}
-
-model PublicationLike {
-  id            Int         @id @default(autoincrement())
-  userId        Int
-  publicationId Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  publication   Publication @relation(fields: [publicationId], references: [id])
-  user          User        @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "publicationLikeuserId")
-  @@index([publicationId], map: "publicationLikepublicationId")
-}
-
-model PublicationComment {
-  id            Int         @id @default(autoincrement())
-  content       String
-  userId        Int
-  publicationId Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  publication   Publication @relation(fields: [publicationId], references: [id])
-  user          User        @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "publicationCommentUserId")
-  @@index([publicationId], map: "publicationCommentPublicationId")
-}
-
-model Post {
-  id            Int           @id @default(autoincrement())
-  title         String?
-  content       String?
-  published     Boolean       @default(true)
-  authorId      Int?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  publicationId Int?
-  visibility    Visibility    @default(PUBLIC)
-  images        String[]
-  author        User?         @relation(fields: [authorId], references: [id])
-  publication   Publication[]
-}
-
-model EventAddress {
-  id        Int      @id @default(autoincrement())
-  address   String
-  city      String
-  zipCode   String
-  country   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  event     Event[]
-}
-
-model EventOnlineDetail {
-  id          Int      @id @default(autoincrement())
-  platform    String
-  link        String
-  joinCode    String?
-  joinDetails String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  event       Event[]
-}
-
-model EventMember {
-  id        Int              @id @default(autoincrement())
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  eventId   Int
-  userId    Int?
-  status    MembershipStatus @default(PENDING)
-  joinedAt  DateTime?
-  leftAt    DateTime?
-  role      EventMemberRole  @default(MEMBER)
-  event     Event            @relation(fields: [eventId], references: [id])
-  user      User?            @relation(fields: [userId], references: [id])
-}
-
-model EventTicket {
-  id         Int       @id @default(autoincrement())
-  beeped     Boolean
-  expire     DateTime
-  userEmail  String
-  eventId    Int
-  beepedTime DateTime?
-  valid      Boolean   @default(true)
-  event      Event     @relation(fields: [eventId], references: [id])
-  user       User      @relation(fields: [userEmail], references: [email])
-}
-
-model Event {
-  id                  Int                @id @default(autoincrement())
-  title               String
-  content             String?
-  published           Boolean            @default(true)
-  ownerId             Int?
-  startDate           DateTime
-  endDate             DateTime
-  eventOnlineDetailId Int?
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
-  eventAddressId      Int?
-  visibility          Visibility         @default(PUBLIC)
-  banner              String?
-  communityId         Int?
-  Community           Community?         @relation(fields: [communityId], references: [id])
-  address             EventAddress?      @relation(fields: [eventAddressId], references: [id])
-  onlineDetails       EventOnlineDetail? @relation(fields: [eventOnlineDetailId], references: [id])
-  owner               User?              @relation(fields: [ownerId], references: [id])
-  members             EventMember[]
-  tickets             EventTicket[]
-  publications        Publication[]
-}
-
-model CommunityMember {
-  id          Int                 @id @default(autoincrement())
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  communityId Int
-  userId      Int?
-  status      MembershipStatus    @default(PENDING)
-  joinedAt    DateTime?
-  leftAt      DateTime?
-  role        CommunityMemberRole @default(MEMBER)
-  community   Community           @relation(fields: [communityId], references: [id])
-  user        User?               @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "communityMemberUserId")
-  @@index([communityId], map: "communityMemberCommunityId")
-}
-
-model CommunityPlan {
+model Log {
   id          Int        @id @default(autoincrement())
-  name        String
-  description String
-  price       Float
+  action      LogAction
+  userId      Int?
+  user        User?      @relation(fields: [userId], references: [id])
+  details     String?
+  route       String?    // Rota acessada (ex: "/dashboard" ou "/item/:id")
+  metadata    Json?      // Dados adicionais sobre o evento (ex: { itemId: 123, buttonName: "BuyNow" })
+  ipAddress   String?
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  communityId Int?
-  community   Community?
-
-  @@index([communityId], map: "communityPlanCommunityId")
 }
 
-model Community {
-  id                Int               @id @default(autoincrement())
-  name              String            @unique
-  description       String
-  banner            String?
-  profilePicture    String?
-  visibility        Visibility        @default(PUBLIC)
-  published         Boolean?          @default(true)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  ownerId           Int?
-  communityPlanId   Int?              @unique
-  postEnabledRole   CommunityPrivacy  @default(ALL)
-  inviteEnabledRole CommunityPrivacy  @default(ALL)
-  parentCommunityId Int?
-  plan              CommunityPlan?    @relation(fields: [communityPlanId], references: [id])
-  owner             User?             @relation(fields: [ownerId], references: [id])
-  parentCommunity   Community?        @relation("ParentCommunity", fields: [parentCommunityId], references: [id])
-  groups            Community[]       @relation("ParentCommunity")
-  members           CommunityMember[]
-  events            Event[]
-  facets            Facet[]
-  publications      Publication[]
 
-  @@index([ownerId], map: "communityOwnerId")
-  @@index([communityPlanId], map: "communityPlanId")
+enum LogAction {
+  USER_LOGIN
+  USER_LOGOUT
+  ITEM_CREATED
+  ITEM_DELETED
+  CONTAINER_CREATED
+  CONTAINER_DELETED
+  BUTTON_CLICKED
+  PAGE_VIEWED
+  SEARCH_USED
+  CUSTOM_ACTION // Para ações diversas
 }
 
-model FacetValue {
-  id        Int      @id @default(autoincrement())
-  value     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  facetId   Int?
-  Facet     Facet?   @relation(fields: [facetId], references: [id])
-}
-
-model Facet {
-  id          Int          @id @default(autoincrement())
-  code        String
-  name        String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  communityId Int?
-  Community   Community?   @relation(fields: [communityId], references: [id])
-  values      FacetValue[]
-}
-
-model Pillar {
-  id           Int         @id @default(autoincrement())
-  name         String
-  processes    Process[]   @relation("PillarToProcess")
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-}
-
-model Process {
-  id              Int         @id @default(autoincrement())
-  name            String
-  description     String?
-  pillarId        Int
-  themes          Theme[]     @relation("ProcessToTheme")
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  pillar          Pillar      @relation("PillarToProcess", fields: [pillarId], references: [id])
-}
-
-model Theme {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  processId   Int
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  process     Process     @relation("ProcessToTheme", fields: [processId], references: [id])
-}
 
 enum Role {
   USER

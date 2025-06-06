@@ -12,6 +12,7 @@ import { PostCreateNestedManyWithoutAuthorInput } from '../post/post-create-nest
 import { PublicationCreateNestedManyWithoutUserInput } from '../publication/publication-create-nested-many-without-user.input';
 import { PublicationCommentCreateNestedManyWithoutUserInput } from '../publication-comment/publication-comment-create-nested-many-without-user.input';
 import { StorageMemberCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-create-nested-many-without-user.input';
+import { LogCreateNestedManyWithoutUserInput } from '../log/log-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutAllPublicationLikesInput {
@@ -105,4 +106,7 @@ export class UserCreateWithoutAllPublicationLikesInput {
 
     @Field(() => StorageMemberCreateNestedManyWithoutUserInput, {nullable:true})
     storageMemberships?: StorageMemberCreateNestedManyWithoutUserInput;
+
+    @Field(() => LogCreateNestedManyWithoutUserInput, {nullable:true})
+    logs?: LogCreateNestedManyWithoutUserInput;
 }

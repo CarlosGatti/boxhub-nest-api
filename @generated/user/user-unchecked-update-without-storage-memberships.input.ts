@@ -7,17 +7,7 @@ import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-oper
 import { EnumRoleFieldUpdateOperationsInput } from '../prisma/enum-role-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
-import { CommunityUncheckedUpdateManyWithoutOwnerNestedInput } from '../community/community-unchecked-update-many-without-owner-nested.input';
-import { CommunityMemberUncheckedUpdateManyWithoutUserNestedInput } from '../community-member/community-member-unchecked-update-many-without-user-nested.input';
-import { EventUncheckedUpdateManyWithoutOwnerNestedInput } from '../event/event-unchecked-update-many-without-owner-nested.input';
-import { EventMemberUncheckedUpdateManyWithoutUserNestedInput } from '../event-member/event-member-unchecked-update-many-without-user-nested.input';
-import { EventTicketUncheckedUpdateManyWithoutUserNestedInput } from '../event-ticket/event-ticket-unchecked-update-many-without-user-nested.input';
-import { FollowsUncheckedUpdateManyWithoutFollowerNestedInput } from '../follows/follows-unchecked-update-many-without-follower-nested.input';
-import { FollowsUncheckedUpdateManyWithoutFollowingNestedInput } from '../follows/follows-unchecked-update-many-without-following-nested.input';
-import { PostUncheckedUpdateManyWithoutAuthorNestedInput } from '../post/post-unchecked-update-many-without-author-nested.input';
-import { PublicationUncheckedUpdateManyWithoutUserNestedInput } from '../publication/publication-unchecked-update-many-without-user-nested.input';
-import { PublicationCommentUncheckedUpdateManyWithoutUserNestedInput } from '../publication-comment/publication-comment-unchecked-update-many-without-user-nested.input';
-import { PublicationLikeUncheckedUpdateManyWithoutUserNestedInput } from '../publication-like/publication-like-unchecked-update-many-without-user-nested.input';
+import { LogUncheckedUpdateManyWithoutUserNestedInput } from '../log/log-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutStorageMembershipsInput {
@@ -82,36 +72,6 @@ export class UserUncheckedUpdateWithoutStorageMembershipsInput {
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     willExpireAt?: NullableDateTimeFieldUpdateOperationsInput;
 
-    @Field(() => CommunityUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
-    adminCommunities?: CommunityUncheckedUpdateManyWithoutOwnerNestedInput;
-
-    @Field(() => CommunityMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    memberCommunities?: CommunityMemberUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => EventUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
-    events?: EventUncheckedUpdateManyWithoutOwnerNestedInput;
-
-    @Field(() => EventMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    eventMember?: EventMemberUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => EventTicketUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    eventTicket?: EventTicketUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => FollowsUncheckedUpdateManyWithoutFollowerNestedInput, {nullable:true})
-    following?: FollowsUncheckedUpdateManyWithoutFollowerNestedInput;
-
-    @Field(() => FollowsUncheckedUpdateManyWithoutFollowingNestedInput, {nullable:true})
-    followers?: FollowsUncheckedUpdateManyWithoutFollowingNestedInput;
-
-    @Field(() => PostUncheckedUpdateManyWithoutAuthorNestedInput, {nullable:true})
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput;
-
-    @Field(() => PublicationUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    publications?: PublicationUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => PublicationCommentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    allPublicationComments?: PublicationCommentUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => PublicationLikeUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    allPublicationLikes?: PublicationLikeUncheckedUpdateManyWithoutUserNestedInput;
+    @Field(() => LogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    logs?: LogUncheckedUpdateManyWithoutUserNestedInput;
 }
