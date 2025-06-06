@@ -8,7 +8,8 @@ import { PaginationArgs } from "../shared/types/pagination.input";
 import { PrismaService } from "../prisma.service";
 import { UseGuards } from "@nestjs/common";
 import { createLog } from "../services/create-log";
-import { nanoid } from "nanoid";
+// Removido o import direto do nanoid
+// import { nanoid } from "nanoid";
 
 @Injectable()
 export class QrcodeService {
@@ -124,14 +125,24 @@ export class QrcodeService {
         },
       });
 
+      // Importação dinâmica do nanoid
+      const { nanoid } = await import('nanoid');
+
       await createLog({
-      action: LogAction.CONTAINER_CREATED,
-      userId,
-      details: `Container criado: ${name}`,
-      route: 'createContainer', // Pode colocar uma string descritiva
-      metadata: { containerId: nanoid(), storageId, name, description, qrCode, code },
-      ipAddress
-    });
+        action: LogAction.CONTAINER_CREATED,
+        userId,
+        details: `Container criado: ${name}`,
+        route: 'createContainer',
+        metadata: {
+          containerId: nanoid(),
+          storageId,
+          name,
+          description,
+          qrCode,
+          code
+        },
+        ipAddress
+      });
 
       return {
         success: true,
@@ -215,30 +226,30 @@ export class QrcodeService {
       include: { items: true },
     });
   }
-async getAllItemsByUser(userId: number) {
-  return this.prismaService.item.findMany({
-    where: {
-      container: {
-        storage: {
-          members: {
-            some: {
-              userId: userId, // ← CORRETO
+
+  async getAllItemsByUser(userId: number) {
+    return this.prismaService.item.findMany({
+      where: {
+        container: {
+          storage: {
+            members: {
+              some: {
+                userId: userId,
+              },
             },
           },
         },
       },
-    },
-    include: {
-      container: {
-        select: {
-          id: true,
-          name: true,
+      include: {
+        container: {
+          select: {
+            id: true,
+            name: true,
+          },
         },
       },
-    },
-  });
-}
-
+    });
+  }
 
   async getDashboardData(userId: number) {
     const totalStorages = await this.prismaService.storage.count({
@@ -276,6 +287,7 @@ async getAllItemsByUser(userId: number) {
         },
       },
     });
+
     const recentContainers = await this.prismaService.container.findMany({
       where: {
         storage: {
