@@ -103,61 +103,63 @@ export class QrcodeService {
     });
   }
 
-  async createContainer(
-    storageId: number,
-    name: string,
-    description: string,
-    qrCode: string,
-    code: string,
-    userId: number,
-    ipAddress: string
-  ): Promise<BaseResult> {
-    try {
-      await this.prismaService.container.create({
-        data: {
-          name,
-          description,
-          qrCode,
-          code,
-          storage: {
-            connect: { id: storageId },
-          },
+async createContainer(
+  storageId: number,
+  name: string,
+  description: string,
+  qrCode: string,
+  code: string,
+  userId: number,
+  ipAddress: string
+): Promise<BaseResult> {
+  try {
+    // Importação dinâmica do nanoid ANTES de criar o container
+    const { nanoid } = await import('nanoid');
+
+    // Criação do container
+    await this.prismaService.container.create({
+      data: {
+        name,
+        description,
+        qrCode,
+        code,
+        storage: {
+          connect: { id: storageId },
         },
-      });
+      },
+    });
 
-      // Importação dinâmica do nanoid
-      const { nanoid } = await import('nanoid');
+    // Criação do log
+    await createLog({
+      action: LogAction.CONTAINER_CREATED,
+      userId,
+      details: `Container criado: ${name}`,
+      route: 'createContainer',
+      metadata: {
+        containerId: nanoid(),
+        storageId,
+        name,
+        description,
+        qrCode,
+        code
+      },
+      ipAddress
+    });
 
-      await createLog({
-        action: LogAction.CONTAINER_CREATED,
-        userId,
-        details: `Container criado: ${name}`,
-        route: 'createContainer',
-        metadata: {
-          containerId: nanoid(),
-          storageId,
-          name,
-          description,
-          qrCode,
-          code
-        },
-        ipAddress
-      });
-
+    return {
+      success: true,
+      message: "Container created successfully",
+    };
+  } catch (error) {
+    if (error.code === "P2002") {
       return {
-        success: true,
-        message: "Container created successfully",
+        success: false,
+        message: `Duplicate value for unique field: ${error.meta?.target}`,
       };
-    } catch (error) {
-      if (error.code === "P2002") {
-        return {
-          success: false,
-          message: `Duplicate value for unique field: ${error.meta?.target}`,
-        };
-      }
-      throw error;
     }
+    throw error;
   }
+}
 
   async getContainerByCode(code: string) {
     return await this.prismaService.container.findUnique({
