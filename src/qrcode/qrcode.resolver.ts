@@ -3,7 +3,7 @@ import { Args, Float, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { BaseResult } from "../models/base-error.dto";
 import { CurrentUser } from "../user/current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { Context } from '@nestjs/graphql';
+import { Context } from "@nestjs/graphql";
 import { QrcodeService } from "./qrcode.service";
 import { UseGuards } from "@nestjs/common";
 import { User } from "@prisma/client";
@@ -44,8 +44,8 @@ export class QrcodeResolver {
 
   @Mutation(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async createStorage(@Args("name") name: string, @CurrentUser() user: any) {
-    return this.qrcodeService.createStorage(name, user.id);
+  async createStorage(@Args("name") name: string, @CurrentUser() user: any, @Context() context: any) {
+    return this.qrcodeService.createStorage(name, user.id, context.req.ip || context.req.headers["x-forwarded-for"] || "");
   }
 
   @Query(() => [Storage])
@@ -57,8 +57,12 @@ export class QrcodeResolver {
   //delete a storage
   @Mutation(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async removeStorage(@Args("id") id: number) {
-    return this.qrcodeService.removeStorage(id);
+  async removeStorage(
+    @Args("id") id: number,
+    @CurrentUser() user: User,
+    @Context() context: any
+  ) {
+    return this.qrcodeService.removeStorage(id, user.id, context.req.ip || context.req.headers["x-forwarded-for"] || "");
   }
 
   //add a member to a storage
@@ -71,29 +75,30 @@ export class QrcodeResolver {
     return this.qrcodeService.addMemberToStorage(storageId, userId);
   }
 
-@Mutation(() => BaseResult)
-@UseGuards(JwtAuthGuard)
-async createContainer(
-  @Args('storageId') storageId: number,
-  @Args('name') name: string,
-  @Args('description') description: string,
-  @Args('qrCode') qrCode: string,
-  @Args('code') code: string,
-  @CurrentUser() user: User,
-  @Context() context: any
-): Promise<BaseResult> {
-  const ipAddress = context.req.ip || context.req.headers['x-forwarded-for'] || '';
+  @Mutation(() => BaseResult)
+  @UseGuards(JwtAuthGuard)
+  async createContainer(
+    @Args("storageId") storageId: number,
+    @Args("name") name: string,
+    @Args("description") description: string,
+    @Args("qrCode") qrCode: string,
+    @Args("code") code: string,
+    @CurrentUser() user: User,
+    @Context() context: any
+  ): Promise<BaseResult> {
+    const ipAddress =
+      context.req.ip || context.req.headers["x-forwarded-for"] || "";
 
-  return this.qrcodeService.createContainer(
-    storageId,
-    name,
-    description,
-    qrCode,
-    code,
-    user.id,
-    ipAddress
-  );
-}
+    return this.qrcodeService.createContainer(
+      storageId,
+      name,
+      description,
+      qrCode,
+      code,
+      user.id,
+      ipAddress
+    );
+  }
 
   //criar item
   @Mutation(() => BaseResult)
@@ -104,7 +109,9 @@ async createContainer(
     @Args("imageUrl") imageUrl: string,
     @Args("quantity") quantity: number,
     @Args("category") category: string,
-    @Args("containerId") containerId: number
+    @Args("containerId") containerId: number,
+    @CurrentUser() user: User,
+    @Context() context: any
   ): Promise<BaseResult> {
     return this.qrcodeService.createItem(
       name,
@@ -112,7 +119,9 @@ async createContainer(
       imageUrl,
       quantity,
       category,
-      containerId
+      containerId,
+      user.id,
+      context.req.ip || context.req.headers["x-forwarded-for"] || ""
     );
   }
 
@@ -129,9 +138,44 @@ async createContainer(
     return items;
   }
 
+  //get item by id
+  @Query(() => Item)
+  @UseGuards(JwtAuthGuard)
+  async getItemById(@Args("id") id: number) {
+    return this.qrcodeService.getItemById(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Query(() => DashboardData)
   async getDashboardData(@CurrentUser() user: User) {
     return this.qrcodeService.getDashboardData(user.id);
+  }
+
+  //edit item
+  @Mutation(() => BaseResult)
+  @UseGuards(JwtAuthGuard)
+  async editItem(
+    @Args("id") id: number,
+    @Args("name") name: string,
+    @Args("description") description: string,
+    @Args("imageUrl") imageUrl: string,
+    @Args("quantity", { type: () => Float }) quantity: number,
+    @Args("category") category: string,
+    @CurrentUser() user: User,
+    @Context() context: any
+  ): Promise<BaseResult> {
+    const ipAddress =
+      context.req.ip || context.req.headers["x-forwarded-for"] || "";
+
+    return this.qrcodeService.editItem(
+      id,
+      name,
+      description,
+      imageUrl,
+      quantity,
+      category,
+      user.id,
+      ipAddress
+    );
   }
 }

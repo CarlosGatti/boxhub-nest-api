@@ -116,13 +116,21 @@ enum LogAction {
   USER_LOGIN
   USER_LOGOUT
   ITEM_CREATED
+  ITEM_UPDATED
   ITEM_DELETED
   CONTAINER_CREATED
   CONTAINER_DELETED
   BUTTON_CLICKED
   PAGE_VIEWED
   SEARCH_USED
-  CUSTOM_ACTION // Para ações diversas
+  CUSTOM_ACTION
+  REQUEST_PASSWORD_RESET
+  PASSWORD_RESET
+  USER_REGISTERED
+  USER_PROFILE_UPDATED
+  USER_DELETED
+  STORAGE_CREATED
+  STORAGE_DELETED
 }
 
 
@@ -134,25 +142,6 @@ enum Role {
 enum Visibility {
   PUBLIC
   PRIVATE
-}
-
-enum CommunityMemberRole {
-  OWNER
-  MEMBER
-  ADMIN
-}
-
-enum EventMemberRole {
-  OWNER
-  MEMBER
-  ADMIN
-}
-
-enum CommunityPrivacy {
-  OWNER
-  MEMBER
-  ADMIN
-  ALL
 }
 
 enum MembershipStatus {

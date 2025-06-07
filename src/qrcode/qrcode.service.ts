@@ -3,7 +3,7 @@ import { CurrentUser } from "src/user/current-user.decorator";
 import { Family } from "@generated/family/family.model";
 import { Injectable } from "@nestjs/common";
 import { Item } from "@generated/item/item.model";
-import { LogAction } from '@prisma/client';
+import { LogAction } from "@prisma/client";
 import { PaginationArgs } from "../shared/types/pagination.input";
 import { PrismaService } from "../prisma.service";
 import { UseGuards } from "@nestjs/common";
@@ -61,7 +61,12 @@ export class QrcodeService {
     });
   }
 
-  async createStorage(name: string, userId: number) {
+  async createStorage(name: string, userId: number,
+    ipAddress: string) {
+
+     const { nanoid } = await import("nanoid");
+
+
     return await this.prismaService.storage.create({
       data: {
         name,
@@ -78,14 +83,53 @@ export class QrcodeService {
         members: true,
       },
     });
+
+    await createLog({
+      action: LogAction.STORAGE_CREATED,
+      userId,
+      details: `Storage created: ${name}`,
+      route: "createStorage",
+      metadata: {
+        storageId: nanoid(),
+        name,
+        ipAddress,
+      },
+    });
+    return {
+      success: true,
+      message: "Storage created successfully",
+    };
   }
 
-  async removeStorage(id: number) {
+  async removeStorage(id: number,     userId: number,
+    ipAddress: string) {
+
+    
+     const { nanoid } = await import("nanoid");
+
     return await this.prismaService.storage.delete({
       where: {
         id: id,
       },
     });
+
+    await createLog({
+      action: LogAction.STORAGE_DELETED,
+      userId,
+      details: `Storage deleted: ${id}`,
+      route: "removeStorage",
+      metadata: {
+        storageId: nanoid(),
+        ipAddress,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Storage removed successfully",
+    };
+
+
   }
 
   async addMemberToStorage(familyId: number, userId: number) {
@@ -103,63 +147,63 @@ export class QrcodeService {
     });
   }
 
-async createContainer(
-  storageId: number,
-  name: string,
-  description: string,
-  qrCode: string,
-  code: string,
-  userId: number,
-  ipAddress: string
-): Promise<BaseResult> {
-  try {
-    // Importação dinâmica do nanoid ANTES de criar o container
-    const { nanoid } = await import('nanoid');
+  async createContainer(
+    storageId: number,
+    name: string,
+    description: string,
+    qrCode: string,
+    code: string,
+    userId: number,
+    ipAddress: string
+  ): Promise<BaseResult> {
+    try {
+      // Importação dinâmica do nanoid ANTES de criar o container
+      const { nanoid } = await import("nanoid");
 
-    // Criação do container
-    await this.prismaService.container.create({
-      data: {
-        name,
-        description,
-        qrCode,
-        code,
-        storage: {
-          connect: { id: storageId },
+      // Criação do container
+      await this.prismaService.container.create({
+        data: {
+          name,
+          description,
+          qrCode,
+          code,
+          storage: {
+            connect: { id: storageId },
+          },
         },
-      },
-    });
+      });
 
-    // Criação do log
-    await createLog({
-      action: LogAction.CONTAINER_CREATED,
-      userId,
-      details: `Container criado: ${name}`,
-      route: 'createContainer',
-      metadata: {
-        containerId: nanoid(),
-        storageId,
-        name,
-        description,
-        qrCode,
-        code
-      },
-      ipAddress
-    });
+      // Criação do log
+      await createLog({
+        action: LogAction.CONTAINER_CREATED,
+        userId,
+        details: `Container criado: ${name}`,
+        route: "createContainer",
+        metadata: {
+          containerId: nanoid(),
+          storageId,
+          name,
+          description,
+          qrCode,
+          code,
+        },
+        ipAddress,
+      });
 
-    return {
-      success: true,
-      message: "Container created successfully",
-    };
-  } catch (error) {
-    if (error.code === "P2002") {
       return {
-        success: false,
-        message: `Duplicate value for unique field: ${error.meta?.target}`,
+        success: true,
+        message: "Container created successfully",
       };
+    } catch (error) {
+      if (error.code === "P2002") {
+        return {
+          success: false,
+          message: `Duplicate value for unique field: ${error.meta?.target}`,
+        };
+      }
+      throw error;
     }
-    throw error;
   }
-}
 
   async getContainerByCode(code: string) {
     return await this.prismaService.container.findUnique({
@@ -191,9 +235,13 @@ async createContainer(
     imageUrl: string,
     quantity: number,
     category: string,
-    containerId: number
+    containerId: number,
+        userId: number,
+    ipAddress: string
   ): Promise<BaseResult> {
     try {
+
+            const { nanoid } = await import("nanoid");
       await this.prismaService.item.create({
         data: {
           name,
@@ -205,6 +253,24 @@ async createContainer(
             connect: { id: containerId },
           },
         },
+      });
+
+      await createLog({
+        action: LogAction.ITEM_CREATED,
+        userId,
+        details: `Item created: ${name}`,
+        route: "createItem",
+        metadata: {
+          itemId: nanoid(),
+          name,
+          description,
+          imageUrl,
+          quantity,
+          category,
+          containerId,
+          ipAddress,
+        },
+        ipAddress,
       });
 
       return {
@@ -221,6 +287,31 @@ async createContainer(
       throw error;
     }
   }
+
+  //find item by id
+  async getItemById(id: number) {
+    return await this.prismaService.item.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        container: {
+          include: {
+            storage: {
+              include: {
+                members: {
+                  include: {
+                    user: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
 
   async getAllContainersByUser(userId: number) {
     return this.prismaService.container.findMany({
@@ -312,5 +403,63 @@ async createContainer(
       totalItems,
       recentContainers,
     };
+  }
+
+  //edit item
+  async editItem(
+    itemId: number,
+    name: string,
+    description: string,
+    imageUrl: string,
+    quantity: number,
+    category: string,
+    userId: number,
+    ipAddress: string
+  ): Promise<BaseResult> {
+    try {
+      const { nanoid } = await import("nanoid");
+
+      await this.prismaService.item.update({
+        where: { id: itemId },
+        data: {
+          name,
+          description,
+          imageUrl,
+          quantity,
+          category,
+        },
+      });
+
+      await createLog({
+        action: LogAction.ITEM_UPDATED,
+        userId,
+        details: `Item created: ${name}`,
+        route: "editItem",
+        metadata: {
+          itemId,
+          name,
+          description,
+          imageUrl,
+          quantity,
+          category,
+          containerId: nanoid(),
+          ipAddress,
+        },
+        ipAddress,
+      });
+
+      return {
+        success: true,
+        message: "Item updated successfully",
+      };
+    } catch (error) {
+      if (error.code === "P2002") {
+        return {
+          success: false,
+          message: `Duplicate value for unique field: ${error.meta?.target}`,
+        };
+      }
+      throw error;
+    }
   }
 }

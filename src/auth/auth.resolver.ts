@@ -15,8 +15,8 @@ export class AuthResolver {
   constructor(private authService: AuthService) { }
 
   @Mutation(() => LoginResult)
-  async login(@Args('user') user: LoginUserInput): Promise<Login> {
-    const result = await this.authService.validateUserByPassword(user);
+  async login(@Args('user') user: LoginUserInput, @Context('req') request: any): Promise<LoginResult> {
+    const result = await this.authService.validateUserByPassword(user, request.user?.id, request.ip || request.headers['x-forwarded-for'] || '');
 
     if (result) return result;
     throw new BadRequestException(
