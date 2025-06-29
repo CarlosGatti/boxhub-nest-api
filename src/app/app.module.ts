@@ -5,8 +5,12 @@ import { AppService } from './app.service';
 import { AuthModule } from '../auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
+import { ProjectModule } from 'src/project/project.module';
 import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { SubcontractorModule } from '../subcontractor/subcontractor.module';
+import { UploadController } from '../subcontractor/upload/upload.controller';
+import { UploadControllerInterface } from '../project/upload/upload.resolver';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -30,8 +34,11 @@ import { UserModule } from '../user/user.module';
     AuthModule,
     UserModule,
     QrcodeModule,
+    SubcontractorModule,
+    ProjectModule, // Importando o módulo de projetos
+    // Registrando o controller de upload
   ],
-  controllers: [AppController],
+  controllers: [AppController, UploadController, UploadControllerInterface],
   providers: [AppService],
 })
 export class AppModule {}

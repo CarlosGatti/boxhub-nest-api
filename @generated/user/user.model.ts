@@ -4,6 +4,12 @@ import { ID } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
 import { StorageMember } from '../storage-member/storage-member.model';
 import { Log } from '../log/log.model';
+import { Project } from '../project/project.model';
+import { ConstructionLog } from '../construction-log/construction-log.model';
+import { LogComment } from '../log-comment/log-comment.model';
+import { LogCommentReply } from '../log-comment-reply/log-comment-reply.model';
+import { PermitInspection } from '../permit-inspection/permit-inspection.model';
+import { MaterialEntry } from '../material-entry/material-entry.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -42,15 +48,6 @@ export class User {
     @Field(() => String, {nullable:true})
     about!: string | null;
 
-    @Field(() => String, {nullable:true})
-    linkedinUrl!: string | null;
-
-    @Field(() => String, {nullable:true})
-    twitterUrl!: string | null;
-
-    @Field(() => String, {nullable:true})
-    githubUrl!: string | null;
-
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
 
@@ -74,6 +71,24 @@ export class User {
 
     @Field(() => [Log], {nullable:true})
     logs?: Array<Log>;
+
+    @Field(() => [Project], {nullable:true})
+    projectResponsible?: Array<Project>;
+
+    @Field(() => [ConstructionLog], {nullable:true})
+    constructionLogs?: Array<ConstructionLog>;
+
+    @Field(() => [LogComment], {nullable:true})
+    logComments?: Array<LogComment>;
+
+    @Field(() => [LogCommentReply], {nullable:true})
+    logCommentReplies?: Array<LogCommentReply>;
+
+    @Field(() => [PermitInspection], {nullable:true})
+    responsibleInspections?: Array<PermitInspection>;
+
+    @Field(() => [MaterialEntry], {nullable:true})
+    receivedMaterials?: Array<MaterialEntry>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

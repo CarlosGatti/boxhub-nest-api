@@ -1,0 +1,44 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { EnumPermitKindFieldUpdateOperationsInput } from '../prisma/enum-permit-kind-field-update-operations.input';
+import { EnumPermitStatusFieldUpdateOperationsInput } from '../prisma/enum-permit-status-field-update-operations.input';
+import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { UserUpdateOneWithoutResponsibleInspectionsNestedInput } from '../user/user-update-one-without-responsible-inspections-nested.input';
+import { ProjectUpdateOneRequiredWithoutPermitsNestedInput } from '../project/project-update-one-required-without-permits-nested.input';
+
+@InputType()
+export class PermitInspectionUpdateInput {
+
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    number?: StringFieldUpdateOperationsInput;
+
+    @Field(() => EnumPermitKindFieldUpdateOperationsInput, {nullable:true})
+    kind?: EnumPermitKindFieldUpdateOperationsInput;
+
+    @Field(() => EnumPermitStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: EnumPermitStatusFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    requestedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    fileUrl?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => UserUpdateOneWithoutResponsibleInspectionsNestedInput, {nullable:true})
+    responsible?: UserUpdateOneWithoutResponsibleInspectionsNestedInput;
+
+    @Field(() => ProjectUpdateOneRequiredWithoutPermitsNestedInput, {nullable:true})
+    project?: ProjectUpdateOneRequiredWithoutPermitsNestedInput;
+}

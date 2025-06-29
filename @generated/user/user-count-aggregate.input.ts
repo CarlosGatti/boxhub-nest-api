@@ -38,15 +38,6 @@ export class UserCountAggregateInput {
     about?: true;
 
     @Field(() => Boolean, {nullable:true})
-    linkedinUrl?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    twitterUrl?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    githubUrl?: true;
-
-    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
 
     @Field(() => Boolean, {nullable:true})

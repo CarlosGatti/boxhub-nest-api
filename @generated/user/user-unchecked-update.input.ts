@@ -9,6 +9,12 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { StorageMemberUncheckedUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-unchecked-update-many-without-user-nested.input';
 import { LogUncheckedUpdateManyWithoutUserNestedInput } from '../log/log-unchecked-update-many-without-user-nested.input';
+import { ProjectUncheckedUpdateManyWithoutResponsibleNestedInput } from '../project/project-unchecked-update-many-without-responsible-nested.input';
+import { ConstructionLogUncheckedUpdateManyWithoutUserNestedInput } from '../construction-log/construction-log-unchecked-update-many-without-user-nested.input';
+import { LogCommentUncheckedUpdateManyWithoutUserNestedInput } from '../log-comment/log-comment-unchecked-update-many-without-user-nested.input';
+import { LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput } from '../log-comment-reply/log-comment-reply-unchecked-update-many-without-user-nested.input';
+import { PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-unchecked-update-many-without-responsible-nested.input';
+import { MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-unchecked-update-many-without-received-by-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateInput {
@@ -46,15 +52,6 @@ export class UserUncheckedUpdateInput {
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     about?: NullableStringFieldUpdateOperationsInput;
 
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    linkedinUrl?: NullableStringFieldUpdateOperationsInput;
-
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    twitterUrl?: NullableStringFieldUpdateOperationsInput;
-
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    githubUrl?: NullableStringFieldUpdateOperationsInput;
-
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;
 
@@ -78,4 +75,22 @@ export class UserUncheckedUpdateInput {
 
     @Field(() => LogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ProjectUncheckedUpdateManyWithoutResponsibleNestedInput, {nullable:true})
+    projectResponsible?: ProjectUncheckedUpdateManyWithoutResponsibleNestedInput;
+
+    @Field(() => ConstructionLogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    constructionLogs?: ConstructionLogUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogCommentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    logComments?: LogCommentUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    logCommentReplies?: LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput, {nullable:true})
+    responsibleInspections?: PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput;
+
+    @Field(() => MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput, {nullable:true})
+    receivedMaterials?: MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput;
 }

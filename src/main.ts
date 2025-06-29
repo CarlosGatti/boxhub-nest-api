@@ -1,18 +1,26 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
-import { AppModule } from './app/app.module';
-import { NestFactory } from '@nestjs/core';
+import { AppModule } from "./app/app.module";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { NestFactory } from "@nestjs/core";
+import { join } from "path";
 
-dotenv.config(); // carrega o .env
+dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Servir arquivos da pasta "uploads"
+
+app.useStaticAssets(join(process.cwd(), 'uploads'), {
+  prefix: '/uploads/',
+});
 
   const allowedOrigins = [
     process.env.FRONTEND_URL_LOCAL,
     process.env.FRONTEND_URL_PROD,
-    'http://localhost:3000',
-    'https://www.defined.one', // manual também pode
+    "http://localhost:3000",
+    "https://www.defined.one",
   ];
 
   app.enableCors({
@@ -20,12 +28,12 @@ async function bootstrap() {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   });
 
   await app.listen(3000);

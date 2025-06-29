@@ -39,15 +39,6 @@ export class UserCountOrderByAggregateInput {
     about?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    linkedinUrl?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    twitterUrl?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    githubUrl?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

@@ -4,6 +4,12 @@ import { Int } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
 import { StorageMemberUncheckedCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-unchecked-create-nested-many-without-user.input';
 import { LogUncheckedCreateNestedManyWithoutUserInput } from '../log/log-unchecked-create-nested-many-without-user.input';
+import { ProjectUncheckedCreateNestedManyWithoutResponsibleInput } from '../project/project-unchecked-create-nested-many-without-responsible.input';
+import { ConstructionLogUncheckedCreateNestedManyWithoutUserInput } from '../construction-log/construction-log-unchecked-create-nested-many-without-user.input';
+import { LogCommentUncheckedCreateNestedManyWithoutUserInput } from '../log-comment/log-comment-unchecked-create-nested-many-without-user.input';
+import { LogCommentReplyUncheckedCreateNestedManyWithoutUserInput } from '../log-comment-reply/log-comment-reply-unchecked-create-nested-many-without-user.input';
+import { PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-unchecked-create-nested-many-without-responsible.input';
+import { MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-unchecked-create-nested-many-without-received-by.input';
 
 @InputType()
 export class UserUncheckedCreateInput {
@@ -41,15 +47,6 @@ export class UserUncheckedCreateInput {
     @Field(() => String, {nullable:true})
     about?: string;
 
-    @Field(() => String, {nullable:true})
-    linkedinUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    twitterUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    githubUrl?: string;
-
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
 
@@ -73,4 +70,22 @@ export class UserUncheckedCreateInput {
 
     @Field(() => LogUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     logs?: LogUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => ProjectUncheckedCreateNestedManyWithoutResponsibleInput, {nullable:true})
+    projectResponsible?: ProjectUncheckedCreateNestedManyWithoutResponsibleInput;
+
+    @Field(() => ConstructionLogUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    constructionLogs?: ConstructionLogUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => LogCommentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    logComments?: LogCommentUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => LogCommentReplyUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    logCommentReplies?: LogCommentReplyUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput, {nullable:true})
+    responsibleInspections?: PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput;
+
+    @Field(() => MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput, {nullable:true})
+    receivedMaterials?: MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput;
 }

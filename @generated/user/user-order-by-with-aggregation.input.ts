@@ -44,15 +44,6 @@ export class UserOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     about?: SortOrderInput;
 
-    @Field(() => SortOrderInput, {nullable:true})
-    linkedinUrl?: SortOrderInput;
-
-    @Field(() => SortOrderInput, {nullable:true})
-    twitterUrl?: SortOrderInput;
-
-    @Field(() => SortOrderInput, {nullable:true})
-    githubUrl?: SortOrderInput;
-
     @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
 

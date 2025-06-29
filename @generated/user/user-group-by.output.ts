@@ -44,15 +44,6 @@ export class UserGroupBy {
     @Field(() => String, {nullable:true})
     about?: string;
 
-    @Field(() => String, {nullable:true})
-    linkedinUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    twitterUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    githubUrl?: string;
-
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
 

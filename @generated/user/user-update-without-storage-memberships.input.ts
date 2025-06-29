@@ -7,6 +7,12 @@ import { EnumRoleFieldUpdateOperationsInput } from '../prisma/enum-role-field-up
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { LogUpdateManyWithoutUserNestedInput } from '../log/log-update-many-without-user-nested.input';
+import { ProjectUpdateManyWithoutResponsibleNestedInput } from '../project/project-update-many-without-responsible-nested.input';
+import { ConstructionLogUpdateManyWithoutUserNestedInput } from '../construction-log/construction-log-update-many-without-user-nested.input';
+import { LogCommentUpdateManyWithoutUserNestedInput } from '../log-comment/log-comment-update-many-without-user-nested.input';
+import { LogCommentReplyUpdateManyWithoutUserNestedInput } from '../log-comment-reply/log-comment-reply-update-many-without-user-nested.input';
+import { PermitInspectionUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-update-many-without-responsible-nested.input';
+import { MaterialEntryUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-update-many-without-received-by-nested.input';
 
 @InputType()
 export class UserUpdateWithoutStorageMembershipsInput {
@@ -41,15 +47,6 @@ export class UserUpdateWithoutStorageMembershipsInput {
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     about?: NullableStringFieldUpdateOperationsInput;
 
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    linkedinUrl?: NullableStringFieldUpdateOperationsInput;
-
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    twitterUrl?: NullableStringFieldUpdateOperationsInput;
-
-    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    githubUrl?: NullableStringFieldUpdateOperationsInput;
-
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;
 
@@ -70,4 +67,22 @@ export class UserUpdateWithoutStorageMembershipsInput {
 
     @Field(() => LogUpdateManyWithoutUserNestedInput, {nullable:true})
     logs?: LogUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ProjectUpdateManyWithoutResponsibleNestedInput, {nullable:true})
+    projectResponsible?: ProjectUpdateManyWithoutResponsibleNestedInput;
+
+    @Field(() => ConstructionLogUpdateManyWithoutUserNestedInput, {nullable:true})
+    constructionLogs?: ConstructionLogUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogCommentUpdateManyWithoutUserNestedInput, {nullable:true})
+    logComments?: LogCommentUpdateManyWithoutUserNestedInput;
+
+    @Field(() => LogCommentReplyUpdateManyWithoutUserNestedInput, {nullable:true})
+    logCommentReplies?: LogCommentReplyUpdateManyWithoutUserNestedInput;
+
+    @Field(() => PermitInspectionUpdateManyWithoutResponsibleNestedInput, {nullable:true})
+    responsibleInspections?: PermitInspectionUpdateManyWithoutResponsibleNestedInput;
+
+    @Field(() => MaterialEntryUpdateManyWithoutReceivedByNestedInput, {nullable:true})
+    receivedMaterials?: MaterialEntryUpdateManyWithoutReceivedByNestedInput;
 }

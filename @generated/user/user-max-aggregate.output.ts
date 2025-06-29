@@ -39,15 +39,6 @@ export class UserMaxAggregate {
     @Field(() => String, {nullable:true})
     about?: string;
 
-    @Field(() => String, {nullable:true})
-    linkedinUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    twitterUrl?: string;
-
-    @Field(() => String, {nullable:true})
-    githubUrl?: string;
-
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
 

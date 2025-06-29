@@ -1,6 +1,5 @@
 import { BaseResult } from "../models/base-error.dto";
 import { CurrentUser } from "src/user/current-user.decorator";
-import { Family } from "@generated/family/family.model";
 import { Injectable } from "@nestjs/common";
 import { Item } from "@generated/item/item.model";
 import { LogAction } from "@prisma/client";

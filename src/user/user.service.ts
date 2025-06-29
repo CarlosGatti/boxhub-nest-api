@@ -149,9 +149,6 @@ export class UserService {
         profilePicture: updateOneUserArgs.profilePicture,
         public: updateOneUserArgs.public,
         about: updateOneUserArgs.about,
-        linkedinUrl: updateOneUserArgs.linkedinUrl,
-        twitterUrl: updateOneUserArgs.twitterUrl,
-        githubUrl: updateOneUserArgs.githubUrl,
       },
     });
   }

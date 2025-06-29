@@ -39,15 +39,6 @@ export class UserCountAggregate {
     about!: number;
 
     @Field(() => Int, {nullable:false})
-    linkedinUrl!: number;
-
-    @Field(() => Int, {nullable:false})
-    twitterUrl!: number;
-
-    @Field(() => Int, {nullable:false})
-    githubUrl!: number;
-
-    @Field(() => Int, {nullable:false})
     createdAt!: number;
 
     @Field(() => Int, {nullable:false})
