@@ -16,6 +16,7 @@ export class AuthResolver {
 
   @Mutation(() => LoginResult)
   async login(@Args('user') user: LoginUserInput, @Context('req') request: any): Promise<LoginResult> {
+   console.log('Login attempt with user:', user);
     const result = await this.authService.validateUserByPassword(user, request.user?.id, request.ip || request.headers['x-forwarded-for'] || '');
 
     if (result) return result;
