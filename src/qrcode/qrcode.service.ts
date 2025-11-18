@@ -7,6 +7,7 @@ import { PaginationArgs } from "../shared/types/pagination.input";
 import { PrismaService } from "../prisma.service";
 import { UseGuards } from "@nestjs/common";
 import { createLog } from "../services/create-log";
+
 // Removido o import direto do nanoid
 // import { nanoid } from "nanoid";
 
@@ -60,11 +61,8 @@ export class QrcodeService {
     });
   }
 
-  async createStorage(name: string, userId: number,
-    ipAddress: string) {
-
-     const { nanoid } = await import("nanoid");
-
+  async createStorage(name: string, userId: number, ipAddress: string) {
+    const { nanoid } = await import("nanoid");
 
     return await this.prismaService.storage.create({
       data: {
@@ -100,36 +98,26 @@ export class QrcodeService {
     };
   }
 
-  async removeStorage(id: number,     userId: number,
-    ipAddress: string) {
+  // qrcode.service.ts
+async removeStorage(id: number, userId: number, ipAddress: string) {
+  const { nanoid } = await import('nanoid');
 
-    
-     const { nanoid } = await import("nanoid");
+  const deleted = await this.prismaService.$transaction(async (tx) => {
+    await tx.storageMember.deleteMany({ where: { storageId: id } });
+    await tx.container.deleteMany({ where: { storageId: id } });
+    return tx.storage.delete({ where: { id } });
+  });
 
-    return await this.prismaService.storage.delete({
-      where: {
-        id: id,
-      },
-    });
+  await createLog({
+    action: LogAction.STORAGE_DELETED,
+    userId,
+    details: `Storage deleted: ${deleted.id}`,
+    route: 'removeStorage',
+    metadata: { storageId: nanoid(), ipAddress },
+  });
 
-    await createLog({
-      action: LogAction.STORAGE_DELETED,
-      userId,
-      details: `Storage deleted: ${id}`,
-      route: "removeStorage",
-      metadata: {
-        storageId: nanoid(),
-        ipAddress,
-      },
-    });
-
-    return {
-      success: true,
-      message: "Storage removed successfully",
-    };
-
-
-  }
+  return deleted;            // ⬅️ devolve exatamente um Storage
+}
 
   async addMemberToStorage(familyId: number, userId: number) {
     return await this.prismaService.storage.update({
@@ -235,12 +223,11 @@ export class QrcodeService {
     quantity: number,
     category: string,
     containerId: number,
-        userId: number,
+    userId: number,
     ipAddress: string
   ): Promise<BaseResult> {
     try {
-
-            const { nanoid } = await import("nanoid");
+      const { nanoid } = await import("nanoid");
       await this.prismaService.item.create({
         data: {
           name,
@@ -310,7 +297,6 @@ export class QrcodeService {
       },
     });
   }
-
 
   async getAllContainersByUser(userId: number) {
     return this.prismaService.container.findMany({

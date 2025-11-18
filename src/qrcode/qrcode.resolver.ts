@@ -54,16 +54,17 @@ export class QrcodeResolver {
     return this.qrcodeService.getUserStorages(user.id);
   }
 
-  //delete a storage
-  @Mutation(() => Storage)
-  @UseGuards(JwtAuthGuard)
-  async removeStorage(
-    @Args("id") id: number,
-    @CurrentUser() user: User,
-    @Context() context: any
-  ) {
-    return this.qrcodeService.removeStorage(id, user.id, context.req.ip || context.req.headers["x-forwarded-for"] || "");
-  }
+@Mutation(() => Storage)
+@UseGuards(JwtAuthGuard)
+async removeStorage(
+  @Args("id") id: number,
+  @CurrentUser() user: User,
+  @Context() context: any
+): Promise<Storage> {
+  const ipAddress =
+    context.req.ip || context.req.headers["x-forwarded-for"] || "";
+  return this.qrcodeService.removeStorage(id, user.id, ipAddress);
+} 
 
   //add a member to a storage
   @Mutation(() => Storage)

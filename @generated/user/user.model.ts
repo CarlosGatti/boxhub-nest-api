@@ -10,6 +10,7 @@ import { LogComment } from '../log-comment/log-comment.model';
 import { LogCommentReply } from '../log-comment-reply/log-comment-reply.model';
 import { PermitInspection } from '../permit-inspection/permit-inspection.model';
 import { MaterialEntry } from '../material-entry/material-entry.model';
+import { DiscartItem } from '../discart-item/discart-item.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -66,6 +67,15 @@ export class User {
     @Field(() => Date, {nullable:true})
     willExpireAt!: Date | null;
 
+    @Field(() => String, {nullable:true})
+    apartment!: string | null;
+
+    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    isApprovedResident!: boolean;
+
+    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    isAdmin!: boolean;
+
     @Field(() => [StorageMember], {nullable:true})
     storageMemberships?: Array<StorageMember>;
 
@@ -89,6 +99,9 @@ export class User {
 
     @Field(() => [MaterialEntry], {nullable:true})
     receivedMaterials?: Array<MaterialEntry>;
+
+    @Field(() => [DiscartItem], {nullable:true})
+    discartItems?: Array<DiscartItem>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

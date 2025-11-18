@@ -3,6 +3,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from '../auth/auth.module';
+import { DiscartItemModule } from 'src/discart-item/discart-item.module';
+import { DiscartItemUploadController } from '../discart-item/upload/upload.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
 import { ProjectModule } from 'src/project/project.module';
@@ -36,9 +38,15 @@ import { UserModule } from '../user/user.module';
     QrcodeModule,
     SubcontractorModule,
     ProjectModule, // Importando o módulo de projetos
+    DiscartItemModule,
     // Registrando o controller de upload
   ],
-  controllers: [AppController, UploadController, UploadControllerInterface],
+  controllers: [
+    AppController,
+    UploadController,
+    UploadControllerInterface,
+    DiscartItemUploadController,
+  ],
   providers: [AppService],
 })
 export class AppModule {}

@@ -56,5 +56,14 @@ export class UserCountAggregateInput {
     willExpireAt?: true;
 
     @Field(() => Boolean, {nullable:true})
+    apartment?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    isApprovedResident?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: true;
+
+    @Field(() => Boolean, {nullable:true})
     _all?: true;
 }

@@ -29,6 +29,15 @@ CREATE TYPE "PaymentMethod" AS ENUM ('CHECK', 'DEPOSIT', 'OTHER');
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
 -- CreateEnum
+CREATE TYPE "DiscartItemType" AS ENUM ('SELL', 'DONATE');
+
+-- CreateEnum
+CREATE TYPE "DiscartItemCondition" AS ENUM ('NEW', 'LIKE_NEW', 'USED');
+
+-- CreateEnum
+CREATE TYPE "DiscartItemStatus" AS ENUM ('ACTIVE', 'RESERVED', 'SOLD');
+
+-- CreateEnum
 CREATE TYPE "Visibility" AS ENUM ('PUBLIC', 'PRIVATE');
 
 -- CreateEnum
@@ -92,6 +101,26 @@ CREATE TABLE "Item" (
 );
 
 -- CreateTable
+CREATE TABLE "DiscartItem" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "type" "DiscartItemType" NOT NULL,
+    "price" DOUBLE PRECISION,
+    "category" TEXT NOT NULL,
+    "condition" "DiscartItemCondition" NOT NULL,
+    "status" "DiscartItemStatus" NOT NULL DEFAULT 'ACTIVE',
+    "imageUrls" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "pickupAddress" JSONB,
+    "contactPhone" TEXT NOT NULL,
+    "createdById" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DiscartItem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -121,6 +150,9 @@ CREATE TABLE "User" (
     "subscriptionId" TEXT,
     "expiresAt" TIMESTAMP(3),
     "willExpireAt" TIMESTAMP(3),
+    "apartment" TEXT,
+    "isApprovedResident" BOOLEAN NOT NULL DEFAULT false,
+    "isAdmin" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -320,6 +352,9 @@ ALTER TABLE "Container" ADD CONSTRAINT "Container_storageId_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_containerId_fkey" FOREIGN KEY ("containerId") REFERENCES "Container"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DiscartItem" ADD CONSTRAINT "DiscartItem_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Log" ADD CONSTRAINT "Log_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

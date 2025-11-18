@@ -61,6 +61,7 @@ export class UserService {
         password: hashSync(data.password, 10),
         profilePicture: data.profilePicture,
         public: data.public,
+        apartment: (data as any).apartment,
         expiresAt,
         willExpireAt: expiresAt,
         isPremium: false, // Default to false, can be updated later

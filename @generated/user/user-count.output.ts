@@ -28,4 +28,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     receivedMaterials?: number;
+
+    @Field(() => Int, {nullable:false})
+    discartItems?: number;
 }

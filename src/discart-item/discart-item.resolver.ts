@@ -1,0 +1,119 @@
+import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
+
+import { DiscartItemService } from "./discart-item.service";
+import { DiscartItem } from "../../@generated/discart-item/discart-item.model";
+import { DiscartItemType } from "../../@generated/prisma/discart-item-type.enum";
+import { DiscartItemCondition } from "../../@generated/prisma/discart-item-condition.enum";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { CurrentUser } from "../user/current-user.decorator";
+import { User } from "../../@generated/user/user.model";
+import { CreateDiscartItemInput } from "./dto/create-discart-item.input";
+
+@Resolver(() => DiscartItem)
+export class DiscartItemResolver {
+  constructor(private readonly discartService: DiscartItemService) {}
+
+  @Query(() => [DiscartItem])
+  async discartItems(
+    @Args("type", { type: () => DiscartItemType, nullable: true })
+    type?: DiscartItemType | "ALL",
+    @Args("category", { type: () => String, nullable: true })
+    category?: string,
+    @Args("search", { type: () => String, nullable: true })
+    search?: string
+  ) {
+    return this.discartService.findAll({ type, category, search });
+  }
+
+  @Query(() => DiscartItem, { nullable: true })
+  async discartItem(@Args("id", { type: () => Int }) id: number) {
+    return this.discartService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => DiscartItem)
+  async createDiscartItem(
+    @Args("data") data: CreateDiscartItemInput,
+    @CurrentUser() user: User
+  ) {
+    return this.discartService.create(
+      {
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        price: data.price ?? null,
+        category: data.category,
+        condition: data.condition,
+        contactPhone: data.contactPhone,
+        imageUrls: data.imageUrls ?? [],
+        pickupCondoName: data.pickupAddress?.condoName ?? null,
+        pickupBuilding: data.pickupAddress?.building ?? null,
+        pickupUnit: data.pickupAddress?.unit ?? null,
+        pickupNotes: data.pickupAddress?.notes ?? null,
+      },
+      (user as unknown) as any
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => DiscartItem)
+  async updateDiscartItem(
+    @Args("id", { type: () => Int }) id: number,
+    @CurrentUser() user: User,
+    @Args("title", { nullable: true }) title?: string,
+    @Args("description", { nullable: true }) description?: string,
+    @Args("type", { type: () => DiscartItemType, nullable: true })
+    type?: DiscartItemType,
+    @Args("price", {
+      type: () => Number,
+      nullable: true,
+    })
+    price?: number | null,
+    @Args("category", { nullable: true }) category?: string,
+    @Args("condition", {
+      type: () => DiscartItemCondition,
+      nullable: true,
+    })
+    condition?: DiscartItemCondition,
+    @Args("contactPhone", { nullable: true }) contactPhone?: string,
+    @Args({ name: "imageUrls", type: () => [String], nullable: true })
+    imageUrls?: string[] | null,
+    @Args("pickupCondoName", { type: () => String, nullable: true })
+    pickupCondoName?: string | null,
+    @Args("pickupBuilding", { type: () => String, nullable: true })
+    pickupBuilding?: string | null,
+    @Args("pickupUnit", { type: () => String, nullable: true })
+    pickupUnit?: string | null,
+    @Args("pickupNotes", { type: () => String, nullable: true })
+    pickupNotes?: string | null
+  ) {
+    const input = {
+      title,
+      description,
+      type,
+      price,
+      category,
+      condition,
+      contactPhone,
+      imageUrls: imageUrls ?? undefined,
+      pickupCondoName,
+      pickupBuilding,
+      pickupUnit,
+      pickupNotes,
+    };
+
+    return this.discartService.update(id, input, (user as unknown) as any);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => DiscartItem)
+  async deleteDiscartItem(
+    @Args("id", { type: () => Int }) id: number,
+    @CurrentUser() user: User
+  ) {
+    return this.discartService.remove(id, (user as unknown) as any);
+  }
+}
+
+

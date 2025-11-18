@@ -54,4 +54,13 @@ export class UserMaxAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     willExpireAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    apartment?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    isApprovedResident?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: true;
 }

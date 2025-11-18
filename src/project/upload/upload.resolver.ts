@@ -38,4 +38,12 @@ export class UploadControllerInterface {
       url: `/uploads/project-permits/${file.filename}`,
     };
   }
+
+  @Post('avatars')
+  @UseInterceptors(FileInterceptor('file', createMulterOptions('avatars')))
+  uploadAvatar(@UploadedFile() file: Express.Multer.File) {
+    return {
+      url: `/uploads/avatars/${file.filename}`,
+    };
+  }
 }

@@ -55,4 +55,13 @@ export class UserCountOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     willExpireAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    apartment?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    isApprovedResident?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    isAdmin?: keyof typeof SortOrder;
 }

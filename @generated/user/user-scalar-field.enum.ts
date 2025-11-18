@@ -17,7 +17,10 @@ export enum UserScalarFieldEnum {
     isPremium = "isPremium",
     subscriptionId = "subscriptionId",
     expiresAt = "expiresAt",
-    willExpireAt = "willExpireAt"
+    willExpireAt = "willExpireAt",
+    apartment = "apartment",
+    isApprovedResident = "isApprovedResident",
+    isAdmin = "isAdmin"
 }
 
 

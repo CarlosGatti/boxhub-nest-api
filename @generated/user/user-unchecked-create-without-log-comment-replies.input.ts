@@ -9,6 +9,7 @@ import { ConstructionLogUncheckedCreateNestedManyWithoutUserInput } from '../con
 import { LogCommentUncheckedCreateNestedManyWithoutUserInput } from '../log-comment/log-comment-unchecked-create-nested-many-without-user.input';
 import { PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-unchecked-create-nested-many-without-responsible.input';
 import { MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-unchecked-create-nested-many-without-received-by.input';
+import { DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput } from '../discart-item/discart-item-unchecked-create-nested-many-without-created-by.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutLogCommentRepliesInput {
@@ -64,6 +65,15 @@ export class UserUncheckedCreateWithoutLogCommentRepliesInput {
     @Field(() => Date, {nullable:true})
     willExpireAt?: Date | string;
 
+    @Field(() => String, {nullable:true})
+    apartment?: string;
+
+    @Field(() => Boolean, {nullable:true})
+    isApprovedResident?: boolean;
+
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
+
     @Field(() => StorageMemberUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     storageMemberships?: StorageMemberUncheckedCreateNestedManyWithoutUserInput;
 
@@ -84,4 +94,7 @@ export class UserUncheckedCreateWithoutLogCommentRepliesInput {
 
     @Field(() => MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput, {nullable:true})
     receivedMaterials?: MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput;
+
+    @Field(() => DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    discartItems?: DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput;
 }

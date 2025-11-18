@@ -70,4 +70,13 @@ export class UserScalarWhereWithAggregatesInput {
 
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     willExpireAt?: DateTimeNullableWithAggregatesFilter;
+
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    apartment?: StringNullableWithAggregatesFilter;
+
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    isApprovedResident?: BoolWithAggregatesFilter;
+
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    isAdmin?: BoolWithAggregatesFilter;
 }

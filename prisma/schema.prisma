@@ -63,6 +63,27 @@ model Item {
   updatedAt   DateTime      @updatedAt
 }
 
+model DiscartItem {
+  id            Int                 @id @default(autoincrement())
+  title         String
+  description   String
+  type          DiscartItemType
+  price         Float?
+  category      String
+  condition     DiscartItemCondition
+  status        DiscartItemStatus   @default(ACTIVE)
+
+  imageUrls     String[]            @default([])
+  pickupAddress Json?               // { condoName, building, unit, notes }
+  contactPhone  String
+
+  createdById   Int
+  createdBy     User                @relation(fields: [createdById], references: [id])
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
 model Category {
   id          Int          @id @default(autoincrement())
   name        String
@@ -90,7 +111,12 @@ model User {
   subscriptionId         String?              // LemonSqueezy ID
   expiresAt              DateTime?
   willExpireAt           DateTime?            // Expiração futura agendada
-  
+
+  // Discart-me specific
+  apartment              String?
+  isApprovedResident     Boolean              @default(false)
+  isAdmin                Boolean              @default(false)
+
   storageMemberships     StorageMember[] 
   logs                   Log[]
 
@@ -101,6 +127,7 @@ model User {
   logCommentReplies     LogCommentReply[]
   responsibleInspections  PermitInspection[] // Inspections where the user is responsible
   receivedMaterials   MaterialEntry[]    // Materiais recebidos pelo usuário
+  discartItems        DiscartItem[]
   @@index([email], map: "userEmail")
 }
 
@@ -370,6 +397,23 @@ enum PaymentMethod {
 enum Role {
   USER
   ADMIN
+}
+
+enum DiscartItemType {
+  SELL
+  DONATE
+}
+
+enum DiscartItemCondition {
+  NEW
+  LIKE_NEW
+  USED
+}
+
+enum DiscartItemStatus {
+  ACTIVE
+  RESERVED
+  SOLD
 }
 
 enum Visibility {

@@ -56,4 +56,13 @@ export class UserMinAggregate {
 
     @Field(() => Date, {nullable:true})
     willExpireAt?: Date | string;
+
+    @Field(() => String, {nullable:true})
+    apartment?: string;
+
+    @Field(() => Boolean, {nullable:true})
+    isApprovedResident?: boolean;
+
+    @Field(() => Boolean, {nullable:true})
+    isAdmin?: boolean;
 }

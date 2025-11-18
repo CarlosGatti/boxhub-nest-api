@@ -14,6 +14,7 @@ import { LogCommentUpdateManyWithoutUserNestedInput } from '../log-comment/log-c
 import { LogCommentReplyUpdateManyWithoutUserNestedInput } from '../log-comment-reply/log-comment-reply-update-many-without-user-nested.input';
 import { PermitInspectionUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-update-many-without-responsible-nested.input';
 import { MaterialEntryUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-update-many-without-received-by-nested.input';
+import { DiscartItemUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-update-many-without-created-by-nested.input';
 
 @InputType()
 export class UserUpdateInput {
@@ -66,6 +67,15 @@ export class UserUpdateInput {
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     willExpireAt?: NullableDateTimeFieldUpdateOperationsInput;
 
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    apartment?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isApprovedResident?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isAdmin?: BoolFieldUpdateOperationsInput;
+
     @Field(() => StorageMemberUpdateManyWithoutUserNestedInput, {nullable:true})
     storageMemberships?: StorageMemberUpdateManyWithoutUserNestedInput;
 
@@ -89,4 +99,7 @@ export class UserUpdateInput {
 
     @Field(() => MaterialEntryUpdateManyWithoutReceivedByNestedInput, {nullable:true})
     receivedMaterials?: MaterialEntryUpdateManyWithoutReceivedByNestedInput;
+
+    @Field(() => DiscartItemUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    discartItems?: DiscartItemUpdateManyWithoutCreatedByNestedInput;
 }

@@ -57,4 +57,13 @@ export class UserUpdateManyMutationInput {
 
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     willExpireAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    apartment?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isApprovedResident?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isAdmin?: BoolFieldUpdateOperationsInput;
 }

@@ -57,5 +57,14 @@ export class UserCountAggregate {
     willExpireAt!: number;
 
     @Field(() => Int, {nullable:false})
+    apartment!: number;
+
+    @Field(() => Int, {nullable:false})
+    isApprovedResident!: number;
+
+    @Field(() => Int, {nullable:false})
+    isAdmin!: number;
+
+    @Field(() => Int, {nullable:false})
     _all!: number;
 }

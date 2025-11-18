@@ -62,6 +62,15 @@ export class UserGroupBy {
     @Field(() => Date, {nullable:true})
     willExpireAt?: Date | string;
 
+    @Field(() => String, {nullable:true})
+    apartment?: string;
+
+    @Field(() => Boolean, {nullable:false})
+    isApprovedResident!: boolean;
+
+    @Field(() => Boolean, {nullable:false})
+    isAdmin!: boolean;
+
     @Field(() => UserCountAggregate, {nullable:true})
     _count?: UserCountAggregate;
 

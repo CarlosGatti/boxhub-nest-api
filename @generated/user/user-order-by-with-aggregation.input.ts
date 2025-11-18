@@ -62,6 +62,15 @@ export class UserOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     willExpireAt?: SortOrderInput;
 
+    @Field(() => SortOrderInput, {nullable:true})
+    apartment?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    isApprovedResident?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    isAdmin?: keyof typeof SortOrder;
+
     @Field(() => UserCountOrderByAggregateInput, {nullable:true})
     _count?: UserCountOrderByAggregateInput;
 

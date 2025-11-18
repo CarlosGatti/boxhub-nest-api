@@ -10,6 +10,7 @@ import { LogCommentOrderByRelationAggregateInput } from '../log-comment/log-comm
 import { LogCommentReplyOrderByRelationAggregateInput } from '../log-comment-reply/log-comment-reply-order-by-relation-aggregate.input';
 import { PermitInspectionOrderByRelationAggregateInput } from '../permit-inspection/permit-inspection-order-by-relation-aggregate.input';
 import { MaterialEntryOrderByRelationAggregateInput } from '../material-entry/material-entry-order-by-relation-aggregate.input';
+import { DiscartItemOrderByRelationAggregateInput } from '../discart-item/discart-item-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -65,6 +66,15 @@ export class UserOrderByWithRelationInput {
     @Field(() => SortOrderInput, {nullable:true})
     willExpireAt?: SortOrderInput;
 
+    @Field(() => SortOrderInput, {nullable:true})
+    apartment?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    isApprovedResident?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    isAdmin?: keyof typeof SortOrder;
+
     @Field(() => StorageMemberOrderByRelationAggregateInput, {nullable:true})
     storageMemberships?: StorageMemberOrderByRelationAggregateInput;
 
@@ -88,4 +98,7 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => MaterialEntryOrderByRelationAggregateInput, {nullable:true})
     receivedMaterials?: MaterialEntryOrderByRelationAggregateInput;
+
+    @Field(() => DiscartItemOrderByRelationAggregateInput, {nullable:true})
+    discartItems?: DiscartItemOrderByRelationAggregateInput;
 }

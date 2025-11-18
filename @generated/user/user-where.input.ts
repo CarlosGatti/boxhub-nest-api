@@ -15,6 +15,7 @@ import { LogCommentListRelationFilter } from '../log-comment/log-comment-list-re
 import { LogCommentReplyListRelationFilter } from '../log-comment-reply/log-comment-reply-list-relation-filter.input';
 import { PermitInspectionListRelationFilter } from '../permit-inspection/permit-inspection-list-relation-filter.input';
 import { MaterialEntryListRelationFilter } from '../material-entry/material-entry-list-relation-filter.input';
+import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -79,6 +80,15 @@ export class UserWhereInput {
     @Field(() => DateTimeNullableFilter, {nullable:true})
     willExpireAt?: DateTimeNullableFilter;
 
+    @Field(() => StringNullableFilter, {nullable:true})
+    apartment?: StringNullableFilter;
+
+    @Field(() => BoolFilter, {nullable:true})
+    isApprovedResident?: BoolFilter;
+
+    @Field(() => BoolFilter, {nullable:true})
+    isAdmin?: BoolFilter;
+
     @Field(() => StorageMemberListRelationFilter, {nullable:true})
     storageMemberships?: StorageMemberListRelationFilter;
 
@@ -102,4 +112,7 @@ export class UserWhereInput {
 
     @Field(() => MaterialEntryListRelationFilter, {nullable:true})
     receivedMaterials?: MaterialEntryListRelationFilter;
+
+    @Field(() => DiscartItemListRelationFilter, {nullable:true})
+    discartItems?: DiscartItemListRelationFilter;
 }

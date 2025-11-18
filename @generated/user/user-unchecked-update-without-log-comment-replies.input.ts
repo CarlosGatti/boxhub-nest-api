@@ -14,6 +14,7 @@ import { ConstructionLogUncheckedUpdateManyWithoutUserNestedInput } from '../con
 import { LogCommentUncheckedUpdateManyWithoutUserNestedInput } from '../log-comment/log-comment-unchecked-update-many-without-user-nested.input';
 import { PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-unchecked-update-many-without-responsible-nested.input';
 import { MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-unchecked-update-many-without-received-by-nested.input';
+import { DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-unchecked-update-many-without-created-by-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutLogCommentRepliesInput {
@@ -69,6 +70,15 @@ export class UserUncheckedUpdateWithoutLogCommentRepliesInput {
     @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
     willExpireAt?: NullableDateTimeFieldUpdateOperationsInput;
 
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    apartment?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isApprovedResident?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isAdmin?: BoolFieldUpdateOperationsInput;
+
     @Field(() => StorageMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     storageMemberships?: StorageMemberUncheckedUpdateManyWithoutUserNestedInput;
 
@@ -89,4 +99,7 @@ export class UserUncheckedUpdateWithoutLogCommentRepliesInput {
 
     @Field(() => MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput, {nullable:true})
     receivedMaterials?: MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput;
+
+    @Field(() => DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    discartItems?: DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput;
 }
