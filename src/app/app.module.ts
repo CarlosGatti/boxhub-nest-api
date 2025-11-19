@@ -23,6 +23,7 @@ import { UserModule } from '../user/user.module';
       playground: true,
       introspection: true,
       installSubscriptionHandlers: true,
+      path: '/graphql', // Path explícito para evitar duplicação
     }),
     RedisModule.forRoot({
       config: {
