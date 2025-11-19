@@ -37,29 +37,47 @@ async function bootstrap() {
     "http://www.discart.me",
   ].filter(Boolean); // Remove valores undefined/null do env
 
+  // Log das origens permitidas ao iniciar
+  console.log('🔒 CORS allowed origins:', allowedOrigins.join(', '));
+
   app.enableCors({
     origin: (origin, callback) => {
       // Permitir requisições sem origin (mobile apps, Postman, etc)
       if (!origin) {
+        console.log('✅ CORS: Request without origin allowed');
         return callback(null, true);
       }
       
-      // Verificar se a origem está na lista de permitidas
-      if (allowedOrigins.includes(origin)) {
+      // Normalizar origin (remover trailing slash se houver)
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      
+      // Verificar se a origem está na lista de permitidas (comparação exata ou normalizada)
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes(normalizedOrigin)) {
+        console.log(`✅ CORS: Origin allowed: ${origin}`);
         return callback(null, true);
       }
       
-      // Log para debug (remover em produção se necessário)
-      console.log(`CORS blocked origin: ${origin}`);
-      console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+      // Verificar variações com/sem www
+      const originWithoutWww = origin.replace(/^https?:\/\/(www\.)?/, 'https://');
+      const originWithWww = origin.replace(/^https?:\/\//, 'https://www.');
+      
+      if (allowedOrigins.includes(originWithoutWww) || allowedOrigins.includes(originWithWww)) {
+        console.log(`✅ CORS: Origin allowed (variation): ${origin}`);
+        return callback(null, true);
+      }
+      
+      // Log para debug
+      console.log(`❌ CORS blocked origin: ${origin}`);
+      console.log(`📋 Allowed origins: ${allowedOrigins.join(', ')}`);
       
       callback(new Error(`Not allowed by CORS: ${origin}`));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
     exposedHeaders: ["Authorization"],
-    optionsSuccessStatus: 200, // Alguns navegadores legados podem precisar disso
+    optionsSuccessStatus: 200,
+    maxAge: 86400, // 24 horas
   });
 
   await app.listen(3000);
