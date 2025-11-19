@@ -68,6 +68,24 @@ jobs:
         with:
           name: build-files
 
+      - name: Validate secrets
+        run: |
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "❌ Error: VPS_HOST secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.VPS_USER }}" ]; then
+            echo "❌ Error: VPS_USER secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.VPS_SSH_PRIVATE_KEY }}" ]; then
+            echo "❌ Error: VPS_SSH_PRIVATE_KEY secret is not set"
+            exit 1
+          fi
+          echo "✅ Secrets validated"
+          echo "VPS_HOST: ${{ secrets.VPS_HOST }}"
+          echo "VPS_USER: ${{ secrets.VPS_USER }}"
+
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -80,21 +98,25 @@ jobs:
           ssh-keyscan -H -t rsa,ecdsa,ed25519 ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
           chmod 644 ~/.ssh/known_hosts
 
+      - name: Test SSH connection
+        run: |
+          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH connection successful'"
+
       - name: Create deployment directory
         run: |
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /home/boxhub/boxhub-api-deploy"
+          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /home/boxhub/boxhub-api-deploy"
 
       - name: Copy files to VPS
         run: |
-          scp -r dist/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp package.json ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp yarn.lock ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp ecosystem.config.js ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp -r prisma/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
+          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no -r dist/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
+          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no package.json ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
+          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no yarn.lock ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
+          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no ecosystem.config.js ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
+          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no -r prisma/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
 
       - name: Run deployment script on VPS
         run: |
-          cat .github/scripts/deploy.sh | ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'bash -s'
+          cat .github/scripts/deploy.sh | ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'bash -s'
 
       - name: Health check
         run: |
