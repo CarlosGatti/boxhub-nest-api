@@ -168,7 +168,52 @@ $YARN_CMD install --frozen-lockfile
 echo -e "${YELLOW}🗄️  Executando migrations do banco de dados...${NC}"
 cd $DEPLOY_DIR || exit 1
 npx prisma generate
-npx prisma migrate deploy
+
+# Tentar aplicar migrations
+if npx prisma migrate deploy 2>&1 | tee /tmp/migrate_output.log; then
+  echo -e "${GREEN}✅ Migrations aplicadas com sucesso${NC}"
+else
+  MIGRATION_ERROR=$?
+  MIGRATE_OUTPUT=$(cat /tmp/migrate_output.log)
+  
+  # Verificar se o erro é porque tipos/tabelas já existem
+  if echo "$MIGRATE_OUTPUT" | grep -q "already exists"; then
+    echo -e "${YELLOW}⚠️  Tipos/tabelas já existem no banco. Marcando migration como aplicada...${NC}"
+    
+    # Verificar qual migration falhou (geralmente é a primeira/baseline)
+    FAILED_MIGRATION=$(echo "$MIGRATE_OUTPUT" | grep "Migration name:" | sed 's/.*Migration name: \([0-9_]*\).*/\1/' | head -1)
+    
+    if [ -z "$FAILED_MIGRATION" ]; then
+      # Se não encontrou no output, pegar a primeira migration
+      FAILED_MIGRATION=$(ls -t prisma/migrations | grep -v migration_lock.toml | head -1)
+    fi
+    
+    if [ -n "$FAILED_MIGRATION" ]; then
+      echo -e "${YELLOW}📝 Marcando migration ${FAILED_MIGRATION} como aplicada...${NC}"
+      if npx prisma migrate resolve --applied "${FAILED_MIGRATION}" 2>/dev/null; then
+        echo -e "${GREEN}✅ Migration marcada como aplicada${NC}"
+        
+        # Tentar aplicar migrations novamente
+        echo -e "${YELLOW}🔄 Tentando aplicar migrations pendentes...${NC}"
+        if npx prisma migrate deploy; then
+          echo -e "${GREEN}✅ Migrations aplicadas com sucesso${NC}"
+        else
+          echo -e "${YELLOW}⚠️  Ainda há migrations pendentes, mas continuando...${NC}"
+        fi
+      else
+        echo -e "${RED}❌ Não foi possível marcar migration como aplicada${NC}"
+        echo -e "${YELLOW}💡 Execute manualmente na VPS: npx prisma migrate resolve --applied ${FAILED_MIGRATION}${NC}"
+        echo -e "${YELLOW}⚠️  Continuando deploy mesmo assim...${NC}"
+      fi
+    fi
+  else
+    echo -e "${RED}❌ Erro ao aplicar migrations (não relacionado a tipos existentes)${NC}"
+    echo -e "${RED}Erro: $MIGRATE_OUTPUT${NC}"
+    echo -e "${YELLOW}⚠️  Verifique o banco de dados manualmente${NC}"
+    exit 1
+  fi
+fi
+rm -f /tmp/migrate_output.log
 
 # 7. Copiar arquivos novos para pasta da aplicação
 echo -e "${YELLOW}📋 Copiando arquivos para pasta da aplicação...${NC}"
