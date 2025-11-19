@@ -27,6 +27,8 @@ async function bootstrap() {
     "http://localhost:3000",
     "http://localhost:3001",
     "https://www.defined.one",
+    "https://carlosgatti.com",
+    "https://www.carlosgatti.com"
   ];
 
   app.enableCors({
