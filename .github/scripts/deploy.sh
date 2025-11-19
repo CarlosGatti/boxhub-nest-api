@@ -30,7 +30,7 @@ fi
 # 2. Parar aplicação atual
 echo -e "${YELLOW}⏸️  Parando aplicação atual...${NC}"
 cd $APP_DIR || exit 1
-pm2 stop boxhub-api || true
+pm2 stop khub || true
 
 # 3. Backup dos arquivos atuais (em caso de rollback)
 echo -e "${YELLOW}💾 Fazendo backup dos arquivos atuais...${NC}"
@@ -42,9 +42,9 @@ cp "$APP_DIR/package.json" "$BACKUP_PATH/" 2>/dev/null || true
 cp "$APP_DIR/ecosystem.config.js" "$BACKUP_PATH/" 2>/dev/null || true
 
 # 4. Instalar novas dependências na pasta de deploy
-echo -e "${YELLOW}📥 Instalando dependências de produção...${NC}"
+echo -e "${YELLOW}📥 Instalando dependências (incluindo devDependencies para prisma)...${NC}"
 cd $DEPLOY_DIR || exit 1
-yarn install --production --frozen-lockfile
+yarn install --frozen-lockfile
 
 # 5. Rodar migrations do Prisma
 echo -e "${YELLOW}🗄️  Executando migrations do banco de dados...${NC}"
@@ -113,7 +113,7 @@ pm2 status
 
 # 12. Mostrar logs recentes
 echo -e "${GREEN}📝 Últimas linhas dos logs:${NC}"
-pm2 logs boxhub-api --lines 10 --nostream
+pm2 logs khub --lines 10 --nostream || true
 
 echo -e "${GREEN}✅ Deploy concluído com sucesso!${NC}"
 

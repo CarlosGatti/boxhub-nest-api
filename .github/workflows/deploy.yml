@@ -76,7 +76,9 @@ jobs:
       - name: Add VPS to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          ssh-keyscan -H -t rsa,ecdsa,ed25519 ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          chmod 644 ~/.ssh/known_hosts
 
       - name: Create deployment directory
         run: |
@@ -97,5 +99,5 @@ jobs:
       - name: Health check
         run: |
           sleep 5
-          curl -f http://${{ secrets.VPS_HOST }}:3000/health || curl -f https://api.${{ secrets.DOMAIN }}/health || exit 1
+          curl -f http://${{ secrets.VPS_HOST }}:3000/health || curl -f https://discart.me/health || curl -f https://www.discart.me/health || exit 1
 
