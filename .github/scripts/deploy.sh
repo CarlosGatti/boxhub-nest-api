@@ -148,18 +148,29 @@ cp -r "$APP_DIR/dist" "$BACKUP_PATH/" 2>/dev/null || true
 cp "$APP_DIR/package.json" "$BACKUP_PATH/" 2>/dev/null || true
 cp "$APP_DIR/ecosystem.config.js" "$BACKUP_PATH/" 2>/dev/null || true
 
-# 4. Instalar novas dependências na pasta de deploy
+# 4. Copiar .env para pasta de deploy (necessário para Prisma migrations)
+echo -e "${YELLOW}📋 Copiando .env para pasta de deploy...${NC}"
+if [ -f "$APP_DIR/.env" ]; then
+  cp "$APP_DIR/.env" "$DEPLOY_DIR/.env"
+  echo -e "${GREEN}✅ .env copiado com sucesso${NC}"
+else
+  echo -e "${RED}❌ ERRO: Arquivo .env não encontrado em $APP_DIR${NC}"
+  echo -e "${RED}Configure o arquivo .env antes de fazer deploy.${NC}"
+  exit 1
+fi
+
+# 5. Instalar novas dependências na pasta de deploy
 echo -e "${YELLOW}📥 Instalando dependências (incluindo devDependencies para prisma)...${NC}"
 cd $DEPLOY_DIR || exit 1
 $YARN_CMD install --frozen-lockfile
 
-# 5. Rodar migrations do Prisma
+# 6. Rodar migrations do Prisma
 echo -e "${YELLOW}🗄️  Executando migrations do banco de dados...${NC}"
 cd $DEPLOY_DIR || exit 1
 npx prisma generate
 npx prisma migrate deploy
 
-# 6. Copiar arquivos novos para pasta da aplicação
+# 7. Copiar arquivos novos para pasta da aplicação
 echo -e "${YELLOW}📋 Copiando arquivos para pasta da aplicação...${NC}"
 mkdir -p "$APP_DIR"
 cp -r dist/ "$APP_DIR/"
@@ -194,31 +205,31 @@ fi
 # Criar pasta de logs se não existir
 mkdir -p "$APP_DIR/logs"
 
-# 7. Verificar se .env existe antes de iniciar
+# 8. Verificar se .env existe antes de iniciar (já copiado acima, mas verificar novamente)
 if [ ! -f "$APP_DIR/.env" ]; then
   echo -e "${RED}❌ ERRO: Arquivo .env não encontrado em $APP_DIR${NC}"
   echo -e "${RED}Configure o arquivo .env antes de continuar.${NC}"
   exit 1
 fi
 
-# 8. Reiniciar aplicação com PM2
+# 9. Reiniciar aplicação com PM2
 echo -e "${YELLOW}🔄 Reiniciando aplicação...${NC}"
 cd $APP_DIR || exit 1
 $PM2_CMD restart ecosystem.config.js || $PM2_CMD start ecosystem.config.js
 
-# 9. Salvar configuração do PM2
+# 10. Salvar configuração do PM2
 $PM2_CMD save
 
-# 10. Limpar pasta de deploy temporária (opcional)
+# 11. Limpar pasta de deploy temporária
 echo -e "${YELLOW}🧹 Limpando pasta temporária de deploy...${NC}"
 rm -rf "$DEPLOY_DIR"
 
-# 11. Verificar status da aplicação
+# 12. Verificar status da aplicação
 echo -e "${YELLOW}✅ Verificando status da aplicação...${NC}"
 sleep 2
 $PM2_CMD status
 
-# 12. Mostrar logs recentes
+# 13. Mostrar logs recentes
 echo -e "${GREEN}📝 Últimas linhas dos logs:${NC}"
 $PM2_CMD logs khub --lines 10 --nostream || true
 
