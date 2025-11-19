@@ -21,6 +21,113 @@ BACKUP_DIR="/home/boxhub/backups"
 
 echo -e "${GREEN}🚀 Iniciando deploy...${NC}"
 
+# 0. Verificar e instalar dependências necessárias
+echo -e "${YELLOW}🔧 Verificando dependências...${NC}"
+
+# Carregar variáveis de ambiente do perfil do usuário
+# Isso garante que comandos instalados globalmente estejam no PATH
+if [ -f "$HOME/.bashrc" ]; then
+  source "$HOME/.bashrc" 2>/dev/null || true
+fi
+if [ -f "$HOME/.profile" ]; then
+  source "$HOME/.profile" 2>/dev/null || true
+fi
+if [ -f "$HOME/.bash_profile" ]; then
+  source "$HOME/.bash_profile" 2>/dev/null || true
+fi
+
+# Carregar NVM se disponível
+if [ -s "$HOME/.nvm/nvm.sh" ]; then
+  source "$HOME/.nvm/nvm.sh"
+  nvm use default 2>/dev/null || nvm use node 2>/dev/null || true
+fi
+
+# Adicionar caminhos comuns ao PATH
+export PATH="$HOME/.nvm/versions/node/$(nvm version 2>/dev/null || echo 'v18.20.0')/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/bin:$PATH"
+
+# Verificar se Node.js está instalado
+if ! command -v node &> /dev/null; then
+  echo -e "${RED}❌ Node.js não encontrado. Instalando Node.js...${NC}"
+  if [ -s "$HOME/.nvm/nvm.sh" ]; then
+    source "$HOME/.nvm/nvm.sh"
+    nvm install 18
+    nvm use 18
+  else
+    echo -e "${RED}❌ NVM não encontrado. Configure Node.js manualmente.${NC}"
+    exit 1
+  fi
+fi
+
+# Verificar se npm está instalado
+if ! command -v npm &> /dev/null; then
+  echo -e "${RED}❌ npm não encontrado.${NC}"
+  exit 1
+fi
+
+# Verificar e instalar PM2 se necessário
+if ! command -v pm2 &> /dev/null; then
+  echo -e "${YELLOW}📦 PM2 não encontrado. Instalando PM2 globalmente...${NC}"
+  if npm install -g pm2 2>/dev/null; then
+    echo -e "${GREEN}✅ PM2 instalado com sucesso${NC}"
+  elif command -v sudo &> /dev/null && sudo npm install -g pm2 2>/dev/null; then
+    echo -e "${GREEN}✅ PM2 instalado com sucesso (usando sudo)${NC}"
+  else
+    echo -e "${RED}❌ Falha ao instalar PM2. Verifique as permissões de npm.${NC}"
+    echo -e "${YELLOW}Dica: Execute manualmente na VPS: npm install -g pm2${NC}"
+    exit 1
+  fi
+  # Recarregar PATH após instalação
+  export PATH="$(npm config get prefix 2>/dev/null)/bin:$PATH"
+  # Verificar novamente
+  if ! command -v pm2 &> /dev/null; then
+    export PATH="$HOME/.nvm/versions/node/$(nvm version 2>/dev/null || echo 'v18.20.0')/bin:$PATH"
+  fi
+fi
+
+# Verificar e instalar Yarn se necessário
+if ! command -v yarn &> /dev/null; then
+  echo -e "${YELLOW}📦 Yarn não encontrado. Instalando Yarn globalmente...${NC}"
+  if npm install -g yarn 2>/dev/null; then
+    echo -e "${GREEN}✅ Yarn instalado com sucesso${NC}"
+  elif command -v sudo &> /dev/null && sudo npm install -g yarn 2>/dev/null; then
+    echo -e "${GREEN}✅ Yarn instalado com sucesso (usando sudo)${NC}"
+  else
+    echo -e "${RED}❌ Falha ao instalar Yarn. Verifique as permissões de npm.${NC}"
+    echo -e "${YELLOW}Dica: Execute manualmente na VPS: npm install -g yarn${NC}"
+    exit 1
+  fi
+  # Recarregar PATH após instalação
+  export PATH="$(npm config get prefix 2>/dev/null)/bin:$PATH"
+  # Verificar novamente
+  if ! command -v yarn &> /dev/null; then
+    export PATH="$HOME/.nvm/versions/node/$(nvm version 2>/dev/null || echo 'v18.20.0')/bin:$PATH"
+  fi
+fi
+
+# Verificar novamente se os comandos estão disponíveis
+if ! command -v pm2 &> /dev/null || ! command -v yarn &> /dev/null; then
+  echo -e "${RED}❌ PM2 ou Yarn ainda não estão disponíveis após instalação.${NC}"
+  echo -e "${YELLOW}Tentando encontrar no PATH...${NC}"
+  which pm2 || echo "PM2 não encontrado no PATH"
+  which yarn || echo "Yarn não encontrado no PATH"
+  echo -e "${YELLOW}PATH atual: $PATH${NC}"
+  # Tentar usar caminho completo
+  PM2_CMD=$(which pm2 || echo "pm2")
+  YARN_CMD=$(which yarn || echo "yarn")
+else
+  PM2_CMD="pm2"
+  YARN_CMD="yarn"
+fi
+
+echo -e "${GREEN}✅ Dependências verificadas:${NC}"
+echo -e "   Node.js: $(node --version 2>/dev/null || echo 'não encontrado')"
+echo -e "   npm: $(npm --version 2>/dev/null || echo 'não encontrado')"
+echo -e "   PM2: $(pm2 --version 2>/dev/null || echo 'não encontrado')"
+echo -e "   Yarn: $(yarn --version 2>/dev/null || echo 'não encontrado')"
+
 # 1. Fazer backup do banco de dados antes do deploy
 echo -e "${YELLOW}📦 Fazendo backup do banco de dados...${NC}"
 if [ -f "$BACKUP_DIR/backup-db.sh" ]; then
@@ -30,7 +137,7 @@ fi
 # 2. Parar aplicação atual
 echo -e "${YELLOW}⏸️  Parando aplicação atual...${NC}"
 cd $APP_DIR || exit 1
-pm2 stop khub || true
+$PM2_CMD stop khub || true
 
 # 3. Backup dos arquivos atuais (em caso de rollback)
 echo -e "${YELLOW}💾 Fazendo backup dos arquivos atuais...${NC}"
@@ -44,7 +151,7 @@ cp "$APP_DIR/ecosystem.config.js" "$BACKUP_PATH/" 2>/dev/null || true
 # 4. Instalar novas dependências na pasta de deploy
 echo -e "${YELLOW}📥 Instalando dependências (incluindo devDependencies para prisma)...${NC}"
 cd $DEPLOY_DIR || exit 1
-yarn install --frozen-lockfile
+$YARN_CMD install --frozen-lockfile
 
 # 5. Rodar migrations do Prisma
 echo -e "${YELLOW}🗄️  Executando migrations do banco de dados...${NC}"
@@ -97,10 +204,10 @@ fi
 # 8. Reiniciar aplicação com PM2
 echo -e "${YELLOW}🔄 Reiniciando aplicação...${NC}"
 cd $APP_DIR || exit 1
-pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+$PM2_CMD restart ecosystem.config.js || $PM2_CMD start ecosystem.config.js
 
 # 9. Salvar configuração do PM2
-pm2 save
+$PM2_CMD save
 
 # 10. Limpar pasta de deploy temporária (opcional)
 echo -e "${YELLOW}🧹 Limpando pasta temporária de deploy...${NC}"
@@ -109,11 +216,11 @@ rm -rf "$DEPLOY_DIR"
 # 11. Verificar status da aplicação
 echo -e "${YELLOW}✅ Verificando status da aplicação...${NC}"
 sleep 2
-pm2 status
+$PM2_CMD status
 
 # 12. Mostrar logs recentes
 echo -e "${GREEN}📝 Últimas linhas dos logs:${NC}"
-pm2 logs khub --lines 10 --nostream || true
+$PM2_CMD logs khub --lines 10 --nostream || true
 
 echo -e "${GREEN}✅ Deploy concluído com sucesso!${NC}"
 
