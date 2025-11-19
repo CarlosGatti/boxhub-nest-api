@@ -48,22 +48,40 @@ async function bootstrap() {
         return callback(null, true);
       }
       
-      // Normalizar origin (remover trailing slash se houver)
-      const normalizedOrigin = origin.replace(/\/$/, '');
+      // Normalizar origin (remover trailing slash e converter para lowercase)
+      const normalizedOrigin = origin.replace(/\/$/, '').toLowerCase();
       
-      // Verificar se a origem está na lista de permitidas (comparação exata ou normalizada)
-      if (allowedOrigins.includes(origin) || allowedOrigins.includes(normalizedOrigin)) {
-        console.log(`✅ CORS: Origin allowed: ${origin}`);
+      // Função para extrair domínio base (sem protocolo e sem www)
+      const getBaseDomain = (url: string): string | null => {
+        const match = url.match(/^https?:\/\/(www\.)?(.+)$/);
+        return match ? match[2].toLowerCase() : null;
+      };
+      
+      // Verificar se a origem está na lista de permitidas (comparação exata)
+      const exactMatch = allowedOrigins.some(allowed => {
+        if (!allowed) return false;
+        const normalizedAllowed = allowed.toLowerCase().replace(/\/$/, '');
+        return normalizedOrigin === normalizedAllowed;
+      });
+      
+      if (exactMatch) {
+        console.log(`✅ CORS: Origin allowed (exact match): ${origin}`);
         return callback(null, true);
       }
       
-      // Verificar variações com/sem www
-      const originWithoutWww = origin.replace(/^https?:\/\/(www\.)?/, 'https://');
-      const originWithWww = origin.replace(/^https?:\/\//, 'https://www.');
-      
-      if (allowedOrigins.includes(originWithoutWww) || allowedOrigins.includes(originWithWww)) {
-        console.log(`✅ CORS: Origin allowed (variation): ${origin}`);
-        return callback(null, true);
+      // Verificar por domínio base (ignorando www e protocolo)
+      const requestDomain = getBaseDomain(normalizedOrigin);
+      if (requestDomain) {
+        const domainMatch = allowedOrigins.some(allowed => {
+          if (!allowed) return false;
+          const allowedDomain = getBaseDomain(allowed.toLowerCase());
+          return allowedDomain === requestDomain;
+        });
+        
+        if (domainMatch) {
+          console.log(`✅ CORS: Origin allowed (domain match): ${origin} (domain: ${requestDomain})`);
+          return callback(null, true);
+        }
       }
       
       // Log para debug
