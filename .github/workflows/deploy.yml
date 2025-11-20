@@ -48,9 +48,8 @@ jobs:
             command -v nvm >/dev/null 2>&1 && nvm use 18 || true
             cd /home/boxhub/boxhub-api
             git pull origin main
-            echo "📦 Installing dependencies and type definitions..."
-            npm install --save-dev @types/bcrypt @types/express @types/multer @types/nodemailer @types/passport-jwt || true
-            npm install --omit=dev
+            echo "📦 Installing all dependencies (including dev for build)..."
+            npm install
             echo "🔧 Installing Nest CLI globally if needed..."
             npm install -g @nestjs/cli || true
             echo "🏗 Building project..."

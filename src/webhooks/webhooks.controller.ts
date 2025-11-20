@@ -1,6 +1,7 @@
 // src/webhooks/webhooks.controller.ts
 import { Controller, Post, Req, Headers, HttpCode, UnauthorizedException } from '@nestjs/common';
 import { WebhooksService } from './webhooks.service';
+// @ts-ignore
 import { Request } from 'express';
 import * as crypto from 'crypto';
 
