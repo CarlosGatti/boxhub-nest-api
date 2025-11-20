@@ -1,0 +1,31 @@
+import { DiscartItemWhereInput } from './discart-item-where.input';
+import { StringFilter } from '../prisma/string-filter.input';
+import { EnumDiscartItemTypeFilter } from '../prisma/enum-discart-item-type-filter.input';
+import { FloatNullableFilter } from '../prisma/float-nullable-filter.input';
+import { EnumDiscartItemConditionFilter } from '../prisma/enum-discart-item-condition-filter.input';
+import { EnumDiscartItemStatusFilter } from '../prisma/enum-discart-item-status-filter.input';
+import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
+import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
+import { IntFilter } from '../prisma/int-filter.input';
+import { DateTimeFilter } from '../prisma/date-time-filter.input';
+import { UserRelationFilter } from '../user/user-relation-filter.input';
+export declare class DiscartItemWhereUniqueInput {
+    id?: number;
+    AND?: Array<DiscartItemWhereInput>;
+    OR?: Array<DiscartItemWhereInput>;
+    NOT?: Array<DiscartItemWhereInput>;
+    title?: StringFilter;
+    description?: StringFilter;
+    type?: EnumDiscartItemTypeFilter;
+    price?: FloatNullableFilter;
+    category?: StringFilter;
+    condition?: EnumDiscartItemConditionFilter;
+    status?: EnumDiscartItemStatusFilter;
+    imageUrls?: StringNullableListFilter;
+    pickupAddress?: JsonNullableFilter;
+    contactPhone?: StringFilter;
+    createdById?: IntFilter;
+    createdAt?: DateTimeFilter;
+    updatedAt?: DateTimeFilter;
+    createdBy?: UserRelationFilter;
+}

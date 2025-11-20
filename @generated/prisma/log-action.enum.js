@@ -1,0 +1,31 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LogAction = void 0;
+const graphql_1 = require("@nestjs/graphql");
+var LogAction;
+(function (LogAction) {
+    LogAction["USER_LOGIN"] = "USER_LOGIN";
+    LogAction["USER_LOGOUT"] = "USER_LOGOUT";
+    LogAction["ITEM_CREATED"] = "ITEM_CREATED";
+    LogAction["ITEM_UPDATED"] = "ITEM_UPDATED";
+    LogAction["ITEM_DELETED"] = "ITEM_DELETED";
+    LogAction["CONTAINER_CREATED"] = "CONTAINER_CREATED";
+    LogAction["CONTAINER_DELETED"] = "CONTAINER_DELETED";
+    LogAction["BUTTON_CLICKED"] = "BUTTON_CLICKED";
+    LogAction["PAGE_VIEWED"] = "PAGE_VIEWED";
+    LogAction["SEARCH_USED"] = "SEARCH_USED";
+    LogAction["CUSTOM_ACTION"] = "CUSTOM_ACTION";
+    LogAction["REQUEST_PASSWORD_RESET"] = "REQUEST_PASSWORD_RESET";
+    LogAction["PASSWORD_RESET"] = "PASSWORD_RESET";
+    LogAction["USER_REGISTERED"] = "USER_REGISTERED";
+    LogAction["USER_PROFILE_UPDATED"] = "USER_PROFILE_UPDATED";
+    LogAction["USER_DELETED"] = "USER_DELETED";
+    LogAction["STORAGE_CREATED"] = "STORAGE_CREATED";
+    LogAction["STORAGE_DELETED"] = "STORAGE_DELETED";
+    LogAction["SUBCONTRACTOR_CREATED"] = "SUBCONTRACTOR_CREATED";
+    LogAction["SUBCONTRACTOR_UPDATED"] = "SUBCONTRACTOR_UPDATED";
+    LogAction["SUBCONTRACTOR_DELETED"] = "SUBCONTRACTOR_DELETED";
+    LogAction["SUBCONTRACTOR_VIEWED"] = "SUBCONTRACTOR_VIEWED";
+})(LogAction = exports.LogAction || (exports.LogAction = {}));
+(0, graphql_1.registerEnumType)(LogAction, { name: 'LogAction', description: undefined });
+//# sourceMappingURL=log-action.enum.js.map

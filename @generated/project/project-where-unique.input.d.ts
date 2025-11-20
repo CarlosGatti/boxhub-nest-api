@@ -1,0 +1,33 @@
+import { ProjectWhereInput } from './project-where.input';
+import { StringFilter } from '../prisma/string-filter.input';
+import { EnumProjectStatusFilter } from '../prisma/enum-project-status-filter.input';
+import { DateTimeFilter } from '../prisma/date-time-filter.input';
+import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
+import { IntFilter } from '../prisma/int-filter.input';
+import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { ConstructionLogListRelationFilter } from '../construction-log/construction-log-list-relation-filter.input';
+import { ProjectDocumentListRelationFilter } from '../project-document/project-document-list-relation-filter.input';
+import { MaterialEntryListRelationFilter } from '../material-entry/material-entry-list-relation-filter.input';
+import { PermitInspectionListRelationFilter } from '../permit-inspection/permit-inspection-list-relation-filter.input';
+import { ProjectPhotoListRelationFilter } from '../project-photo/project-photo-list-relation-filter.input';
+export declare class ProjectWhereUniqueInput {
+    id?: number;
+    AND?: Array<ProjectWhereInput>;
+    OR?: Array<ProjectWhereInput>;
+    NOT?: Array<ProjectWhereInput>;
+    name?: StringFilter;
+    client?: StringFilter;
+    location?: StringFilter;
+    status?: EnumProjectStatusFilter;
+    startDate?: DateTimeFilter;
+    endDate?: DateTimeNullableFilter;
+    responsibleId?: IntFilter;
+    createdAt?: DateTimeFilter;
+    updatedAt?: DateTimeFilter;
+    responsible?: UserRelationFilter;
+    logs?: ConstructionLogListRelationFilter;
+    documents?: ProjectDocumentListRelationFilter;
+    materials?: MaterialEntryListRelationFilter;
+    permits?: PermitInspectionListRelationFilter;
+    photos?: ProjectPhotoListRelationFilter;
+}

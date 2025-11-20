@@ -1,0 +1,38 @@
+import { Role } from '../prisma/role.enum';
+import { StorageMemberCreateNestedManyWithoutUserInput } from '../storage-member/storage-member-create-nested-many-without-user.input';
+import { LogCreateNestedManyWithoutUserInput } from '../log/log-create-nested-many-without-user.input';
+import { ProjectCreateNestedManyWithoutResponsibleInput } from '../project/project-create-nested-many-without-responsible.input';
+import { ConstructionLogCreateNestedManyWithoutUserInput } from '../construction-log/construction-log-create-nested-many-without-user.input';
+import { LogCommentCreateNestedManyWithoutUserInput } from '../log-comment/log-comment-create-nested-many-without-user.input';
+import { PermitInspectionCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-create-nested-many-without-responsible.input';
+import { MaterialEntryCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-create-nested-many-without-received-by.input';
+import { DiscartItemCreateNestedManyWithoutCreatedByInput } from '../discart-item/discart-item-create-nested-many-without-created-by.input';
+export declare class UserCreateWithoutLogCommentRepliesInput {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    nickname?: string;
+    public?: boolean;
+    role?: keyof typeof Role;
+    emailVerified?: boolean;
+    profilePicture?: string;
+    about?: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    isPremium?: boolean;
+    subscriptionId?: string;
+    expiresAt?: Date | string;
+    willExpireAt?: Date | string;
+    apartment?: string;
+    isApprovedResident?: boolean;
+    isAdmin?: boolean;
+    storageMemberships?: StorageMemberCreateNestedManyWithoutUserInput;
+    logs?: LogCreateNestedManyWithoutUserInput;
+    projectResponsible?: ProjectCreateNestedManyWithoutResponsibleInput;
+    constructionLogs?: ConstructionLogCreateNestedManyWithoutUserInput;
+    logComments?: LogCommentCreateNestedManyWithoutUserInput;
+    responsibleInspections?: PermitInspectionCreateNestedManyWithoutResponsibleInput;
+    receivedMaterials?: MaterialEntryCreateNestedManyWithoutReceivedByInput;
+    discartItems?: DiscartItemCreateNestedManyWithoutCreatedByInput;
+}
