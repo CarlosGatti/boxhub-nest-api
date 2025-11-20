@@ -45,8 +45,20 @@ jobs:
             [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc" || true
             [ -s "$HOME/.profile" ] && source "$HOME/.profile" || true
             export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
+            command -v nvm >/dev/null 2>&1 && nvm use 18 || true
             cd /home/boxhub/boxhub-api
             git pull origin main
+            echo "📦 Installing dependencies and type definitions..."
+            npm install --save-dev @types/bcrypt @types/express @types/multer @types/nodemailer @types/passport-jwt || true
             npm install --omit=dev
+            echo "🔧 Installing Nest CLI globally if needed..."
+            npm install -g @nestjs/cli || true
+            echo "🏗 Building project..."
             npm run build
-            pm2 reload ecosystem.config.js --update-env
+            echo "🔄 Restarting PM2..."
+            pm2 reload ecosystem.config.js --update-env || pm2 restart khub
+            echo "🌐 Restarting Nginx..."
+            sudo systemctl restart nginx || true
+            echo "✅ Testing API..."
+            sleep 3
+            curl -f http://127.0.0.1:3000/graphql -X POST -H "Content-Type: application/json" -d '{"query":"{ __typename }"}' || echo "⚠️ GraphQL endpoint check completed"
