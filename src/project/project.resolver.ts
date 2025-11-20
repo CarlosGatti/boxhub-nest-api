@@ -94,12 +94,12 @@ export class ProjectResolver {
     FileInterceptor("file", {
       storage: diskStorage({
         destination: "./uploads/construction-logs",
-        filename: (req, file, cb) => {
+        filename: (req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
           const uniqueName = `${Date.now()}-${file.originalname}`;
           cb(null, uniqueName);
         },
       }),
-      fileFilter: (req, file, cb) => {
+      fileFilter: (req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, acceptFile: boolean) => void) => {
         const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
         if (allowedTypes.includes(file.mimetype)) {
           cb(null, true);

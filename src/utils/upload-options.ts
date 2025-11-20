@@ -3,7 +3,7 @@ import { diskStorage } from 'multer';
 export const uploadOptions = (folder: string) => ({
   storage: diskStorage({
     destination: `./uploads/${folder}`,
-    filename: (_req, file, cb) =>
+    filename: (_req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) =>
       cb(null, `${Date.now()}-${file.originalname}`),
   }),
   fileFilter: (_req : any, file :any, cb : any) => {

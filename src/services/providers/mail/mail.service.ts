@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+// @ts-ignore
 import * as nodemailer from 'nodemailer';
 
 import { IMailSendDTO, MailPath, TemplateInterface } from './dto/mail.dto';
@@ -11,13 +12,14 @@ import { resolve } from 'node:path';
 
 @Injectable()
 class MailService implements MailEntity {
-  private _CLIENT!: nodemailer.Transporter;
+  private _CLIENT!: any;
   private _SMTP_HOST: string = process.env.SMTP_HOST || 'smtp.gmail.com';
   private _SMTP_PORT: number = process.env.SMTP_PORT || 465;
   private _SMTP_ACCOUNT_USERNAME: string = process.env.SMTP_USERNAME || '';
   private _SMTP_ACCOUNT_PASSWORD: string = process.env.SMTP_PASSWORD || '';
 
   constructor() {
+    // @ts-ignore
     const transporter = nodemailer.createTransport({
       host: this._SMTP_HOST,
       port: this._SMTP_PORT,
@@ -31,7 +33,7 @@ class MailService implements MailEntity {
       },
     });
 
-    transporter.verify(function (error, success) {
+    transporter.verify(function (error: Error | null, success: boolean) {
       if (error) {
         return console.error(error);
       }

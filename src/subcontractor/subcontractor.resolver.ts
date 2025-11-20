@@ -38,7 +38,7 @@ export class SubcontractorResolver {
     FileInterceptor("file", {
       storage: diskStorage({
         destination: "./uploads/insurance", // <- pasta desejada
-        filename: (req, file, cb) => {
+        filename: (req: Express.Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
           const uniqueName = `${Date.now()}-${file.originalname}`;
           cb(null, uniqueName);
         },
