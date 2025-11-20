@@ -11,9 +11,9 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // IMPORTANTE: Configurar trust proxy para funcionar com Cloudflare
-  // Isso permite que o Express confie nos headers X-Forwarded-* do Cloudflare
-  app.set('trust proxy', true);
+  // Configurar trust proxy para reconhecer headers X-Forwarded-* de proxies/load balancers
+  // Útil mesmo sem Cloudflare (para nginx, outros proxies, etc)
+  app.set('trust proxy', 1);
 
   // Configurar body parser para aceitar body vazio
   app.use(express.json({ strict: false }));
@@ -22,15 +22,15 @@ async function bootstrap() {
   // Middleware para logar informações de requisições (debug)
   app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
     const origin = req.headers.origin || req.headers.referer;
-    const cfConnectingIp = req.headers['cf-connecting-ip'];
     const xForwardedFor = req.headers['x-forwarded-for'];
+    const realIp = req.headers['x-real-ip'] || req.ip;
     const host = req.headers.host;
     
     // Log todas as requisições para debug
     console.log(`📥 ${req.method} ${req.path}`, {
       origin,
       host,
-      'cf-connecting-ip': cfConnectingIp,
+      'real-ip': realIp,
       'x-forwarded-for': xForwardedFor,
       'user-agent': req.headers['user-agent']?.substring(0, 50),
     });
@@ -59,7 +59,7 @@ async function bootstrap() {
 
   console.log('🔒 CORS allowed origins:', allowedOrigins.join(', '));
 
-  // Configuração robusta de CORS para funcionar com Cloudflare
+  // Configuração robusta de CORS
   app.enableCors({
     origin: (origin, callback) => {
       // Permitir requisições sem origin (mobile apps, Postman, etc.)
@@ -77,10 +77,9 @@ async function bootstrap() {
       // Log para debug - mostrar todas as informações
       console.log('⚠️  CORS blocked origin:', origin);
       console.log('   Allowed origins:', allowedOrigins.join(', '));
-      console.log('   Request URL might be incorrect - check DNS/Cloudflare config');
       
       // TEMPORARIAMENTE: Permitir todas as origens para debug
-      // TODO: Remover isso após resolver o problema de DNS
+      // TODO: Remover isso e usar apenas origens permitidas em produção
       console.log('⚠️  TEMP: Allowing all origins for debugging');
       return callback(null, true);
       
@@ -98,9 +97,7 @@ async function bootstrap() {
       "Access-Control-Request-Headers",
       "Access-Control-Request-Method",
       "X-Forwarded-For",
-      "CF-Connecting-IP",
-      "CF-Ray",
-      "CF-Visitor",
+      "X-Real-IP",
     ],
     exposedHeaders: ["Authorization"],
     optionsSuccessStatus: 200,
