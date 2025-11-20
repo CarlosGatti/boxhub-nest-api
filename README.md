@@ -1,6 +1,6 @@
 # 📦 Deploying a NestJS API with PostgreSQL for QR Code Container Management
 
-## 🚀 Overview
+## 🚀 Overview 
 This project is a **QR Code-based container management system**, allowing users to **create, scan, and organize containers and items** efficiently. It features a **NestJS API**, a **PostgreSQL database**, and a frontend built with **Next.js** and **Tailwind CSS**.
 
 ---
@@ -8,7 +8,7 @@ This project is a **QR Code-based container management system**, allowing users 
 ## 🔧 Prerequisites
 Ensure you have the following installed:
 
-- **VPS Server** (e.g., VPSdime) running Ubuntu
+- **VPS Server** (e.g., VPSdime) running Ubuntu - 
 - **Node.js** and **PostgreSQL**
 - **PM2** for process management
 - **GitHub** repository for version control
