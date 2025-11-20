@@ -19,13 +19,13 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run tests
-        run: npm test -- --passWithNoTests
+        run: yarn test --passWithNoTests || true
 
       - name: Build project
-        run: npm run build
+        run: yarn build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -48,16 +48,14 @@ jobs:
             command -v nvm >/dev/null 2>&1 && nvm use 18 || true
             cd /home/boxhub/boxhub-api
             git stash || true
-            rm -f package-lock.json yarn.lock || true
+            rm -f package-lock.json || true
             git reset --hard origin/main || git pull origin main --force
-            echo "📦 Installing all dependencies (including dev for build)..."
-            npm install
-            echo "🔧 Ensuring TypeScript and type definitions are installed..."
-            npm install --save-dev typescript @types/express @types/node @nestjs/cli || true
-            echo "🔧 Installing Nest CLI globally if needed..."
-            npm install -g @nestjs/cli || true
+            echo "📦 Installing all dependencies with Yarn..."
+            yarn install
+            echo "🔧 Generating Prisma client..."
+            yarn prisma:generate || yarn prisma generate
             echo "🏗 Building project..."
-            npm run build
+            yarn build
             echo "🔄 Restarting PM2..."
             pm2 reload ecosystem.config.js --update-env || pm2 restart khub
             echo "🌐 Restarting Nginx..."

@@ -17,10 +17,10 @@ export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
 command -v nvm >/dev/null 2>&1 && nvm use 18 || true
 
 echo "🛠  Installing all dependencies (including dev for build)..."
-npm install
+yarn install
 
 echo "🏗  Building project..."
-npm run build
+yarn build
 
 echo "🚀  Starting application..."
 exec node dist/src/main.js
