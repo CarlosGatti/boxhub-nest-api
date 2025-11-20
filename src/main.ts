@@ -14,7 +14,6 @@ async function bootstrap() {
   // Configurar trust proxy para reconhecer headers X-Forwarded-* de proxies/load balancers
   // Útil mesmo sem Cloudflare (para nginx, outros proxies, etc)
   app.set('trust proxy', 1);
-
   // Configurar body parser para aceitar body vazio
   app.use(express.json({ strict: false }));
   app.use(express.urlencoded({ extended: true }));
