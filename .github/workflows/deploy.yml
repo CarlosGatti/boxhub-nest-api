@@ -40,6 +40,11 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || true
+            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc" || true
+            [ -s "$HOME/.profile" ] && source "$HOME/.profile" || true
+            export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
             cd /home/boxhub/boxhub-api
             git pull origin main
             npm install --omit=dev
