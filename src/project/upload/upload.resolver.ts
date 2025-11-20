@@ -12,7 +12,7 @@ import { extname } from 'path';
 const createMulterOptions = (folder: string) => ({
   storage: diskStorage({
     destination: `./uploads/${folder}`, // pasta relativa à raiz do projeto
-    filename: (req: any, file: Express.Multer.File, callback: (error: Error | null, filename: string) => void) => {
+    filename: (req: any, file: Express.Multer["File"], callback: (error: Error | null, filename: string) => void) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
       const ext = extname(file.originalname);
       const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
@@ -25,7 +25,7 @@ const createMulterOptions = (folder: string) => ({
 export class UploadControllerInterface {
   @Post('project-documents')
   @UseInterceptors(FileInterceptor('file', createMulterOptions('project-documents')))
-  uploadDocument(@UploadedFile() file: Express.Multer.File) {
+  uploadDocument(@UploadedFile() file: Express.Multer["File"]) {
     return {
       url: `/uploads/project-documents/${file.filename}`,
     };
@@ -33,7 +33,7 @@ export class UploadControllerInterface {
 
   @Post('project-permits')
   @UseInterceptors(FileInterceptor('file', createMulterOptions('project-permits')))
-  uploadPermit(@UploadedFile() file: Express.Multer.File) {
+  uploadPermit(@UploadedFile() file: Express.Multer["File"]) {
     return {
       url: `/uploads/project-permits/${file.filename}`,
     };
@@ -41,7 +41,7 @@ export class UploadControllerInterface {
 
   @Post('avatars')
   @UseInterceptors(FileInterceptor('file', createMulterOptions('avatars')))
-  uploadAvatar(@UploadedFile() file: Express.Multer.File) {
+  uploadAvatar(@UploadedFile() file: Express.Multer["File"]) {
     return {
       url: `/uploads/avatars/${file.filename}`,
     };

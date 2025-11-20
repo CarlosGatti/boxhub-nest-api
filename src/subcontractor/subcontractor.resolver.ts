@@ -38,7 +38,7 @@ export class SubcontractorResolver {
     FileInterceptor("file", {
       storage: diskStorage({
         destination: "./uploads/insurance", // <- pasta desejada
-        filename: (req: any, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
+        filename: (req: any, file: Express.Multer["File"], cb: (error: Error | null, filename: string) => void) => {
           const uniqueName = `${Date.now()}-${file.originalname}`;
           cb(null, uniqueName);
         },
@@ -47,7 +47,7 @@ export class SubcontractorResolver {
   )
   async uploadInsurance(
     @Args("subcontractorId", { type: () => Int }) subcontractorId: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer["File"],
     @Args("company") company: string,
     @Args("expiration") expiration: string
   ) {

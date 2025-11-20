@@ -94,12 +94,12 @@ export class ProjectResolver {
     FileInterceptor("file", {
       storage: diskStorage({
         destination: "./uploads/construction-logs",
-        filename: (req: any, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
+        filename: (req: any, file: Express.Multer["File"], cb: (error: Error | null, filename: string) => void) => {
           const uniqueName = `${Date.now()}-${file.originalname}`;
           cb(null, uniqueName);
         },
       }),
-      fileFilter: (req: any, file: Express.Multer.File, cb: (error: Error | null, acceptFile: boolean) => void) => {
+      fileFilter: (req: any, file: Express.Multer["File"], cb: (error: Error | null, acceptFile: boolean) => void) => {
         const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
         if (allowedTypes.includes(file.mimetype)) {
           cb(null, true);
@@ -115,7 +115,7 @@ export class ProjectResolver {
     @Args("description") description: string,
     @Args("type", { type: () => LogType }) type: keyof typeof LogType,
     @CurrentUser("id") userId: number,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile() file: Express.Multer["File"]
   ): Promise<ConstructionLog> {
     const imagePath = `/uploads/construction-logs/${file.filename}`;
 

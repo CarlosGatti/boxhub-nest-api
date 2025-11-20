@@ -16,7 +16,7 @@ export class UploadController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/insurance', // essa pasta deve existir fora do src
-        filename: (req: any, file: Express.Multer.File, callback: (error: Error | null, filename: string) => void) => {
+        filename: (req: any, file: Express.Multer["File"], callback: (error: Error | null, filename: string) => void) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
@@ -25,7 +25,7 @@ export class UploadController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: Express.Multer["File"]) {
     return {
       url: `/uploads/insurance/${file.filename}`,
     };

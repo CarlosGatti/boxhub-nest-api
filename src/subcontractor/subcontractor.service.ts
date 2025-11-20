@@ -27,7 +27,7 @@ export class SubcontractorService {
 
   async createInsuranceWithFile(
     subcontractorId: number,
-    file: Express.Multer.File,
+    file: Express.Multer["File"],
     company: string,
     expiration: string
   ) {

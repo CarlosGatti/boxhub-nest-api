@@ -14,7 +14,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 const createMulterOptions = (folder: string) => ({
   storage: diskStorage({
     destination: `./uploads/${folder}`, // pasta relativa à raiz do projeto
-    filename: (req: any, file: Express.Multer.File, callback: (error: Error | null, filename: string) => void) => {
+    filename: (req: any, file: Express.Multer["File"], callback: (error: Error | null, filename: string) => void) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
       const ext = extname(file.originalname);
       const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
@@ -36,7 +36,7 @@ export class DiscartItemUploadController {
   @Post('discart-items')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files', 10, createMulterOptions('discart-items')))
-  uploadDiscartItemImages(@UploadedFiles() files: Express.Multer.File[]) {
+  uploadDiscartItemImages(@UploadedFiles() files: Express.Multer["File"][]) {
     if (!files || files.length === 0) {
       return { urls: [] };
     }
