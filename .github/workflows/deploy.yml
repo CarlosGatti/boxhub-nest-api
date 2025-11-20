@@ -1,165 +1,47 @@
-name: Deploy to VPS
+name: Deploy Backend
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch: # Permite deploy manual
-
-env:
-  NODE_VERSION: '18.x'
 
 jobs:
-  # Job 1: Testes e Build
-  test-and-build:
-    name: Test & Build
+  deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
+          node-version: "18"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run linter
-        run: yarn lint || true
+        run: npm install --omit=dev
 
       - name: Run tests
-        run: yarn test || true
+        run: npm test --if-present
 
-      - name: Generate Prisma Client
-        run: yarn prisma:generate
-
-      - name: Build application
-        run: yarn build
+      - name: Build project
+        run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: build-files
-          path: |
-            dist/
-            node_modules/
-            package.json
-            yarn.lock
-            prisma/
-            ecosystem.config.js
-          retention-days: 1
+          name: dist
+          path: dist/
 
-  # Job 2: Deploy para VPS
-  deploy:
-    name: Deploy to VPS
-    needs: test-and-build
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          name: build-files
-
-      - name: Validate secrets
-        run: |
-          echo "🔍 Verificando secrets..."
-          echo ""
-          
-          # Verificar VPS_HOST
-          if [ -z "${{ secrets.VPS_HOST }}" ]; then
-            echo "❌ ERRO: VPS_HOST secret NÃO está configurado!"
-            echo ""
-            echo "📝 Como adicionar:"
-            echo "   1. Acesse: https://github.com/CarlosGatti/boxhub-nest-api/settings/secrets/actions"
-            echo "   2. Clique em: New repository secret"
-            echo "   3. Name: VPS_HOST (exatamente assim, maiúsculo)"
-            echo "   4. Secret: 104.237.3.199"
-            echo "   5. Clique em: Add secret"
-            echo ""
-            exit 1
-          else
-            echo "✅ VPS_HOST: Configurado"
-          fi
-          
-          # Verificar VPS_USER
-          if [ -z "${{ secrets.VPS_USER }}" ]; then
-            echo "❌ ERRO: VPS_USER secret NÃO está configurado!"
-            echo ""
-            echo "📝 Como adicionar:"
-            echo "   1. Acesse: https://github.com/CarlosGatti/boxhub-nest-api/settings/secrets/actions"
-            echo "   2. Clique em: New repository secret"
-            echo "   3. Name: VPS_USER (exatamente assim, maiúsculo)"
-            echo "   4. Secret: root"
-            echo "   5. Clique em: Add secret"
-            echo ""
-            exit 1
-          else
-            echo "✅ VPS_USER: Configurado"
-          fi
-          
-          # Verificar VPS_SSH_PRIVATE_KEY
-          if [ -z "${{ secrets.VPS_SSH_PRIVATE_KEY }}" ]; then
-            echo "❌ ERRO: VPS_SSH_PRIVATE_KEY secret NÃO está configurado!"
-            echo ""
-            echo "📝 Como adicionar:"
-            echo "   1. Acesse: https://github.com/CarlosGatti/boxhub-nest-api/settings/secrets/actions"
-            echo "   2. Clique em: New repository secret"
-            echo "   3. Name: VPS_SSH_PRIVATE_KEY (exatamente assim, maiúsculo)"
-            echo "   4. Secret: Cole a chave SSH privada completa (incluindo BEGIN e END)"
-            echo "   5. Clique em: Add secret"
-            echo ""
-            exit 1
-          else
-            echo "✅ VPS_SSH_PRIVATE_KEY: Configurado"
-          fi
-          
-          echo ""
-          echo "✅ Todos os secrets estão configurados!"
-          echo "📍 VPS_HOST: ${{ secrets.VPS_HOST }}"
-          echo "📍 VPS_USER: ${{ secrets.VPS_USER }}"
-
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-
-      - name: Add VPS to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan -H -t rsa,ecdsa,ed25519 ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
-          chmod 644 ~/.ssh/known_hosts
-
-      - name: Test SSH connection
-        run: |
-          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo 'SSH connection successful'"
-
-      - name: Create deployment directory
-        run: |
-          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p /home/boxhub/boxhub-api-deploy"
-
-      - name: Copy files to VPS
-        run: |
-          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no -r dist/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no package.json ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no yarn.lock ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no ecosystem.config.js ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-          scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no -r prisma/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/boxhub/boxhub-api-deploy/
-
-      - name: Run deployment script on VPS
-        run: |
-          cat .github/scripts/deploy.sh | ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'bash -s'
-
-      - name: Health check
-        run: |
-          sleep 5
-          curl -f http://${{ secrets.VPS_HOST }}:3000/health || curl -f https://discart.me/health || curl -f https://www.discart.me/health || exit 1
-
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /home/boxhub/boxhub-api
+            git pull origin main
+            npm install --omit=dev
+            npm run build
+            pm2 reload ecosystem.config.js --update-env
