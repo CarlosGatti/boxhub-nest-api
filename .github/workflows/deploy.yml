@@ -47,7 +47,9 @@ jobs:
             export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
             command -v nvm >/dev/null 2>&1 && nvm use 18 || true
             cd /home/boxhub/boxhub-api
-            git pull origin main
+            git stash || true
+            rm -f package-lock.json yarn.lock || true
+            git reset --hard origin/main || git pull origin main --force
             echo "📦 Installing all dependencies (including dev for build)..."
             npm install
             echo "🔧 Ensuring type definitions are installed..."
