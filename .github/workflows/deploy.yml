@@ -52,8 +52,8 @@ jobs:
             git reset --hard origin/main || git pull origin main --force
             echo "📦 Installing all dependencies (including dev for build)..."
             npm install
-            echo "🔧 Ensuring type definitions are installed..."
-            npm install --save-dev @types/express @types/node || true
+            echo "🔧 Ensuring TypeScript and type definitions are installed..."
+            npm install --save-dev typescript @types/express @types/node @nestjs/cli || true
             echo "🔧 Installing Nest CLI globally if needed..."
             npm install -g @nestjs/cli || true
             echo "🏗 Building project..."
