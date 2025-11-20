@@ -6,6 +6,7 @@
     "assets": ["**/*.hbs", "**/*.png"],
     "watchAssets": true,
     "webpack": false,
-    "tsConfigPath": "tsconfig.build.json"
+    "tsConfigPath": "tsconfig.build.json",
+    "deleteOutDir": true
   }
 }
