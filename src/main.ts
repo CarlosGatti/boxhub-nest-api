@@ -58,33 +58,9 @@ async function bootstrap() {
 
   console.log('🔒 CORS allowed origins:', allowedOrigins.join(', '));
 
-  // Configuração robusta de CORS
+  // Configuração CORS - PERMITIR TUDO TEMPORARIAMENTE PARA DEBUG
   app.enableCors({
-    origin: (origin, callback) => {
-      // Permitir requisições sem origin (mobile apps, Postman, etc.)
-      if (!origin) {
-        console.log('✅ CORS: Allowing request without origin');
-        return callback(null, true);
-      }
-      
-      // Verificar se a origin está na lista permitida
-      if (allowedOrigins.includes(origin)) {
-        console.log('✅ CORS: Allowing origin:', origin);
-        return callback(null, true);
-      }
-      
-      // Log para debug - mostrar todas as informações
-      console.log('⚠️  CORS blocked origin:', origin);
-      console.log('   Allowed origins:', allowedOrigins.join(', '));
-      
-      // TEMPORARIAMENTE: Permitir todas as origens para debug
-      // TODO: Remover isso e usar apenas origens permitidas em produção
-      console.log('⚠️  TEMP: Allowing all origins for debugging');
-      return callback(null, true);
-      
-      // Por segurança, apenas permitir origens conhecidas (comentado temporariamente)
-      // callback(new Error('Not allowed by CORS'));
-    },
+    origin: true, // Permitir todas as origens
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: [
@@ -97,11 +73,31 @@ async function bootstrap() {
       "Access-Control-Request-Method",
       "X-Forwarded-For",
       "X-Real-IP",
+      "apollographql-client-name",
+      "apollographql-client-version",
     ],
     exposedHeaders: ["Authorization"],
     optionsSuccessStatus: 200,
     preflightContinue: false,
     maxAge: 86400, // 24 horas
+  });
+
+  // Middleware adicional para garantir CORS em todas as respostas
+  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const origin = req.headers.origin;
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, apollographql-client-name, apollographql-client-version');
+    
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
   });
 
   const port = process.env.PORT || 3000;

@@ -24,6 +24,10 @@ import { UserModule } from '../user/user.module';
       introspection: true,
       installSubscriptionHandlers: true,
       path: '/graphql', // Path explícito para evitar duplicação
+      cors: {
+        origin: true, // Permitir todas as origens
+        credentials: true,
+      },
     }),
     RedisModule.forRoot({
       config: {
