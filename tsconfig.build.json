@@ -5,6 +5,7 @@
     "test",
     "dist",
     "**/*spec.ts",
-    "src/@generated/**/*.ts"
+    "src/@generated/**/*.ts",
+    "@generated/**/*"
   ]
 }

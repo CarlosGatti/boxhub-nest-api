@@ -4,6 +4,8 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "assets": ["**/*.hbs", "**/*.png"],
-    "watchAssets": true
+    "watchAssets": true,
+    "webpack": false,
+    "tsConfigPath": "tsconfig.build.json"
   }
 }
