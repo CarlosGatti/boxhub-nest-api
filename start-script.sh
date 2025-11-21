@@ -17,17 +17,17 @@ export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
 command -v nvm >/dev/null 2>&1 && nvm use 18 || true
 
 echo "🚀  Starting application..."
-# Verificar se dist/main.js existe
-if [ ! -f "dist/main.js" ]; then
-  echo "❌ ERRO: dist/main.js não encontrado!"
+# Verificar se dist/src/main.js existe
+if [ ! -f "dist/src/main.js" ]; then
+  echo "❌ ERRO: dist/src/main.js não encontrado!"
   echo "📦 Tentando buildar..."
   yarn install
   yarn build
-  if [ ! -f "dist/main.js" ]; then
-    echo "❌ ERRO CRÍTICO: Build falhou! dist/main.js ainda não existe."
+  if [ ! -f "dist/src/main.js" ]; then
+    echo "❌ ERRO CRÍTICO: Build falhou! dist/src/main.js ainda não existe."
     exit 1
   fi
 fi
 
-echo "✅ Iniciando aplicação em dist/main.js"
-exec node dist/main.js
+echo "✅ Iniciando aplicação em dist/src/main.js"
+exec node dist/src/main.js

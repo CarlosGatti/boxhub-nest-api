@@ -71,11 +71,11 @@ jobs:
             echo "🏗 Building project..."
             yarn build
             echo "✅ Verificando se build foi bem-sucedido..."
-            if [ ! -f "dist/main.js" ]; then
-              echo "❌ ERRO: Build falhou! dist/main.js não existe."
+            if [ ! -f "dist/src/main.js" ]; then
+              echo "❌ ERRO: Build falhou! dist/src/main.js não existe."
               exit 1
             fi
-            echo "✅ Build OK - dist/main.js existe"
+            echo "✅ Build OK - dist/src/main.js existe"
             echo "🔄 Parando PM2 se estiver rodando..."
             pm2 stop khub || pm2 delete khub || true
             echo "🚀 Iniciando PM2..."
