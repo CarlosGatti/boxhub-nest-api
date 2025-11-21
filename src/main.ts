@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import * as express from "express";
+import express from "express";
 
 import { AppModule } from "./app/app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
