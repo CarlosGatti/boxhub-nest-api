@@ -58,10 +58,18 @@ jobs:
             git clean -fd
             echo "📦 Installing all dependencies with Yarn (including dev)..."
             yarn install --frozen-lockfile
-            echo "🔧 Generating Prisma client (opcional)..."
-            (yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando...") || true
+            echo "🔧 Verificando se prisma-nestjs-graphql está instalado..."
+            if [ -d "node_modules/prisma-nestjs-graphql" ]; then
+              echo "✅ prisma-nestjs-graphql encontrado"
+              echo "🔧 Generating Prisma client..."
+              yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
+            else
+              echo "⚠️ prisma-nestjs-graphql não encontrado, instalando..."
+              yarn add -D prisma-nestjs-graphql || echo "⚠️ Falha ao instalar prisma-nestjs-graphql"
+              yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
+            fi
             echo "🏗 Building project..."
-            yarn build || (echo "❌ Build falhou, tentando sem Prisma..." && yarn build --skip-prisma || yarn build)
+            yarn build
             echo "✅ Verificando se build foi bem-sucedido..."
             if [ ! -f "dist/main.js" ]; then
               echo "❌ ERRO: Build falhou! dist/main.js não existe."
