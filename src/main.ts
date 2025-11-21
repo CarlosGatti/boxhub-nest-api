@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import * as express from "express";
+import express, { Request, Response, NextFunction } from "express";
 
 import { AppModule } from "./app/app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -43,7 +43,7 @@ async function bootstrap() {
   });
 
   // Middleware adicional para garantir CORS em todas as respostas (incluindo GraphQL)
-  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     const origin = req.headers.origin;
     if (origin) {
       res.setHeader('Access-Control-Allow-Origin', origin);
@@ -61,7 +61,7 @@ async function bootstrap() {
   });
 
   // Middleware para logar informações de requisições (debug)
-  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     const origin = req.headers.origin || req.headers.referer;
     const xForwardedFor = req.headers['x-forwarded-for'];
     const realIp = req.headers['x-real-ip'] || req.ip;

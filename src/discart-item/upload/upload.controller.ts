@@ -36,7 +36,7 @@ export class DiscartItemUploadController {
   @Post('discart-items')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files', 10, createMulterOptions('discart-items')))
-  uploadDiscartItemImages(@UploadedFiles() files: Express.Multer["File"][]) {
+  uploadDiscartItemImages(@UploadedFiles() files: Array<Express.Multer["File"]>) {
     if (!files || files.length === 0) {
       return { urls: [] };
     }
