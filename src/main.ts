@@ -13,16 +13,18 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // O servidor está atrás do Nginx (proxy)
-  app.set('trust proxy', 1);
+  app.set("trust proxy", 1);
 
   /**
-   * 🚨 REMOVE COMPLETAMENTE QUALQUER CORS DO BACKEND
-   * Agora o NGINX controla todo o CORS.
+   * 🚨 IMPORTANTE
+   * Todo o CORS agora é controlado exclusivamente pelo NGINX.
+   * Portanto, não habilitamos QUALQUER CORS no backend.
+   *
+   * ❌ Nada de app.enableCors()
+   * ❌ Nada de middlewares CORS manuais
    */
-  // ❌ Removido: middleware CORS manual
-  // ❌ Removido: app.enableCors()
 
-  // Body parser – manter
+  // Body parser – exceto no /graphql
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.path !== "/graphql") {
       express.json({ strict: false })(req, res, next);
@@ -39,13 +41,13 @@ async function bootstrap() {
     }
   });
 
-  // Log básico — manter como está
+  // Log simples para debugging
   app.use((req: Request, res: Response, next: NextFunction) => {
     console.log(`📥 ${req.method} ${req.path}`);
     next();
   });
 
-  // Static /uploads
+  // Servir arquivos da pasta /uploads
   app.useStaticAssets(join(process.cwd(), "uploads"), {
     prefix: "/uploads/",
   });
