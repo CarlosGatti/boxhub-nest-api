@@ -15,8 +15,19 @@ async function bootstrap() {
   // Útil mesmo sem Cloudflare (para nginx, outros proxies, etc)
   app.set('trust proxy', 1);
   // Configurar body parser para aceitar body vazio
-  app.use(express.json({ strict: false }));
-  app.use(express.urlencoded({ extended: true }));
+  // Excluir /graphql porque Apollo Server tem seu próprio body parser
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.path === '/graphql') {
+      return next();
+    }
+    express.json({ strict: false })(req, res, next);
+  });
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.path === '/graphql') {
+      return next();
+    }
+    express.urlencoded({ extended: true })(req, res, next);
+  });
 
   // Configurar CORS PRIMEIRO - PERMITIR TUDO TEMPORARIAMENTE PARA DEBUG
   app.enableCors({
