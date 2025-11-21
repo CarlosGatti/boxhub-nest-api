@@ -71,6 +71,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@babel/code-frame": "^7.27.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

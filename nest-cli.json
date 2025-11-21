@@ -8,6 +8,7 @@
     "webpack": false,
     "tsConfigPath": "tsconfig.build.json",
     "deleteOutDir": true,
-    "webpackConfigPath": false
+    "webpackConfigPath": false,
+    "builder": "tsc"
   }
 }
