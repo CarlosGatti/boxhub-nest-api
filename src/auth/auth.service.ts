@@ -30,25 +30,45 @@ export class AuthService {
     const { email, password } = loginAttempt;
 
     // TODO Retornar uma mensagem amigável de tratamento de erro.
-    console.log("Initialize validation and sanitization");
-    if (isEmpty(email)) return undefined;
-    if (!isEmail(email)) return undefined;
-    if (isEmpty(password)) return undefined;
-    if (!minLength(password, 8)) return undefined;
+    console.log("🔐 Initialize validation and sanitization", { email: email?.substring(0, 10) + '...', passwordLength: password?.length });
+    
+    if (isEmpty(email)) {
+      console.log("❌ Email is empty");
+      return undefined;
+    }
+    if (!isEmail(email)) {
+      console.log("❌ Email is not valid:", email);
+      return undefined;
+    }
+    if (isEmpty(password)) {
+      console.log("❌ Password is empty");
+      return undefined;
+    }
+    if (!minLength(password, 8)) {
+      console.log("❌ Password is too short:", password.length);
+      return undefined;
+    }
 
     let userToAttempt: User | null = null;
     if (email) {
+      console.log("🔍 Searching for user with email:", email);
       userToAttempt = await this.usersService.user({
         where: { email: email },
       });
     }
 
-    if (!userToAttempt) return undefined;
+    if (!userToAttempt) {
+      console.log("❌ User not found for email:", email);
+      return undefined;
+    }
 
+    console.log("✅ User found, comparing password...");
     let isMatch = false;
     try {
       isMatch = compareSync(password, userToAttempt.password);
+      console.log("🔐 Password comparison result:", isMatch);
     } catch (error) {
+      console.log("❌ Error comparing password:", error);
       return undefined;
     }
     const { nanoid } = await import("nanoid");
