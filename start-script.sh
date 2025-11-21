@@ -16,11 +16,12 @@ export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
 # Use Node 18 if nvm is available
 command -v nvm >/dev/null 2>&1 && nvm use 18 || true
 
-echo "🛠  Installing all dependencies (including dev for build)..."
-yarn install
-
-echo "🏗  Building project..."
-yarn build
-
 echo "🚀  Starting application..."
+# Verificar se dist/src/main.js existe, se não, tentar buildar
+if [ ! -f "dist/src/main.js" ]; then
+  echo "⚠️  dist/src/main.js not found, building..."
+  yarn install
+  yarn build
+fi
+
 exec node dist/src/main.js
