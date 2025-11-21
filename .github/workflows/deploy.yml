@@ -52,7 +52,10 @@ jobs:
             cd /home/boxhub/boxhub-api
             git stash || true
             rm -f package-lock.json || true
-            git reset --hard origin/main || git pull origin main --force
+            echo "🔄 Atualizando código do repositório..."
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
             echo "📦 Installing all dependencies with Yarn (including dev)..."
             yarn install --frozen-lockfile
             echo "🔧 Generating Prisma client..."
