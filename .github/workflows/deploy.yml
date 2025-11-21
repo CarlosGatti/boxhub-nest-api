@@ -58,6 +58,8 @@ jobs:
             git clean -fd
             echo "📦 Installing all dependencies with Yarn (including dev)..."
             yarn install --frozen-lockfile
+            echo "🔧 Rebuilding native modules (bcrypt, etc)..."
+            yarn rebuild || npm rebuild || echo "⚠️ Rebuild falhou, mas continuando..."
             echo "🔧 Verificando se prisma-nestjs-graphql está instalado..."
             if [ -d "node_modules/prisma-nestjs-graphql" ]; then
               echo "✅ prisma-nestjs-graphql encontrado"

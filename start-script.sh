@@ -28,6 +28,8 @@ if [ ! -f "dist/src/main.js" ]; then
   echo "❌ ERRO: dist/src/main.js não encontrado!"
   echo "📦 Tentando buildar..."
   yarn install --frozen-lockfile
+  echo "🔧 Rebuilding native modules (bcrypt, etc)..."
+  yarn rebuild || npm rebuild || echo "⚠️ Rebuild falhou, mas continuando..."
   yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
   yarn build
   if [ ! -f "dist/src/main.js" ]; then
