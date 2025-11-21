@@ -28,13 +28,14 @@ import { UserModule } from '../user/user.module';
         origin: true, // Permitir todas as origens
         credentials: true,
       },
+      persistedQueries: false, // Desabilitar para evitar aviso de segurança
     }),
     RedisModule.forRoot({
       config: {
         host: process.env.REDIS_HOST ?? 'localhost',
         port: 6379,
-        ...(process.env.REDIS_PASSWORD && {
-          password: process.env.REDIS_PASSWORD ?? 'asdf1234',
+        ...(process.env.REDIS_PASSWORD && process.env.REDIS_PASSWORD !== '' && {
+          password: process.env.REDIS_PASSWORD,
         }),
       },
     }),
