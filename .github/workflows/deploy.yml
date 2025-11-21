@@ -59,8 +59,22 @@ jobs:
             yarn prisma:generate || yarn prisma generate
             echo "🏗 Building project..."
             yarn build
-            echo "🔄 Restarting PM2..."
-            pm2 reload ecosystem.config.js --update-env || pm2 restart khub
+            echo "✅ Verificando se build foi bem-sucedido..."
+            if [ ! -f "dist/src/main.js" ]; then
+              echo "❌ ERRO: Build falhou! dist/src/main.js não existe."
+              exit 1
+            fi
+            echo "✅ Build OK - dist/src/main.js existe"
+            echo "🔄 Parando PM2 se estiver rodando..."
+            pm2 stop khub || pm2 delete khub || true
+            echo "🚀 Iniciando PM2..."
+            pm2 start ecosystem.config.js --update-env
+            echo "⏳ Aguardando 5 segundos para aplicação iniciar..."
+            sleep 5
+            echo "📊 Status do PM2:"
+            pm2 list
+            echo "📋 Últimas linhas dos logs:"
+            pm2 logs khub --lines 10 --nostream || true
             echo "🌐 Restarting Nginx..."
             sudo systemctl restart nginx || true
             echo "✅ Testing API..."
