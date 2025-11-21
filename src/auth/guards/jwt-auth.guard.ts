@@ -12,7 +12,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return request;
   }
 
-  handleRequest(err: any, user: any) {
+  handleRequest(err: any, user: any, info: any) {
+    // Se não há token, não é um erro - apenas retorna undefined
+    // Isso permite que rotas sem guard funcionem
+    if (info && info.name === 'JsonWebTokenError') {
+      return undefined;
+    }
     if (err || !user) {
       throw err || new AuthenticationError('Could not authenticate with token');
     }

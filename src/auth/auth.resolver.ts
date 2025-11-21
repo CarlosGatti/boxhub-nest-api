@@ -16,10 +16,19 @@ export class AuthResolver {
 
   @Mutation(() => LoginResult)
   async login(@Args('user') user: LoginUserInput, @Context('req') request: any): Promise<LoginResult> {
-   console.log('Login attempt with user:', user);
-    const result = await this.authService.validateUserByPassword(user, request.user?.id, request.ip || request.headers['x-forwarded-for'] || '');
+    console.log('🔐 Login attempt with user:', { email: user.email, passwordLength: user.password?.length });
+    const result = await this.authService.validateUserByPassword(
+      user, 
+      request.user?.id || 0, 
+      request.ip || request.headers['x-forwarded-for'] || ''
+    );
 
-    if (result) return result;
+    if (result) {
+      console.log('✅ Login successful for:', user.email);
+      return result;
+    }
+    
+    console.log('❌ Login failed for:', user.email);
     throw new BadRequestException(
       'Could not log-in with the provided credentials',
     );

@@ -41,8 +41,16 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { name: "createUser" })
-  createUser(@Args("data") data: UserCreateInput) {
-    return this.userService.createUser(data);
+  async createUser(@Args("data") data: UserCreateInput) {
+    console.log("📝 Creating user with email:", data.email);
+    try {
+      const user = await this.userService.createUser(data);
+      console.log("✅ User created successfully:", user.id);
+      return user;
+    } catch (error) {
+      console.error("❌ Error creating user:", error);
+      throw error;
+    }
   }
 
   @Mutation(() => User, { name: "updateUser" })
