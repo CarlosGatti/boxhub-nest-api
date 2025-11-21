@@ -20,7 +20,7 @@ export async function createLog({
   await prisma.log.create({
     data: {
       action,
-      userId,
+      ...(userId && userId > 0 ? { userId } : {}), // Só incluir userId se for válido
       details,
       route,
       metadata,

@@ -79,20 +79,25 @@ export class AuthService {
         user: userToAttempt,
         token,
       };
-      //add log
+      //add log - usar o ID do usuário que fez login, não o userId do parâmetro
       const { randomUUID } = await import("crypto");
-      await createLog({
-        action: LogAction.USER_LOGIN,
-        userId,
-        details: `User ${userToAttempt.email} logged in successfully`,
-        route: "/auth/login",
-        metadata: {
-          storageId: randomUUID(),
-          ipAddress,
-        },
-      });
+      try {
+        await createLog({
+          action: LogAction.USER_LOGIN,
+          userId: userToAttempt.id, // Usar o ID do usuário que fez login
+          details: `User ${userToAttempt.email} logged in successfully`,
+          route: "/auth/login",
+          metadata: {
+            storageId: randomUUID(),
+            ipAddress,
+          },
+        });
+      } catch (logError) {
+        // Não falhar o login se o log falhar
+        console.error("⚠️ Failed to create login log:", logError);
+      }
 
-      console.log("User validated successfully, returning result");
+      console.log("✅ User validated successfully, returning result");
 
       return result;
     }
