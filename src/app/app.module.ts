@@ -24,10 +24,7 @@ import { UserModule } from '../user/user.module';
       introspection: true,
       installSubscriptionHandlers: true,
       path: '/graphql', // Path explícito para evitar duplicação
-      cors: {
-        origin: true, // Permitir todas as origens
-        credentials: true,
-      },
+      // Remover cors daqui - deixar o NestJS gerenciar via main.ts
       persistedQueries: false, // Desabilitar para evitar aviso de segurança
     }),
     RedisModule.forRoot({

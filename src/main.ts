@@ -12,26 +12,41 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Configurar trust proxy para reconhecer headers X-Forwarded-* de proxies/load balancers
-  // Útil mesmo sem Cloudflare (para nginx, outros proxies, etc)
   app.set('trust proxy', 1);
-  // Configurar body parser para aceitar body vazio
-  // Excluir /graphql porque Apollo Server tem seu próprio body parser
+
+  // CORS DEVE SER O PRIMEIRO MIDDLEWARE - ANTES DE TUDO
+  // Middleware CORS manual e completo (funciona melhor que enableCors para GraphQL)
   app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path === '/graphql') {
-      return next();
+    const origin = req.headers.origin;
+    
+    // Permitir qualquer origem
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
     }
-    express.json({ strict: false })(req, res, next);
-  });
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path === '/graphql') {
-      return next();
+    
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    res.setHeader('Access-Control-Allow-Headers', 
+      'Content-Type, Authorization, X-Requested-With, Accept, Origin, ' +
+      'Access-Control-Request-Headers, Access-Control-Request-Method, ' +
+      'X-Forwarded-For, X-Real-IP, apollographql-client-name, apollographql-client-version'
+    );
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    
+    // Responder imediatamente para OPTIONS (preflight)
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
     }
-    express.urlencoded({ extended: true })(req, res, next);
+    
+    next();
   });
 
-  // Configurar CORS PRIMEIRO - PERMITIR TUDO TEMPORARIAMENTE PARA DEBUG
+  // Também habilitar CORS do NestJS (backup)
   app.enableCors({
-    origin: true, // Permitir todas as origens
+    origin: true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: [
@@ -50,25 +65,22 @@ async function bootstrap() {
     exposedHeaders: ["Authorization"],
     optionsSuccessStatus: 200,
     preflightContinue: false,
-    maxAge: 86400, // 24 horas
+    maxAge: 86400,
   });
 
-  // Middleware adicional para garantir CORS em todas as respostas (incluindo GraphQL)
+  // Configurar body parser para aceitar body vazio
+  // Excluir /graphql porque Apollo Server tem seu próprio body parser
   app.use((req: Request, res: Response, next: NextFunction) => {
-    const origin = req.headers.origin;
-    if (origin) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-      res.setHeader('Access-Control-Allow-Origin', '*');
+    if (req.path === '/graphql') {
+      return next();
     }
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, apollographql-client-name, apollographql-client-version');
-    
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
+    express.json({ strict: false })(req, res, next);
+  });
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.path === '/graphql') {
+      return next();
     }
-    next();
+    express.urlencoded({ extended: true })(req, res, next);
   });
 
   // Middleware para logar informações de requisições (debug)
