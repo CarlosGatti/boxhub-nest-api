@@ -10,7 +10,7 @@ import { PrismaService } from "../prisma.service";
 import { UserCreateInput } from "../../@generated/user/user-create.input";
 import { UserUpdateInput } from "../../@generated/user/user-update.input";
 import { generate } from "generate-password";
-import { hashSync } from "bcrypt";
+import { hashSync } from "bcryptjs";
 
 @Injectable()
 export class UserService {
