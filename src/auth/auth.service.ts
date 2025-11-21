@@ -71,7 +71,6 @@ export class AuthService {
       console.log("❌ Error comparing password:", error);
       return undefined;
     }
-    const { nanoid } = await import("nanoid");
     //TODO Segregar a criação do JWT em uma função separada
 
     if (isMatch) {
@@ -81,13 +80,14 @@ export class AuthService {
         token,
       };
       //add log
+      const { randomUUID } = await import("crypto");
       await createLog({
         action: LogAction.USER_LOGIN,
         userId,
         details: `User ${userToAttempt.email} logged in successfully`,
         route: "/auth/login",
         metadata: {
-          storageId: nanoid(),
+          storageId: randomUUID(),
           ipAddress,
         },
       });

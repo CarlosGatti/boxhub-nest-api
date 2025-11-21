@@ -62,7 +62,7 @@ export class QrcodeService {
   }
 
   async createStorage(name: string, userId: number, ipAddress: string) {
-    const { nanoid } = await import("nanoid");
+    const { randomUUID } = await import("crypto");
 
     return await this.prismaService.storage.create({
       data: {
@@ -87,7 +87,7 @@ export class QrcodeService {
       details: `Storage created: ${name}`,
       route: "createStorage",
       metadata: {
-        storageId: nanoid(),
+        storageId: randomUUID(),
         name,
         ipAddress,
       },
@@ -100,7 +100,7 @@ export class QrcodeService {
 
   // qrcode.service.ts
 async removeStorage(id: number, userId: number, ipAddress: string) {
-  const { nanoid } = await import('nanoid');
+  const { randomUUID } = await import('crypto');
 
   const deleted = await this.prismaService.$transaction(async (tx) => {
     await tx.storageMember.deleteMany({ where: { storageId: id } });
@@ -113,7 +113,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
     userId,
     details: `Storage deleted: ${deleted.id}`,
     route: 'removeStorage',
-    metadata: { storageId: nanoid(), ipAddress },
+    metadata: { storageId: randomUUID(), ipAddress },
   });
 
   return deleted;            // ⬅️ devolve exatamente um Storage
@@ -145,7 +145,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
   ): Promise<BaseResult> {
     try {
       // Importação dinâmica do nanoid ANTES de criar o container
-      const { nanoid } = await import("nanoid");
+      const { randomUUID } = await import("crypto");
 
       // Criação do container
       await this.prismaService.container.create({
@@ -167,7 +167,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
         details: `Container criado: ${name}`,
         route: "createContainer",
         metadata: {
-          containerId: nanoid(),
+          containerId: randomUUID(),
           storageId,
           name,
           description,
@@ -227,7 +227,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
     ipAddress: string
   ): Promise<BaseResult> {
     try {
-      const { nanoid } = await import("nanoid");
+      const { randomUUID } = await import("crypto");
       await this.prismaService.item.create({
         data: {
           name,
@@ -247,7 +247,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
         details: `Item created: ${name}`,
         route: "createItem",
         metadata: {
-          itemId: nanoid(),
+          itemId: randomUUID(),
           name,
           description,
           imageUrl,
@@ -402,7 +402,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
     ipAddress: string
   ): Promise<BaseResult> {
     try {
-      const { nanoid } = await import("nanoid");
+      const { randomUUID } = await import("crypto");
 
       await this.prismaService.item.update({
         where: { id: itemId },
@@ -427,7 +427,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
           imageUrl,
           quantity,
           category,
-          containerId: nanoid(),
+          containerId: randomUUID(),
           ipAddress,
         },
         ipAddress,
