@@ -16,18 +16,31 @@ export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
 # Use Node 18 if nvm is available
 command -v nvm >/dev/null 2>&1 && nvm use 18 || true
 
+echo "🔍 Verificando ambiente..."
+echo "Node version: $(node --version 2>&1 || echo 'N/A')"
+echo "Yarn version: $(yarn --version 2>&1 || echo 'N/A')"
+echo "Working directory: $(pwd)"
+echo ""
+
 echo "🚀  Starting application..."
 # Verificar se dist/src/main.js existe
 if [ ! -f "dist/src/main.js" ]; then
   echo "❌ ERRO: dist/src/main.js não encontrado!"
   echo "📦 Tentando buildar..."
-  yarn install
+  yarn install --frozen-lockfile
+  yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
   yarn build
   if [ ! -f "dist/src/main.js" ]; then
     echo "❌ ERRO CRÍTICO: Build falhou! dist/src/main.js ainda não existe."
+    echo "📁 Conteúdo de dist/:"
+    ls -la dist/ 2>&1 || echo "dist/ não existe"
     exit 1
   fi
 fi
 
+echo "✅ Arquivo dist/src/main.js encontrado"
 echo "✅ Iniciando aplicação em dist/src/main.js"
+echo ""
+
+# Executar a aplicação
 exec node dist/src/main.js
