@@ -53,10 +53,10 @@ jobs:
             git stash || true
             rm -f package-lock.json || true
             git reset --hard origin/main || git pull origin main --force
-            echo "📦 Installing all dependencies with Yarn..."
-            yarn install
+            echo "📦 Installing all dependencies with Yarn (including dev)..."
+            yarn install --frozen-lockfile
             echo "🔧 Generating Prisma client..."
-            yarn prisma:generate || yarn prisma generate
+            yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, continuando..."
             echo "🏗 Building project..."
             yarn build
             echo "✅ Verificando se build foi bem-sucedido..."
