@@ -20,16 +20,20 @@ import { UserModule } from '../user/user.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      cors: false,
+      cors: {
+        origin: false,
+        credentials: false,
+      },
       playground: true,
       introspection: true,
       installSubscriptionHandlers: true,
-      path: '/graphql', // Path explícito para evitar duplicação
-      // Remover cors daqui - deixar o NestJS gerenciar via main.ts
-      persistedQueries: false, // Desabilitar para evitar aviso de segurança
+      path: '/graphql',
+      persistedQueries: false,
     }),
     RedisModule.forRoot({
+     
       config: {
+        
         host: process.env.REDIS_HOST ?? 'localhost',
         port: 6379,
         ...(process.env.REDIS_PASSWORD && process.env.REDIS_PASSWORD !== '' && {
