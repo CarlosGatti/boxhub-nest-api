@@ -80,8 +80,13 @@ jobs:
             echo "✅ Build OK - dist/src/main.js existe"
             echo "📁 Criando pasta de uploads com permissões corretas..."
             mkdir -p uploads/discart-items uploads/project-documents uploads/project-permits uploads/avatars uploads/insurance uploads/construction-logs
+            # Verificar qual usuário está rodando o PM2
+            PM2_USER=$(pm2 describe khub 2>/dev/null | grep "username" | awk '{print $4}' || echo "root")
+            echo "🔍 PM2 está rodando como: $PM2_USER"
+            # Definir dono e permissões baseado no usuário do PM2
+            chown -R $PM2_USER:$PM2_USER uploads 2>/dev/null || chown -R root:root uploads || echo "⚠️ Could not change ownership, but continuing..."
             chmod -R 755 uploads || echo "⚠️ Could not set permissions, but continuing..."
-            echo "✅ Pastas de upload criadas"
+            echo "✅ Pastas de upload criadas com permissões corretas"
             echo "🔄 Parando PM2 se estiver rodando..."
             pm2 stop khub || pm2 delete khub || true
             echo "🚀 Iniciando PM2..."
