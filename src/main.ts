@@ -15,6 +15,40 @@ async function bootstrap() {
   // O servidor está atrás do Nginx (proxy)
   app.set("trust proxy", 1);
 
+  // Criar pasta de uploads se não existir
+  const { existsSync, mkdirSync } = await import('fs');
+  const uploadsDir = join(process.cwd(), 'uploads');
+  const uploadDirs = [
+    'discart-items',
+    'project-documents',
+    'project-permits',
+    'avatars',
+    'insurance',
+    'construction-logs',
+  ];
+
+  if (!existsSync(uploadsDir)) {
+    try {
+      mkdirSync(uploadsDir, { recursive: true, mode: 0o755 });
+      console.log('✅ Created uploads directory');
+    } catch (error: any) {
+      console.error('❌ Failed to create uploads directory:', error.message);
+    }
+  }
+
+  // Criar subpastas
+  for (const dir of uploadDirs) {
+    const dirPath = join(uploadsDir, dir);
+    if (!existsSync(dirPath)) {
+      try {
+        mkdirSync(dirPath, { recursive: true, mode: 0o755 });
+        console.log(`✅ Created upload directory: ${dir}`);
+      } catch (error: any) {
+        console.error(`❌ Failed to create directory ${dir}:`, error.message);
+      }
+    }
+  }
+
   /**
    * 🚨 IMPORTANTE
    * Todo o CORS agora é controlado exclusivamente pelo NGINX.

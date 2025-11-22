@@ -78,6 +78,10 @@ jobs:
               exit 1
             fi
             echo "✅ Build OK - dist/src/main.js existe"
+            echo "📁 Criando pasta de uploads com permissões corretas..."
+            mkdir -p uploads/discart-items uploads/project-documents uploads/project-permits uploads/avatars uploads/insurance uploads/construction-logs
+            chmod -R 755 uploads || echo "⚠️ Could not set permissions, but continuing..."
+            echo "✅ Pastas de upload criadas"
             echo "🔄 Parando PM2 se estiver rodando..."
             pm2 stop khub || pm2 delete khub || true
             echo "🚀 Iniciando PM2..."
