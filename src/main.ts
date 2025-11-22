@@ -12,53 +12,46 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // O servidor está atrás do Nginx (proxy)
+  // Server behind Nginx
   app.set("trust proxy", 1);
 
-  // Criar pasta de uploads se não existir
-  const { existsSync, mkdirSync } = await import('fs');
-  const uploadsDir = join(process.cwd(), 'uploads');
+  // 🟩 Create upload dirs
+  const { existsSync, mkdirSync } = await import("fs");
+  const uploadsDir = join(process.cwd(), "uploads");
   const uploadDirs = [
-    'discart-items',
-    'project-documents',
-    'project-permits',
-    'avatars',
-    'insurance',
-    'construction-logs',
+    "discart-items",
+    "project-documents",
+    "project-permits",
+    "avatars",
+    "insurance",
+    "construction-logs",
   ];
 
   if (!existsSync(uploadsDir)) {
-    try {
-      mkdirSync(uploadsDir, { recursive: true, mode: 0o755 });
-      console.log('✅ Created uploads directory');
-    } catch (error: any) {
-      console.error('❌ Failed to create uploads directory:', error.message);
-    }
+    mkdirSync(uploadsDir, { recursive: true, mode: 0o755 });
   }
 
-  // Criar subpastas
   for (const dir of uploadDirs) {
     const dirPath = join(uploadsDir, dir);
     if (!existsSync(dirPath)) {
-      try {
-        mkdirSync(dirPath, { recursive: true, mode: 0o755 });
-        console.log(`✅ Created upload directory: ${dir}`);
-      } catch (error: any) {
-        console.error(`❌ Failed to create directory ${dir}:`, error.message);
-      }
+      mkdirSync(dirPath, { recursive: true, mode: 0o755 });
     }
   }
 
   /**
-   * 🚨 IMPORTANTE
-   * Todo o CORS agora é controlado exclusivamente pelo NGINX.
-   * Portanto, não habilitamos QUALQUER CORS no backend.
-   *
-   * ❌ Nada de app.enableCors()
-   * ❌ Nada de middlewares CORS manuais
+   * 🚨 REMOVE ANY CORS HEADERS that Express or Apollo try to add.
+   * This ensures NGINX is the ONLY source of CORS.
    */
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    res.removeHeader("Access-Control-Allow-Origin");
+    res.removeHeader("Access-Control-Allow-Credentials");
+    res.removeHeader("Access-Control-Allow-Headers");
+    res.removeHeader("Access-Control-Allow-Methods");
+    res.removeHeader("Access-Control-Max-Age");
+    next();
+  });
 
-  // Body parser – exceto no /graphql e /uploads (que usa multipart/form-data)
+  // 🟩 Disable body parser for GraphQL upload
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.path !== "/graphql" && !req.path.startsWith("/uploads")) {
       express.json({ strict: false })(req, res, next);
@@ -75,39 +68,13 @@ async function bootstrap() {
     }
   });
 
-  // CORS manual para todas as rotas (incluindo uploads)
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    const origin = req.headers.origin;
-    
-    if (origin) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-    }
-    
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
-    res.setHeader('Access-Control-Allow-Headers', 
-      'Content-Type, Authorization, X-Requested-With, Accept, Origin, ' +
-      'Access-Control-Request-Headers, Access-Control-Request-Method'
-    );
-    res.setHeader('Access-Control-Max-Age', '86400');
-    
-    // Responder imediatamente para OPTIONS (preflight)
-    if (req.method === 'OPTIONS') {
-      return res.status(200).end();
-    }
-    
-    next();
-  });
-
-  // Log simples para debugging
+  // Log
   app.use((req: Request, res: Response, next: NextFunction) => {
     console.log(`📥 ${req.method} ${req.path}`);
     next();
   });
 
-  // Servir arquivos da pasta /uploads
+  // Serve static uploads
   app.useStaticAssets(join(process.cwd(), "uploads"), {
     prefix: "/uploads/",
   });
@@ -116,7 +83,7 @@ async function bootstrap() {
   await app.listen(port, "0.0.0.0");
 
   console.log(`🚀 API running on http://localhost:${port}`);
-  console.log(`✔ Backend CORS disabled — NGINX is now the CORS gateway.`);
+  console.log(`✔ All backend CORS removed — NGINX fully controls CORS`);
 }
 
 bootstrap();
