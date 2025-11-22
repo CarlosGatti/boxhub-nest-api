@@ -58,9 +58,9 @@ async function bootstrap() {
    * ❌ Nada de middlewares CORS manuais
    */
 
-  // Body parser – exceto no /graphql
+  // Body parser – exceto no /graphql e /uploads (que usa multipart/form-data)
   app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path !== "/graphql") {
+    if (req.path !== "/graphql" && !req.path.startsWith("/uploads")) {
       express.json({ strict: false })(req, res, next);
     } else {
       next();
@@ -68,7 +68,7 @@ async function bootstrap() {
   });
 
   app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path !== "/graphql") {
+    if (req.path !== "/graphql" && !req.path.startsWith("/uploads")) {
       express.urlencoded({ extended: true })(req, res, next);
     } else {
       next();

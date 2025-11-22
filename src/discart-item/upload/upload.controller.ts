@@ -73,7 +73,11 @@ export class DiscartItemUploadController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files', 10, createMulterOptions('discart-items')))
   async uploadDiscartItemImages(@UploadedFiles() files: Array<Express.Multer["File"]>) {
+    console.log('📤 Upload request received');
+    console.log('📦 Files received:', files?.length || 0);
+    
     if (!files || files.length === 0) {
+      console.error('❌ No files in request');
       throw new BadRequestException('No files uploaded');
     }
 
