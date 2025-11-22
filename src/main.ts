@@ -75,6 +75,32 @@ async function bootstrap() {
     }
   });
 
+  // CORS manual para todas as rotas (incluindo uploads)
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const origin = req.headers.origin;
+    
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+    
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    res.setHeader('Access-Control-Allow-Headers', 
+      'Content-Type, Authorization, X-Requested-With, Accept, Origin, ' +
+      'Access-Control-Request-Headers, Access-Control-Request-Method'
+    );
+    res.setHeader('Access-Control-Max-Age', '86400');
+    
+    // Responder imediatamente para OPTIONS (preflight)
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+    
+    next();
+  });
+
   // Log simples para debugging
   app.use((req: Request, res: Response, next: NextFunction) => {
     console.log(`📥 ${req.method} ${req.path}`);
