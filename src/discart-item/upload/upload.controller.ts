@@ -6,6 +6,8 @@ import {
   UseGuards,
   UseInterceptors,
   BadRequestException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -21,35 +23,36 @@ const MAX_HEIGHT = 1920; // Altura máxima
 const QUALITY = 85; // Qualidade JPEG (0-100)
 
 const createMulterOptions = (folder: string) => {
-  const uploadPath = `./uploads/${folder}`;
+  const uploadPath = join(process.cwd(), 'uploads', folder);
   
-  // Criar pasta se não existir com permissões corretas
+  // Criar pasta se não existir (sem verificar permissões aqui - deixa o multer tentar)
   if (!existsSync(uploadPath)) {
     try {
       mkdirSync(uploadPath, { recursive: true, mode: 0o755 });
       console.log(`✅ Created upload directory: ${uploadPath}`);
     } catch (error: any) {
-      console.error(`❌ Failed to create upload directory ${uploadPath}:`, error.message);
-      throw new BadRequestException(`Failed to create upload directory: ${error.message}`);
-    }
-  } else {
-    // Verificar permissões de escrita
-    try {
-      const fs = require('fs');
-      fs.accessSync(uploadPath, fs.constants.W_OK);
-    } catch (error: any) {
-      console.error(`❌ No write permission for directory ${uploadPath}:`, error.message);
-      throw new BadRequestException(`No write permission for upload directory: ${error.message}`);
+      console.error(`⚠️ Failed to create upload directory ${uploadPath}:`, error.message);
+      // Não lançar erro aqui - deixa o multer tentar
     }
   }
 
   return {
     storage: diskStorage({
-      destination: uploadPath,
+      destination: (req: any, file: Express.Multer["File"], cb: (error: Error | null, destination: string) => void) => {
+        // Garantir que a pasta existe no momento do upload
+        if (!existsSync(uploadPath)) {
+          try {
+            mkdirSync(uploadPath, { recursive: true, mode: 0o755 });
+          } catch (err: any) {
+            return cb(new Error(`Failed to create directory: ${err.message}`), '');
+          }
+        }
+        cb(null, uploadPath);
+      },
       filename: (req: any, file: Express.Multer["File"], callback: (error: Error | null, filename: string) => void) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         const ext = extname(file.originalname);
-        const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
+        const filename = `file-${uniqueSuffix}${ext}`;
         callback(null, filename);
       },
     }),
@@ -61,7 +64,7 @@ const createMulterOptions = (folder: string) => {
       if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new BadRequestException('Invalid file type. Only images (JPEG, PNG, GIF, WebP) are allowed.'), false);
+        cb(new Error('Invalid file type. Only images (JPEG, PNG, GIF, WebP) are allowed.'), false);
       }
     },
   };
@@ -87,54 +90,63 @@ export class DiscartItemUploadController {
       try {
         const filePath = join(process.cwd(), 'uploads', 'discart-items', file.filename);
         
+        console.log(`📸 Processing image: ${file.originalname} (${(file.size / 1024).toFixed(2)}KB)`);
+        console.log(`📁 File saved at: ${filePath}`);
+        
         // Verificar se o arquivo foi salvo corretamente
         if (!existsSync(filePath)) {
           console.error(`❌ File not found after upload: ${filePath}`);
-          throw new BadRequestException(`Failed to save file: ${file.originalname}`);
+          // Tentar usar o arquivo original sem processar
+          processedUrls.push(`/uploads/discart-items/${file.filename}`);
+          continue;
         }
 
-        console.log(`📸 Processing image: ${file.originalname} (${(file.size / 1024).toFixed(2)}KB)`);
-        
-        // Comprimir e redimensionar a imagem
-        const image = sharp(filePath);
-        const metadata = await image.metadata();
-        
-        let processedImage = image;
-        
-        // Redimensionar se necessário
-        if (metadata.width && metadata.height) {
-          if (metadata.width > MAX_WIDTH || metadata.height > MAX_HEIGHT) {
-            processedImage = processedImage.resize(MAX_WIDTH, MAX_HEIGHT, {
-              fit: 'inside',
-              withoutEnlargement: true,
-            });
+        // Tentar comprimir, mas se falhar, usar o arquivo original
+        try {
+          const image = sharp(filePath);
+          const metadata = await image.metadata();
+          
+          let processedImage = image;
+          
+          // Redimensionar se necessário
+          if (metadata.width && metadata.height) {
+            if (metadata.width > MAX_WIDTH || metadata.height > MAX_HEIGHT) {
+              processedImage = processedImage.resize(MAX_WIDTH, MAX_HEIGHT, {
+                fit: 'inside',
+                withoutEnlargement: true,
+              });
+            }
           }
+
+          // Converter para JPEG com qualidade otimizada
+          const outputPath = filePath.replace(extname(file.filename), '.jpg');
+          await processedImage
+            .jpeg({ quality: QUALITY, mozjpeg: true })
+            .toFile(outputPath);
+
+          // Verificar se o arquivo processado foi criado
+          if (existsSync(outputPath)) {
+            // Se o arquivo original não era JPEG, deletar o original
+            if (extname(file.filename).toLowerCase() !== '.jpg' && extname(file.filename).toLowerCase() !== '.jpeg') {
+              const fs = await import('fs/promises');
+              await fs.unlink(filePath).catch(() => {});
+            }
+
+            const finalFilename = file.filename.replace(extname(file.filename), '.jpg');
+            processedUrls.push(`/uploads/discart-items/${finalFilename}`);
+            console.log(`✅ Image processed successfully: ${finalFilename}`);
+          } else {
+            // Se processamento falhou, usar original
+            processedUrls.push(`/uploads/discart-items/${file.filename}`);
+            console.log(`⚠️ Processing failed, using original: ${file.filename}`);
+          }
+        } catch (processError: any) {
+          console.warn(`⚠️ Image processing failed, using original:`, processError.message);
+          // Usar arquivo original se processamento falhar
+          processedUrls.push(`/uploads/discart-items/${file.filename}`);
         }
-
-        // Converter para JPEG com qualidade otimizada (mais compacto)
-        const outputPath = filePath.replace(extname(file.filename), '.jpg');
-        await processedImage
-          .jpeg({ quality: QUALITY, mozjpeg: true })
-          .toFile(outputPath);
-
-        // Verificar se o arquivo processado foi criado
-        if (!existsSync(outputPath)) {
-          throw new Error('Failed to create processed image');
-        }
-
-        // Se o arquivo original não era JPEG, deletar o original
-        if (extname(file.filename).toLowerCase() !== '.jpg' && extname(file.filename).toLowerCase() !== '.jpeg') {
-          const fs = await import('fs/promises');
-          await fs.unlink(filePath).catch((err) => {
-            console.warn(`⚠️ Could not delete original file ${filePath}:`, err.message);
-          });
-        }
-
-        const finalFilename = file.filename.replace(extname(file.filename), '.jpg');
-        processedUrls.push(`/uploads/discart-items/${finalFilename}`);
-        console.log(`✅ Image processed successfully: ${finalFilename}`);
       } catch (error: any) {
-        console.error(`❌ Error processing image ${file.originalname}:`, error);
+        console.error(`❌ Error with file ${file.originalname}:`, error);
         console.error(`   Error details:`, {
           message: error.message,
           code: error.code,
@@ -144,21 +156,24 @@ export class DiscartItemUploadController {
         
         // Se for erro de permissão, retornar erro específico
         if (error.code === 'EACCES' || error.code === 'EPERM') {
-          throw new BadRequestException(
-            `Permission denied: Cannot write to upload directory. Please check folder permissions.`
+          throw new HttpException(
+            `Permission denied: Cannot write to upload directory. Please check folder permissions.`,
+            HttpStatus.FORBIDDEN
           );
         }
         
         // Se for erro de espaço em disco
         if (error.code === 'ENOSPC') {
-          throw new BadRequestException('No space left on device');
+          throw new HttpException('No space left on device', 507);
         }
         
-        // Outros erros
-        throw new BadRequestException(
-          `Failed to process image ${file.originalname}: ${error.message}`
-        );
+        // Outros erros - não falhar completamente, apenas logar
+        console.error(`⚠️ Skipping file due to error: ${file.originalname}`);
       }
+    }
+
+    if (processedUrls.length === 0) {
+      throw new BadRequestException('Failed to process any files');
     }
 
     return { urls: processedUrls };
