@@ -82,16 +82,16 @@ export class AuthService {
       //add log - usar o ID do usuário que fez login, não o userId do parâmetro
       const { randomUUID } = await import("crypto");
       try {
-        await createLog({
-          action: LogAction.USER_LOGIN,
+      await createLog({
+        action: LogAction.USER_LOGIN,
           userId: userToAttempt.id, // Usar o ID do usuário que fez login
-          details: `User ${userToAttempt.email} logged in successfully`,
-          route: "/auth/login",
-          metadata: {
+        details: `User ${userToAttempt.email} logged in successfully`,
+        route: "/auth/login",
+        metadata: {
             storageId: randomUUID(),
-            ipAddress,
-          },
-        });
+          ipAddress,
+        },
+      });
       } catch (logError) {
         // Não falhar o login se o log falhar
         console.error("⚠️ Failed to create login log:", logError);
@@ -156,16 +156,15 @@ export class AuthService {
     const token = this.createJwt(user).token;
 
     const variables = {
-      title: "BoxHub - New Password Request",
-      passwordResetUrl:
-        process.env.FRONTEND_URL_PROD + `/account/reset-password`,
-      passwordResetToken: token,
+      title: "Defined - Reset Your Password",
+      token: token,
+      year: new Date().getFullYear(),
     };
 
-    const wasSent = this.mailService.send({
+    const wasSent = await this.mailService.send({
       path: "forgot_password",
       to: user.email,
-      subject: "BoxHub - New Password Request",
+      subject: "Defined - Reset Your Password",
       variables,
     });
 

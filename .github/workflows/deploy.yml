@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
             echo "✅ Verificando se build foi bem-sucedido..."
             if [ ! -f "dist/src/main.js" ]; then
               echo "❌ ERRO: Build falhou! dist/src/main.js não existe."
-              exit 1
+            exit 1
             fi
             echo "✅ Build OK - dist/src/main.js existe"
             echo "📁 Criando pasta de uploads com permissões corretas..."
@@ -92,7 +92,7 @@ jobs:
             echo "🚀 Iniciando PM2..."
             pm2 start ecosystem.config.js --update-env
             echo "⏳ Aguardando 5 segundos para aplicação iniciar..."
-            sleep 5
+          sleep 5
             echo "📊 Status do PM2:"
             pm2 list
             echo "📋 Últimas linhas dos logs:"

@@ -60,7 +60,14 @@ class MailService implements MailEntity {
       .readFileSync(template.file)
       .toString('utf-8');
     const tamplateParse = handlebars.compile(tamplateFileContent);
-    const templateHTML = tamplateParse(variables);
+    
+    // Ensure year is always included in variables
+    const templateVariables = {
+      ...variables,
+      year: variables?.year || new Date().getFullYear(),
+    };
+    
+    const templateHTML = tamplateParse(templateVariables);
 
     const message = await this._CLIENT.sendMail({
       from: `${process.env.HANDLEBARS_CLIENT_NAME} <${process.env.HANDLEBARS_CLIENT_EMAIL}>`,

@@ -34,18 +34,25 @@
         color: #4a5568;
         margin-bottom: 24px;
         line-height: 1.6;
+        text-align: left;
       }
-      .password-box {
+      .reason-box {
         background: #f7fafc;
-        border: 2px solid #e2e8f0;
-        border-radius: 6px;
+        border-left: 4px solid #e53e3e;
         padding: 16px;
-        margin: 24px 0;
-        font-family: monospace;
-        font-size: 18px;
+        margin: 16px 0;
+        text-align: left;
+        border-radius: 4px;
+      }
+      .cta-button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #3182ce;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
         font-weight: bold;
-        color: #2d3748;
-        word-break: break-all;
+        margin-bottom: 24px;
       }
       .footer {
         margin-top: 32px;
@@ -64,16 +71,19 @@
             alt="Defined Logo"
           />
         </div>
-        <div class="title">{{title}}</div>
+        <div class="title">Application Status Update</div>
         <div class="subtitle">
-          Your account has been created. We're sending your password so you can access Defined.
+          Hello {{firstName}},<br /><br />
+          Thank you for your interest in Defined. Unfortunately, we are unable to approve your resident application at this time.
         </div>
-        {{#if password}}
-        <div class="password-box">{{password}}</div>
-        {{/if}}
-        <div class="subtitle" style="margin-top: 24px; font-size: 14px;">
-          If you did not make this request, you can safely ignore this email - nothing has been changed in your account.
-      </div>
+        <div class="reason-box">
+          <strong>Reason:</strong><br />
+          {{reason}}
+        </div>
+        <div class="subtitle" style="text-align: center;">
+          If you believe this is an error or would like to appeal this decision, please contact us.
+        </div>
+        <a class="cta-button" href="{{contactUrl}}" target="_blank">Contact Support</a>
         <p class="footer">
           © {{year}} Defined — Powered by carlosgatti.com
         </p>
@@ -81,3 +91,4 @@
     </div>
   </body>
 </html>
+

@@ -1,107 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to BoxHub</title>
     <style>
-      @media only screen and (max-width: 480px) {
-        .header img {
-          width: 120px !important;
-          height: auto !important;
-        }
-      }
-    </style>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
+      .wrapper {
+        width: 100%;
+        background: #f7fafc;
+        padding: 32px 0;
         font-family: Arial, sans-serif;
-        background-color: #f4f3f6;
-      }
-      .container {
-        max-width: 600px;
-        margin: auto;
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      }
-      .header {
-        padding: 24px;
-        text-align: center;
-        background-color: #ffffff;
-      }
-      .header img {
-        width: 120px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
       }
       .content {
-        padding: 0 32px 24px;
+        max-width: 480px;
+        margin: auto;
+        background: #ffffff;
+        padding: 32px;
+        border-radius: 8px;
         text-align: center;
+      }
+      .logo {
+        margin-bottom: 24px;
+      }
+      .logo img {
+        max-width: 180px;
+        height: auto;
       }
       .title {
         font-size: 24px;
         font-weight: bold;
-        margin: 24px 0 8px;
         color: #2d3748;
+        margin-bottom: 16px;
       }
       .subtitle {
         font-size: 16px;
         color: #4a5568;
         margin-bottom: 24px;
+        line-height: 1.6;
       }
       .cta-button {
         display: inline-block;
         padding: 12px 24px;
-        background-color: #0436A9;
-        color: #ffffff;
-        text-decoration: none;
+        background: #3182ce;
+        color: white;
         border-radius: 6px;
+        text-decoration: none;
         font-weight: bold;
         margin-bottom: 24px;
       }
-      .img-section {
-        text-align: center;
-        padding: 0 32px;
-        margin-bottom: 24px;
-      }
-      .img-section img {
-        width: 100%;
-        max-width: 520px;
-        border-radius: 4px;
-      }
       .footer {
-        text-align: center;
+        margin-top: 32px;
         font-size: 12px;
-        color: #a0aec0;
-        padding: 24px;
-        background-color: #f9f9f9;
+        color: #4a5568;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <img
-          src="https://defined.one/image/brand/rh-blue.png"
-          alt="BoxHub Logo"
-        />
-      </div>
-
+    <div class="wrapper">
       <div class="content">
+        <div class="logo">
+          <img
+            src="https://www.carlosgatti.com/static/email/img/logo-defined.png"
+            alt="Defined Logo"
+          />
+        </div>
         <div class="title">Welcome, {{firstName}}!</div>
         <div class="subtitle">
-          We're excited to have you at BoxHub.<br />
+          We're excited to have you at Defined.<br />
           You can now manage your containers, organize items, and collaborate with your team.
         </div>
+        {{#if loginUrl}}
         <a class="cta-button" href="{{loginUrl}}" target="_blank">Access Your Account</a>
-      </div>
-
-      <div class="footer">
-        &copy; {{year}} BoxHub — All rights reserved.
+        {{/if}}
+        <p class="footer">
+          © {{year}} Defined — Powered by carlosgatti.com
+        </p>
       </div>
     </div>
   </body>

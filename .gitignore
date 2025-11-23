@@ -128,3 +128,16 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Email assets (keep structure but don't version images to preserve server files)
+src/static/email/img/*.png
+!src/static/email/img/logo-defined.png
+src/static/email/templates/**/assets/
+src/static/email/templates/**/views/assets/
+
+# Uploads directory (user-uploaded files - preserve on server)
+# Ignore all files in uploads, but keep directory structure with .gitkeep files
+uploads/*
+!uploads/.gitkeep
+uploads/**/*
+!uploads/**/.gitkeep

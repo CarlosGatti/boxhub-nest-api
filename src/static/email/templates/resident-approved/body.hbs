@@ -1,7 +1,7 @@
 <html>
-<head>
-  <meta charset="UTF-8" />
-<style>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
       .wrapper {
         width: 100%;
         background: #f7fafc;
@@ -15,69 +15,67 @@
         padding: 32px;
         border-radius: 8px;
         text-align: center;
-    }
-    .logo {
-      margin-bottom: 24px;
-    }
-    .logo img {
+      }
+      .logo {
+        margin-bottom: 24px;
+      }
+      .logo img {
         max-width: 180px;
         height: auto;
-    }
-    .title {
+      }
+      .title {
         font-size: 24px;
         font-weight: bold;
-      color: #2d3748;
-      margin-bottom: 16px;
-    }
+        color: #2d3748;
+        margin-bottom: 16px;
+      }
       .subtitle {
         font-size: 16px;
-      color: #4a5568;
+        color: #4a5568;
         margin-bottom: 24px;
-      line-height: 1.6;
-    }
+        line-height: 1.6;
+      }
       .cta-button {
-      display: inline-block;
+        display: inline-block;
         padding: 12px 24px;
         background: #3182ce;
-      color: white;
+        color: white;
         border-radius: 6px;
-      text-decoration: none;
+        text-decoration: none;
         font-weight: bold;
         margin-bottom: 24px;
-    }
-    .footer {
+      }
+      .footer {
         margin-top: 32px;
         font-size: 12px;
         color: #4a5568;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
     <div class="wrapper">
       <div class="content">
-<div class="logo">
-  <img
+        <div class="logo">
+          <img
             src="https://www.carlosgatti.com/static/email/img/logo-defined.png"
             alt="Defined Logo"
-  />
-</div>
-    <div class="title">{{title}}</div>
+          />
+        </div>
+        <div class="title">🎉 Your Application Has Been Approved!</div>
         <div class="subtitle">
-      A password reset has been requested for your account.<br />
-      If this was you, please click the button below to set a new password.
-    </div>
-        <a class="cta-button" href="https://www.carlosgatti.com/reset-password?token={{token}}" target="_blank">
-        Reset Password
-      </a>
+          Hello {{firstName}},<br /><br />
+          Great news! Your resident application has been approved. You now have full access to Defined and can start using all features.
+        </div>
+        <a class="cta-button" href="{{loginUrl}}" target="_blank">Access Your Account</a>
         <div class="subtitle" style="margin-top: 24px; font-size: 14px;">
-      If you did not request this, you can safely ignore this email.<br />
-      Your password will remain unchanged.
-    </div>
+          If you have any questions, feel free to contact us through our support channels.
+        </div>
         <p class="footer">
           © {{year}} Defined — Powered by carlosgatti.com
         </p>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
+

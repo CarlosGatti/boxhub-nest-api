@@ -1,20 +1,79 @@
-{{> header title="Verify Your New Email Address" }}
-
-<mj-section background-color="#fafafa">
-    <mj-column>
-        <mj-text color="#525252">
-            We received a request to change your registered email address to this one.
-            Click the button below to verify this address and complete the process:
-        </mj-text>
-
-        <mj-button font-family="Helvetica"
-                   background-color="#f45e43"
-                   color="white"
-                   href="{{ changeEmailAddressUrl }}?token={{ identifierChangeToken }}">
-            Verify Me!
-        </mj-button>
-    </mj-column>
-</mj-section>
-
-
-{{> footer }}
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      .wrapper {
+        width: 100%;
+        background: #f7fafc;
+        padding: 32px 0;
+        font-family: Arial, sans-serif;
+      }
+      .content {
+        max-width: 480px;
+        margin: auto;
+        background: #ffffff;
+        padding: 32px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .logo {
+        margin-bottom: 24px;
+      }
+      .logo img {
+        max-width: 180px;
+        height: auto;
+      }
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2d3748;
+        margin-bottom: 16px;
+      }
+      .subtitle {
+        font-size: 16px;
+        color: #4a5568;
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+      .cta-button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #3182ce;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-bottom: 24px;
+      }
+      .footer {
+        margin-top: 32px;
+        font-size: 12px;
+        color: #4a5568;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="content">
+        <div class="logo">
+          <img
+            src="https://www.carlosgatti.com/static/email/img/logo-defined.png"
+            alt="Defined Logo"
+          />
+        </div>
+        <div class="title">Verify Your New Email Address</div>
+        <div class="subtitle">
+          We received a request to change your registered email address to this one.
+          Click the button below to verify this address and complete the process:
+        </div>
+        <a class="cta-button" href="https://www.carlosgatti.com/verify?token={{token}}" target="_blank">
+          Verify Me!
+        </a>
+        <p class="footer">
+          © {{year}} Defined — Powered by carlosgatti.com
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

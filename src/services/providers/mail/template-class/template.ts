@@ -29,62 +29,8 @@ class WelcomeTemplate extends Template {
   }
 
   get attachments() {
-    return [
-      {
-        filename: 'logo.png',
-        path: resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'static',
-          'email',
-          'templates',
-          'welcome',
-          'views',
-          'assets',
-          'logo.png',
-        ),
-        cid: 'logo',
-      },
-      {
-        filename: '1200x800-1.png',
-        path: resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'static',
-          'email',
-          'templates',
-          'welcome',
-          'views',
-          'assets',
-          '1200x800-1.png',
-        ),
-        cid: '1200x800-1',
-      },
-      {
-        filename: '1200x800-2.png',
-        path: resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          'static',
-          'email',
-          'templates',
-          'welcome',
-          'views',
-          'assets',
-          '1200x800-2.png',
-        ),
-        cid: '1200x800-2',
-      },
-    ];
+    // Logo is now loaded via absolute URL, no attachments needed
+    return [];
   }
 }
 
@@ -142,6 +88,42 @@ class Contact extends Template {
   }
 }
 
+class ResidentApprovedTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'resident-approved',
+      'body.hbs',
+    );
+  }
+}
+
+class ResidentRejectedTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'resident-rejected',
+      'body.hbs',
+    );
+  }
+}
+
 
 export function createTemplate(templateType: MailPath) {
   switch (templateType) {
@@ -156,6 +138,12 @@ export function createTemplate(templateType: MailPath) {
 
     case 'contact_us':
       return new Contact();
+
+    case 'resident_approved':
+      return new ResidentApprovedTemplate();
+
+    case 'resident_rejected':
+      return new ResidentRejectedTemplate();
 
     default:
       return new Template();

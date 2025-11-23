@@ -12,6 +12,7 @@ import { UserCreateInput } from "../../@generated/user/user-create.input";
 import { CreateUserWithoutPassword } from "./dto/createUser.dto";
 import { BaseResult } from "../models/base-error.dto";
 import { ProGuard } from "src/auth/guards/pro.guard";
+import { AdminGuard } from "src/auth/guards/admin.guard";
 import { MailService } from "src/services/providers/mail/mail.service";
 @Resolver()
 export class UserResolver {
@@ -81,13 +82,41 @@ async sendEmail(
     await this.mailService.send({
       to,
       subject,
-      variables: {name, email, message }, // Ajuste conforme o template
-      path: 'contact_us', // Use o template correto
+      variables: {
+        name,
+        email,
+        message,
+        year: new Date().getFullYear(),
+      },
+      path: 'contact_us',
     });
     return { success: true, message: 'Email enviado com sucesso.' };
   } catch (error) {
     return { success: false, message: 'Erro ao enviar email.' };
   }
+}
+
+  @Query(() => [User], { name: "pendingResidents" })
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  getPendingResidents() {
+    return this.userService.getPendingResidents();
+  }
+
+  @Mutation(() => BaseResult, { name: "approveResident" })
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  approveResident(
+    @Args('userId', { type: () => Number }) userId: number
+  ) {
+    return this.userService.approveResident(userId);
+  }
+
+  @Mutation(() => BaseResult, { name: "rejectResident" })
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  rejectResident(
+    @Args('userId', { type: () => Number }) userId: number,
+    @Args('reason', { nullable: true, type: () => String }) reason?: string
+  ) {
+    return this.userService.rejectResident(userId, reason);
 }
 
 }

@@ -71,14 +71,14 @@ export class UserService {
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
-      loginUrl: process.env.FRONTEND_URL_PROD + "/account/login",
+      loginUrl: "https://www.carlosgatti.com",
       year: new Date().getFullYear(),
     };
 
-    this.mailService.send({
+    await this.mailService.send({
       path: "welcome",
       to: data.email,
-      subject: "Welcome to BoxHub",
+      subject: "Welcome to Defined",
       variables,
     });
 
@@ -94,8 +94,9 @@ export class UserService {
     });
 
     const variables = {
-      title: "We Social - Sua senha",
+      title: "Defined - Your Account Password",
       password,
+      year: new Date().getFullYear(),
     };
 
     try {
@@ -110,7 +111,7 @@ export class UserService {
         await this.mailService.send({
           path: "send_password",
           to: data.email,
-          subject: "We Social - Sua senha",
+          subject: "Defined - Your Account Password",
           variables,
         });
       }
@@ -154,5 +155,74 @@ export class UserService {
     });
   }
 
+  async getPendingResidents(): Promise<User[]> {
+    return this.prismaService.user.findMany({
+      where: {
+        isApprovedResident: false,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async approveResident(userId: number): Promise<BaseResult> {
+    const user = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { isApprovedResident: true },
+    });
+
+    // Enviar email de aprovação
+    await this.mailService.send({
+      path: 'resident_approved',
+      to: user.email,
+      subject: 'Defined - Your Resident Application Has Been Approved',
+      variables: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        loginUrl: 'https://www.carlosgatti.com',
+        year: new Date().getFullYear(),
+      },
+    });
+
+    return {
+      success: true,
+      message: `Resident ${user.firstName} ${user.lastName} has been approved`,
+    };
+  }
+
+  async rejectResident(userId: number, reason?: string): Promise<BaseResult> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        message: 'User not found',
+      };
+    }
+
+    // Enviar email de rejeição
+    await this.mailService.send({
+      path: 'resident_rejected',
+      to: user.email,
+      subject: 'Defined - Your Resident Application Status',
+      variables: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        reason: reason || 'Your application did not meet our requirements.',
+        contactUrl: 'https://www.carlosgatti.com/contact',
+        year: new Date().getFullYear(),
+      },
+    });
+
+    // Opcional: deletar o usuário ou apenas deixar como não aprovado
+    // Por enquanto, vamos apenas deixar como não aprovado
+    return {
+      success: true,
+      message: `Resident ${user.firstName} ${user.lastName} has been rejected`,
+    };
+  }
 
 }
