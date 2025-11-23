@@ -4,10 +4,9 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
-import { AdminGuard } from '../auth/guards/admin.guard';
 
 @Module({
   imports: [MailModule],
-  providers: [UserService, PrismaService, UserResolver, AdminGuard],
+  providers: [UserService, PrismaService, UserResolver],
 })
 export class UserModule { }
