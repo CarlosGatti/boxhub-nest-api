@@ -2,12 +2,13 @@ module.exports = {
   apps: [
     {
       name: "khub",
-      script: "./start-script.sh",
-      interpreter: "bash",
+      script: "dist/src/main.js",
+      interpreter: "node",
       instances: 1,
       autorestart: true,
       watch: false,
       max_memory_restart: "1G",
+      cwd: "/home/boxhub/boxhub-api",
       env: {
         NODE_ENV: "production",
       },
