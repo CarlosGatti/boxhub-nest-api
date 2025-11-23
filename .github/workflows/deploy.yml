@@ -92,7 +92,7 @@ jobs:
             echo "🚀 Iniciando PM2..."
             pm2 start ecosystem.config.js --update-env
             echo "⏳ Aguardando 5 segundos para aplicação iniciar..."
-          sleep 5
+            sleep 5
             echo "📊 Status do PM2:"
             pm2 list
             echo "📋 Últimas linhas dos logs:"
