@@ -124,6 +124,24 @@ class ResidentRejectedTemplate extends Template {
   }
 }
 
+class EmailVerificationTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'email-verification',
+      'body.hbs',
+    );
+  }
+}
+
 
 export function createTemplate(templateType: MailPath) {
   switch (templateType) {
@@ -144,6 +162,9 @@ export function createTemplate(templateType: MailPath) {
 
     case 'resident_rejected':
       return new ResidentRejectedTemplate();
+
+    case 'email-verification':
+      return new EmailVerificationTemplate();
 
     default:
       return new Template();
