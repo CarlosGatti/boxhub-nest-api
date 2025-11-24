@@ -5,6 +5,7 @@ import { DiscartItemWhereInput } from './discart-item-where.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { EnumDiscartItemTypeFilter } from '../prisma/enum-discart-item-type-filter.input';
 import { FloatNullableFilter } from '../prisma/float-nullable-filter.input';
+import { EnumDiscartItemCategoryFilter } from '../prisma/enum-discart-item-category-filter.input';
 import { EnumDiscartItemConditionFilter } from '../prisma/enum-discart-item-condition-filter.input';
 import { EnumDiscartItemStatusFilter } from '../prisma/enum-discart-item-status-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
@@ -40,8 +41,8 @@ export class DiscartItemWhereUniqueInput {
     @Field(() => FloatNullableFilter, {nullable:true})
     price?: FloatNullableFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    category?: StringFilter;
+    @Field(() => EnumDiscartItemCategoryFilter, {nullable:true})
+    category?: EnumDiscartItemCategoryFilter;
 
     @Field(() => EnumDiscartItemConditionFilter, {nullable:true})
     condition?: EnumDiscartItemConditionFilter;

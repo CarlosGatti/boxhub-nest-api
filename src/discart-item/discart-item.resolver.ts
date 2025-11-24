@@ -5,6 +5,7 @@ import { DiscartItemService } from "./discart-item.service";
 import { DiscartItem } from "../../@generated/discart-item/discart-item.model";
 import { DiscartItemType } from "../../@generated/prisma/discart-item-type.enum";
 import { DiscartItemCondition } from "../../@generated/prisma/discart-item-condition.enum";
+import { DiscartItemCategory } from "../../@generated/prisma/discart-item-category.enum";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CurrentUser } from "../user/current-user.decorator";
 import { User } from "../../@generated/user/user.model";
@@ -18,8 +19,8 @@ export class DiscartItemResolver {
   async discartItems(
     @Args("type", { type: () => DiscartItemType, nullable: true })
     type?: DiscartItemType | "ALL",
-    @Args("category", { type: () => String, nullable: true })
-    category?: string,
+    @Args("category", { type: () => DiscartItemCategory, nullable: true })
+    category?: DiscartItemCategory,
     @Args("search", { type: () => String, nullable: true })
     search?: string
   ) {
@@ -43,7 +44,7 @@ export class DiscartItemResolver {
         description: data.description,
         type: data.type,
         price: data.price ?? null,
-        category: data.category,
+        category: data.category || 'GENERAL',
         condition: data.condition,
         contactPhone: data.contactPhone,
         imageUrls: data.imageUrls ?? [],
@@ -70,7 +71,7 @@ export class DiscartItemResolver {
       nullable: true,
     })
     price?: number | null,
-    @Args("category", { nullable: true }) category?: string,
+    @Args("category", { type: () => DiscartItemCategory, nullable: true }) category?: DiscartItemCategory,
     @Args("condition", {
       type: () => DiscartItemCondition,
       nullable: true,

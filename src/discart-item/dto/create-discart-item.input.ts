@@ -2,6 +2,7 @@ import { Field, Float, InputType } from '@nestjs/graphql';
 
 import { DiscartItemCondition } from '../../../@generated/prisma/discart-item-condition.enum';
 import { DiscartItemType } from '../../../@generated/prisma/discart-item-type.enum';
+import { DiscartItemCategory } from '../../../@generated/prisma/discart-item-category.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 
 @InputType()
@@ -18,8 +19,8 @@ export class CreateDiscartItemInput {
   @Field(() => Float, { nullable: true })
   price?: number | null;
 
-  @Field(() => String, { nullable: false })
-  category!: string;
+  @Field(() => DiscartItemCategory, { nullable: true, defaultValue: 'GENERAL' })
+  category?: keyof typeof DiscartItemCategory;
 
   @Field(() => DiscartItemCondition, { nullable: false })
   condition!: keyof typeof DiscartItemCondition;

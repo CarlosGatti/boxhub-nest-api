@@ -3,6 +3,7 @@ import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { DiscartItemType } from '../prisma/discart-item-type.enum';
 import { Float } from '@nestjs/graphql';
+import { DiscartItemCategory } from '../prisma/discart-item-category.enum';
 import { DiscartItemCondition } from '../prisma/discart-item-condition.enum';
 import { DiscartItemStatus } from '../prisma/discart-item-status.enum';
 import { GraphQLJSON } from 'graphql-type-json';
@@ -27,8 +28,8 @@ export class DiscartItem {
     @Field(() => Float, {nullable:true})
     price!: number | null;
 
-    @Field(() => String, {nullable:false})
-    category!: string;
+    @Field(() => DiscartItemCategory, {nullable:false,defaultValue:'GENERAL'})
+    category!: keyof typeof DiscartItemCategory;
 
     @Field(() => DiscartItemCondition, {nullable:false})
     condition!: keyof typeof DiscartItemCondition;

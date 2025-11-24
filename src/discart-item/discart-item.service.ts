@@ -8,7 +8,7 @@ type DiscartItemCreateInputDto = {
   description: string;
   type: string;
   price?: number | null;
-  category: string;
+  category?: string; // Can be enum value or string for backward compatibility
   condition: string;
   contactPhone: string;
   imageUrls?: string[];
@@ -26,7 +26,7 @@ export class DiscartItemService {
 
   async findAll(filters: {
     type?: Prisma.DiscartItemWhereInput["type"] | string;
-    category?: string;
+    category?: Prisma.DiscartItemWhereInput["category"] | string;
     search?: string;
   }): Promise<DiscartItem[]> {
     const where: Prisma.DiscartItemWhereInput = {};
@@ -36,10 +36,7 @@ export class DiscartItemService {
     }
 
     if (filters.category) {
-      where.category = {
-        equals: filters.category,
-        mode: "insensitive",
-      };
+      where.category = filters.category as any;
     }
 
     if (filters.search) {
@@ -84,7 +81,7 @@ export class DiscartItemService {
       description: input.description,
       type: input.type as any,
       price: input.type === "SELL" ? input.price ?? 0 : null,
-      category: input.category,
+      category: (input.category as any) || "GENERAL", // Default to GENERAL if not provided
       condition: input.condition as any,
       status: "ACTIVE" as any,
       contactPhone: input.contactPhone,
@@ -151,7 +148,7 @@ export class DiscartItemService {
           : input.type === "DONATE"
           ? null
           : input.price ?? undefined,
-      category: input.category,
+      category: input.category ? (input.category as any) : undefined,
       condition: input.condition ? (input.condition as any) : undefined,
       contactPhone: input.contactPhone,
       imageUrls: input.imageUrls ?? undefined,

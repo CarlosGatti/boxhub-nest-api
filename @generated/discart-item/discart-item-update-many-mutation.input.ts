@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { EnumDiscartItemTypeFieldUpdateOperationsInput } from '../prisma/enum-discart-item-type-field-update-operations.input';
 import { NullableFloatFieldUpdateOperationsInput } from '../prisma/nullable-float-field-update-operations.input';
+import { EnumDiscartItemCategoryFieldUpdateOperationsInput } from '../prisma/enum-discart-item-category-field-update-operations.input';
 import { EnumDiscartItemConditionFieldUpdateOperationsInput } from '../prisma/enum-discart-item-condition-field-update-operations.input';
 import { EnumDiscartItemStatusFieldUpdateOperationsInput } from '../prisma/enum-discart-item-status-field-update-operations.input';
 import { DiscartItemUpdateimageUrlsInput } from './discart-item-updateimage-urls.input';
@@ -24,8 +25,8 @@ export class DiscartItemUpdateManyMutationInput {
     @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
     price?: NullableFloatFieldUpdateOperationsInput;
 
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    category?: StringFieldUpdateOperationsInput;
+    @Field(() => EnumDiscartItemCategoryFieldUpdateOperationsInput, {nullable:true})
+    category?: EnumDiscartItemCategoryFieldUpdateOperationsInput;
 
     @Field(() => EnumDiscartItemConditionFieldUpdateOperationsInput, {nullable:true})
     condition?: EnumDiscartItemConditionFieldUpdateOperationsInput;

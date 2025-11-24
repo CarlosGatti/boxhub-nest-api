@@ -4,6 +4,7 @@ import { IntWithAggregatesFilter } from '../prisma/int-with-aggregates-filter.in
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { EnumDiscartItemTypeWithAggregatesFilter } from '../prisma/enum-discart-item-type-with-aggregates-filter.input';
 import { FloatNullableWithAggregatesFilter } from '../prisma/float-nullable-with-aggregates-filter.input';
+import { EnumDiscartItemCategoryWithAggregatesFilter } from '../prisma/enum-discart-item-category-with-aggregates-filter.input';
 import { EnumDiscartItemConditionWithAggregatesFilter } from '../prisma/enum-discart-item-condition-with-aggregates-filter.input';
 import { EnumDiscartItemStatusWithAggregatesFilter } from '../prisma/enum-discart-item-status-with-aggregates-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
@@ -37,8 +38,8 @@ export class DiscartItemScalarWhereWithAggregatesInput {
     @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
     price?: FloatNullableWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    category?: StringWithAggregatesFilter;
+    @Field(() => EnumDiscartItemCategoryWithAggregatesFilter, {nullable:true})
+    category?: EnumDiscartItemCategoryWithAggregatesFilter;
 
     @Field(() => EnumDiscartItemConditionWithAggregatesFilter, {nullable:true})
     condition?: EnumDiscartItemConditionWithAggregatesFilter;

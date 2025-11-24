@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { DiscartItemType } from '../prisma/discart-item-type.enum';
 import { Float } from '@nestjs/graphql';
+import { DiscartItemCategory } from '../prisma/discart-item-category.enum';
 import { DiscartItemCondition } from '../prisma/discart-item-condition.enum';
 import { DiscartItemStatus } from '../prisma/discart-item-status.enum';
 import { DiscartItemCreateimageUrlsInput } from './discart-item-createimage-urls.input';
@@ -26,8 +27,8 @@ export class DiscartItemCreateManyCreatedByInput {
     @Field(() => Float, {nullable:true})
     price?: number;
 
-    @Field(() => String, {nullable:false})
-    category!: string;
+    @Field(() => DiscartItemCategory, {nullable:true})
+    category?: keyof typeof DiscartItemCategory;
 
     @Field(() => DiscartItemCondition, {nullable:false})
     condition!: keyof typeof DiscartItemCondition;
