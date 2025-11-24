@@ -19,4 +19,6 @@ export class CreateUserWithoutPassword {
 
   // @Field(() => String, { nullable: true })
   // cpf: string;
+  @Field({ defaultValue: false })
+  emailVerified?: boolean;
 }
