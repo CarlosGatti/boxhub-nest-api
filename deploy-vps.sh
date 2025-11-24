@@ -29,6 +29,22 @@ if [ -f "package.json" ] && [ -f "yarn.lock" ]; then
   yarn install --production=false || npm install
 fi
 
+# Aplicar migrations do Prisma (CRÍTICO: antes do build!)
+if [ -f "prisma/schema.prisma" ]; then
+  echo "🗄️  Aplicando migrations do Prisma..."
+  npx prisma migrate deploy || {
+    echo "⚠️  Aviso: Migration pode ter falhado ou já estar aplicada"
+    echo "   Verificando status das migrations..."
+    npx prisma migrate status || true
+  }
+  
+  echo "🔄 Regenerando tipos do Prisma..."
+  npx prisma generate || {
+    echo "❌ Erro ao gerar tipos Prisma"
+    exit 1
+  }
+fi
+
 # Build do projeto
 echo "🔨 Fazendo build do projeto..."
 npm run build

@@ -19,7 +19,7 @@ export class CreateDiscartItemInput {
   @Field(() => Float, { nullable: true })
   price?: number | null;
 
-  @Field(() => DiscartItemCategory, { nullable: true, defaultValue: 'GENERAL' })
+  @Field(() => DiscartItemCategory, { nullable: true, defaultValue: 'OTHER' })
   category?: keyof typeof DiscartItemCategory;
 
   @Field(() => DiscartItemCondition, { nullable: false })

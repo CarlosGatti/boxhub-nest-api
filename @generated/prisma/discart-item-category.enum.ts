@@ -1,7 +1,11 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum DiscartItemCategory {
-    GENERAL = "GENERAL",
+    FURNITURE = "FURNITURE",
+    ELECTRONICS = "ELECTRONICS",
+    KIDS = "KIDS",
+    SPORTS = "SPORTS",
+    OTHER = "OTHER",
     BOOK = "BOOK"
 }
 

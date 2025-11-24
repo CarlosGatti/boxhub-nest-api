@@ -44,7 +44,7 @@ export class DiscartItemResolver {
         description: data.description,
         type: data.type,
         price: data.price ?? null,
-        category: data.category || 'GENERAL',
+        category: data.category || 'OTHER',
         condition: data.condition,
         contactPhone: data.contactPhone,
         imageUrls: data.imageUrls ?? [],

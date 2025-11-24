@@ -81,7 +81,7 @@ export class DiscartItemService {
       description: input.description,
       type: input.type as any,
       price: input.type === "SELL" ? input.price ?? 0 : null,
-      category: (input.category as any) || "GENERAL", // Default to GENERAL if not provided
+      category: (input.category as any) || "OTHER", // Default to OTHER if not provided
       condition: input.condition as any,
       status: "ACTIVE" as any,
       contactPhone: input.contactPhone,

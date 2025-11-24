@@ -69,7 +69,7 @@ model DiscartItem {
   description   String
   type          DiscartItemType
   price         Float?
-  category      DiscartItemCategory @default(GENERAL)
+  category      DiscartItemCategory @default(OTHER)
   condition     DiscartItemCondition
   status        DiscartItemStatus   @default(ACTIVE)
 
@@ -417,7 +417,11 @@ enum DiscartItemStatus {
 }
 
 enum DiscartItemCategory {
-  GENERAL
+  FURNITURE
+  ELECTRONICS
+  KIDS
+  SPORTS
+  OTHER
   BOOK
 }
 
