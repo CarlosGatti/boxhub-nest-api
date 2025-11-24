@@ -14,10 +14,14 @@ import { BaseResult } from "../models/base-error.dto";
 import { ProGuard } from "src/auth/guards/pro.guard";
 import { AdminGuard } from "src/auth/guards/admin.guard";
 import { MailService } from "src/services/providers/mail/mail.service";
+import { RegisterUserInput, LoginResult } from "./dto/user.dto";
+import { AuthService } from "../auth/auth.service";
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService,
-              private readonly mailService: MailService
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+    private readonly authService: AuthService
   ) {}
 
   @Query(() => User)
@@ -66,6 +70,38 @@ export class UserResolver {
   @Mutation(() => BaseResult, { name: "createUserWithoutPassword" })
   createUserWithoutPassword(@Args("data") data: CreateUserWithoutPassword) {
     return this.userService.createUserWithoutPassword(data);
+  }
+
+  @Mutation(() => LoginResult, { name: "register" })
+  async register(@Args("user") userInput: RegisterUserInput): Promise<LoginResult> {
+    console.log("📝 Registering user with email:", userInput.email);
+    try {
+      // Convert RegisterUserInput to UserCreateInput
+      const userCreateData: UserCreateInput = {
+        email: userInput.email,
+        password: userInput.password,
+        firstName: userInput.firstName,
+        lastName: userInput.lastName,
+        public: userInput.public ?? false,
+        apartment: userInput.apartment,
+      };
+
+      // Create the user
+      const user = await this.userService.createUser(userCreateData);
+      console.log("✅ User registered successfully:", user.id);
+
+      // Generate JWT token
+      const token = this.authService.createJwt(user).token;
+
+      // Return LoginResult with user and token
+      return {
+        user,
+        token,
+      };
+    } catch (error) {
+      console.error("❌ Error registering user:", error);
+      throw error;
+    }
   }
 
 

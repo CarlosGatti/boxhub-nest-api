@@ -20,6 +20,27 @@ export class LoginResult {
   token: string;
 }
 
+@InputType()
+export class RegisterUserInput {
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  password: string;
+
+  @Field(() => Boolean, { nullable: true })
+  public?: boolean;
+
+  @Field(() => String, { nullable: true })
+  apartment?: string;
+}
+
 @ObjectType()
 export class SingleUserResult {
   @Field(() => User)
