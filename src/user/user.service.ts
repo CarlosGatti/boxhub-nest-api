@@ -74,8 +74,10 @@ export class UserService {
 
   async sendEmailVerification(user: User, token: string): Promise<void> {
     // Use environment variable or default URL for logo
-    const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-discart-me.png';
-    const verifyUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
+    const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
+    // Use backend URL for verification endpoint, which will redirect to frontend
+    const backendUrl = process.env.BACKEND_URL || process.env.API_URL || 'https://api.discart.me';
+    const verifyUrl = `${backendUrl}/auth/verify-email`;
     
     const variables = {
       firstName: user.firstName,
