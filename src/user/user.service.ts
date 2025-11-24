@@ -73,17 +73,23 @@ export class UserService {
   }
 
   async sendEmailVerification(user: User, token: string): Promise<void> {
+    // Use environment variable or default URL for logo
+    const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-discart-me.png';
+    const verifyUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
+    
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
       token: token,
+      logoUrl: logoUrl,
+      verifyUrl: verifyUrl,
       year: new Date().getFullYear(),
     };
 
     await this.mailService.send({
       path: "email-verification",
       to: user.email,
-      subject: "Verify Your Email Address - Defined",
+      subject: "Verify Your Email Address - Discart-me",
       variables,
     });
   }
@@ -180,11 +186,11 @@ export class UserService {
     await this.mailService.send({
       path: 'resident_approved',
       to: user.email,
-      subject: 'Defined - Your Resident Application Has Been Approved',
+      subject: 'Discart-me - Your Resident Application Has Been Approved',
       variables: {
         firstName: user.firstName,
         lastName: user.lastName,
-        loginUrl: 'https://www.carlosgatti.com',
+        loginUrl: 'https://www.discart.me',
         year: new Date().getFullYear(),
       },
     });
@@ -211,12 +217,12 @@ export class UserService {
     await this.mailService.send({
       path: 'resident_rejected',
       to: user.email,
-      subject: 'Defined - Your Resident Application Status',
+      subject: 'Discart-me - Your Resident Application Status',
       variables: {
         firstName: user.firstName,
         lastName: user.lastName,
         reason: reason || 'Your application did not meet our requirements.',
-        contactUrl: 'https://www.carlosgatti.com/contact',
+        contactUrl: 'https://www.discart.me/contact',
         year: new Date().getFullYear(),
       },
     });

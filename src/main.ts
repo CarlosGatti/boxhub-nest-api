@@ -79,6 +79,11 @@ async function bootstrap() {
     prefix: "/uploads/",
   });
 
+  // Serve static email assets (logos, images, etc)
+  app.useStaticAssets(join(process.cwd(), "src", "static", "email"), {
+    prefix: "/static/email/",
+  });
+
   const port = process.env.PORT || 3000;
   await app.listen(port, "0.0.0.0");
 

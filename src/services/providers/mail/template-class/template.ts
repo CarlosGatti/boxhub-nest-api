@@ -140,6 +140,12 @@ class EmailVerificationTemplate extends Template {
       'body.hbs',
     );
   }
+
+  get attachments() {
+    // Logo can be loaded via URL or as attachment
+    // If using attachment, uncomment below and add logo file
+    return [];
+  }
 }
 
 
