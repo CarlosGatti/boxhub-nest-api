@@ -3,6 +3,43 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 
 import { PrismaService } from "../prisma.service";
 
+// Helper function to normalize category values from frontend to enum
+function normalizeCategory(category: string | null | undefined): string {
+  if (!category) return 'OTHER';
+  
+  const upper = category.toUpperCase().trim();
+  
+  // Map valid enum values
+  const validCategories = ['FURNITURE', 'ELECTRONICS', 'KIDS', 'SPORTS', 'OTHER', 'BOOK'];
+  if (validCategories.includes(upper)) {
+    return upper;
+  }
+  
+  // Map common variations
+  const lower = category.toLowerCase().trim();
+  if (lower === 'book' || lower === 'books') {
+    return 'BOOK';
+  }
+  if (lower === 'furniture' || lower === 'furnitures') {
+    return 'FURNITURE';
+  }
+  if (lower === 'electronics' || lower === 'electronic') {
+    return 'ELECTRONICS';
+  }
+  if (lower === 'kids' || lower === 'kid' || lower === 'children') {
+    return 'KIDS';
+  }
+  if (lower === 'sports' || lower === 'sport') {
+    return 'SPORTS';
+  }
+  if (lower === 'other' || lower === 'others' || lower === 'general') {
+    return 'OTHER';
+  }
+  
+  // Default fallback
+  return 'OTHER';
+}
+
 type DiscartItemCreateInputDto = {
   title: string;
   description: string;
@@ -36,7 +73,9 @@ export class DiscartItemService {
     }
 
     if (filters.category) {
-      where.category = filters.category as any;
+      // Normalize category filter to match enum values
+      const normalizedCategory = normalizeCategory(filters.category as string);
+      where.category = normalizedCategory as any;
     }
 
     if (filters.search) {
@@ -81,7 +120,7 @@ export class DiscartItemService {
       description: input.description,
       type: input.type as any,
       price: input.type === "SELL" ? input.price ?? 0 : null,
-      category: (input.category as any) || "OTHER", // Default to OTHER if not provided
+      category: normalizeCategory(input.category) as any, // Normalize category value
       condition: input.condition as any,
       status: "ACTIVE" as any,
       contactPhone: input.contactPhone,
@@ -148,7 +187,7 @@ export class DiscartItemService {
           : input.type === "DONATE"
           ? null
           : input.price ?? undefined,
-      category: input.category ? (input.category as any) : undefined,
+      category: input.category ? (normalizeCategory(input.category) as any) : undefined,
       condition: input.condition ? (input.condition as any) : undefined,
       contactPhone: input.contactPhone,
       imageUrls: input.imageUrls ?? undefined,
