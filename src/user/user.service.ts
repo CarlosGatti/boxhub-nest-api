@@ -62,28 +62,32 @@ export class UserService {
         profilePicture: data.profilePicture,
         public: data.public,
         apartment: (data as any).apartment,
+        emailVerified: false, // Explicitly set to false - user must verify email
         expiresAt,
         willExpireAt: expiresAt,
         isPremium: false, // Default to false, can be updated later
       },
     });
 
+    return user;
+  }
+
+  async sendEmailVerification(user: User, token: string): Promise<void> {
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
-      loginUrl: "https://www.carlosgatti.com",
+      token: token,
       year: new Date().getFullYear(),
     };
 
     await this.mailService.send({
-      path: "welcome",
-      to: data.email,
-      subject: "Welcome to Defined",
+      path: "email-verification",
+      to: user.email,
+      subject: "Verify Your Email Address - Defined",
       variables,
     });
-
-    return user;
   }
+
 
   async createUserWithoutPassword(
     data: CreateUserWithoutPassword

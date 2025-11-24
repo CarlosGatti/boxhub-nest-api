@@ -86,22 +86,34 @@ export class UserResolver {
         apartment: userInput.apartment,
       };
 
-      // Create the user
+      // Create the user (emailVerified will be false by default)
       const user = await this.userService.createUser(userCreateData);
       console.log("✅ User registered successfully:", user.id);
 
-      // Generate JWT token
-      const token = this.authService.createJwt(user).token;
+      // Generate JWT token for email verification
+      const verificationToken = this.authService.createJwt(user).token;
+
+      // Send email verification email
+      await this.userService.sendEmailVerification(user, verificationToken);
+      console.log("📧 Email verification sent to:", user.email);
+
+      // Generate JWT token for login (user can login but email is not verified yet)
+      const loginToken = this.authService.createJwt(user).token;
 
       // Return LoginResult with user and token
       return {
         user,
-        token,
+        token: loginToken,
       };
     } catch (error) {
       console.error("❌ Error registering user:", error);
       throw error;
     }
+  }
+
+  @Mutation(() => BaseResult, { name: "verifyEmail" })
+  async verifyEmail(@Args("token") token: string): Promise<BaseResult> {
+    return this.authService.verifyEmail(token);
   }
 
 

@@ -229,4 +229,52 @@ export class AuthService {
       message: "Senha atualizada com sucesso",
     };
   }
+
+  async verifyEmail(token: string): Promise<BaseResult> {
+    try {
+      const payload = this.jwtService.verify(token);
+      
+      if (!payload || !payload._id) {
+        return {
+          success: false,
+          message: "Token inválido ou expirado",
+        };
+      }
+
+      const userId = Number(payload._id);
+      const user = await this.prismaService.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        return {
+          success: false,
+          message: "Usuário não encontrado",
+        };
+      }
+
+      if (user.emailVerified) {
+        return {
+          success: true,
+          message: "Email já estava verificado",
+        };
+      }
+
+      await this.prismaService.user.update({
+        where: { id: userId },
+        data: { emailVerified: true },
+      });
+
+      return {
+        success: true,
+        message: "Email verificado com sucesso",
+      };
+    } catch (error) {
+      console.error("Error verifying email:", error);
+      return {
+        success: false,
+        message: "Token inválido ou expirado",
+      };
+    }
+  }
 }
