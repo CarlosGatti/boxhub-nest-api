@@ -19,8 +19,8 @@ export class DiscartItemResolver {
   async discartItems(
     @Args("type", { type: () => DiscartItemType, nullable: true })
     type?: DiscartItemType | "ALL",
-    @Args("category", { type: () => DiscartItemCategory, nullable: true })
-    category?: DiscartItemCategory,
+    @Args("category", { type: () => String, nullable: true })
+    category?: string,
     @Args("search", { type: () => String, nullable: true })
     search?: string
   ) {
