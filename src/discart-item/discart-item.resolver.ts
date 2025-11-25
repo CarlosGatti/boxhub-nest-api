@@ -71,7 +71,7 @@ export class DiscartItemResolver {
       nullable: true,
     })
     price?: number | null,
-    @Args("category", { type: () => DiscartItemCategory, nullable: true }) category?: DiscartItemCategory,
+    @Args("category", { type: () => String, nullable: true }) category?: string,
     @Args("condition", {
       type: () => DiscartItemCondition,
       nullable: true,
