@@ -49,6 +49,9 @@ export class User {
     @Field(() => String, {nullable:true})
     about!: string | null;
 
+    @Field(() => String, {nullable:true})
+    contactPhone!: string | null;
+
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
 

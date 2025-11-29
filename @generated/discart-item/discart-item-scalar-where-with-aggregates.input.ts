@@ -9,6 +9,7 @@ import { EnumDiscartItemConditionWithAggregatesFilter } from '../prisma/enum-dis
 import { EnumDiscartItemStatusWithAggregatesFilter } from '../prisma/enum-discart-item-status-with-aggregates-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
 import { JsonNullableWithAggregatesFilter } from '../prisma/json-nullable-with-aggregates-filter.input';
+import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 
 @InputType()
@@ -53,8 +54,8 @@ export class DiscartItemScalarWhereWithAggregatesInput {
     @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
     pickupAddress?: JsonNullableWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
-    contactPhone?: StringWithAggregatesFilter;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    contactPhone?: StringNullableWithAggregatesFilter;
 
     @Field(() => IntWithAggregatesFilter, {nullable:true})
     createdById?: IntWithAggregatesFilter;

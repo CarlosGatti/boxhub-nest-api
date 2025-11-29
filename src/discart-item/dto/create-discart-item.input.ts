@@ -25,8 +25,8 @@ export class CreateDiscartItemInput {
   @Field(() => DiscartItemCondition, { nullable: false })
   condition!: keyof typeof DiscartItemCondition;
 
-  @Field(() => String, { nullable: false })
-  contactPhone!: string;
+  @Field(() => String, { nullable: true })
+  contactPhone?: string;  // opcional; se não vier, usar do usuário logado
 
   @Field(() => [String], { nullable: true })
   imageUrls?: string[];

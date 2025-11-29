@@ -63,13 +63,18 @@ jobs:
             echo "🔧 Verificando se prisma-nestjs-graphql está instalado..."
             if [ -d "node_modules/prisma-nestjs-graphql" ]; then
               echo "✅ prisma-nestjs-graphql encontrado"
-              echo "🔧 Generating Prisma client..."
-              yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
             else
               echo "⚠️ prisma-nestjs-graphql não encontrado, instalando..."
               yarn add -D prisma-nestjs-graphql || echo "⚠️ Falha ao instalar prisma-nestjs-graphql"
-              yarn prisma:generate || yarn prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
             fi
+            echo "🗄️  Aplicando migrations do Prisma..."
+            npx prisma migrate deploy || {
+              echo "⚠️  Aviso: Migration pode ter falhado ou já estar aplicada"
+              echo "   Verificando status das migrations..."
+              npx prisma migrate status || true
+            }
+            echo "🔧 Generating Prisma client..."
+            yarn prisma:generate || yarn prisma generate || npx prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
             echo "🏗 Building project..."
             yarn build
             echo "✅ Verificando se build foi bem-sucedido..."

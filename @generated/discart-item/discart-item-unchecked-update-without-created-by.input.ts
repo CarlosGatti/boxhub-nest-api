@@ -9,6 +9,7 @@ import { EnumDiscartItemConditionFieldUpdateOperationsInput } from '../prisma/en
 import { EnumDiscartItemStatusFieldUpdateOperationsInput } from '../prisma/enum-discart-item-status-field-update-operations.input';
 import { DiscartItemUpdateimageUrlsInput } from './discart-item-updateimage-urls.input';
 import { GraphQLJSON } from 'graphql-type-json';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 
 @InputType()
@@ -44,8 +45,8 @@ export class DiscartItemUncheckedUpdateWithoutCreatedByInput {
     @Field(() => GraphQLJSON, {nullable:true})
     pickupAddress?: any;
 
-    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
-    contactPhone?: StringFieldUpdateOperationsInput;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contactPhone?: NullableStringFieldUpdateOperationsInput;
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;

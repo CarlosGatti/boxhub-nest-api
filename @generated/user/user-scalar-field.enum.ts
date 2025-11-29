@@ -12,6 +12,7 @@ export enum UserScalarFieldEnum {
     emailVerified = "emailVerified",
     profilePicture = "profilePicture",
     about = "about",
+    contactPhone = "contactPhone",
     createdAt = "createdAt",
     updatedAt = "updatedAt",
     isPremium = "isPremium",

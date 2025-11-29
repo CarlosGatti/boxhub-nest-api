@@ -43,8 +43,8 @@ export class DiscartItem {
     @Field(() => GraphQLJSON, {nullable:true})
     pickupAddress!: any | null;
 
-    @Field(() => String, {nullable:false})
-    contactPhone!: string;
+    @Field(() => String, {nullable:true})
+    contactPhone!: string | null;
 
     @Field(() => Int, {nullable:false})
     createdById!: number;

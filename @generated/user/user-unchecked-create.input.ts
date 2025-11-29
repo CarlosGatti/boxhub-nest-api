@@ -48,6 +48,9 @@ export class UserUncheckedCreateInput {
     @Field(() => String, {nullable:true})
     about?: string;
 
+    @Field(() => String, {nullable:true})
+    contactPhone?: string;
+
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
 

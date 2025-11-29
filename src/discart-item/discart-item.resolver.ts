@@ -10,6 +10,9 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CurrentUser } from "../user/current-user.decorator";
 import { User } from "../../@generated/user/user.model";
 import { CreateDiscartItemInput } from "./dto/create-discart-item.input";
+import { UpdateDiscartItemStatusInput } from "./dto/update-discart-item-status.input";
+import { DiscartSummary } from "./dto/discart-summary.dto";
+import { DiscartItemStatus } from "../../@generated/prisma/discart-item-status.enum";
 
 @Resolver(() => DiscartItem)
 export class DiscartItemResolver {
@@ -33,6 +36,12 @@ export class DiscartItemResolver {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Query(() => DiscartSummary)
+  async discartSummary(@CurrentUser() user: User): Promise<DiscartSummary> {
+    return this.discartService.getSummary((user as unknown) as any);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => DiscartItem)
   async createDiscartItem(
     @Args("data") data: CreateDiscartItemInput,
@@ -46,7 +55,7 @@ export class DiscartItemResolver {
         price: data.price ?? null,
         category: data.category || 'OTHER',
         condition: data.condition,
-        contactPhone: data.contactPhone,
+        contactPhone: data.contactPhone ?? undefined,
         imageUrls: data.imageUrls ?? [],
         pickupCondoName: data.pickupAddress?.condoName ?? null,
         pickupBuilding: data.pickupAddress?.building ?? null,
@@ -105,6 +114,19 @@ export class DiscartItemResolver {
     };
 
     return this.discartService.update(id, input, (user as unknown) as any);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => DiscartItem)
+  async updateDiscartItemStatus(
+    @Args("data") data: UpdateDiscartItemStatusInput,
+    @CurrentUser() user: User
+  ) {
+    return this.discartService.updateStatus(
+      data.id,
+      data.status,
+      (user as unknown) as any
+    );
   }
 
   @UseGuards(JwtAuthGuard)

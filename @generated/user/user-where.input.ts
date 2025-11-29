@@ -62,6 +62,9 @@ export class UserWhereInput {
     @Field(() => StringNullableFilter, {nullable:true})
     about?: StringNullableFilter;
 
+    @Field(() => StringNullableFilter, {nullable:true})
+    contactPhone?: StringNullableFilter;
+
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: DateTimeFilter;
 

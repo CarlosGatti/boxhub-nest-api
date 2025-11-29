@@ -42,8 +42,8 @@ export class DiscartItemUncheckedCreateInput {
     @Field(() => GraphQLJSON, {nullable:true})
     pickupAddress?: any;
 
-    @Field(() => String, {nullable:false})
-    contactPhone!: string;
+    @Field(() => String, {nullable:true})
+    contactPhone?: string;
 
     @Field(() => Int, {nullable:false})
     createdById!: number;

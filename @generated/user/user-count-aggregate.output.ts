@@ -39,6 +39,9 @@ export class UserCountAggregate {
     about!: number;
 
     @Field(() => Int, {nullable:false})
+    contactPhone!: number;
+
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
 
     @Field(() => Int, {nullable:false})

@@ -39,6 +39,9 @@ export class UserMaxOrderByAggregateInput {
     about?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    contactPhone?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

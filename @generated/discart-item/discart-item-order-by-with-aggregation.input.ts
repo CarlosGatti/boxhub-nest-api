@@ -41,8 +41,8 @@ export class DiscartItemOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     pickupAddress?: SortOrderInput;
 
-    @Field(() => SortOrder, {nullable:true})
-    contactPhone?: keyof typeof SortOrder;
+    @Field(() => SortOrderInput, {nullable:true})
+    contactPhone?: SortOrderInput;
 
     @Field(() => SortOrder, {nullable:true})
     createdById?: keyof typeof SortOrder;

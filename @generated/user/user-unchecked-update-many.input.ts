@@ -44,6 +44,9 @@ export class UserUncheckedUpdateManyInput {
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     about?: NullableStringFieldUpdateOperationsInput;
 
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    contactPhone?: NullableStringFieldUpdateOperationsInput;
+
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;
 

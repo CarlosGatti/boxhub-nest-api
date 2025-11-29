@@ -44,6 +44,9 @@ export class UserOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     about?: SortOrderInput;
 
+    @Field(() => SortOrderInput, {nullable:true})
+    contactPhone?: SortOrderInput;
+
     @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
 

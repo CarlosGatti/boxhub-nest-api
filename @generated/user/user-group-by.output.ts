@@ -44,6 +44,9 @@ export class UserGroupBy {
     @Field(() => String, {nullable:true})
     about?: string;
 
+    @Field(() => String, {nullable:true})
+    contactPhone?: string;
+
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
 

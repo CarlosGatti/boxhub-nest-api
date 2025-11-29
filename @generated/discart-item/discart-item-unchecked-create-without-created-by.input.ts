@@ -42,8 +42,8 @@ export class DiscartItemUncheckedCreateWithoutCreatedByInput {
     @Field(() => GraphQLJSON, {nullable:true})
     pickupAddress?: any;
 
-    @Field(() => String, {nullable:false})
-    contactPhone!: string;
+    @Field(() => String, {nullable:true})
+    contactPhone?: string;
 
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;

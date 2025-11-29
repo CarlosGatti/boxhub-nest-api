@@ -3,7 +3,8 @@ import { registerEnumType } from '@nestjs/graphql';
 export enum DiscartItemStatus {
     ACTIVE = "ACTIVE",
     RESERVED = "RESERVED",
-    SOLD = "SOLD"
+    SOLD = "SOLD",
+    DONATED = "DONATED"
 }
 
 

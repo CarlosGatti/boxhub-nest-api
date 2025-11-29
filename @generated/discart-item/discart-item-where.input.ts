@@ -9,6 +9,7 @@ import { EnumDiscartItemConditionFilter } from '../prisma/enum-discart-item-cond
 import { EnumDiscartItemStatusFilter } from '../prisma/enum-discart-item-status-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
 import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
+import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
 
@@ -54,8 +55,8 @@ export class DiscartItemWhereInput {
     @Field(() => JsonNullableFilter, {nullable:true})
     pickupAddress?: JsonNullableFilter;
 
-    @Field(() => StringFilter, {nullable:true})
-    contactPhone?: StringFilter;
+    @Field(() => StringNullableFilter, {nullable:true})
+    contactPhone?: StringNullableFilter;
 
     @Field(() => IntFilter, {nullable:true})
     createdById?: IntFilter;

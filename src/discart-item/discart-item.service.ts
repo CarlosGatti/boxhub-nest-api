@@ -47,7 +47,7 @@ type DiscartItemCreateInputDto = {
   price?: number | null;
   category?: string; // Can be enum value or string for backward compatibility
   condition: string;
-  contactPhone: string;
+  contactPhone?: string | null; // Opcional; se não fornecido, usar do usuário
   imageUrls?: string[];
   pickupCondoName?: string | null;
   pickupBuilding?: string | null;
@@ -108,6 +108,14 @@ export class DiscartItemService {
   }
 
   async create(input: DiscartItemCreateInputDto, user: User): Promise<DiscartItem> {
+    // Buscar usuário completo para pegar contactPhone se necessário
+    const fullUser = await this.prisma.user.findUnique({
+      where: { id: user.id },
+    });
+
+    // Se contactPhone não foi fornecido, usar do usuário logado
+    const contactPhone = input.contactPhone ?? (fullUser as any)?.contactPhone ?? null;
+
     const pickupAddress = {
       condoName: input.pickupCondoName,
       building: input.pickupBuilding,
@@ -123,7 +131,7 @@ export class DiscartItemService {
       category: normalizeCategory(input.category) as any, // Normalize category value
       condition: input.condition as any,
       status: "ACTIVE" as any,
-      contactPhone: input.contactPhone,
+      contactPhone,
       imageUrls: input.imageUrls ?? [],
       pickupAddress,
       createdBy: { connect: { id: user.id } },
@@ -217,6 +225,66 @@ export class DiscartItemService {
     return this.prisma.discartItem.delete({
       where: { id },
     });
+  }
+
+  async updateStatus(
+    id: number,
+    status: string,
+    user: User
+  ): Promise<DiscartItem> {
+    const existing = await this.prisma.discartItem.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException("Item not found");
+    }
+
+    if (existing.createdById !== user.id && !(user as any).isAdmin) {
+      throw new ForbiddenException("Not allowed");
+    }
+
+    return this.prisma.discartItem.update({
+      where: { id },
+      data: { status: status as any },
+      include: { createdBy: true },
+    });
+  }
+
+  async getSummary(user: User): Promise<{
+    totalActiveSellCount: number;
+    totalActiveSellValue: number;
+    totalSoldCount: number;
+    totalDonatedCount: number;
+  }> {
+    // Considerar apenas itens do próprio usuário (ajuste conforme regra de negócio)
+    const whereBase = { createdById: user.id };
+
+    const [activeSell, sold, donated] = await Promise.all([
+      this.prisma.discartItem.findMany({
+        where: { ...whereBase, type: "SELL", status: "ACTIVE" },
+        select: { price: true },
+      }),
+      this.prisma.discartItem.count({
+        where: { ...whereBase, status: "SOLD" },
+      }),
+      this.prisma.discartItem.count({
+        where: { ...whereBase, status: "DONATED" as any },
+      }),
+    ]);
+
+    const totalActiveSellCount = activeSell.length;
+    const totalActiveSellValue = activeSell.reduce(
+      (sum, item) => sum + (item.price ?? 0),
+      0,
+    );
+
+    return {
+      totalActiveSellCount,
+      totalActiveSellValue,
+      totalSoldCount: sold,
+      totalDonatedCount: donated,
+    };
   }
 }
 
