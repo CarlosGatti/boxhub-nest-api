@@ -9,6 +9,8 @@ import { DiscartItemStatus } from '../prisma/discart-item-status.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 import { Int } from '@nestjs/graphql';
 import { User } from '../user/user.model';
+import { Comment } from '../comment/comment.model';
+import { DiscartItemCount } from './discart-item-count.output';
 
 @ObjectType()
 export class DiscartItem {
@@ -57,4 +59,10 @@ export class DiscartItem {
 
     @Field(() => User, {nullable:false})
     createdBy?: User;
+
+    @Field(() => [Comment], {nullable:true})
+    comments?: Array<Comment>;
+
+    @Field(() => DiscartItemCount, {nullable:false})
+    _count?: DiscartItemCount;
 }

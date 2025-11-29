@@ -17,6 +17,8 @@ import { LogCommentReplyListRelationFilter } from '../log-comment-reply/log-comm
 import { PermitInspectionListRelationFilter } from '../permit-inspection/permit-inspection-list-relation-filter.input';
 import { MaterialEntryListRelationFilter } from '../material-entry/material-entry-list-relation-filter.input';
 import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list-relation-filter.input';
+import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
+import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.input';
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -119,4 +121,13 @@ export class UserWhereUniqueInput {
 
     @Field(() => DiscartItemListRelationFilter, {nullable:true})
     discartItems?: DiscartItemListRelationFilter;
+
+    @Field(() => CommentListRelationFilter, {nullable:true})
+    comments?: CommentListRelationFilter;
+
+    @Field(() => RatingListRelationFilter, {nullable:true})
+    ratingsAsSeller?: RatingListRelationFilter;
+
+    @Field(() => RatingListRelationFilter, {nullable:true})
+    ratingsAsBuyer?: RatingListRelationFilter;
 }

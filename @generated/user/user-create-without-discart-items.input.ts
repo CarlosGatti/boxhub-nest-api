@@ -9,6 +9,9 @@ import { LogCommentCreateNestedManyWithoutUserInput } from '../log-comment/log-c
 import { LogCommentReplyCreateNestedManyWithoutUserInput } from '../log-comment-reply/log-comment-reply-create-nested-many-without-user.input';
 import { PermitInspectionCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-create-nested-many-without-responsible.input';
 import { MaterialEntryCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-create-nested-many-without-received-by.input';
+import { CommentCreateNestedManyWithoutUserInput } from '../comment/comment-create-nested-many-without-user.input';
+import { RatingCreateNestedManyWithoutSellerInput } from '../rating/rating-create-nested-many-without-seller.input';
+import { RatingCreateNestedManyWithoutBuyerInput } from '../rating/rating-create-nested-many-without-buyer.input';
 
 @InputType()
 export class UserCreateWithoutDiscartItemsInput {
@@ -96,4 +99,13 @@ export class UserCreateWithoutDiscartItemsInput {
 
     @Field(() => MaterialEntryCreateNestedManyWithoutReceivedByInput, {nullable:true})
     receivedMaterials?: MaterialEntryCreateNestedManyWithoutReceivedByInput;
+
+    @Field(() => CommentCreateNestedManyWithoutUserInput, {nullable:true})
+    comments?: CommentCreateNestedManyWithoutUserInput;
+
+    @Field(() => RatingCreateNestedManyWithoutSellerInput, {nullable:true})
+    ratingsAsSeller?: RatingCreateNestedManyWithoutSellerInput;
+
+    @Field(() => RatingCreateNestedManyWithoutBuyerInput, {nullable:true})
+    ratingsAsBuyer?: RatingCreateNestedManyWithoutBuyerInput;
 }

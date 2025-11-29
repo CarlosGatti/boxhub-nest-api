@@ -14,6 +14,7 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
 
 @InputType()
 export class DiscartItemWhereUniqueInput {
@@ -71,4 +72,7 @@ export class DiscartItemWhereUniqueInput {
 
     @Field(() => UserRelationFilter, {nullable:true})
     createdBy?: UserRelationFilter;
+
+    @Field(() => CommentListRelationFilter, {nullable:true})
+    comments?: CommentListRelationFilter;
 }

@@ -7,6 +7,7 @@ import { DiscartItemCondition } from '../prisma/discart-item-condition.enum';
 import { DiscartItemStatus } from '../prisma/discart-item-status.enum';
 import { DiscartItemCreateimageUrlsInput } from './discart-item-createimage-urls.input';
 import { GraphQLJSON } from 'graphql-type-json';
+import { CommentCreateNestedManyWithoutDiscartItemInput } from '../comment/comment-create-nested-many-without-discart-item.input';
 
 @InputType()
 export class DiscartItemCreateWithoutCreatedByInput {
@@ -46,4 +47,7 @@ export class DiscartItemCreateWithoutCreatedByInput {
 
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+
+    @Field(() => CommentCreateNestedManyWithoutDiscartItemInput, {nullable:true})
+    comments?: CommentCreateNestedManyWithoutDiscartItemInput;
 }

@@ -11,6 +11,7 @@ import { DiscartItemUpdateimageUrlsInput } from './discart-item-updateimage-urls
 import { GraphQLJSON } from 'graphql-type-json';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { CommentUncheckedUpdateManyWithoutDiscartItemNestedInput } from '../comment/comment-unchecked-update-many-without-discart-item-nested.input';
 
 @InputType()
 export class DiscartItemUncheckedUpdateInput {
@@ -56,4 +57,7 @@ export class DiscartItemUncheckedUpdateInput {
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => CommentUncheckedUpdateManyWithoutDiscartItemNestedInput, {nullable:true})
+    comments?: CommentUncheckedUpdateManyWithoutDiscartItemNestedInput;
 }

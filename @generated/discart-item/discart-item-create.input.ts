@@ -8,6 +8,7 @@ import { DiscartItemStatus } from '../prisma/discart-item-status.enum';
 import { DiscartItemCreateimageUrlsInput } from './discart-item-createimage-urls.input';
 import { GraphQLJSON } from 'graphql-type-json';
 import { UserCreateNestedOneWithoutDiscartItemsInput } from '../user/user-create-nested-one-without-discart-items.input';
+import { CommentCreateNestedManyWithoutDiscartItemInput } from '../comment/comment-create-nested-many-without-discart-item.input';
 
 @InputType()
 export class DiscartItemCreateInput {
@@ -50,4 +51,7 @@ export class DiscartItemCreateInput {
 
     @Field(() => UserCreateNestedOneWithoutDiscartItemsInput, {nullable:false})
     createdBy!: UserCreateNestedOneWithoutDiscartItemsInput;
+
+    @Field(() => CommentCreateNestedManyWithoutDiscartItemInput, {nullable:true})
+    comments?: CommentCreateNestedManyWithoutDiscartItemInput;
 }

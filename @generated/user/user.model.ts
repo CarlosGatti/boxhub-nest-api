@@ -11,6 +11,8 @@ import { LogCommentReply } from '../log-comment-reply/log-comment-reply.model';
 import { PermitInspection } from '../permit-inspection/permit-inspection.model';
 import { MaterialEntry } from '../material-entry/material-entry.model';
 import { DiscartItem } from '../discart-item/discart-item.model';
+import { Comment } from '../comment/comment.model';
+import { Rating } from '../rating/rating.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -105,6 +107,15 @@ export class User {
 
     @Field(() => [DiscartItem], {nullable:true})
     discartItems?: Array<DiscartItem>;
+
+    @Field(() => [Comment], {nullable:true})
+    comments?: Array<Comment>;
+
+    @Field(() => [Rating], {nullable:true})
+    ratingsAsSeller?: Array<Rating>;
+
+    @Field(() => [Rating], {nullable:true})
+    ratingsAsBuyer?: Array<Rating>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

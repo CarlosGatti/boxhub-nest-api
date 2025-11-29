@@ -11,6 +11,8 @@ import { LogCommentReplyOrderByRelationAggregateInput } from '../log-comment-rep
 import { PermitInspectionOrderByRelationAggregateInput } from '../permit-inspection/permit-inspection-order-by-relation-aggregate.input';
 import { MaterialEntryOrderByRelationAggregateInput } from '../material-entry/material-entry-order-by-relation-aggregate.input';
 import { DiscartItemOrderByRelationAggregateInput } from '../discart-item/discart-item-order-by-relation-aggregate.input';
+import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-by-relation-aggregate.input';
+import { RatingOrderByRelationAggregateInput } from '../rating/rating-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -104,4 +106,13 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => DiscartItemOrderByRelationAggregateInput, {nullable:true})
     discartItems?: DiscartItemOrderByRelationAggregateInput;
+
+    @Field(() => CommentOrderByRelationAggregateInput, {nullable:true})
+    comments?: CommentOrderByRelationAggregateInput;
+
+    @Field(() => RatingOrderByRelationAggregateInput, {nullable:true})
+    ratingsAsSeller?: RatingOrderByRelationAggregateInput;
+
+    @Field(() => RatingOrderByRelationAggregateInput, {nullable:true})
+    ratingsAsBuyer?: RatingOrderByRelationAggregateInput;
 }

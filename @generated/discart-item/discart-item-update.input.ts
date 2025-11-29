@@ -11,6 +11,7 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { UserUpdateOneRequiredWithoutDiscartItemsNestedInput } from '../user/user-update-one-required-without-discart-items-nested.input';
+import { CommentUpdateManyWithoutDiscartItemNestedInput } from '../comment/comment-update-many-without-discart-item-nested.input';
 
 @InputType()
 export class DiscartItemUpdateInput {
@@ -53,4 +54,7 @@ export class DiscartItemUpdateInput {
 
     @Field(() => UserUpdateOneRequiredWithoutDiscartItemsNestedInput, {nullable:true})
     createdBy?: UserUpdateOneRequiredWithoutDiscartItemsNestedInput;
+
+    @Field(() => CommentUpdateManyWithoutDiscartItemNestedInput, {nullable:true})
+    comments?: CommentUpdateManyWithoutDiscartItemNestedInput;
 }

@@ -14,6 +14,9 @@ import { LogCommentReplyUpdateManyWithoutUserNestedInput } from '../log-comment-
 import { PermitInspectionUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-update-many-without-responsible-nested.input';
 import { MaterialEntryUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-update-many-without-received-by-nested.input';
 import { DiscartItemUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-update-many-without-created-by-nested.input';
+import { CommentUpdateManyWithoutUserNestedInput } from '../comment/comment-update-many-without-user-nested.input';
+import { RatingUpdateManyWithoutSellerNestedInput } from '../rating/rating-update-many-without-seller-nested.input';
+import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
 
 @InputType()
 export class UserUpdateWithoutStorageMembershipsInput {
@@ -101,4 +104,13 @@ export class UserUpdateWithoutStorageMembershipsInput {
 
     @Field(() => DiscartItemUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     discartItems?: DiscartItemUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => CommentUpdateManyWithoutUserNestedInput, {nullable:true})
+    comments?: CommentUpdateManyWithoutUserNestedInput;
+
+    @Field(() => RatingUpdateManyWithoutSellerNestedInput, {nullable:true})
+    ratingsAsSeller?: RatingUpdateManyWithoutSellerNestedInput;
+
+    @Field(() => RatingUpdateManyWithoutBuyerNestedInput, {nullable:true})
+    ratingsAsBuyer?: RatingUpdateManyWithoutBuyerNestedInput;
 }

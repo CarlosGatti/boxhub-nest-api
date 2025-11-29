@@ -14,6 +14,8 @@ import { SubcontractorModule } from '../subcontractor/subcontractor.module';
 import { UploadController } from '../subcontractor/upload/upload.controller';
 import { UploadControllerInterface } from '../project/upload/upload.resolver';
 import { UserModule } from '../user/user.module';
+import { CommentsModule } from '../comments/comments.module';
+import { RatingsModule } from '../ratings/ratings.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { UserModule } from '../user/user.module';
     SubcontractorModule,
     ProjectModule, // Importando o módulo de projetos
     DiscartItemModule,
+    CommentsModule,
+    RatingsModule,
     // Registrando o controller de upload
   ],
   controllers: [

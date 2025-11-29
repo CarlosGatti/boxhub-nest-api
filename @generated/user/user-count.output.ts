@@ -31,4 +31,13 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     discartItems?: number;
+
+    @Field(() => Int, {nullable:false})
+    comments?: number;
+
+    @Field(() => Int, {nullable:false})
+    ratingsAsSeller?: number;
+
+    @Field(() => Int, {nullable:false})
+    ratingsAsBuyer?: number;
 }
