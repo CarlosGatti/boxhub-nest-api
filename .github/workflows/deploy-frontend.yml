@@ -1,0 +1,77 @@
+name: Deploy Frontend (Next.js)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'  # Só executa se houver mudanças no frontend
+      - '.github/workflows/deploy-frontend.yml'  # Ou se o workflow mudar
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: |
+          cd frontend  # Ajuste o caminho se o frontend estiver em outro lugar
+          yarn install
+
+      - name: Build Next.js
+        run: |
+          cd frontend
+          yarn build
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
+          # Adicione outras variáveis de ambiente necessárias
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-build
+          path: frontend/.next/
+          retention-days: 1
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || true
+            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc" || true
+            export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
+            command -v nvm >/dev/null 2>&1 && nvm use 18 || true
+            
+            cd /home/boxhub/boxhub-frontend  # Ajuste o caminho do frontend na VPS
+            
+            echo "🔄 Atualizando código do repositório..."
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
+            
+            echo "📦 Installing dependencies..."
+            yarn install --frozen-lockfile
+            
+            echo "🏗 Building Next.js project..."
+            yarn build
+            
+            echo "🔄 Reiniciando PM2 (frontend)..."
+            pm2 restart boxhub-frontend || pm2 start ecosystem.config.js --name boxhub-frontend || echo "⚠️ PM2 restart falhou"
+            
+            echo "✅ Frontend deploy concluído!"
+
