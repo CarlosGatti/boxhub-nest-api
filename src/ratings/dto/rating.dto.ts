@@ -1,29 +1,5 @@
 import { Field, ObjectType, Int, Float } from '@nestjs/graphql';
-import { User } from '../../../@generated/user/user.model';
-
-@ObjectType()
-export class Rating {
-  @Field(() => Int)
-  id!: number;
-
-  @Field(() => Int)
-  sellerId!: number;
-
-  @Field(() => Int)
-  buyerId!: number;
-
-  @Field(() => Int)
-  stars!: number;
-
-  @Field(() => String, { nullable: true })
-  comment?: string;
-
-  @Field(() => User)
-  buyer!: User;
-
-  @Field(() => Date)
-  createdAt!: Date;
-}
+import { Rating } from '../../../@generated/rating/rating.model';
 
 @ObjectType()
 export class SellerRatingSummary {
