@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver, Int } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentInput } from './dto/create-comment.input';
-import { Comment } from './dto/comment.dto';
+import { Comment } from '../../@generated/comment/comment.model';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../user/current-user.decorator';
 import { User } from '../../@generated/user/user.model';
