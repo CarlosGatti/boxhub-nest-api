@@ -65,7 +65,7 @@ export class DiscartItemService {
     type?: Prisma.DiscartItemWhereInput["type"] | string;
     category?: Prisma.DiscartItemWhereInput["category"] | string;
     search?: string;
-  }): Promise<DiscartItem[]> {
+  }, currentUser?: { id: number; isApprovedResident?: boolean }): Promise<DiscartItem[]> {
     const where: Prisma.DiscartItemWhereInput = {};
 
     if (filters.type && filters.type !== ("ALL" as any)) {
@@ -83,18 +83,42 @@ export class DiscartItemService {
       where.OR = [
         { title: { contains: q, mode: "insensitive" } },
         { description: { contains: q, mode: "insensitive" } },
-        { contactPhone: { contains: q, mode: "insensitive" } },
+        // Removido busca por contactPhone para não expor dados sensíveis
       ];
     }
 
-    return this.prisma.discartItem.findMany({
+    const items = await this.prisma.discartItem.findMany({
       where,
       include: { createdBy: true },
       orderBy: { createdAt: "desc" },
     });
+
+    // Filtrar dados sensíveis: apenas residentes aprovados veem contactPhone e detalhes do endereço
+    const isApproved = currentUser?.isApprovedResident ?? false;
+    
+    return items.map((item) => {
+      const itemCopy = { ...item };
+      
+      // Se não for residente aprovado, ocultar dados sensíveis
+      if (!isApproved) {
+        itemCopy.contactPhone = null;
+        // Manter apenas nome do condomínio, ocultar building, unit, notes
+        if (itemCopy.pickupAddress && typeof itemCopy.pickupAddress === 'object') {
+          const address = itemCopy.pickupAddress as any;
+          itemCopy.pickupAddress = {
+            condoName: address.condoName || null,
+            building: null,
+            unit: null,
+            notes: null,
+          };
+        }
+      }
+      
+      return itemCopy;
+    });
   }
 
-  async findOne(id: number): Promise<DiscartItem> {
+  async findOne(id: number, currentUser?: { id: number; isApprovedResident?: boolean }): Promise<DiscartItem> {
     const item = await this.prisma.discartItem.findUnique({
       where: { id },
       include: { createdBy: true },
@@ -102,6 +126,27 @@ export class DiscartItemService {
 
     if (!item) {
       throw new NotFoundException("Item not found");
+    }
+
+    // Filtrar dados sensíveis: apenas residentes aprovados veem contactPhone e detalhes do endereço
+    const isApproved = currentUser?.isApprovedResident ?? false;
+    
+    if (!isApproved) {
+      const itemCopy = { ...item };
+      itemCopy.contactPhone = null;
+      
+      // Ocultar detalhes específicos do endereço
+      if (itemCopy.pickupAddress && typeof itemCopy.pickupAddress === 'object') {
+        const address = itemCopy.pickupAddress as any;
+        itemCopy.pickupAddress = {
+          condoName: address.condoName || null,
+          building: null,
+          unit: null,
+          notes: null,
+        };
+      }
+      
+      return itemCopy;
     }
 
     return item;

@@ -20,11 +20,7 @@ async function bootstrap() {
   const uploadsDir = join(process.cwd(), "uploads");
   const uploadDirs = [
     "discart-items",
-    "project-documents",
-    "project-permits",
     "avatars",
-    "insurance",
-    "construction-logs",
   ];
 
   if (!existsSync(uploadsDir)) {

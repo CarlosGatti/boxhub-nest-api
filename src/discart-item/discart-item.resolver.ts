@@ -25,14 +25,30 @@ export class DiscartItemResolver {
     @Args("category", { type: () => String, nullable: true })
     category?: string,
     @Args("search", { type: () => String, nullable: true })
-    search?: string
+    search?: string,
+    @CurrentUser() currentUser?: User
   ) {
-    return this.discartService.findAll({ type, category, search });
+    // Query pública - todos podem ver itens, mas dados sensíveis são filtrados baseado em isApprovedResident
+    const user = currentUser ? {
+      id: currentUser.id,
+      isApprovedResident: (currentUser as any).isApprovedResident ?? false,
+    } : undefined;
+    
+    return this.discartService.findAll({ type, category, search }, user);
   }
 
   @Query(() => DiscartItem, { nullable: true })
-  async discartItem(@Args("id", { type: () => Int }) id: number) {
-    return this.discartService.findOne(id);
+  async discartItem(
+    @Args("id", { type: () => Int }) id: number,
+    @CurrentUser() currentUser?: User
+  ) {
+    // Query pública - todos podem ver itens, mas dados sensíveis são filtrados baseado em isApprovedResident
+    const user = currentUser ? {
+      id: currentUser.id,
+      isApprovedResident: (currentUser as any).isApprovedResident ?? false,
+    } : undefined;
+    
+    return this.discartService.findOne(id, user);
   }
 
   @UseGuards(JwtAuthGuard)

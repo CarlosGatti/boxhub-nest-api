@@ -192,7 +192,7 @@ async removeStorage(
     type?: DiscartItemType,
     @Args("price", { type: () => Float, nullable: true })
     price?: number | null,
-    @Args("contactPhone", { nullable: true })
+    @Args("contactPhone", { type: () => String, nullable: true })
     contactPhone?: string | null
   ): Promise<DiscartItem> {
     return this.qrcodeService.donateItemToDiscartMe(
