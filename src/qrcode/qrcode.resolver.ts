@@ -187,18 +187,18 @@ async removeStorage(
   @UseGuards(JwtAuthGuard)
   async donateItemToDiscartMe(
     @Args("itemId") itemId: number,
+    @CurrentUser() user: User,
     @Args("type", { type: () => DiscartItemType, nullable: true, defaultValue: "DONATE" })
-    type: DiscartItemType,
+    type?: DiscartItemType,
     @Args("price", { type: () => Float, nullable: true })
     price?: number | null,
     @Args("contactPhone", { nullable: true })
-    contactPhone?: string | null,
-    @CurrentUser() user: User
+    contactPhone?: string | null
   ): Promise<DiscartItem> {
     return this.qrcodeService.donateItemToDiscartMe(
       itemId,
       user.id,
-      type,
+      type || "DONATE",
       price,
       contactPhone
     );

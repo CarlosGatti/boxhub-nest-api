@@ -3,16 +3,11 @@ import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
 import { LogUncheckedCreateNestedManyWithoutUserInput } from '../log/log-unchecked-create-nested-many-without-user.input';
-import { ProjectUncheckedCreateNestedManyWithoutResponsibleInput } from '../project/project-unchecked-create-nested-many-without-responsible.input';
-import { ConstructionLogUncheckedCreateNestedManyWithoutUserInput } from '../construction-log/construction-log-unchecked-create-nested-many-without-user.input';
-import { LogCommentUncheckedCreateNestedManyWithoutUserInput } from '../log-comment/log-comment-unchecked-create-nested-many-without-user.input';
-import { LogCommentReplyUncheckedCreateNestedManyWithoutUserInput } from '../log-comment-reply/log-comment-reply-unchecked-create-nested-many-without-user.input';
-import { PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-unchecked-create-nested-many-without-responsible.input';
-import { MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-unchecked-create-nested-many-without-received-by.input';
 import { DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput } from '../discart-item/discart-item-unchecked-create-nested-many-without-created-by.input';
 import { CommentUncheckedCreateNestedManyWithoutUserInput } from '../comment/comment-unchecked-create-nested-many-without-user.input';
 import { RatingUncheckedCreateNestedManyWithoutSellerInput } from '../rating/rating-unchecked-create-nested-many-without-seller.input';
 import { RatingUncheckedCreateNestedManyWithoutBuyerInput } from '../rating/rating-unchecked-create-nested-many-without-buyer.input';
+import { UserAppAccessUncheckedCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutStorageMembershipsInput {
@@ -83,24 +78,6 @@ export class UserUncheckedCreateWithoutStorageMembershipsInput {
     @Field(() => LogUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     logs?: LogUncheckedCreateNestedManyWithoutUserInput;
 
-    @Field(() => ProjectUncheckedCreateNestedManyWithoutResponsibleInput, {nullable:true})
-    projectResponsible?: ProjectUncheckedCreateNestedManyWithoutResponsibleInput;
-
-    @Field(() => ConstructionLogUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    constructionLogs?: ConstructionLogUncheckedCreateNestedManyWithoutUserInput;
-
-    @Field(() => LogCommentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    logComments?: LogCommentUncheckedCreateNestedManyWithoutUserInput;
-
-    @Field(() => LogCommentReplyUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    logCommentReplies?: LogCommentReplyUncheckedCreateNestedManyWithoutUserInput;
-
-    @Field(() => PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput, {nullable:true})
-    responsibleInspections?: PermitInspectionUncheckedCreateNestedManyWithoutResponsibleInput;
-
-    @Field(() => MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput, {nullable:true})
-    receivedMaterials?: MaterialEntryUncheckedCreateNestedManyWithoutReceivedByInput;
-
     @Field(() => DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
     discartItems?: DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput;
 
@@ -112,4 +89,7 @@ export class UserUncheckedCreateWithoutStorageMembershipsInput {
 
     @Field(() => RatingUncheckedCreateNestedManyWithoutBuyerInput, {nullable:true})
     ratingsAsBuyer?: RatingUncheckedCreateNestedManyWithoutBuyerInput;
+
+    @Field(() => UserAppAccessUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    apps?: UserAppAccessUncheckedCreateNestedManyWithoutUserInput;
 }

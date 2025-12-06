@@ -12,4 +12,7 @@ export class ItemSumAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     containerId?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    discartItemId?: true;
 }

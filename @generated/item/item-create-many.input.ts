@@ -26,6 +26,15 @@ export class ItemCreateManyInput {
     @Field(() => Int, {nullable:false})
     containerId!: number;
 
+    @Field(() => Boolean, {nullable:true})
+    donatedToDiscartMe?: boolean;
+
+    @Field(() => Int, {nullable:true})
+    discartItemId?: number;
+
+    @Field(() => Date, {nullable:true})
+    donatedAt?: Date | string;
+
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
 

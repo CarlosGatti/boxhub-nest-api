@@ -666,7 +666,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
     }
 
     // Verifica se já foi doado
-    if (item.donatedToDiscartMe) {
+    if ((item as any).donatedToDiscartMe) {
       throw new ForbiddenException("This item has already been donated");
     }
 
@@ -721,7 +721,7 @@ async removeStorage(id: number, userId: number, ipAddress: string) {
           donatedToDiscartMe: true,
           discartItemId: discartItem.id,
           donatedAt: new Date(),
-        },
+        } as any,
       });
 
       return discartItem;

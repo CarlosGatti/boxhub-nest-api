@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
+import { SortOrderInput } from '../prisma/sort-order.input';
 import { ContainerOrderByWithRelationInput } from '../container/container-order-by-with-relation.input';
 
 @InputType()
@@ -26,6 +27,15 @@ export class ItemOrderByWithRelationInput {
 
     @Field(() => SortOrder, {nullable:true})
     containerId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    donatedToDiscartMe?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    discartItemId?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    donatedAt?: SortOrderInput;
 
     @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;

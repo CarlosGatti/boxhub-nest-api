@@ -13,4 +13,7 @@ export class ItemSumAggregate {
 
     @Field(() => Int, {nullable:true})
     containerId?: number;
+
+    @Field(() => Int, {nullable:true})
+    discartItemId?: number;
 }

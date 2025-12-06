@@ -13,4 +13,7 @@ export class ItemAvgOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     containerId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    discartItemId?: keyof typeof SortOrder;
 }

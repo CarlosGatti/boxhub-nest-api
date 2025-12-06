@@ -10,15 +10,10 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { StorageMemberListRelationFilter } from '../storage-member/storage-member-list-relation-filter.input';
 import { LogListRelationFilter } from '../log/log-list-relation-filter.input';
-import { ProjectListRelationFilter } from '../project/project-list-relation-filter.input';
-import { ConstructionLogListRelationFilter } from '../construction-log/construction-log-list-relation-filter.input';
-import { LogCommentListRelationFilter } from '../log-comment/log-comment-list-relation-filter.input';
-import { LogCommentReplyListRelationFilter } from '../log-comment-reply/log-comment-reply-list-relation-filter.input';
-import { PermitInspectionListRelationFilter } from '../permit-inspection/permit-inspection-list-relation-filter.input';
-import { MaterialEntryListRelationFilter } from '../material-entry/material-entry-list-relation-filter.input';
 import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list-relation-filter.input';
 import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
 import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.input';
+import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -101,24 +96,6 @@ export class UserWhereUniqueInput {
     @Field(() => LogListRelationFilter, {nullable:true})
     logs?: LogListRelationFilter;
 
-    @Field(() => ProjectListRelationFilter, {nullable:true})
-    projectResponsible?: ProjectListRelationFilter;
-
-    @Field(() => ConstructionLogListRelationFilter, {nullable:true})
-    constructionLogs?: ConstructionLogListRelationFilter;
-
-    @Field(() => LogCommentListRelationFilter, {nullable:true})
-    logComments?: LogCommentListRelationFilter;
-
-    @Field(() => LogCommentReplyListRelationFilter, {nullable:true})
-    logCommentReplies?: LogCommentReplyListRelationFilter;
-
-    @Field(() => PermitInspectionListRelationFilter, {nullable:true})
-    responsibleInspections?: PermitInspectionListRelationFilter;
-
-    @Field(() => MaterialEntryListRelationFilter, {nullable:true})
-    receivedMaterials?: MaterialEntryListRelationFilter;
-
     @Field(() => DiscartItemListRelationFilter, {nullable:true})
     discartItems?: DiscartItemListRelationFilter;
 
@@ -130,4 +107,7 @@ export class UserWhereUniqueInput {
 
     @Field(() => RatingListRelationFilter, {nullable:true})
     ratingsAsBuyer?: RatingListRelationFilter;
+
+    @Field(() => UserAppAccessListRelationFilter, {nullable:true})
+    apps?: UserAppAccessListRelationFilter;
 }

@@ -12,4 +12,7 @@ export class ItemAvgAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     containerId?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    discartItemId?: true;
 }

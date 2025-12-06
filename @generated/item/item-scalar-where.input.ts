@@ -2,6 +2,9 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
+import { BoolFilter } from '../prisma/bool-filter.input';
+import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
+import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 
 @InputType()
@@ -36,6 +39,15 @@ export class ItemScalarWhereInput {
 
     @Field(() => IntFilter, {nullable:true})
     containerId?: IntFilter;
+
+    @Field(() => BoolFilter, {nullable:true})
+    donatedToDiscartMe?: BoolFilter;
+
+    @Field(() => IntNullableFilter, {nullable:true})
+    discartItemId?: IntNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    donatedAt?: DateTimeNullableFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: DateTimeFilter;

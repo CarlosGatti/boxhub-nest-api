@@ -13,4 +13,7 @@ export class ItemAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     containerId?: number;
+
+    @Field(() => Float, {nullable:true})
+    discartItemId?: number;
 }

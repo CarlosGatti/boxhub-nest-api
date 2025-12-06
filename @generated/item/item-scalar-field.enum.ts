@@ -8,6 +8,9 @@ export enum ItemScalarFieldEnum {
     quantity = "quantity",
     category = "category",
     containerId = "containerId",
+    donatedToDiscartMe = "donatedToDiscartMe",
+    discartItemId = "discartItemId",
+    donatedAt = "donatedAt",
     createdAt = "createdAt",
     updatedAt = "updatedAt"
 }

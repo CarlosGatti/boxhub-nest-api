@@ -2,16 +2,11 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
 import { LogCreateNestedManyWithoutUserInput } from '../log/log-create-nested-many-without-user.input';
-import { ProjectCreateNestedManyWithoutResponsibleInput } from '../project/project-create-nested-many-without-responsible.input';
-import { ConstructionLogCreateNestedManyWithoutUserInput } from '../construction-log/construction-log-create-nested-many-without-user.input';
-import { LogCommentCreateNestedManyWithoutUserInput } from '../log-comment/log-comment-create-nested-many-without-user.input';
-import { LogCommentReplyCreateNestedManyWithoutUserInput } from '../log-comment-reply/log-comment-reply-create-nested-many-without-user.input';
-import { PermitInspectionCreateNestedManyWithoutResponsibleInput } from '../permit-inspection/permit-inspection-create-nested-many-without-responsible.input';
-import { MaterialEntryCreateNestedManyWithoutReceivedByInput } from '../material-entry/material-entry-create-nested-many-without-received-by.input';
 import { DiscartItemCreateNestedManyWithoutCreatedByInput } from '../discart-item/discart-item-create-nested-many-without-created-by.input';
 import { CommentCreateNestedManyWithoutUserInput } from '../comment/comment-create-nested-many-without-user.input';
 import { RatingCreateNestedManyWithoutSellerInput } from '../rating/rating-create-nested-many-without-seller.input';
 import { RatingCreateNestedManyWithoutBuyerInput } from '../rating/rating-create-nested-many-without-buyer.input';
+import { UserAppAccessCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutStorageMembershipsInput {
@@ -79,24 +74,6 @@ export class UserCreateWithoutStorageMembershipsInput {
     @Field(() => LogCreateNestedManyWithoutUserInput, {nullable:true})
     logs?: LogCreateNestedManyWithoutUserInput;
 
-    @Field(() => ProjectCreateNestedManyWithoutResponsibleInput, {nullable:true})
-    projectResponsible?: ProjectCreateNestedManyWithoutResponsibleInput;
-
-    @Field(() => ConstructionLogCreateNestedManyWithoutUserInput, {nullable:true})
-    constructionLogs?: ConstructionLogCreateNestedManyWithoutUserInput;
-
-    @Field(() => LogCommentCreateNestedManyWithoutUserInput, {nullable:true})
-    logComments?: LogCommentCreateNestedManyWithoutUserInput;
-
-    @Field(() => LogCommentReplyCreateNestedManyWithoutUserInput, {nullable:true})
-    logCommentReplies?: LogCommentReplyCreateNestedManyWithoutUserInput;
-
-    @Field(() => PermitInspectionCreateNestedManyWithoutResponsibleInput, {nullable:true})
-    responsibleInspections?: PermitInspectionCreateNestedManyWithoutResponsibleInput;
-
-    @Field(() => MaterialEntryCreateNestedManyWithoutReceivedByInput, {nullable:true})
-    receivedMaterials?: MaterialEntryCreateNestedManyWithoutReceivedByInput;
-
     @Field(() => DiscartItemCreateNestedManyWithoutCreatedByInput, {nullable:true})
     discartItems?: DiscartItemCreateNestedManyWithoutCreatedByInput;
 
@@ -108,4 +85,7 @@ export class UserCreateWithoutStorageMembershipsInput {
 
     @Field(() => RatingCreateNestedManyWithoutBuyerInput, {nullable:true})
     ratingsAsBuyer?: RatingCreateNestedManyWithoutBuyerInput;
+
+    @Field(() => UserAppAccessCreateNestedManyWithoutUserInput, {nullable:true})
+    apps?: UserAppAccessCreateNestedManyWithoutUserInput;
 }

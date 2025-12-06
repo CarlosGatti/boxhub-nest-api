@@ -4,15 +4,10 @@ import { ID } from '@nestjs/graphql';
 import { Role } from '../prisma/role.enum';
 import { StorageMember } from '../storage-member/storage-member.model';
 import { Log } from '../log/log.model';
-import { Project } from '../project/project.model';
-import { ConstructionLog } from '../construction-log/construction-log.model';
-import { LogComment } from '../log-comment/log-comment.model';
-import { LogCommentReply } from '../log-comment-reply/log-comment-reply.model';
-import { PermitInspection } from '../permit-inspection/permit-inspection.model';
-import { MaterialEntry } from '../material-entry/material-entry.model';
 import { DiscartItem } from '../discart-item/discart-item.model';
 import { Comment } from '../comment/comment.model';
 import { Rating } from '../rating/rating.model';
+import { UserAppAccess } from '../user-app-access/user-app-access.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -87,24 +82,6 @@ export class User {
     @Field(() => [Log], {nullable:true})
     logs?: Array<Log>;
 
-    @Field(() => [Project], {nullable:true})
-    projectResponsible?: Array<Project>;
-
-    @Field(() => [ConstructionLog], {nullable:true})
-    constructionLogs?: Array<ConstructionLog>;
-
-    @Field(() => [LogComment], {nullable:true})
-    logComments?: Array<LogComment>;
-
-    @Field(() => [LogCommentReply], {nullable:true})
-    logCommentReplies?: Array<LogCommentReply>;
-
-    @Field(() => [PermitInspection], {nullable:true})
-    responsibleInspections?: Array<PermitInspection>;
-
-    @Field(() => [MaterialEntry], {nullable:true})
-    receivedMaterials?: Array<MaterialEntry>;
-
     @Field(() => [DiscartItem], {nullable:true})
     discartItems?: Array<DiscartItem>;
 
@@ -116,6 +93,9 @@ export class User {
 
     @Field(() => [Rating], {nullable:true})
     ratingsAsBuyer?: Array<Rating>;
+
+    @Field(() => [UserAppAccess], {nullable:true})
+    apps?: Array<UserAppAccess>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

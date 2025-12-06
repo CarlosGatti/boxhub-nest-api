@@ -26,6 +26,15 @@ export class ItemMaxAggregateInput {
     containerId?: true;
 
     @Field(() => Boolean, {nullable:true})
+    donatedToDiscartMe?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    discartItemId?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    donatedAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
 
     @Field(() => Boolean, {nullable:true})

@@ -27,6 +27,15 @@ export class ItemMaxOrderByAggregateInput {
     containerId?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    donatedToDiscartMe?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    discartItemId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    donatedAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

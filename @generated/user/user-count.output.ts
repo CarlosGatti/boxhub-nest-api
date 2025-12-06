@@ -12,24 +12,6 @@ export class UserCount {
     logs?: number;
 
     @Field(() => Int, {nullable:false})
-    projectResponsible?: number;
-
-    @Field(() => Int, {nullable:false})
-    constructionLogs?: number;
-
-    @Field(() => Int, {nullable:false})
-    logComments?: number;
-
-    @Field(() => Int, {nullable:false})
-    logCommentReplies?: number;
-
-    @Field(() => Int, {nullable:false})
-    responsibleInspections?: number;
-
-    @Field(() => Int, {nullable:false})
-    receivedMaterials?: number;
-
-    @Field(() => Int, {nullable:false})
     discartItems?: number;
 
     @Field(() => Int, {nullable:false})
@@ -40,4 +22,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     ratingsAsBuyer?: number;
+
+    @Field(() => Int, {nullable:false})
+    apps?: number;
 }

@@ -28,6 +28,15 @@ export class Item {
     @Field(() => Int, {nullable:false})
     containerId!: number;
 
+    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    donatedToDiscartMe!: boolean;
+
+    @Field(() => Int, {nullable:true})
+    discartItemId!: number | null;
+
+    @Field(() => Date, {nullable:true})
+    donatedAt!: Date | null;
+
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
 

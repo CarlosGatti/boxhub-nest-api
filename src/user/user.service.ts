@@ -33,7 +33,7 @@ export class UserService {
           },
         },
       },
-    });
+    } as any);
 
     if (!user) {
       return null;
@@ -63,7 +63,7 @@ export class UserService {
           },
         },
       },
-    });
+    } as any);
 
     if (!data) {
       throw new Error("User not found");
@@ -83,7 +83,7 @@ export class UserService {
     expiresAt.setDate(expiresAt.getDate() + 14);
 
     // Busca o app DISCARD_ME para vincular automaticamente
-    const discardMeApp = await this.prismaService.app.findUnique({
+    const discardMeApp = await (this.prismaService as any).app.findUnique({
       where: { code: 'DISCARD_ME' },
     });
 
@@ -108,20 +108,20 @@ export class UserService {
               },
             }
           : undefined,
-      },
+      } as any,
       include: {
         apps: {
           include: {
             app: true,
           },
         },
-      },
+      } as any,
     });
 
     // Adiciona array de códigos de apps ao objeto user
     const userWithApps = {
       ...user,
-      apps: user.apps?.map((ua) => ua.app.code) || [],
+      apps: (user as any).apps?.map((ua: any) => ua.app.code) || [],
     } as User & { apps: string[] };
 
     return userWithApps as any;
@@ -168,7 +168,7 @@ export class UserService {
 
     try {
       // Busca o app DISCARD_ME para vincular automaticamente
-      const discardMeApp = await this.prismaService.app.findUnique({
+      const discardMeApp = await (this.prismaService as any).app.findUnique({
         where: { code: 'DISCARD_ME' },
       });
 
@@ -183,7 +183,7 @@ export class UserService {
                 },
               }
             : undefined,
-        },
+        } as any,
       });
 
       if (id) {

@@ -27,6 +27,15 @@ export class ItemCountAggregate {
     containerId!: number;
 
     @Field(() => Int, {nullable:false})
+    donatedToDiscartMe!: number;
+
+    @Field(() => Int, {nullable:false})
+    discartItemId!: number;
+
+    @Field(() => Int, {nullable:false})
+    donatedAt!: number;
+
+    @Field(() => Int, {nullable:false})
     createdAt!: number;
 
     @Field(() => Int, {nullable:false})

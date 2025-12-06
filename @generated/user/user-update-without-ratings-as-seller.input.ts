@@ -8,15 +8,10 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { StorageMemberUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-update-many-without-user-nested.input';
 import { LogUpdateManyWithoutUserNestedInput } from '../log/log-update-many-without-user-nested.input';
-import { ProjectUpdateManyWithoutResponsibleNestedInput } from '../project/project-update-many-without-responsible-nested.input';
-import { ConstructionLogUpdateManyWithoutUserNestedInput } from '../construction-log/construction-log-update-many-without-user-nested.input';
-import { LogCommentUpdateManyWithoutUserNestedInput } from '../log-comment/log-comment-update-many-without-user-nested.input';
-import { LogCommentReplyUpdateManyWithoutUserNestedInput } from '../log-comment-reply/log-comment-reply-update-many-without-user-nested.input';
-import { PermitInspectionUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-update-many-without-responsible-nested.input';
-import { MaterialEntryUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-update-many-without-received-by-nested.input';
 import { DiscartItemUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-update-many-without-created-by-nested.input';
 import { CommentUpdateManyWithoutUserNestedInput } from '../comment/comment-update-many-without-user-nested.input';
 import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
+import { UserAppAccessUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutRatingsAsSellerInput {
@@ -87,24 +82,6 @@ export class UserUpdateWithoutRatingsAsSellerInput {
     @Field(() => LogUpdateManyWithoutUserNestedInput, {nullable:true})
     logs?: LogUpdateManyWithoutUserNestedInput;
 
-    @Field(() => ProjectUpdateManyWithoutResponsibleNestedInput, {nullable:true})
-    projectResponsible?: ProjectUpdateManyWithoutResponsibleNestedInput;
-
-    @Field(() => ConstructionLogUpdateManyWithoutUserNestedInput, {nullable:true})
-    constructionLogs?: ConstructionLogUpdateManyWithoutUserNestedInput;
-
-    @Field(() => LogCommentUpdateManyWithoutUserNestedInput, {nullable:true})
-    logComments?: LogCommentUpdateManyWithoutUserNestedInput;
-
-    @Field(() => LogCommentReplyUpdateManyWithoutUserNestedInput, {nullable:true})
-    logCommentReplies?: LogCommentReplyUpdateManyWithoutUserNestedInput;
-
-    @Field(() => PermitInspectionUpdateManyWithoutResponsibleNestedInput, {nullable:true})
-    responsibleInspections?: PermitInspectionUpdateManyWithoutResponsibleNestedInput;
-
-    @Field(() => MaterialEntryUpdateManyWithoutReceivedByNestedInput, {nullable:true})
-    receivedMaterials?: MaterialEntryUpdateManyWithoutReceivedByNestedInput;
-
     @Field(() => DiscartItemUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     discartItems?: DiscartItemUpdateManyWithoutCreatedByNestedInput;
 
@@ -113,4 +90,7 @@ export class UserUpdateWithoutRatingsAsSellerInput {
 
     @Field(() => RatingUpdateManyWithoutBuyerNestedInput, {nullable:true})
     ratingsAsBuyer?: RatingUpdateManyWithoutBuyerNestedInput;
+
+    @Field(() => UserAppAccessUpdateManyWithoutUserNestedInput, {nullable:true})
+    apps?: UserAppAccessUpdateManyWithoutUserNestedInput;
 }

@@ -9,15 +9,10 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { StorageMemberUncheckedUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-unchecked-update-many-without-user-nested.input';
 import { LogUncheckedUpdateManyWithoutUserNestedInput } from '../log/log-unchecked-update-many-without-user-nested.input';
-import { ProjectUncheckedUpdateManyWithoutResponsibleNestedInput } from '../project/project-unchecked-update-many-without-responsible-nested.input';
-import { ConstructionLogUncheckedUpdateManyWithoutUserNestedInput } from '../construction-log/construction-log-unchecked-update-many-without-user-nested.input';
-import { LogCommentUncheckedUpdateManyWithoutUserNestedInput } from '../log-comment/log-comment-unchecked-update-many-without-user-nested.input';
-import { LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput } from '../log-comment-reply/log-comment-reply-unchecked-update-many-without-user-nested.input';
-import { PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput } from '../permit-inspection/permit-inspection-unchecked-update-many-without-responsible-nested.input';
-import { MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput } from '../material-entry/material-entry-unchecked-update-many-without-received-by-nested.input';
 import { DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-unchecked-update-many-without-created-by-nested.input';
 import { RatingUncheckedUpdateManyWithoutSellerNestedInput } from '../rating/rating-unchecked-update-many-without-seller-nested.input';
 import { RatingUncheckedUpdateManyWithoutBuyerNestedInput } from '../rating/rating-unchecked-update-many-without-buyer-nested.input';
+import { UserAppAccessUncheckedUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutCommentsInput {
@@ -91,24 +86,6 @@ export class UserUncheckedUpdateWithoutCommentsInput {
     @Field(() => LogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     logs?: LogUncheckedUpdateManyWithoutUserNestedInput;
 
-    @Field(() => ProjectUncheckedUpdateManyWithoutResponsibleNestedInput, {nullable:true})
-    projectResponsible?: ProjectUncheckedUpdateManyWithoutResponsibleNestedInput;
-
-    @Field(() => ConstructionLogUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    constructionLogs?: ConstructionLogUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => LogCommentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    logComments?: LogCommentUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
-    logCommentReplies?: LogCommentReplyUncheckedUpdateManyWithoutUserNestedInput;
-
-    @Field(() => PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput, {nullable:true})
-    responsibleInspections?: PermitInspectionUncheckedUpdateManyWithoutResponsibleNestedInput;
-
-    @Field(() => MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput, {nullable:true})
-    receivedMaterials?: MaterialEntryUncheckedUpdateManyWithoutReceivedByNestedInput;
-
     @Field(() => DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     discartItems?: DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput;
 
@@ -117,4 +94,7 @@ export class UserUncheckedUpdateWithoutCommentsInput {
 
     @Field(() => RatingUncheckedUpdateManyWithoutBuyerNestedInput, {nullable:true})
     ratingsAsBuyer?: RatingUncheckedUpdateManyWithoutBuyerNestedInput;
+
+    @Field(() => UserAppAccessUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    apps?: UserAppAccessUncheckedUpdateManyWithoutUserNestedInput;
 }

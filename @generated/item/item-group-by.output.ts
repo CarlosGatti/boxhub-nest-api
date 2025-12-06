@@ -31,6 +31,15 @@ export class ItemGroupBy {
     @Field(() => Int, {nullable:false})
     containerId!: number;
 
+    @Field(() => Boolean, {nullable:false})
+    donatedToDiscartMe!: boolean;
+
+    @Field(() => Int, {nullable:true})
+    discartItemId?: number;
+
+    @Field(() => Date, {nullable:true})
+    donatedAt?: Date | string;
+
     @Field(() => Date, {nullable:false})
     createdAt!: Date | string;
 
