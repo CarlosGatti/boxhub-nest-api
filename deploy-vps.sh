@@ -43,6 +43,22 @@ if [ -f "prisma/schema.prisma" ]; then
     echo "❌ Erro ao gerar tipos Prisma"
     exit 1
   }
+
+  # Seed dos apps (idempotente - pode rodar múltiplas vezes)
+  if [ -f "prisma/seed.apps.ts" ]; then
+    echo "🌱 Rodando seed dos apps..."
+    npx ts-node prisma/seed.apps.ts || {
+      echo "⚠️  Aviso: Seed dos apps pode ter falhado ou já estar aplicado"
+    }
+  fi
+
+  # Backfill de acesso dos usuários (idempotente - pode rodar múltiplas vezes)
+  if [ -f "scripts/backfill-user-app-access.ts" ]; then
+    echo "👥 Rodando backfill de acesso dos usuários..."
+    npx ts-node scripts/backfill-user-app-access.ts || {
+      echo "⚠️  Aviso: Backfill pode ter falhado ou já estar aplicado"
+    }
+  fi
 fi
 
 # Build do projeto

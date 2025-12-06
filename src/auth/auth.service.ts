@@ -111,7 +111,12 @@ export class AuthService {
     });
 
     if (user) {
-      return user;
+      // Garante que o objeto user tenha o array de apps
+      const userWithApps = {
+        ...user,
+        apps: (user as any).apps || [],
+      };
+      return userWithApps as any;
     }
 
     return undefined;

@@ -24,7 +24,28 @@ export class UserService {
   }
 
   async user(args: Prisma.UserFindUniqueArgs): Promise<User | null> {
-    return this.prismaService.user.findFirst(args);
+    const user = await this.prismaService.user.findFirst({
+      ...args,
+      include: {
+        apps: {
+          include: {
+            app: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    // Adiciona array de códigos de apps ao objeto user
+    const userWithApps = {
+      ...user,
+      apps: (user as any).apps?.map((ua: any) => ua.app.code) || [],
+    } as User & { apps: string[] };
+
+    return userWithApps as any;
   }
 
   async me(user: User): Promise<MeDto> {
@@ -36,6 +57,11 @@ export class UserService {
             storage: true,
           },
         },
+        apps: {
+          include: {
+            app: true,
+          },
+        },
       },
     });
 
@@ -43,14 +69,23 @@ export class UserService {
       throw new Error("User not found");
     }
 
-    return {
-      ...data
-    } as MeDto;
+    // Adiciona array de códigos de apps ao objeto
+    const dataWithApps = {
+      ...data,
+      apps: (data as any).apps?.map((ua: any) => ua.app.code) || [],
+    };
+
+    return dataWithApps as MeDto;
   }
 
   async createUser(data: UserCreateInput): Promise<User> {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 14);
+
+    // Busca o app DISCARD_ME para vincular automaticamente
+    const discardMeApp = await this.prismaService.app.findUnique({
+      where: { code: 'DISCARD_ME' },
+    });
 
     const user = await this.prismaService.user.create({
       data: {
@@ -66,10 +101,30 @@ export class UserService {
         expiresAt,
         willExpireAt: expiresAt,
         isPremium: false, // Default to false, can be updated later
+        apps: discardMeApp
+          ? {
+              create: {
+                appId: discardMeApp.id,
+              },
+            }
+          : undefined,
+      },
+      include: {
+        apps: {
+          include: {
+            app: true,
+          },
+        },
       },
     });
 
-    return user;
+    // Adiciona array de códigos de apps ao objeto user
+    const userWithApps = {
+      ...user,
+      apps: user.apps?.map((ua) => ua.app.code) || [],
+    } as User & { apps: string[] };
+
+    return userWithApps as any;
   }
 
   async sendEmailVerification(user: User, token: string): Promise<void> {
@@ -112,10 +167,22 @@ export class UserService {
     };
 
     try {
+      // Busca o app DISCARD_ME para vincular automaticamente
+      const discardMeApp = await this.prismaService.app.findUnique({
+        where: { code: 'DISCARD_ME' },
+      });
+
       const { id } = await this.prismaService.user.create({
         data: {
           ...data,
           password: hashSync(password, 10),
+          apps: discardMeApp
+            ? {
+                create: {
+                  appId: discardMeApp.id,
+                },
+              }
+            : undefined,
         },
       });
 

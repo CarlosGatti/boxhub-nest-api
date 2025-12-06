@@ -7,12 +7,8 @@ import { DiscartItemModule } from 'src/discart-item/discart-item.module';
 import { DiscartItemUploadController } from '../discart-item/upload/upload.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
-import { ProjectModule } from 'src/project/project.module';
 import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { SubcontractorModule } from '../subcontractor/subcontractor.module';
-import { UploadController } from '../subcontractor/upload/upload.controller';
-import { UploadControllerInterface } from '../project/upload/upload.resolver';
 import { UserModule } from '../user/user.module';
 import { CommentsModule } from '../comments/comments.module';
 import { RatingsModule } from '../ratings/ratings.module';
@@ -46,17 +42,12 @@ import { RatingsModule } from '../ratings/ratings.module';
     AuthModule,
     UserModule,
     QrcodeModule,
-    SubcontractorModule,
-    ProjectModule, // Importando o módulo de projetos
     DiscartItemModule,
     CommentsModule,
     RatingsModule,
-    // Registrando o controller de upload
   ],
   controllers: [
     AppController,
-    UploadController,
-    UploadControllerInterface,
     DiscartItemUploadController,
   ],
   providers: [AppService],

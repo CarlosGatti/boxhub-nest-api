@@ -12,34 +12,36 @@ import { Container } from "@generated/container/container.model";
 import { DashboardData } from "./dashboard.dto";
 import { Storage } from "@generated/storage/storage.model";
 import { ProGuard } from "src/auth/guards/pro.guard";
+import { DiscartItem } from "@generated/discart-item/discart-item.model";
+import { DiscartItemType } from "@generated/prisma/discart-item-type.enum";
 @Resolver(() => Storage)
 export class QrcodeResolver {
   constructor(private readonly qrcodeService: QrcodeService) {}
 
   @Query(() => Storage)
   @UseGuards(JwtAuthGuard)
-  async getStorage(@Args("id") id: number) {
-    return this.qrcodeService.getStorage(id);
+  async getStorage(@Args("id") id: number, @CurrentUser() user: User) {
+    return this.qrcodeService.getStorage(id, user.id);
   }
 
   @Query(() => [Storage])
-  @UseGuards(JwtAuthGuard, ProGuard)
-  async getAllStorages() {
-    return this.qrcodeService.getAllStorages();
+  @UseGuards(JwtAuthGuard)
+  async getAllStorages(@CurrentUser() user: User) {
+    return this.qrcodeService.getAllStorages(user.id);
   }
 
   //get container by code
   @Query(() => Container)
   @UseGuards(JwtAuthGuard)
-  async getContainerByCode(@Args("code") code: string) {
-    return this.qrcodeService.getContainerByCode(code);
+  async getContainerByCode(@Args("code") code: string, @CurrentUser() user: User) {
+    return this.qrcodeService.getContainerByCode(code, user.id);
   }
 
   //get container by id
   @Query(() => Container)
   @UseGuards(JwtAuthGuard)
-  async getContainerById(@Args("id") id: number) {
-    return this.qrcodeService.getContainerById(id);
+  async getContainerById(@Args("id") id: number, @CurrentUser() user: User) {
+    return this.qrcodeService.getContainerById(id, user.id);
   }
 
   @Mutation(() => Storage)
@@ -142,8 +144,8 @@ async removeStorage(
   //get item by id
   @Query(() => Item)
   @UseGuards(JwtAuthGuard)
-  async getItemById(@Args("id") id: number) {
-    return this.qrcodeService.getItemById(id);
+  async getItemById(@Args("id") id: number, @CurrentUser() user: User) {
+    return this.qrcodeService.getItemById(id, user.id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -177,6 +179,28 @@ async removeStorage(
       category,
       user.id,
       ipAddress
+    );
+  }
+
+  // Doar item do BoxHub para Discart-me
+  @Mutation(() => DiscartItem)
+  @UseGuards(JwtAuthGuard)
+  async donateItemToDiscartMe(
+    @Args("itemId") itemId: number,
+    @Args("type", { type: () => DiscartItemType, nullable: true, defaultValue: "DONATE" })
+    type: DiscartItemType,
+    @Args("price", { type: () => Float, nullable: true })
+    price?: number | null,
+    @Args("contactPhone", { nullable: true })
+    contactPhone?: string | null,
+    @CurrentUser() user: User
+  ): Promise<DiscartItem> {
+    return this.qrcodeService.donateItemToDiscartMe(
+      itemId,
+      user.id,
+      type,
+      price,
+      contactPhone
     );
   }
 }

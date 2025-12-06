@@ -59,6 +59,12 @@ model Item {
   category    String // Categoria adicional, se necessário
   containerId Int
   container   Container @relation(fields: [containerId], references: [id])
+  
+  // Transição para Discart-me
+  donatedToDiscartMe Boolean   @default(false) // Indica se o item foi doado no Discart-me
+  discartItemId      Int?      // ID do DiscartItem criado quando doado
+  donatedAt          DateTime? // Data em que foi doado
+  
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -123,19 +129,15 @@ model User {
   storageMemberships StorageMember[]
   logs               Log[]
 
-  // Novas relações
-  projectResponsible     Project[] // Projetos onde o usuário é responsável
-  constructionLogs       ConstructionLog[]
-  logComments            LogComment[]
-  logCommentReplies      LogCommentReply[]
-  responsibleInspections PermitInspection[] // Inspections where the user is responsible
-  receivedMaterials      MaterialEntry[] // Materiais recebidos pelo usuário
-  discartItems           DiscartItem[]
+  discartItems       DiscartItem[]
 
   // Comments and Ratings
   comments        Comment[] @relation("CommentAuthor")
   ratingsAsSeller Rating[]  @relation("SellerRatings")
   ratingsAsBuyer  Rating[]  @relation("BuyerRatings")
+
+  // Multi-app access
+  apps            UserAppAccess[]
 
   @@index([email], map: "userEmail")
 }
@@ -171,231 +173,6 @@ enum LogAction {
   USER_DELETED
   STORAGE_CREATED
   STORAGE_DELETED
-  SUBCONTRACTOR_CREATED
-  SUBCONTRACTOR_UPDATED
-  SUBCONTRACTOR_DELETED
-  SUBCONTRACTOR_VIEWED
-}
-
-model Subcontractor {
-  id                   Int      @id @default(autoincrement())
-  companyName          String
-  contactName          String
-  email                String
-  phone                String
-  trade                String
-  bankAccount          String
-  paymentPreference    String
-  notes                String?
-  priority             Boolean  @default(false)
-  createdViaPublicForm Boolean  @default(false)
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  insurances Insurance[]
-}
-
-model Insurance {
-  id              Int           @id @default(autoincrement())
-  subcontractorId Int
-  company         String
-  expiration      DateTime
-  documentUrl     String
-  createdAt       DateTime      @default(now())
-  subcontractor   Subcontractor @relation(fields: [subcontractorId], references: [id])
-
-  @@index([subcontractorId])
-}
-
-model Project {
-  id            Int                @id @default(autoincrement())
-  name          String
-  client        String
-  location      String
-  status        ProjectStatus      @default(PLANNING)
-  startDate     DateTime
-  endDate       DateTime?
-  responsibleId Int // Referência ao User
-  responsible   User               @relation(fields: [responsibleId], references: [id])
-  logs          ConstructionLog[]
-  documents     ProjectDocument[]
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  materials     MaterialEntry[] // Materiais recebidos
-  permits       PermitInspection[] // Permits associated with the project
-  photos        ProjectPhoto[] // Fotos do projeto
-}
-
-model MaterialEntry {
-  id           Int      @id @default(autoincrement())
-  projectId    Int
-  name         String
-  supplier     String
-  quantity     Float
-  receivedById Int? // link opcional com User
-  receivedBy   User?    @relation(fields: [receivedById], references: [id])
-  receivedAt   DateTime
-  note         String?
-  imageUrls    Json? // lista de strings
-
-  project Project @relation(fields: [projectId], references: [id])
-
-  createdAt DateTime @default(now())
-}
-
-model ConstructionLog {
-  id          Int      @id @default(autoincrement())
-  projectId   Int
-  userId      Int
-  title       String
-  description String
-  type        LogType // Observação, Problema, Boa prática, etc.
-  images      Json? // Lista de imagens (URL array)
-  createdAt   DateTime @default(now())
-
-  project  Project      @relation(fields: [projectId], references: [id])
-  user     User         @relation(fields: [userId], references: [id])
-  comments LogComment[] // Comentários associados a este log
-}
-
-model ProjectDocument {
-  id        Int          @id @default(autoincrement())
-  projectId Int
-  name      String
-  fileUrl   String
-  type      DocumentType
-  createdAt DateTime     @default(now())
-
-  project Project @relation(fields: [projectId], references: [id])
-}
-
-model LogComment {
-  id        Int      @id @default(autoincrement())
-  logId     Int
-  userId    Int
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  log     ConstructionLog   @relation(fields: [logId], references: [id])
-  user    User              @relation(fields: [userId], references: [id])
-  replies LogCommentReply[]
-}
-
-model LogCommentReply {
-  id        Int      @id @default(autoincrement())
-  commentId Int
-  userId    Int
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  comment LogComment @relation(fields: [commentId], references: [id])
-  user    User       @relation(fields: [userId], references: [id])
-}
-
-model PermitInspection {
-  id          Int          @id @default(autoincrement())
-  projectId   Int
-  number      String // nº do documento oficial
-  kind        PermitKind
-  status      PermitStatus @default(REQUIRED)
-  requestedAt DateTime? // quando envio o pedido
-  approvedAt  DateTime? // quando recebeu aprovação
-  fileUrl     String? // upload do PDF ou imagem
-
-  responsibleId Int? // quem enviou
-  responsible   User? @relation(fields: [responsibleId], references: [id])
-
-  project Project @relation(fields: [projectId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ProjectPhoto {
-  id        Int           @id @default(autoincrement())
-  projectId Int
-  caption   String?
-  category  PhotoCategory
-  stage     String? // ex: “Drywall”
-  imageUrl  String
-
-  project   Project  @relation(fields: [projectId], references: [id])
-  createdAt DateTime @default(now())
-}
-
-enum PhotoCategory {
-  BEFORE
-  DURING
-  AFTER
-  ISSUE
-  INSPECTION
-}
-
-enum PermitKind {
-  BUILDING_PERMIT
-  ELECTRICAL
-  PLUMBING
-  INSPECTION_REPORT
-  FRAMING
-  ROOFING
-  HVAC
-  CONCRETE
-  FLOORING
-  OTHER
-}
-
-enum PermitStatus {
-  REQUIRED
-  SENT
-  APPROVED
-  REJECTED
-}
-
-enum LogType {
-  OBSERVATION
-  ISSUE
-  GOOD_PRACTICE
-  MATERIAL_RECEIPT
-  DAILY_CHECKIN
-  OTHER
-}
-
-enum DocumentType {
-  CONTRACT
-  PERMIT
-  INVOICE
-  PLAN
-  PHOTO
-  OTHER
-}
-
-enum ProjectStatus {
-  PLANNING
-  EXECUTING
-  FINISHED
-  ON_HOLD
-  CANCELED
-}
-
-enum ServiceType {
-  FRAMING
-  ELECTRICAL
-  PLUMBING
-  PAINTING
-  ROOFING
-  DRYWALL
-  HVAC
-  CONCRETE
-  FLOORING
-  OTHER
-}
-
-enum PaymentMethod {
-  CHECK
-  DEPOSIT
-  OTHER
 }
 
 enum Role {
@@ -487,4 +264,28 @@ model Rating {
   @@unique([sellerId, buyerId]) // Prevent duplicate ratings
   @@index([sellerId])
   @@index([buyerId])
+}
+
+model App {
+  id          Int              @id @default(autoincrement())
+  code        String           @unique
+  name        String
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       UserAppAccess[]
+}
+
+model UserAppAccess {
+  id        Int   @id @default(autoincrement())
+  userId    Int
+  appId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  app       App   @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, appId])
+  @@index([userId])
+  @@index([appId])
 }
