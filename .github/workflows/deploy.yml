@@ -1,109 +1,60 @@
-name: Deploy Backend
+name: Deploy to VPS
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch: # Permite execução manual
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "18"
-
-      - name: Install Yarn
-        run: npm install -g yarn
+          node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
-      - name: Run tests
-        run: yarn test --passWithNoTests || true
+      - name: Run tests (if any)
+        run: npm test --if-present
+        continue-on-error: true
 
       - name: Build project
-        run: yarn build
+        run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || true
-            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc" || true
-            [ -s "$HOME/.profile" ] && source "$HOME/.profile" || true
-            export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
-            command -v nvm >/dev/null 2>&1 && nvm use 18 || true
-            cd /home/boxhub/boxhub-api
-            git stash || true
-            rm -f package-lock.json || true
-            echo "🔄 Atualizando código do repositório..."
-            git fetch origin main
-            git reset --hard origin/main
-            git clean -fd
-            echo "📦 Installing all dependencies with Yarn (including dev)..."
-            yarn install --frozen-lockfile
-            echo "🔧 Rebuilding native modules (bcrypt, etc)..."
-            yarn rebuild || npm rebuild || echo "⚠️ Rebuild falhou, mas continuando..."
-            echo "🔧 Verificando se prisma-nestjs-graphql está instalado..."
-            if [ -d "node_modules/prisma-nestjs-graphql" ]; then
-              echo "✅ prisma-nestjs-graphql encontrado"
-            else
-              echo "⚠️ prisma-nestjs-graphql não encontrado, instalando..."
-              yarn add -D prisma-nestjs-graphql || echo "⚠️ Falha ao instalar prisma-nestjs-graphql"
-            fi
-            echo "🗄️  Aplicando migrations do Prisma..."
-            npx prisma migrate deploy || {
-              echo "⚠️  Aviso: Migration pode ter falhado ou já estar aplicada"
-              echo "   Verificando status das migrations..."
-              npx prisma migrate status || true
-            }
-            echo "🔧 Generating Prisma client..."
-            yarn prisma:generate || yarn prisma generate || npx prisma generate || echo "⚠️ Prisma generate falhou, mas continuando..."
-            echo "🏗 Building project..."
-            yarn build
-            echo "✅ Verificando se build foi bem-sucedido..."
-            if [ ! -f "dist/src/main.js" ]; then
-              echo "❌ ERRO: Build falhou! dist/src/main.js não existe."
-            exit 1
-            fi
-            echo "✅ Build OK - dist/src/main.js existe"
-            echo "📁 Criando pasta de uploads com permissões corretas..."
-            mkdir -p uploads/discart-items uploads/project-documents uploads/project-permits uploads/avatars uploads/insurance uploads/construction-logs
-            # Verificar qual usuário está rodando o PM2
-            PM2_USER=$(pm2 describe khub 2>/dev/null | grep "username" | awk '{print $4}' || echo "root")
-            echo "🔍 PM2 está rodando como: $PM2_USER"
-            # Definir dono e permissões baseado no usuário do PM2
-            chown -R $PM2_USER:$PM2_USER uploads 2>/dev/null || chown -R root:root uploads || echo "⚠️ Could not change ownership, but continuing..."
-            chmod -R 755 uploads || echo "⚠️ Could not set permissions, but continuing..."
-            echo "✅ Pastas de upload criadas com permissões corretas"
-            echo "🔄 Parando PM2 se estiver rodando..."
-            pm2 stop khub || pm2 delete khub || true
-            echo "🚀 Iniciando PM2..."
-            pm2 start ecosystem.config.js --update-env
-            echo "⏳ Aguardando 5 segundos para aplicação iniciar..."
-            sleep 5
-            echo "📊 Status do PM2:"
-            pm2 list
-            echo "📋 Últimas linhas dos logs:"
-            pm2 logs khub --lines 10 --nostream || true
-            echo "🌐 Restarting Nginx..."
-            sudo systemctl restart nginx || true
-            echo "✅ Testing API..."
-            sleep 3
-            curl -f http://127.0.0.1:3000/graphql -X POST -H "Content-Type: application/json" -d '{"query":"{ __typename }"}' || echo "⚠️ GraphQL endpoint check completed"
+            cd /home/boxhub/boxhub-api || cd /var/www/khub
+            git pull origin main
+            npm ci --production=false
+            npm run build
+            npx prisma generate
+            npx prisma migrate deploy || echo "Migrations may already be applied"
+            npx ts-node prisma/seed.apps.ts || echo "Seed may already be applied"
+            npx ts-node scripts/backfill-user-app-access.ts || echo "Backfill may already be applied"
+            pm2 restart khub || pm2 start ecosystem.config.js --env homolog
+            pm2 save
+            pm2 logs khub --lines 20 --nostream
+
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            pm2 status
+            curl -f http://localhost:3000/health || exit 1
