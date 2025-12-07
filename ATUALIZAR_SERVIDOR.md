@@ -43,7 +43,7 @@ npx prisma generate
 pm2 restart khub
 
 # Verificar logs (não deve ter mais o erro)
-pm2 logs khub --lines 30 --nostream
+v
 ```
 
 ### 3. Verificar que Funcionou

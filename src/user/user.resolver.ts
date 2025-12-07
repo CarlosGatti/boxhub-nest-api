@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver, ResolveField } from "@nestjs/graphql";
 import { CurrentUser } from "./current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { MeDto } from "./dto/me.dto";
-import { UseGuards } from "@nestjs/common";
+import { UseGuards, BadRequestException } from "@nestjs/common";
 import { User } from "../../@generated/user/user.model";
 import { UserService } from "./user.service";
 import { UserUpdateInput } from "../../@generated/user/user-update.input";
@@ -118,13 +118,31 @@ export class UserResolver {
       // Generate JWT token for login (user can login but email is not verified yet)
       const loginToken = this.authService.createJwt(user).token;
 
+      // Transformar user para LoginUser com apps como array de strings
+      const loginUser = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        nickname: user.nickname,
+        profilePicture: user.profilePicture,
+        apartment: user.apartment,
+        isApprovedResident: user.isApprovedResident,
+        isAdmin: user.isAdmin,
+        apps: (user as any).apps || [],
+      };
+
       // Return LoginResult with user and token
       return {
-        user,
+        user: loginUser as any,
         token: loginToken,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Error registering user:", error);
+      // Re-throw com mensagem mais amigável se for erro de email duplicado
+      if (error.message?.includes('already exists')) {
+        throw new BadRequestException(error.message);
+      }
       throw error;
     }
   }

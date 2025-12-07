@@ -82,49 +82,70 @@ export class UserService {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 14);
 
+    // Verificar se o email já existe antes de tentar criar
+    const existingUser = await this.prismaService.user.findUnique({
+      where: { email: data.email },
+    });
+
+    if (existingUser) {
+      throw new Error(
+        `An account with this email already exists. Please login instead.`
+      );
+    }
+
     // Busca o app DISCARD_ME para vincular automaticamente
     const discardMeApp = await (this.prismaService as any).app.findUnique({
       where: { code: 'DISCARD_ME' },
     });
 
-    const user = await this.prismaService.user.create({
-      data: {
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        nickname: data.nickname,
-        password: hashSync(data.password, 10),
-        profilePicture: data.profilePicture,
-        public: data.public,
-        apartment: (data as any).apartment,
-        emailVerified: false, // Explicitly set to false - user must verify email
-        expiresAt,
-        willExpireAt: expiresAt,
-        isPremium: false, // Default to false, can be updated later
-        apps: discardMeApp
-          ? {
-              create: {
-                appId: discardMeApp.id,
-              },
-            }
-          : undefined,
-      } as any,
-      include: {
-        apps: {
-          include: {
-            app: true,
+    try {
+      const user = await this.prismaService.user.create({
+        data: {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          nickname: data.nickname,
+          password: hashSync(data.password, 10),
+          profilePicture: data.profilePicture,
+          public: data.public,
+          apartment: (data as any).apartment,
+          emailVerified: false, // Explicitly set to false - user must verify email
+          expiresAt,
+          willExpireAt: expiresAt,
+          isPremium: false, // Default to false, can be updated later
+          apps: discardMeApp
+            ? {
+                create: {
+                  appId: discardMeApp.id,
+                },
+              }
+            : undefined,
+        } as any,
+        include: {
+          apps: {
+            include: {
+              app: true,
+            },
           },
-        },
-      } as any,
-    });
+        } as any,
+      });
 
-    // Adiciona array de códigos de apps ao objeto user
-    const userWithApps = {
-      ...user,
-      apps: (user as any).apps?.map((ua: any) => ua.app.code) || [],
-    } as User & { apps: string[] };
+      // Adiciona array de códigos de apps ao objeto user
+      const userWithApps = {
+        ...user,
+        apps: (user as any).apps?.map((ua: any) => ua.app.code) || [],
+      } as User & { apps: string[] };
 
-    return userWithApps as any;
+      return userWithApps as any;
+    } catch (error: any) {
+      // Tratar erro de constraint única do Prisma
+      if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+        throw new Error(
+          `An account with this email already exists. Please login instead.`
+        );
+      }
+      throw error;
+    }
   }
 
   async sendEmailVerification(user: User, token: string): Promise<void> {
