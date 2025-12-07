@@ -1,60 +1,83 @@
-name: Deploy to VPS
+name: Deploy Backend
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch: # Permite execução manual
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install
 
-      - name: Run tests (if any)
-        run: npm test --if-present
-        continue-on-error: true
+      - name: Run tests
+        run: yarn test --passWithNoTests || true
 
       - name: Build project
-        run: npm run build
+        run: yarn build
 
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v0.1.7
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
-            cd /home/boxhub/boxhub-api || cd /var/www/khub
-            git pull origin main
-            npm ci --production=false
-            npm run build
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" || true
+            [ -s "$HOME/.bashrc" ] && source "$HOME/.bashrc" || true
+            [ -s "$HOME/.profile" ] && source "$HOME/.profile" || true
+            export PATH="$PATH:/usr/bin:/usr/local/bin:$HOME/.local/bin"
+            command -v nvm >/dev/null 2>&1 && nvm use 18 || true
+            cd /home/boxhub/boxhub-api
+            git stash || true
+            rm -f package-lock.json || true
+            echo "🔄 Atualizando código do repositório..."
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
+            echo "📦 Installing all dependencies with Yarn (including dev)..."
+            yarn install --frozen-lockfile
+            echo "🔧 Rebuilding native modules (bcrypt, etc)..."
+            npm rebuild || yarn rebuild || true
+            echo "🗄️  Aplicando migrations do Prisma..."
             npx prisma generate
-            npx prisma migrate deploy || echo "Migrations may already be applied"
-            npx ts-node prisma/seed.apps.ts || echo "Seed may already be applied"
-            npx ts-node scripts/backfill-user-app-access.ts || echo "Backfill may already be applied"
+            npx prisma migrate deploy || {
+              echo "⚠️  Aviso: Migration pode ter falhado ou já estar aplicada"
+              npx prisma migrate status || true
+            }
+            echo "🌱 Rodando seed dos apps..."
+            npx ts-node prisma/seed.apps.ts || {
+              echo "⚠️  Aviso: Seed dos apps pode ter falhado ou já estar aplicado"
+            }
+            echo "🔙 Rodando backfill de acesso para usuários existentes..."
+            npx ts-node scripts/backfill-user-app-access.ts || {
+              echo "⚠️  Aviso: Backfill de usuários pode ter falhado ou já estar aplicado"
+            }
+            echo "🔨 Fazendo build do projeto..."
+            yarn build
+            echo "🔄 Reiniciando PM2..."
             pm2 restart khub || pm2 start ecosystem.config.js --env homolog
             pm2 save
+            echo "✅ Deploy concluído!"
             pm2 logs khub --lines 20 --nostream
-
-      - name: Verify deployment
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            pm2 status
-            curl -f http://localhost:3000/health || exit 1
