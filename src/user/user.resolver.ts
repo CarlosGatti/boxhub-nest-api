@@ -91,10 +91,94 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResult, { name: "register" })
-  async register(@Args("user") userInput: RegisterUserInput): Promise<LoginResult> {
-    console.log("📝 Registering user with email:", userInput.email);
+  async register(
+    @Args("user") userInput: RegisterUserInput,
+    @Args("appCode", { nullable: true, type: () => String }) appCode?: string
+  ): Promise<LoginResult> {
+    console.log("📝 Registering user with email:", userInput.email, "for app:", appCode || "DISCARD_ME");
+    
+    // Determinar qual app está sendo usado (padrão: DISCARD_ME)
+    const targetAppCode = appCode || 'DISCARD_ME';
+    
     try {
-      // Convert RegisterUserInput to UserCreateInput
+      // Verificar se o usuário já existe
+      const existingUser = await this.userService.user({
+        where: { email: userInput.email },
+      });
+
+      if (existingUser) {
+        // Usuário já existe - verificar senha e adicionar acesso ao app se necessário
+        console.log("👤 User already exists, verifying password and adding app access if needed");
+        
+        // Verificar senha
+        const { compareSync } = await import('bcryptjs');
+        const isPasswordCorrect = compareSync(userInput.password, existingUser.password);
+        
+        if (!isPasswordCorrect) {
+          throw new BadRequestException(
+            'An account with this email already exists. Please login with your password instead.'
+          );
+        }
+
+        // Buscar o app alvo
+        const targetApp = await (this.userService as any).prismaService.app.findUnique({
+          where: { code: targetAppCode },
+        });
+
+        if (targetApp) {
+          // Verificar se já tem acesso ao app
+          const hasAccess = await (this.userService as any).prismaService.userAppAccess.findUnique({
+            where: {
+              userId_appId: {
+                userId: existingUser.id,
+                appId: targetApp.id,
+              },
+            },
+          });
+
+          // Se não tiver acesso, adicionar
+          if (!hasAccess) {
+            await (this.userService as any).prismaService.userAppAccess.create({
+              data: {
+                userId: existingUser.id,
+                appId: targetApp.id,
+              },
+            });
+            console.log(`✅ Added access to ${targetAppCode} for existing user`);
+          } else {
+            console.log(`ℹ️  User already has access to ${targetAppCode}`);
+          }
+        }
+
+        // Buscar user completo com apps atualizados
+        const userWithApps = await this.userService.user({
+          where: { id: existingUser.id },
+        });
+
+        // Gerar token de login
+        const loginToken = this.authService.createJwt(userWithApps as any).token;
+
+        // Transformar user para LoginUser com apps como array de strings
+        const loginUser = {
+          id: userWithApps!.id,
+          email: userWithApps!.email,
+          firstName: userWithApps!.firstName,
+          lastName: userWithApps!.lastName,
+          nickname: userWithApps!.nickname,
+          profilePicture: userWithApps!.profilePicture,
+          apartment: userWithApps!.apartment,
+          isApprovedResident: userWithApps!.isApprovedResident,
+          isAdmin: userWithApps!.isAdmin,
+          apps: (userWithApps as any).apps || [],
+        };
+
+        return {
+          user: loginUser as any,
+          token: loginToken,
+        };
+      }
+
+      // Usuário não existe - criar novo usuário
       const userCreateData: UserCreateInput = {
         email: userInput.email,
         password: userInput.password,
@@ -108,28 +192,50 @@ export class UserResolver {
       const user = await this.userService.createUser(userCreateData);
       console.log("✅ User registered successfully:", user.id);
 
+      // Se o app alvo não for DISCARD_ME, adicionar acesso ao app alvo também
+      if (targetAppCode !== 'DISCARD_ME') {
+        const targetApp = await (this.userService as any).prismaService.app.findUnique({
+          where: { code: targetAppCode },
+        });
+
+        if (targetApp) {
+          await (this.userService as any).prismaService.userAppAccess.create({
+            data: {
+              userId: user.id,
+              appId: targetApp.id,
+            },
+          });
+          console.log(`✅ Added access to ${targetAppCode} for new user`);
+        }
+      }
+
+      // Buscar user completo com apps atualizados
+      const userWithApps = await this.userService.user({
+        where: { id: user.id },
+      });
+
       // Generate JWT token for email verification
-      const verificationToken = this.authService.createJwt(user).token;
+      const verificationToken = this.authService.createJwt(userWithApps as any).token;
 
       // Send email verification email
-      await this.userService.sendEmailVerification(user, verificationToken);
-      console.log("📧 Email verification sent to:", user.email);
+      await this.userService.sendEmailVerification(userWithApps as any, verificationToken);
+      console.log("📧 Email verification sent to:", userWithApps!.email);
 
       // Generate JWT token for login (user can login but email is not verified yet)
-      const loginToken = this.authService.createJwt(user).token;
+      const loginToken = this.authService.createJwt(userWithApps as any).token;
 
       // Transformar user para LoginUser com apps como array de strings
       const loginUser = {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        nickname: user.nickname,
-        profilePicture: user.profilePicture,
-        apartment: user.apartment,
-        isApprovedResident: user.isApprovedResident,
-        isAdmin: user.isAdmin,
-        apps: (user as any).apps || [],
+        id: userWithApps!.id,
+        email: userWithApps!.email,
+        firstName: userWithApps!.firstName,
+        lastName: userWithApps!.lastName,
+        nickname: userWithApps!.nickname,
+        profilePicture: userWithApps!.profilePicture,
+        apartment: userWithApps!.apartment,
+        isApprovedResident: userWithApps!.isApprovedResident,
+        isAdmin: userWithApps!.isAdmin,
+        apps: (userWithApps as any).apps || [],
       };
 
       // Return LoginResult with user and token
@@ -140,8 +246,8 @@ export class UserResolver {
     } catch (error: any) {
       console.error("❌ Error registering user:", error);
       // Re-throw com mensagem mais amigável se for erro de email duplicado
-      if (error.message?.includes('already exists')) {
-        throw new BadRequestException(error.message);
+      if (error.message?.includes('already exists') || error instanceof BadRequestException) {
+        throw error;
       }
       throw error;
     }
