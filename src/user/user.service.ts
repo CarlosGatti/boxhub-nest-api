@@ -82,17 +82,6 @@ export class UserService {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 14);
 
-    // Verificar se o email já existe antes de tentar criar
-    const existingUser = await this.prismaService.user.findUnique({
-      where: { email: data.email },
-    });
-
-    if (existingUser) {
-      throw new Error(
-        `An account with this email already exists. Please login instead.`
-      );
-    }
-
     // Busca o app DISCARD_ME para vincular automaticamente
     const discardMeApp = await (this.prismaService as any).app.findUnique({
       where: { code: 'DISCARD_ME' },
@@ -138,7 +127,8 @@ export class UserService {
 
       return userWithApps as any;
     } catch (error: any) {
-      // Tratar erro de constraint única do Prisma
+      // Tratar erro de constraint única do Prisma (email já existe)
+      // Este erro não deve acontecer se a verificação foi feita antes, mas trata por segurança
       if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
         throw new Error(
           `An account with this email already exists. Please login instead.`
