@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver, ResolveField } from "@nestjs/graphql";
 
 import { CurrentUser } from "./current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
@@ -16,13 +16,31 @@ import { AdminGuard } from "src/auth/guards/admin.guard";
 import { MailService } from "src/services/providers/mail/mail.service";
 import { RegisterUserInput, LoginResult } from "./dto/user.dto";
 import { AuthService } from "../auth/auth.service";
-@Resolver()
+
+@Resolver(() => User)
 export class UserResolver {
   constructor(
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly authService: AuthService
   ) {}
+
+  // Sobrescrever o campo apps para retornar array de strings ao invés de UserAppAccess[]
+  // IMPORTANTE: Este ResolveField deve vir ANTES de outras queries que retornam User
+  @ResolveField('apps', () => [String], { nullable: true })
+  async apps(user: User): Promise<string[]> {
+    // Buscar o user completo com apps para transformar em array de códigos
+    const fullUser = await this.userService.user({
+      where: { id: user.id },
+    });
+    
+    if (!fullUser) {
+      return [];
+    }
+    
+    // Retornar array de códigos de apps
+    return (fullUser as any).apps || [];
+  }
 
   @Query(() => User)
   @UseGuards(JwtAuthGuard)

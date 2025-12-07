@@ -75,8 +75,23 @@ export class AuthService {
 
     if (isMatch) {
       const token = this.createJwt(userToAttempt).token;
+      
+      // Transformar user para LoginUser com apps como array de strings
+      const loginUser = {
+        id: userToAttempt.id,
+        email: userToAttempt.email,
+        firstName: userToAttempt.firstName,
+        lastName: userToAttempt.lastName,
+        nickname: userToAttempt.nickname,
+        profilePicture: userToAttempt.profilePicture,
+        apartment: userToAttempt.apartment,
+        isApprovedResident: userToAttempt.isApprovedResident,
+        isAdmin: userToAttempt.isAdmin,
+        apps: (userToAttempt as any).apps || [],
+      };
+      
       const result: LoginResult = {
-        user: userToAttempt,
+        user: loginUser as any,
         token,
       };
       //add log - usar o ID do usuário que fez login, não o userId do parâmetro

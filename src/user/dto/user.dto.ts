@@ -12,9 +12,42 @@ export class LoginUserInput {
 }
 
 @ObjectType()
+export class LoginUser {
+  @Field(() => Number)
+  id: number;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String, { nullable: true })
+  nickname?: string | null;
+
+  @Field(() => String, { nullable: true })
+  profilePicture?: string | null;
+
+  @Field(() => String, { nullable: true })
+  apartment?: string | null;
+
+  @Field(() => Boolean)
+  isApprovedResident: boolean;
+
+  @Field(() => Boolean)
+  isAdmin: boolean;
+
+  @Field(() => [String], { nullable: true })
+  apps?: string[];
+}
+
+@ObjectType()
 export class LoginResult {
-  @Field(() => User)
-  user: User;
+  @Field(() => LoginUser)
+  user: LoginUser;
 
   @Field(() => String)
   token: string;
