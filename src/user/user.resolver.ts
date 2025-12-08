@@ -114,8 +114,16 @@ export class UserResolver {
 
       if (existingUser) {
         // Usuário já existe - verificar senha e adicionar acesso ao app se necessário
-        console.log("👤 User already exists, verifying password and adding app access if needed");
+        console.log("👤 User already exists, verifying password and checking app access");
         console.log("🔍 Target app code:", targetAppCode);
+        
+        // Buscar todos os apps que o usuário já tem acesso
+        const userWithApps = await this.userService.user({
+          where: { id: existingUser.id },
+        });
+        
+        const existingUserApps = (userWithApps as any).apps || [];
+        console.log("📋 User currently has access to apps:", existingUserApps);
         
         // Verificar senha
         const { compareSync } = await import('bcryptjs');
@@ -123,13 +131,16 @@ export class UserResolver {
         console.log("🔐 Password verification result:", isPasswordCorrect ? "CORRECT" : "INCORRECT");
         
         if (!isPasswordCorrect) {
-          console.log("❌ Password incorrect - throwing error");
+          console.log("❌ Password incorrect - informing user about existing apps");
+          const appsList = existingUserApps.length > 0 
+            ? existingUserApps.join(', ')
+            : 'nenhum app';
           throw new BadRequestException(
-            'An account with this email already exists. Please login with your password instead.'
+            `Este email já está registrado no sistema com acesso aos seguintes projetos: ${appsList}. Por favor, faça login com sua senha para acessar.`
           );
         }
         
-        console.log("✅ Password correct - proceeding to add app access");
+        console.log("✅ Password correct - proceeding to check/add app access");
 
         // Buscar o app alvo
         console.log("🔍 Looking for app with code:", targetAppCode);
@@ -142,7 +153,7 @@ export class UserResolver {
         if (!targetApp) {
           console.error(`❌ ERROR: App with code '${targetAppCode}' not found in database!`);
           throw new BadRequestException(
-            `App '${targetAppCode}' not found. Available apps: DISCARD_ME, BOXHUB, RH`
+            `App '${targetAppCode}' not found. Available apps: DISCARD_ME, QRACK, BOXHUB, RH`
           );
         }
 
@@ -158,48 +169,55 @@ export class UserResolver {
 
         console.log(`🔍 User access check for ${targetAppCode}:`, hasAccess ? "ALREADY HAS ACCESS" : "NEEDS ACCESS");
 
-        // Se não tiver acesso, adicionar
-        if (!hasAccess) {
-          console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
-          const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
-            data: {
-              userId: existingUser.id,
-              appId: targetApp.id,
-            },
-          });
-          console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
-        } else {
+        if (hasAccess) {
+          // Usuário já tem acesso ao app solicitado
           console.log(`ℹ️  User already has access to ${targetAppCode}`);
+          const appsList = existingUserApps.length > 0 
+            ? existingUserApps.join(', ')
+            : 'nenhum app';
+          throw new BadRequestException(
+            `Você já está registrado no projeto ${targetAppCode}. Você tem acesso aos seguintes projetos: ${appsList}. Por favor, faça login para acessar.`
+          );
         }
 
-        // Buscar user completo com apps atualizados
+        // Se não tiver acesso, adicionar
+        console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
+        const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
+          data: {
+            userId: existingUser.id,
+            appId: targetApp.id,
+          },
+        });
+        console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
+
+        // Buscar user completo com apps atualizados (após adicionar acesso)
         console.log("🔍 Fetching user with updated apps, ID:", existingUser.id);
-        const userWithApps = await this.userService.user({
+        const userWithAppsUpdated = await this.userService.user({
           where: { id: existingUser.id },
         });
         
-        if (!userWithApps) {
+        if (!userWithAppsUpdated) {
           console.error("❌ ERROR: User not found after adding app access! ID:", existingUser.id);
           throw new Error("User was updated but could not be retrieved");
         }
         
-        const userApps = (userWithApps as any).apps || [];
-        console.log("✅ User retrieved with apps:", userApps);
+        const userApps = (userWithAppsUpdated as any).apps || [];
+        console.log("✅ User retrieved with updated apps:", userApps);
 
         // Gerar token de login
-        const loginToken = this.authService.createJwt(userWithApps as any).token;
+        const loginToken = this.authService.createJwt(userWithAppsUpdated as any).token;
 
         // Transformar user para LoginUser com apps como array de strings
         const loginUser = {
-          id: userWithApps!.id,
-          email: userWithApps!.email,
-          firstName: userWithApps!.firstName,
-          lastName: userWithApps!.lastName,
-          nickname: userWithApps!.nickname,
-          profilePicture: userWithApps!.profilePicture,
-          apartment: userWithApps!.apartment,
-          isApprovedResident: userWithApps!.isApprovedResident,
-          isAdmin: userWithApps!.isAdmin,
+          id: userWithAppsUpdated!.id,
+          email: userWithAppsUpdated!.email,
+          firstName: userWithAppsUpdated!.firstName,
+          lastName: userWithAppsUpdated!.lastName,
+          nickname: userWithAppsUpdated!.nickname,
+          profilePicture: userWithAppsUpdated!.profilePicture,
+          apartment: userWithAppsUpdated!.apartment,
+          isApprovedResident: userWithAppsUpdated!.isApprovedResident,
+          isAdmin: userWithAppsUpdated!.isAdmin,
           apps: userApps,
         };
         
