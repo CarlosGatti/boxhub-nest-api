@@ -170,25 +170,20 @@ export class UserResolver {
         console.log(`🔍 User access check for ${targetAppCode}:`, hasAccess ? "ALREADY HAS ACCESS" : "NEEDS ACCESS");
 
         if (hasAccess) {
-          // Usuário já tem acesso ao app solicitado
-          console.log(`ℹ️  User already has access to ${targetAppCode}`);
-          const appsList = existingUserApps.length > 0 
-            ? existingUserApps.join(', ')
-            : 'nenhum app';
-          throw new BadRequestException(
-            `Você já está registrado no projeto ${targetAppCode}. Você tem acesso aos seguintes projetos: ${appsList}. Por favor, faça login para acessar.`
-          );
+          // Usuário já tem acesso ao app solicitado - apenas retornar sucesso com login
+          console.log(`ℹ️  User already has access to ${targetAppCode} - returning login token`);
+          // Não lançar erro, apenas fazer login normalmente
+        } else {
+          // Se não tiver acesso, adicionar
+          console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
+          const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
+            data: {
+              userId: existingUser.id,
+              appId: targetApp.id,
+            },
+          });
+          console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
         }
-
-        // Se não tiver acesso, adicionar
-        console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
-        const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
-          data: {
-            userId: existingUser.id,
-            appId: targetApp.id,
-          },
-        });
-        console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
 
         // Buscar user completo com apps atualizados (após adicionar acesso)
         console.log("🔍 Fetching user with updated apps, ID:", existingUser.id);
