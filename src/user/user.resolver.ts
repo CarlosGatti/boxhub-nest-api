@@ -112,51 +112,76 @@ export class UserResolver {
       if (existingUser) {
         // Usuário já existe - verificar senha e adicionar acesso ao app se necessário
         console.log("👤 User already exists, verifying password and adding app access if needed");
+        console.log("🔍 Target app code:", targetAppCode);
         
         // Verificar senha
         const { compareSync } = await import('bcryptjs');
         const isPasswordCorrect = compareSync(userInput.password, existingUser.password);
+        console.log("🔐 Password verification result:", isPasswordCorrect ? "CORRECT" : "INCORRECT");
         
         if (!isPasswordCorrect) {
+          console.log("❌ Password incorrect - throwing error");
           throw new BadRequestException(
             'An account with this email already exists. Please login with your password instead.'
           );
         }
+        
+        console.log("✅ Password correct - proceeding to add app access");
 
         // Buscar o app alvo
+        console.log("🔍 Looking for app with code:", targetAppCode);
         const targetApp = await (this.userService as any).prismaService.app.findUnique({
           where: { code: targetAppCode },
         });
+        
+        console.log("🔍 App found:", targetApp ? `YES (id: ${targetApp.id})` : "NO - App not found!");
 
-        if (targetApp) {
-          // Verificar se já tem acesso ao app
-          const hasAccess = await (this.userService as any).prismaService.userAppAccess.findUnique({
-            where: {
-              userId_appId: {
-                userId: existingUser.id,
-                appId: targetApp.id,
-              },
+        if (!targetApp) {
+          console.error(`❌ ERROR: App with code '${targetAppCode}' not found in database!`);
+          throw new BadRequestException(
+            `App '${targetAppCode}' not found. Available apps: DISCARD_ME, BOXHUB, RH`
+          );
+        }
+
+        // Verificar se já tem acesso ao app
+        const hasAccess = await (this.userService as any).prismaService.userAppAccess.findUnique({
+          where: {
+            userId_appId: {
+              userId: existingUser.id,
+              appId: targetApp.id,
+            },
+          },
+        });
+
+        console.log(`🔍 User access check for ${targetAppCode}:`, hasAccess ? "ALREADY HAS ACCESS" : "NEEDS ACCESS");
+
+        // Se não tiver acesso, adicionar
+        if (!hasAccess) {
+          console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
+          const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
+            data: {
+              userId: existingUser.id,
+              appId: targetApp.id,
             },
           });
-
-          // Se não tiver acesso, adicionar
-          if (!hasAccess) {
-            await (this.userService as any).prismaService.userAppAccess.create({
-              data: {
-                userId: existingUser.id,
-                appId: targetApp.id,
-              },
-            });
-            console.log(`✅ Added access to ${targetAppCode} for existing user`);
-          } else {
-            console.log(`ℹ️  User already has access to ${targetAppCode}`);
-          }
+          console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
+        } else {
+          console.log(`ℹ️  User already has access to ${targetAppCode}`);
         }
 
         // Buscar user completo com apps atualizados
+        console.log("🔍 Fetching user with updated apps, ID:", existingUser.id);
         const userWithApps = await this.userService.user({
           where: { id: existingUser.id },
         });
+        
+        if (!userWithApps) {
+          console.error("❌ ERROR: User not found after adding app access! ID:", existingUser.id);
+          throw new Error("User was updated but could not be retrieved");
+        }
+        
+        const userApps = (userWithApps as any).apps || [];
+        console.log("✅ User retrieved with apps:", userApps);
 
         // Gerar token de login
         const loginToken = this.authService.createJwt(userWithApps as any).token;
@@ -172,8 +197,10 @@ export class UserResolver {
           apartment: userWithApps!.apartment,
           isApprovedResident: userWithApps!.isApprovedResident,
           isAdmin: userWithApps!.isAdmin,
-          apps: (userWithApps as any).apps || [],
+          apps: userApps,
         };
+        
+        console.log("✅ Registration/access update complete. Returning LoginResult with user ID:", loginUser.id, "and apps:", loginUser.apps);
 
         return {
           user: loginUser as any,
@@ -182,6 +209,7 @@ export class UserResolver {
       }
 
       // Usuário não existe - criar novo usuário
+      console.log("🆕 User does not exist - creating new user for app:", targetAppCode);
       const userCreateData: UserCreateInput = {
         email: userInput.email,
         password: userInput.password,
@@ -195,16 +223,19 @@ export class UserResolver {
       // Se der erro de email duplicado aqui, significa que houve race condition
       // ou o código não está sendo executado corretamente
       try {
+        console.log("📝 Calling createUser service...");
         const user = await this.userService.createUser(userCreateData);
-        console.log("✅ User registered successfully:", user.id);
+        console.log("✅ User created successfully in database, ID:", user.id);
 
         // Se o app alvo não for DISCARD_ME, adicionar acesso ao app alvo também
         if (targetAppCode !== 'DISCARD_ME') {
+          console.log(`🔍 Adding access to ${targetAppCode} for new user...`);
           const targetApp = await (this.userService as any).prismaService.app.findUnique({
             where: { code: targetAppCode },
           });
 
           if (targetApp) {
+            console.log(`📝 Creating UserAppAccess for user ${user.id} and app ${targetApp.id} (${targetAppCode})`);
             await (this.userService as any).prismaService.userAppAccess.create({
               data: {
                 userId: user.id,
@@ -212,20 +243,35 @@ export class UserResolver {
               },
             });
             console.log(`✅ Added access to ${targetAppCode} for new user`);
+          } else {
+            console.error(`❌ ERROR: App '${targetAppCode}' not found when trying to add access for new user!`);
           }
         }
 
         // Buscar user completo com apps atualizados
+        console.log("🔍 Fetching user with apps, ID:", user.id);
         const userWithApps = await this.userService.user({
           where: { id: user.id },
         });
+        
+        if (!userWithApps) {
+          console.error("❌ ERROR: User not found after creation! ID:", user.id);
+          throw new Error("User was created but could not be retrieved");
+        }
+        
+        console.log("✅ User retrieved with apps:", (userWithApps as any).apps || []);
 
         // Generate JWT token for email verification
         const verificationToken = this.authService.createJwt(userWithApps as any).token;
 
         // Send email verification email
-        await this.userService.sendEmailVerification(userWithApps as any, verificationToken);
-        console.log("📧 Email verification sent to:", userWithApps!.email);
+        try {
+          await this.userService.sendEmailVerification(userWithApps as any, verificationToken);
+          console.log("📧 Email verification sent to:", userWithApps!.email);
+        } catch (emailError) {
+          console.error("⚠️  Error sending verification email (non-critical):", emailError);
+          // Não falhar o registro se o email falhar
+        }
 
         // Generate JWT token for login (user can login but email is not verified yet)
         const loginToken = this.authService.createJwt(userWithApps as any).token;
@@ -243,6 +289,8 @@ export class UserResolver {
           isAdmin: userWithApps!.isAdmin,
           apps: (userWithApps as any).apps || [],
         };
+        
+        console.log("✅ Registration complete. Returning LoginResult with user ID:", loginUser.id, "and apps:", loginUser.apps);
 
         // Return LoginResult with user and token
         return {
