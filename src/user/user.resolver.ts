@@ -99,14 +99,7 @@ export class UserResolver {
     console.log("📝 AppCode received from frontend:", appCode ? `"${appCode}"` : "NOT PROVIDED (will default to DISCARD_ME)");
     
     // Determinar qual app está sendo usado (padrão: DISCARD_ME)
-    // IMPORTANTE: Se o frontend enviar "QRACK" ou outro nome, precisamos mapear para "BOXHUB"
-    let targetAppCode = appCode || 'DISCARD_ME';
-    
-    // Mapear códigos alternativos para os códigos corretos do banco
-    if (targetAppCode.toUpperCase() === 'QRACK' || targetAppCode.toUpperCase() === 'Q-RACK') {
-      console.log("🔄 Mapping QRACK/Q-RACK to BOXHUB");
-      targetAppCode = 'BOXHUB';
-    }
+    const targetAppCode = appCode || 'DISCARD_ME';
     
     console.log("📝 Final targetAppCode:", targetAppCode);
     
@@ -255,6 +248,7 @@ export class UserResolver {
             console.log(`✅ Added access to ${targetAppCode} for new user`);
           } else {
             console.error(`❌ ERROR: App '${targetAppCode}' not found when trying to add access for new user!`);
+            console.error(`Available apps: DISCARD_ME, QRACK, BOXHUB, RH`);
           }
         }
 

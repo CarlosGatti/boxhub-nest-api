@@ -13,9 +13,14 @@ async function main() {
         description: 'Condo marketplace para compra, venda e doação',
       },
       {
+        code: 'QRACK',
+        name: 'Qrack',
+        description: 'Sistema de gestão de containers e itens com QR Code',
+      },
+      {
         code: 'BOXHUB',
         name: 'BoxHub',
-        description: 'Gerenciamento de containers e itens com QR Code',
+        description: 'Gerenciamento de containers e itens com QR Code (projeto futuro)',
       },
       {
         code: 'RH',
