@@ -95,10 +95,20 @@ export class UserResolver {
     @Args("user") userInput: RegisterUserInput,
     @Args("appCode", { nullable: true, type: () => String }) appCode?: string
   ): Promise<LoginResult> {
-    console.log("📝 Registering user with email:", userInput.email, "for app:", appCode || "DISCARD_ME");
+    console.log("📝 Registering user with email:", userInput.email);
+    console.log("📝 AppCode received from frontend:", appCode ? `"${appCode}"` : "NOT PROVIDED (will default to DISCARD_ME)");
     
     // Determinar qual app está sendo usado (padrão: DISCARD_ME)
-    const targetAppCode = appCode || 'DISCARD_ME';
+    // IMPORTANTE: Se o frontend enviar "QRACK" ou outro nome, precisamos mapear para "BOXHUB"
+    let targetAppCode = appCode || 'DISCARD_ME';
+    
+    // Mapear códigos alternativos para os códigos corretos do banco
+    if (targetAppCode.toUpperCase() === 'QRACK' || targetAppCode.toUpperCase() === 'Q-RACK') {
+      console.log("🔄 Mapping QRACK/Q-RACK to BOXHUB");
+      targetAppCode = 'BOXHUB';
+    }
+    
+    console.log("📝 Final targetAppCode:", targetAppCode);
     
     try {
       // Verificar se o usuário já existe (PRIMEIRA VERIFICAÇÃO - antes de qualquer criação)
