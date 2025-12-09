@@ -226,6 +226,27 @@ export class UserResolver {
 
       // Usuário não existe - criar novo usuário
       console.log("🆕 User does not exist - creating new user for app:", targetAppCode);
+      
+      // Buscar o app alvo ANTES de criar o usuário
+      console.log("🔍 Looking for target app:", targetAppCode);
+      const targetApp = await (this.userService as any).prismaService.app.findUnique({
+        where: { code: targetAppCode },
+      });
+      
+      if (!targetApp) {
+        console.error(`❌ ERROR: App '${targetAppCode}' not found in database!`);
+        throw new BadRequestException(
+          `App '${targetAppCode}' not found. Available apps: DISCARD_ME, QRACK, BOXHUB, RH`
+        );
+      }
+      
+      console.log("🔍 Target app found:", targetApp ? `YES (id: ${targetApp.id})` : "NO");
+      
+      // Buscar também o DISCARD_ME para adicionar ambos se necessário
+      const discardMeApp = await (this.userService as any).prismaService.app.findUnique({
+        where: { code: 'DISCARD_ME' },
+      });
+      
       const userCreateData: UserCreateInput = {
         email: userInput.email,
         password: userInput.password,
@@ -243,26 +264,27 @@ export class UserResolver {
         const user = await this.userService.createUser(userCreateData);
         console.log("✅ User created successfully in database, ID:", user.id);
 
-        // Se o app alvo não for DISCARD_ME, adicionar acesso ao app alvo também
-        if (targetAppCode !== 'DISCARD_ME') {
-          console.log(`🔍 Adding access to ${targetAppCode} for new user...`);
-          const targetApp = await (this.userService as any).prismaService.app.findUnique({
-            where: { code: targetAppCode },
+        // Adicionar acesso ao app alvo (QRACK, BOXHUB, etc.)
+        console.log(`📝 Creating UserAppAccess for user ${user.id} and app ${targetApp.id} (${targetAppCode})`);
+        await (this.userService as any).prismaService.userAppAccess.create({
+          data: {
+            userId: user.id,
+            appId: targetApp.id,
+          },
+        });
+        console.log(`✅ Added access to ${targetAppCode} for new user`);
+        
+        // Se o app alvo não for DISCARD_ME, também adicionar acesso ao DISCARD_ME
+        // (para que o usuário tenha acesso a ambos)
+        if (targetAppCode !== 'DISCARD_ME' && discardMeApp) {
+          console.log(`📝 Also adding access to DISCARD_ME for new user`);
+          await (this.userService as any).prismaService.userAppAccess.create({
+            data: {
+              userId: user.id,
+              appId: discardMeApp.id,
+            },
           });
-
-          if (targetApp) {
-            console.log(`📝 Creating UserAppAccess for user ${user.id} and app ${targetApp.id} (${targetAppCode})`);
-            await (this.userService as any).prismaService.userAppAccess.create({
-              data: {
-                userId: user.id,
-                appId: targetApp.id,
-              },
-            });
-            console.log(`✅ Added access to ${targetAppCode} for new user`);
-          } else {
-            console.error(`❌ ERROR: App '${targetAppCode}' not found when trying to add access for new user!`);
-            console.error(`Available apps: DISCARD_ME, QRACK, BOXHUB, RH`);
-          }
+          console.log(`✅ Added access to DISCARD_ME for new user`);
         }
 
         // Buscar user completo com apps atualizados
