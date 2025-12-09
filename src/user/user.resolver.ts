@@ -95,330 +95,132 @@ export class UserResolver {
     @Args("user") userInput: RegisterUserInput,
     @Args("appCode", { nullable: true, type: () => String }) appCode?: string
   ): Promise<LoginResult> {
-    console.log("📝 Registering user with email:", userInput.email);
-    console.log("📝 AppCode received from frontend:", appCode ? `"${appCode}"` : "NOT PROVIDED (will default to DISCARD_ME)");
-    
-    // Determinar qual app está sendo usado (padrão: DISCARD_ME)
-    const targetAppCode = appCode || 'DISCARD_ME';
-    
-    console.log("📝 Final targetAppCode:", targetAppCode);
+    const email = userInput.email.toLowerCase().trim();
+    console.log("📝 Registering user with email:", email);
+    console.log("📝 AppCode received:", appCode || "NOT PROVIDED");
     
     try {
-      // Verificar se o usuário já existe (PRIMEIRA VERIFICAÇÃO - antes de qualquer criação)
-      console.log("🔍 Checking if user exists with email:", userInput.email);
-      const existingUser = await this.userService.user({
-        where: { email: userInput.email },
+      // 1. Buscar usuário existente
+      let user = await (this.userService as any).prismaService.user.findUnique({
+        where: { email },
       });
 
-      console.log("🔍 User check result:", existingUser ? "EXISTS" : "NOT EXISTS");
+      console.log("🔍 User exists?", user ? `YES (id: ${user.id})` : "NO");
 
-      if (existingUser) {
-        // Usuário já existe - verificar senha e adicionar acesso ao app se necessário
-        console.log("👤 User already exists, verifying password and checking app access");
-        console.log("🔍 Target app code:", targetAppCode);
+      // 2. Se não existir, criar usuário
+      if (!user) {
+        const { hashSync } = await import('bcryptjs');
+        const hashedPassword = hashSync(userInput.password, 10);
         
-        // Buscar todos os apps que o usuário já tem acesso
-        const userWithApps = await this.userService.user({
-          where: { id: existingUser.id },
+        // Buscar DISCARD_ME para vincular automaticamente ao criar usuário
+        const discardMeApp = await (this.userService as any).prismaService.app.findUnique({
+          where: { code: 'DISCARD_ME' },
         });
         
-        const existingUserApps = (userWithApps as any).apps || [];
-        console.log("📋 User currently has access to apps:", existingUserApps);
-        
-        // Verificar senha
-        const { compareSync } = await import('bcryptjs');
-        const isPasswordCorrect = compareSync(userInput.password, existingUser.password);
-        console.log("🔐 Password verification result:", isPasswordCorrect ? "CORRECT" : "INCORRECT");
-        
-        if (!isPasswordCorrect) {
-          console.log("❌ Password incorrect - informing user about existing apps");
-          const appsList = existingUserApps.length > 0 
-            ? existingUserApps.join(', ')
-            : 'nenhum app';
-          throw new BadRequestException(
-            `Este email já está registrado no sistema com acesso aos seguintes projetos: ${appsList}. Por favor, faça login com sua senha para acessar.`
-          );
-        }
-        
-        console.log("✅ Password correct - proceeding to check/add app access");
-
-        // Buscar o app alvo
-        console.log("🔍 Looking for app with code:", targetAppCode);
-        const targetApp = await (this.userService as any).prismaService.app.findUnique({
-          where: { code: targetAppCode },
+        user = await (this.userService as any).prismaService.user.create({
+          data: {
+            email,
+            password: hashedPassword,
+            firstName: userInput.firstName,
+            lastName: userInput.lastName,
+            public: userInput.public ?? false,
+            apartment: userInput.apartment,
+            emailVerified: false,
+            apps: discardMeApp
+              ? {
+                  create: {
+                    appId: discardMeApp.id,
+                  },
+                }
+              : undefined,
+          },
         });
-        
-        console.log("🔍 App found:", targetApp ? `YES (id: ${targetApp.id})` : "NO - App not found!");
+        console.log("✅ User created, ID:", user.id);
+      }
 
-        if (!targetApp) {
-          console.error(`❌ ERROR: App with code '${targetAppCode}' not found in database!`);
-          throw new BadRequestException(
-            `App '${targetAppCode}' not found. Available apps: DISCARD_ME, QRACK, BOXHUB, RH`
-          );
+      // 3. Se appCode foi enviado, associar o user ao app usando upsert
+      if (appCode) {
+        const app = await (this.userService as any).prismaService.app.findUnique({
+          where: { code: appCode },
+        });
+
+        if (!app) {
+          throw new BadRequestException(`App not found: ${appCode}`);
         }
 
-        // Verificar se já tem acesso ao app
-        const hasAccess = await (this.userService as any).prismaService.userAppAccess.findUnique({
+        await (this.userService as any).prismaService.userAppAccess.upsert({
           where: {
             userId_appId: {
-              userId: existingUser.id,
-              appId: targetApp.id,
-            },
-          },
-        });
-
-        console.log(`🔍 User access check for ${targetAppCode}:`, hasAccess ? "ALREADY HAS ACCESS" : "NEEDS ACCESS");
-
-        if (hasAccess) {
-          // Usuário já tem acesso ao app solicitado - apenas retornar sucesso com login
-          console.log(`ℹ️  User already has access to ${targetAppCode} - returning login token`);
-          // Não lançar erro, apenas fazer login normalmente
-        } else {
-          // Se não tiver acesso, adicionar
-          console.log(`📝 Creating UserAppAccess for user ${existingUser.id} and app ${targetApp.id} (${targetAppCode})`);
-          const newAccess = await (this.userService as any).prismaService.userAppAccess.create({
-            data: {
-              userId: existingUser.id,
-              appId: targetApp.id,
-            },
-          });
-          console.log(`✅ Added access to ${targetAppCode} for existing user. Access ID: ${newAccess.id}`);
-        }
-
-        // Buscar user completo com apps atualizados (após adicionar acesso)
-        console.log("🔍 Fetching user with updated apps, ID:", existingUser.id);
-        const userWithAppsUpdated = await this.userService.user({
-          where: { id: existingUser.id },
-        });
-        
-        if (!userWithAppsUpdated) {
-          console.error("❌ ERROR: User not found after adding app access! ID:", existingUser.id);
-          throw new Error("User was updated but could not be retrieved");
-        }
-        
-        const userApps = (userWithAppsUpdated as any).apps || [];
-        console.log("✅ User retrieved with updated apps:", userApps);
-
-        // Gerar token de login
-        const loginToken = this.authService.createJwt(userWithAppsUpdated as any).token;
-
-        // Transformar user para LoginUser com apps como array de strings
-        const loginUser = {
-          id: userWithAppsUpdated!.id,
-          email: userWithAppsUpdated!.email,
-          firstName: userWithAppsUpdated!.firstName,
-          lastName: userWithAppsUpdated!.lastName,
-          nickname: userWithAppsUpdated!.nickname,
-          profilePicture: userWithAppsUpdated!.profilePicture,
-          apartment: userWithAppsUpdated!.apartment,
-          isApprovedResident: userWithAppsUpdated!.isApprovedResident,
-          isAdmin: userWithAppsUpdated!.isAdmin,
-          apps: userApps,
-        };
-        
-        console.log("✅ Registration/access update complete. Returning LoginResult with user ID:", loginUser.id, "and apps:", loginUser.apps);
-
-        return {
-          user: loginUser as any,
-          token: loginToken,
-        };
-      }
-
-      // Usuário não existe - criar novo usuário
-      console.log("🆕 User does not exist - creating new user for app:", targetAppCode);
-      
-      // Buscar o app alvo ANTES de criar o usuário
-      console.log("🔍 Looking for target app:", targetAppCode);
-      const targetApp = await (this.userService as any).prismaService.app.findUnique({
-        where: { code: targetAppCode },
-      });
-      
-      if (!targetApp) {
-        console.error(`❌ ERROR: App '${targetAppCode}' not found in database!`);
-        throw new BadRequestException(
-          `App '${targetAppCode}' not found. Available apps: DISCARD_ME, QRACK, BOXHUB, RH`
-        );
-      }
-      
-      console.log("🔍 Target app found:", targetApp ? `YES (id: ${targetApp.id})` : "NO");
-      
-      // Buscar também o DISCARD_ME para adicionar ambos se necessário
-      const discardMeApp = await (this.userService as any).prismaService.app.findUnique({
-        where: { code: 'DISCARD_ME' },
-      });
-      
-      const userCreateData: UserCreateInput = {
-        email: userInput.email,
-        password: userInput.password,
-        firstName: userInput.firstName,
-        lastName: userInput.lastName,
-        public: userInput.public ?? false,
-        apartment: userInput.apartment,
-      };
-
-      // Create the user (emailVerified will be false by default)
-      // Se der erro de email duplicado aqui, significa que houve race condition
-      // ou o código não está sendo executado corretamente
-      try {
-        console.log("📝 Calling createUser service...");
-        const user = await this.userService.createUser(userCreateData);
-        console.log("✅ User created successfully in database, ID:", user.id);
-
-        // Adicionar acesso ao app alvo (QRACK, BOXHUB, etc.)
-        console.log(`📝 Creating UserAppAccess for user ${user.id} and app ${targetApp.id} (${targetAppCode})`);
-        await (this.userService as any).prismaService.userAppAccess.create({
-          data: {
-            userId: user.id,
-            appId: targetApp.id,
-          },
-        });
-        console.log(`✅ Added access to ${targetAppCode} for new user`);
-        
-        // Se o app alvo não for DISCARD_ME, também adicionar acesso ao DISCARD_ME
-        // (para que o usuário tenha acesso a ambos)
-        if (targetAppCode !== 'DISCARD_ME' && discardMeApp) {
-          console.log(`📝 Also adding access to DISCARD_ME for new user`);
-          await (this.userService as any).prismaService.userAppAccess.create({
-            data: {
               userId: user.id,
-              appId: discardMeApp.id,
+              appId: app.id,
             },
-          });
-          console.log(`✅ Added access to DISCARD_ME for new user`);
-        }
-
-        // Buscar user completo com apps atualizados
-        console.log("🔍 Fetching user with apps, ID:", user.id);
-        const userWithApps = await this.userService.user({
-          where: { id: user.id },
+          },
+          update: {},
+          create: {
+            userId: user.id,
+            appId: app.id,
+          },
         });
-        
-        if (!userWithApps) {
-          console.error("❌ ERROR: User not found after creation! ID:", user.id);
-          throw new Error("User was created but could not be retrieved");
-        }
-        
-        console.log("✅ User retrieved with apps:", (userWithApps as any).apps || []);
+        console.log(`✅ Associated user with app: ${appCode}`);
+      }
 
-        // Generate JWT token for email verification
-        const verificationToken = this.authService.createJwt(userWithApps as any).token;
+      // 4. Recarregar com apps
+      const completeUser = await (this.userService as any).prismaService.user.findUnique({
+        where: { id: user.id },
+        include: {
+          apps: { include: { app: true } },
+        },
+      });
 
-        // Send email verification email
+      if (!completeUser) {
+        throw new Error("User not found after registration");
+      }
+
+      const appCodes = (completeUser.apps || []).map((ua: any) => ua.app.code);
+      console.log("✅ User apps:", appCodes);
+
+      // 5. Gerar token (incluindo apps no payload)
+      const loginToken = this.authService.createJwt(completeUser as any).token;
+
+      // 6. Enviar email de verificação (se for novo usuário)
+      if (!user.emailVerified) {
         try {
-          await this.userService.sendEmailVerification(userWithApps as any, verificationToken);
-          console.log("📧 Email verification sent to:", userWithApps!.email);
+          const verificationToken = this.authService.createJwt(completeUser as any).token;
+          await this.userService.sendEmailVerification(completeUser as any, verificationToken);
+          console.log("📧 Email verification sent");
         } catch (emailError) {
           console.error("⚠️  Error sending verification email (non-critical):", emailError);
-          // Não falhar o registro se o email falhar
         }
-
-        // Generate JWT token for login (user can login but email is not verified yet)
-        const loginToken = this.authService.createJwt(userWithApps as any).token;
-
-        // Transformar user para LoginUser com apps como array de strings
-        const loginUser = {
-          id: userWithApps!.id,
-          email: userWithApps!.email,
-          firstName: userWithApps!.firstName,
-          lastName: userWithApps!.lastName,
-          nickname: userWithApps!.nickname,
-          profilePicture: userWithApps!.profilePicture,
-          apartment: userWithApps!.apartment,
-          isApprovedResident: userWithApps!.isApprovedResident,
-          isAdmin: userWithApps!.isAdmin,
-          apps: (userWithApps as any).apps || [],
-        };
-        
-        console.log("✅ Registration complete. Returning LoginResult with user ID:", loginUser.id, "and apps:", loginUser.apps);
-
-        // Return LoginResult with user and token
-        return {
-          user: loginUser as any,
-          token: loginToken,
-        };
-      } catch (createError: any) {
-        // Se der erro ao criar, pode ser que o usuário foi criado entre a verificação e a criação
-        // (race condition) ou erro de constraint única do Prisma
-        console.error("❌ Error creating user:", createError);
-        
-        if (createError.code === 'P2002' && createError.meta?.target?.includes('email')) {
-          // Email já existe - tentar buscar o usuário novamente e adicionar acesso ao app
-          console.log("⚠️  Email constraint error - user may have been created. Trying to add app access...");
-          const userAfterError = await this.userService.user({
-            where: { email: userInput.email },
-          });
-          
-          if (userAfterError) {
-            // Usuário existe agora - verificar senha e adicionar acesso ao app
-            const { compareSync } = await import('bcryptjs');
-            const isPasswordCorrect = compareSync(userInput.password, userAfterError.password);
-            
-            if (!isPasswordCorrect) {
-              throw new BadRequestException(
-                'An account with this email already exists. Please login with your password instead.'
-              );
-            }
-
-            // Adicionar acesso ao app
-            const targetApp = await (this.userService as any).prismaService.app.findUnique({
-              where: { code: targetAppCode },
-            });
-
-            if (targetApp) {
-              const hasAccess = await (this.userService as any).prismaService.userAppAccess.findUnique({
-                where: {
-                  userId_appId: {
-                    userId: userAfterError.id,
-                    appId: targetApp.id,
-                  },
-                },
-              });
-
-              if (!hasAccess) {
-                await (this.userService as any).prismaService.userAppAccess.create({
-                  data: {
-                    userId: userAfterError.id,
-                    appId: targetApp.id,
-                  },
-                });
-                console.log(`✅ Added access to ${targetAppCode} for existing user (after race condition)`);
-              }
-            }
-
-            const userWithApps = await this.userService.user({
-              where: { id: userAfterError.id },
-            });
-
-            const loginToken = this.authService.createJwt(userWithApps as any).token;
-
-            const loginUser = {
-              id: userWithApps!.id,
-              email: userWithApps!.email,
-              firstName: userWithApps!.firstName,
-              lastName: userWithApps!.lastName,
-              nickname: userWithApps!.nickname,
-              profilePicture: userWithApps!.profilePicture,
-              apartment: userWithApps!.apartment,
-              isApprovedResident: userWithApps!.isApprovedResident,
-              isAdmin: userWithApps!.isAdmin,
-              apps: (userWithApps as any).apps || [],
-            };
-
-            return {
-              user: loginUser as any,
-              token: loginToken,
-            };
-          }
-        }
-        
-        throw createError;
       }
+
+      // 7. Retornar no formato GraphQL esperado
+      const loginUser = {
+        id: completeUser.id,
+        email: completeUser.email,
+        firstName: completeUser.firstName,
+        lastName: completeUser.lastName,
+        nickname: completeUser.nickname,
+        profilePicture: completeUser.profilePicture,
+        apartment: completeUser.apartment,
+        isApprovedResident: completeUser.isApprovedResident,
+        isAdmin: completeUser.isAdmin,
+        apps: appCodes,
+      };
+
+      return {
+        user: loginUser as any,
+        token: loginToken,
+      };
     } catch (error: any) {
       console.error("❌ Error registering user:", error);
-      // Re-throw com mensagem mais amigável se for erro de email duplicado
-      if (error.message?.includes('already exists') || error instanceof BadRequestException) {
-        throw error;
+      
+      // Se for erro de email duplicado (race condition), tentar novamente
+      if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+        console.log("⚠️  Race condition detected, retrying...");
+        // Recursivamente tentar novamente (mas apenas uma vez)
+        return this.register(userInput, appCode);
       }
+      
       throw error;
     }
   }

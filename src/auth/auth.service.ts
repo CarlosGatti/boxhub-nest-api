@@ -138,17 +138,24 @@ export class AuthService {
   }
 
   // TODO  Remover hard-code do JWT (Add .env)
-  createJwt(user: User): { data: JwtPayload; token: string } {
+  createJwt(user: User | any): { data: JwtPayload; token: string } {
     const expiresIn = 1000000;
     let expiration: Date | undefined;
     if (expiresIn) {
       expiration = new Date();
       expiration.setTime(expiration.getTime() + expiresIn * 1000);
     }
+    
+    // Extrair apps do user (pode vir como array de strings ou como UserAppAccess[])
+    const apps = Array.isArray(user.apps) 
+      ? user.apps.map((app: any) => typeof app === 'string' ? app : app.app?.code || app.code)
+      : [];
+    
     const data: JwtPayload = {
       email: user.email,
       _id: String(user.id),
       expiration,
+      apps: apps.length > 0 ? apps : undefined,
     };
 
     const jwt = this.jwtService.sign(data);

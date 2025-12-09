@@ -10,22 +10,17 @@ async function main() {
       {
         code: 'DISCARD_ME',
         name: 'Discart-me',
-        description: 'Condo marketplace para compra, venda e doação',
+        description: 'Marketplace interno da comunidade',
       },
       {
         code: 'QRACK',
-        name: 'Qrack',
-        description: 'Sistema de gestão de containers e itens com QR Code',
-      },
-      {
-        code: 'BOXHUB',
-        name: 'BoxHub',
-        description: 'Gerenciamento de containers e itens com QR Code (projeto futuro)',
+        name: 'QRACK',
+        description: 'Gestão de containers e itens via QR Code',
       },
       {
         code: 'RH',
-        name: 'RH Solution Center',
-        description: 'Ferramentas de RH e entrevistas de desligamento',
+        name: 'RH Integração',
+        description: 'Ferramentas de RH e entrevista de desligamento',
       },
     ],
     skipDuplicates: true,
