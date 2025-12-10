@@ -186,7 +186,7 @@ export class UserResolver {
       if (!user.emailVerified) {
         try {
           const verificationToken = this.authService.createJwt(completeUser as any).token;
-          await this.userService.sendEmailVerification(completeUser as any, verificationToken);
+          await this.userService.sendEmailVerification(completeUser as any, verificationToken, appCode);
           console.log("📧 Email verification sent");
         } catch (emailError) {
           console.error("⚠️  Error sending verification email (non-critical):", emailError);

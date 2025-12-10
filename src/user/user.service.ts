@@ -138,12 +138,18 @@ export class UserService {
     }
   }
 
-  async sendEmailVerification(user: User, token: string): Promise<void> {
+  async sendEmailVerification(user: User, token: string, appCode?: string): Promise<void> {
     // Use environment variable or default URL for logo
     const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
     // Use backend URL for verification endpoint, which will redirect to frontend
     const backendUrl = process.env.BACKEND_URL || process.env.API_URL || 'https://api.discart.me';
     const verifyUrl = `${backendUrl}/auth/verify-email`;
+    
+    // Determinar o nome do app para o subject (opcional, pode ser genérico)
+    const appName = appCode === 'QRACK' ? 'QRACK' : appCode === 'RH' ? 'RH Solution Center' : 'carlosgatti.com';
+    const subject = appCode 
+      ? `Verify Your Email Address - ${appName}`
+      : "Verify Your Email Address - carlosgatti.com";
     
     const variables = {
       firstName: user.firstName,
@@ -157,7 +163,7 @@ export class UserService {
     await this.mailService.send({
       path: "email-verification",
       to: user.email,
-      subject: "Verify Your Email Address - Discart-me",
+      subject: subject,
       variables,
     });
   }
