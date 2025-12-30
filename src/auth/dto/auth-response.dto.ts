@@ -6,5 +6,6 @@ export class AuthResponseDto {
     email: string;
     firstName: string;
     lastName: string;
+    apps?: string[];
   };
 }

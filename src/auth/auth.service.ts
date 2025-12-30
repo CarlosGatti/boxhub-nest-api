@@ -239,6 +239,7 @@ export class AuthService {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        apps: (userWithApps as any).apps || [],
       },
     };
   }
@@ -287,6 +288,7 @@ export class AuthService {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        apps: (user as any).apps || [],
       },
     };
   }
