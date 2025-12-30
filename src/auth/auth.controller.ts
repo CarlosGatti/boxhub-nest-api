@@ -43,6 +43,7 @@ export class AuthController {
       lastName: user.lastName,
       nickname: user.nickname,
       profilePicture: user.profilePicture,
+      apps: user.apps || [], // ✅ Sempre incluir apps
     };
   }
 

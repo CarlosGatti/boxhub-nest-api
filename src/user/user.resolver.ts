@@ -64,42 +64,11 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { name: "createUser" })
-  async createUser(
-    @Args("data") data: UserCreateInput,
-    @Args("appCode", { nullable: true, type: () => String }) appCode?: string
-  ) {
+  async createUser(@Args("data") data: UserCreateInput) {
     console.log("📝 Creating user with email:", data.email);
-    console.log("📝 AppCode received:", appCode || "NOT PROVIDED");
     try {
-      const user = await this.userService.createUser(data, appCode);
+      const user = await this.userService.createUser(data);
       console.log("✅ User created successfully:", user.id);
-
-      // Enviar email de verificação (se email não estiver verificado)
-      if (!user.emailVerified) {
-        try {
-          // Buscar usuário completo com apps para gerar token correto
-          const completeUser = await (this.userService as any).prismaService.user.findUnique({
-            where: { id: user.id },
-            include: {
-              apps: {
-                include: {
-                  app: true,
-                },
-              },
-            },
-          });
-
-          if (completeUser) {
-            const verificationToken = this.authService.createJwt(completeUser as any).token;
-            await this.userService.sendEmailVerification(completeUser as any, verificationToken, appCode);
-            console.log("📧 Email verification sent");
-          }
-        } catch (emailError) {
-          console.error("⚠️  Error sending verification email (non-critical):", emailError);
-          // Não falhar o registro se o email falhar
-        }
-      }
-
       return user;
     } catch (error) {
       console.error("❌ Error creating user:", error);

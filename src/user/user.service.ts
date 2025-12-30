@@ -78,7 +78,7 @@ export class UserService {
     return dataWithApps as MeDto;
   }
 
-  async createUser(data: UserCreateInput, appCode?: string): Promise<User> {
+  async createUser(data: UserCreateInput): Promise<User> {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 14);
 
@@ -119,48 +119,10 @@ export class UserService {
         } as any,
       });
 
-      // Se appCode foi fornecido, associar o usuário ao app
-      if (appCode) {
-        const app = await (this.prismaService as any).app.findUnique({
-          where: { code: appCode },
-        });
-
-        if (app) {
-          await (this.prismaService as any).userAppAccess.upsert({
-            where: {
-              userId_appId: {
-                userId: user.id,
-                appId: app.id,
-              },
-            },
-            update: {},
-            create: {
-              userId: user.id,
-              appId: app.id,
-            },
-          });
-          console.log(`✅ Associated user with app: ${appCode}`);
-        } else {
-          console.warn(`⚠️  App not found: ${appCode}`);
-        }
-      }
-
-      // Recarregar usuário com apps atualizados
-      const completeUser = await this.prismaService.user.findUnique({
-        where: { id: user.id },
-        include: {
-          apps: {
-            include: {
-              app: true,
-            },
-          },
-        } as any,
-      });
-
       // Adiciona array de códigos de apps ao objeto user
       const userWithApps = {
-        ...(completeUser || user),
-        apps: (completeUser as any)?.apps?.map((ua: any) => ua.app.code) || [],
+        ...user,
+        apps: (user as any).apps?.map((ua: any) => ua.app.code) || [],
       } as User & { apps: string[] };
 
       return userWithApps as any;
