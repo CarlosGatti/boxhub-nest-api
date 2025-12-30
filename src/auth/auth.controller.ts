@@ -1,94 +1,44 @@
-import { Controller, Get, Post, Body, Query, Res, Req, UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Get, Query, Res, BadRequestException } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { RefreshDto } from './dto/refresh.dto';
-import { JwtRestGuard } from './guards/jwt-rest.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
-  }
-
-  @Post('login')
-  async login(@Body() loginDto: LoginDto, @Req() req: Request) {
-    const ipAddress = req.ip || req.headers['x-forwarded-for'] as string || 'unknown';
-    return this.authService.loginRest(loginDto, ipAddress);
-  }
-
-  @Post('refresh')
-  async refresh(@Body() refreshDto: RefreshDto) {
-    return this.authService.refresh(refreshDto);
-  }
-
-  @Post('logout')
-  async logout(@Body() refreshDto: RefreshDto) {
-    await this.authService.logout(refreshDto.refreshToken);
-    return { message: 'Logged out successfully' };
-  }
-
-  @Get('me')
-  @UseGuards(JwtRestGuard)
-  async getMe(@Req() req: Request) {
-    const user = (req as any).user;
-    return {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      nickname: user.nickname,
-      profilePicture: user.profilePicture,
-      apps: user.apps || [], // ✅ Sempre incluir apps
-    };
-  }
 
   @Get('verify-email')
   async verifyEmail(
     @Query('token') token: string,
     @Res() res: Response,
   ) {
-    const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
-    const loginPage = process.env.FRONTEND_LOGIN_PAGE || '/login';
-    const welcomePage = process.env.FRONTEND_WELCOME_PAGE || '/welcome';
-    
     if (!token) {
-      // Se não houver token, redireciona para login com erro
+      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
       return res.redirect(
-        `${frontendUrl}${loginPage}?error=missing_token&message=${encodeURIComponent('Token de verificação não fornecido')}`,
+        `${frontendUrl}/verify-email?error=missing_token`,
       );
     }
 
     try {
       const result = await this.authService.verifyEmail(token);
+      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
       
       if (result.success) {
-        // Verificação bem-sucedida: redireciona para página de boas-vindas ou login
-        // Prioriza welcome page se configurada, senão vai para login com mensagem de sucesso
-        const redirectPage = welcomePage !== '/welcome' ? welcomePage : loginPage;
-        const successParam = welcomePage !== '/welcome' 
-          ? `?emailVerified=true&message=${encodeURIComponent(result.message)}`
-          : `?emailVerified=true&message=${encodeURIComponent('Email verificado com sucesso! Você já pode fazer login.')}`;
-        
+        // Redirect to frontend with success message
         return res.redirect(
-          `${frontendUrl}${redirectPage}${successParam}`,
+          `${frontendUrl}/verify-email?success=true&message=${encodeURIComponent(result.message)}`,
         );
       } else {
-        // Erro na verificação: redireciona para login com erro
+        // Redirect to frontend with error message
         return res.redirect(
-          `${frontendUrl}${loginPage}?error=verification_failed&message=${encodeURIComponent(result.message)}`,
+          `${frontendUrl}/verify-email?error=${encodeURIComponent(result.message)}`,
         );
       }
     } catch (error) {
       console.error('Error verifying email:', error);
+      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
       return res.redirect(
-        `${frontendUrl}${loginPage}?error=invalid_token&message=${encodeURIComponent('Token inválido ou expirado. Por favor, solicite um novo link de verificação.')}`,
+        `${frontendUrl}/verify-email?error=${encodeURIComponent('Invalid or expired token')}`,
       );
     }
   }
 }
-
