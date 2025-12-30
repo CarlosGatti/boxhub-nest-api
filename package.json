@@ -22,6 +22,9 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma": "prisma",
+    "seed:apps": "ts-node prisma/seed.apps.ts",
+    "seed:wealth-tracker": "ts-node prisma/seed.wealth-tracker.ts",
+    "seed:all": "npm run seed:apps && npm run seed:wealth-tracker",
     "copy:templates": "cp -r src/static dist/src/"
   },
   "dependencies": {
