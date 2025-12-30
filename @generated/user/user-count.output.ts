@@ -25,4 +25,10 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     apps?: number;
+
+    @Field(() => Int, {nullable:false})
+    portfolios?: number;
+
+    @Field(() => Int, {nullable:false})
+    refreshTokens?: number;
 }

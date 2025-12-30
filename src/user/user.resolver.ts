@@ -194,21 +194,23 @@ export class UserResolver {
       }
 
       // 7. Retornar no formato GraphQL esperado
-      const loginUser = {
+      const loginUser: any = {
         id: completeUser.id,
         email: completeUser.email,
         firstName: completeUser.firstName,
         lastName: completeUser.lastName,
-        nickname: completeUser.nickname,
-        profilePicture: completeUser.profilePicture,
-        apartment: completeUser.apartment,
-        isApprovedResident: completeUser.isApprovedResident,
-        isAdmin: completeUser.isAdmin,
-        apps: appCodes,
+        nickname: completeUser.nickname || null,
+        profilePicture: completeUser.profilePicture || null,
+        apartment: completeUser.apartment || null,
+        isApprovedResident: completeUser.isApprovedResident || false,
+        isAdmin: completeUser.isAdmin || false,
+        apps: appCodes || [],
       };
 
+      console.log("✅ Registration successful - User ID:", loginUser.id, "Apps:", loginUser.apps);
+
       return {
-        user: loginUser as any,
+        user: loginUser,
         token: loginToken,
       };
     } catch (error: any) {

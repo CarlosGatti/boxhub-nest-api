@@ -8,6 +8,9 @@ import { DiscartItemOrderByRelationAggregateInput } from '../discart-item/discar
 import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-by-relation-aggregate.input';
 import { RatingOrderByRelationAggregateInput } from '../rating/rating-order-by-relation-aggregate.input';
 import { UserAppAccessOrderByRelationAggregateInput } from '../user-app-access/user-app-access-order-by-relation-aggregate.input';
+import { PortfolioOrderByRelationAggregateInput } from '../portfolio/portfolio-order-by-relation-aggregate.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenOrderByRelationAggregateInput } from '../refresh-token/refresh-token-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -95,4 +98,11 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => UserAppAccessOrderByRelationAggregateInput, {nullable:true})
     apps?: UserAppAccessOrderByRelationAggregateInput;
+
+    @Field(() => PortfolioOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => PortfolioOrderByRelationAggregateInput)
+    portfolios?: PortfolioOrderByRelationAggregateInput;
+
+    @Field(() => RefreshTokenOrderByRelationAggregateInput, {nullable:true})
+    refreshTokens?: RefreshTokenOrderByRelationAggregateInput;
 }

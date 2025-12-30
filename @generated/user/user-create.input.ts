@@ -8,6 +8,9 @@ import { CommentCreateNestedManyWithoutUserInput } from '../comment/comment-crea
 import { RatingCreateNestedManyWithoutSellerInput } from '../rating/rating-create-nested-many-without-seller.input';
 import { RatingCreateNestedManyWithoutBuyerInput } from '../rating/rating-create-nested-many-without-buyer.input';
 import { UserAppAccessCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-create-nested-many-without-user.input';
+import { PortfolioCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-create-nested-many-without-user.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateInput {
@@ -92,4 +95,11 @@ export class UserCreateInput {
 
     @Field(() => UserAppAccessCreateNestedManyWithoutUserInput, {nullable:true})
     apps?: UserAppAccessCreateNestedManyWithoutUserInput;
+
+    @Field(() => PortfolioCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => PortfolioCreateNestedManyWithoutUserInput)
+    portfolios?: PortfolioCreateNestedManyWithoutUserInput;
+
+    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput;
 }

@@ -8,6 +8,9 @@ import { DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput } from '../di
 import { CommentUncheckedCreateNestedManyWithoutUserInput } from '../comment/comment-unchecked-create-nested-many-without-user.input';
 import { RatingUncheckedCreateNestedManyWithoutBuyerInput } from '../rating/rating-unchecked-create-nested-many-without-buyer.input';
 import { UserAppAccessUncheckedCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-user.input';
+import { PortfolioUncheckedCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-unchecked-create-nested-many-without-user.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutRatingsAsSellerInput {
@@ -92,4 +95,11 @@ export class UserUncheckedCreateWithoutRatingsAsSellerInput {
 
     @Field(() => UserAppAccessUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     apps?: UserAppAccessUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => PortfolioUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => PortfolioUncheckedCreateNestedManyWithoutUserInput)
+    portfolios?: PortfolioUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
 }

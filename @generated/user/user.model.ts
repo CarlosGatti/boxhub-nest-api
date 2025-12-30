@@ -8,6 +8,8 @@ import { DiscartItem } from '../discart-item/discart-item.model';
 import { Comment } from '../comment/comment.model';
 import { Rating } from '../rating/rating.model';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
+import { Portfolio } from '../portfolio/portfolio.model';
+import { RefreshToken } from '../refresh-token/refresh-token.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -96,6 +98,12 @@ export class User {
 
     @Field(() => [UserAppAccess], {nullable:true})
     apps?: Array<UserAppAccess>;
+
+    @Field(() => [Portfolio], {nullable:true})
+    portfolios?: Array<Portfolio>;
+
+    @Field(() => [RefreshToken], {nullable:true})
+    refreshTokens?: Array<RefreshToken>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

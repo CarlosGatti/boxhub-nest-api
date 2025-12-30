@@ -13,6 +13,9 @@ import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list
 import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
 import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.input';
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
+import { PortfolioListRelationFilter } from '../portfolio/portfolio-list-relation-filter.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -109,4 +112,11 @@ export class UserWhereInput {
 
     @Field(() => UserAppAccessListRelationFilter, {nullable:true})
     apps?: UserAppAccessListRelationFilter;
+
+    @Field(() => PortfolioListRelationFilter, {nullable:true})
+    @Type(() => PortfolioListRelationFilter)
+    portfolios?: PortfolioListRelationFilter;
+
+    @Field(() => RefreshTokenListRelationFilter, {nullable:true})
+    refreshTokens?: RefreshTokenListRelationFilter;
 }

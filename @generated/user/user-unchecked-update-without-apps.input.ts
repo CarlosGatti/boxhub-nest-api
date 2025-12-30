@@ -13,6 +13,9 @@ import { DiscartItemUncheckedUpdateManyWithoutCreatedByNestedInput } from '../di
 import { CommentUncheckedUpdateManyWithoutUserNestedInput } from '../comment/comment-unchecked-update-many-without-user-nested.input';
 import { RatingUncheckedUpdateManyWithoutSellerNestedInput } from '../rating/rating-unchecked-update-many-without-seller-nested.input';
 import { RatingUncheckedUpdateManyWithoutBuyerNestedInput } from '../rating/rating-unchecked-update-many-without-buyer-nested.input';
+import { PortfolioUncheckedUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-unchecked-update-many-without-user-nested.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenUncheckedUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutAppsInput {
@@ -97,4 +100,11 @@ export class UserUncheckedUpdateWithoutAppsInput {
 
     @Field(() => RatingUncheckedUpdateManyWithoutBuyerNestedInput, {nullable:true})
     ratingsAsBuyer?: RatingUncheckedUpdateManyWithoutBuyerNestedInput;
+
+    @Field(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput)
+    portfolios?: PortfolioUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
 }

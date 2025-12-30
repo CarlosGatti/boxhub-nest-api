@@ -139,6 +139,10 @@ model User {
   // Multi-app access
   apps            UserAppAccess[]
 
+  // Wealth Tracker
+  portfolios      Portfolio[]     @relation("UserPortfolios")
+  refreshTokens   RefreshToken[]
+
   @@index([email], map: "userEmail")
 }
 
@@ -288,4 +292,117 @@ model UserAppAccess {
   @@unique([userId, appId])
   @@index([userId])
   @@index([appId])
+}
+
+// ============================================
+// Wealth Tracker Models
+// ============================================
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique // Hashed refresh token
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model Portfolio {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  name        String
+  baseCurrency String      @default("USD")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  user        User         @relation("UserPortfolios", fields: [userId], references: [id], onDelete: Cascade)
+  holdings    Holding[]
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Asset {
+  id          Int          @id @default(autoincrement())
+  type        AssetType
+  ticker      String?     // Nullable for CASH/REAL_ESTATE
+  name        String
+  currency    String       @default("USD")
+  exchange    String?
+  metadata    Json?       // Additional metadata (e.g., sector, market cap)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  holdings    Holding[]
+  pricePoints PricePoint[]
+  transactions Transaction[] @relation("AssetTransactions")
+
+  @@unique([type, ticker], name: "unique_asset_ticker")
+  @@index([ticker])
+  @@index([type])
+}
+
+model Holding {
+  id          Int       @id @default(autoincrement())
+  portfolioId Int
+  assetId     Int
+  quantity    Decimal   @db.Decimal(20, 8)
+  averageCost Decimal   @db.Decimal(20, 8)
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@index([portfolioId])
+  @@index([assetId])
+}
+
+model PricePoint {
+  id        Int       @id @default(autoincrement())
+  assetId  Int
+  price    Decimal   @db.Decimal(20, 8)
+  currency String
+  asOf     DateTime
+  source   String    // Provider name (e.g., "mock", "yahoo")
+  createdAt DateTime  @default(now())
+  asset    Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, asOf])
+  @@index([assetId, asOf])
+  @@index([asOf])
+}
+
+model Transaction {
+  id          Int          @id @default(autoincrement())
+  portfolioId Int
+  assetId     Int
+  type        TransactionType
+  quantity    Decimal      @db.Decimal(20, 8)
+  price       Decimal      @db.Decimal(20, 8)
+  fees        Decimal?     @db.Decimal(20, 8)
+  notes       String?
+  executedAt  DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  portfolio   Portfolio    @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  asset       Asset        @relation("AssetTransactions", fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@index([portfolioId])
+  @@index([assetId])
+  @@index([executedAt])
+}
+
+enum AssetType {
+  STOCK
+  ETF
+  CRYPTO
+  CASH
+  REAL_ESTATE
+}
+
+enum TransactionType {
+  BUY
+  SELL
 }

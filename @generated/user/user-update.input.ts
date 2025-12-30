@@ -13,6 +13,9 @@ import { CommentUpdateManyWithoutUserNestedInput } from '../comment/comment-upda
 import { RatingUpdateManyWithoutSellerNestedInput } from '../rating/rating-update-many-without-seller-nested.input';
 import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
 import { UserAppAccessUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-update-many-without-user-nested.input';
+import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateInput {
@@ -97,4 +100,11 @@ export class UserUpdateInput {
 
     @Field(() => UserAppAccessUpdateManyWithoutUserNestedInput, {nullable:true})
     apps?: UserAppAccessUpdateManyWithoutUserNestedInput;
+
+    @Field(() => PortfolioUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => PortfolioUpdateManyWithoutUserNestedInput)
+    portfolios?: PortfolioUpdateManyWithoutUserNestedInput;
+
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
 }

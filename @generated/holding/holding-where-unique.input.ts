@@ -1,0 +1,61 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
+import { HoldingWhereInput } from './holding-where.input';
+import { Type } from 'class-transformer';
+import { IntFilter } from '../prisma/int-filter.input';
+import { DecimalFilter } from '../prisma/decimal-filter.input';
+import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { DateTimeFilter } from '../prisma/date-time-filter.input';
+import { PortfolioRelationFilter } from '../portfolio/portfolio-relation-filter.input';
+import { AssetRelationFilter } from '../asset/asset-relation-filter.input';
+
+@InputType()
+export class HoldingWhereUniqueInput {
+
+    @Field(() => Int, {nullable:true})
+    id?: number;
+
+    @Field(() => [HoldingWhereInput], {nullable:true})
+    @Type(() => HoldingWhereInput)
+    AND?: Array<HoldingWhereInput>;
+
+    @Field(() => [HoldingWhereInput], {nullable:true})
+    @Type(() => HoldingWhereInput)
+    OR?: Array<HoldingWhereInput>;
+
+    @Field(() => [HoldingWhereInput], {nullable:true})
+    @Type(() => HoldingWhereInput)
+    NOT?: Array<HoldingWhereInput>;
+
+    @Field(() => IntFilter, {nullable:true})
+    portfolioId?: IntFilter;
+
+    @Field(() => IntFilter, {nullable:true})
+    assetId?: IntFilter;
+
+    @Field(() => DecimalFilter, {nullable:true})
+    @Type(() => DecimalFilter)
+    quantity?: DecimalFilter;
+
+    @Field(() => DecimalFilter, {nullable:true})
+    @Type(() => DecimalFilter)
+    averageCost?: DecimalFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    notes?: StringNullableFilter;
+
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: DateTimeFilter;
+
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: DateTimeFilter;
+
+    @Field(() => PortfolioRelationFilter, {nullable:true})
+    @Type(() => PortfolioRelationFilter)
+    portfolio?: PortfolioRelationFilter;
+
+    @Field(() => AssetRelationFilter, {nullable:true})
+    @Type(() => AssetRelationFilter)
+    asset?: AssetRelationFilter;
+}

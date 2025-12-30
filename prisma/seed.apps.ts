@@ -22,6 +22,11 @@ async function main() {
         name: 'RH Integração',
         description: 'Ferramentas de RH e entrevista de desligamento',
       },
+      {
+        code: 'WEALTH_TRACKER',
+        name: 'Wealth Tracker',
+        description: 'Investment portfolio and net worth tracking',
+      },
     ],
     skipDuplicates: true,
   });

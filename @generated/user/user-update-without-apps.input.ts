@@ -12,6 +12,9 @@ import { DiscartItemUpdateManyWithoutCreatedByNestedInput } from '../discart-ite
 import { CommentUpdateManyWithoutUserNestedInput } from '../comment/comment-update-many-without-user-nested.input';
 import { RatingUpdateManyWithoutSellerNestedInput } from '../rating/rating-update-many-without-seller-nested.input';
 import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
+import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutAppsInput {
@@ -93,4 +96,11 @@ export class UserUpdateWithoutAppsInput {
 
     @Field(() => RatingUpdateManyWithoutBuyerNestedInput, {nullable:true})
     ratingsAsBuyer?: RatingUpdateManyWithoutBuyerNestedInput;
+
+    @Field(() => PortfolioUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => PortfolioUpdateManyWithoutUserNestedInput)
+    portfolios?: PortfolioUpdateManyWithoutUserNestedInput;
+
+    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
 }
