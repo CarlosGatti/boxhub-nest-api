@@ -1,13 +1,17 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { IsEmail, IsString, MinLength, IsOptional, IsBoolean } from 'class-validator';
 
 import { User } from '../../../@generated/user/user.model';
 
 @InputType()
 export class LoginUserInput {
   @Field(() => String)
-  email?: string;
+  @IsEmail()
+  email: string;
 
   @Field(() => String)
+  @IsString()
+  @MinLength(1)
   password: string;
 }
 
@@ -56,21 +60,32 @@ export class LoginResult {
 @InputType()
 export class RegisterUserInput {
   @Field(() => String)
+  @IsString()
+  @MinLength(1)
   firstName: string;
 
   @Field(() => String)
+  @IsString()
+  @MinLength(1)
   lastName: string;
 
   @Field(() => String)
+  @IsEmail()
   email: string;
 
   @Field(() => String)
+  @IsString()
+  @MinLength(8)
   password: string;
 
   @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
   public?: boolean;
 
   @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
   apartment?: string;
 }
 

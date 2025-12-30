@@ -1,7 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 
 import { AppPermissionGuard } from './guards/app-permission.guard';
-import { AppPermissionRestGuard } from './guards/app-permission-rest.guard';
 import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
@@ -13,14 +12,15 @@ import { PrismaService } from '../prisma.service';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 
+//TODO - Remover Secret Hard-Code e colocar num .env
 @Module({
   imports: [
     forwardRef(() => UserModule),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_ACCESS_SECRET || '97742c5c0c5ea59ab16e61af76825b8b',
+      secret: '97742c5c0c5ea59ab16e61af76825b8b', // TODO - ADD THIS TO ENV
       signOptions: {
-        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+        expiresIn: '1d',
       },
     }),
     MailModule,
@@ -33,8 +33,7 @@ import { UserService } from '../user/user.service';
     UserService,
     PrismaService,
     AppPermissionGuard,
-    AppPermissionRestGuard,
   ],
-  exports: [AuthService, AppPermissionGuard, AppPermissionRestGuard],
+  exports: [AuthService, AppPermissionGuard],
 })
 export class AuthModule { }

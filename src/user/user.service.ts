@@ -139,8 +139,8 @@ export class UserService {
   }
 
   async sendEmailVerification(user: User, token: string, appCode?: string): Promise<void> {
-    // Use environment variable for logo URL (se não existir, não passa logoUrl para usar fallback do template)
-    const logoUrl = process.env.EMAIL_LOGO_URL || null;
+    // Use environment variable or default URL for logo
+    const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
     // Use backend URL for verification endpoint, which will redirect to frontend
     const backendUrl = process.env.BACKEND_URL || process.env.API_URL || 'https://api.discart.me';
     const verifyUrl = `${backendUrl}/auth/verify-email`;
@@ -151,18 +151,14 @@ export class UserService {
       ? `Verify Your Email Address - ${appName}`
       : "Verify Your Email Address - carlosgatti.com";
     
-    const variables: any = {
+    const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
       token: token,
+      logoUrl: logoUrl,
       verifyUrl: verifyUrl,
       year: new Date().getFullYear(),
     };
-    
-    // Só adiciona logoUrl se estiver configurado
-    if (logoUrl) {
-      variables.logoUrl = logoUrl;
-    }
 
     await this.mailService.send({
       path: "email-verification",
