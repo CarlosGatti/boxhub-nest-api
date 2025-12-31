@@ -6,6 +6,7 @@ import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DiscartItemRelationFilter } from '../discart-item/discart-item-relation-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { Type } from 'class-transformer';
 import { CommentNullableRelationFilter } from './comment-nullable-relation-filter.input';
 import { CommentListRelationFilter } from './comment-list-relation-filter.input';
 
@@ -46,6 +47,7 @@ export class CommentWhereInput {
     discartItem?: DiscartItemRelationFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     user?: UserRelationFilter;
 
     @Field(() => CommentNullableRelationFilter, {nullable:true})

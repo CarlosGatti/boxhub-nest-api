@@ -10,7 +10,9 @@ import { RatingUncheckedCreateNestedManyWithoutSellerInput } from '../rating/rat
 import { UserAppAccessUncheckedCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-user.input';
 import { PortfolioUncheckedCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-unchecked-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
-import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
+import { CashflowCategoryUncheckedCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-unchecked-create-nested-many-without-user.input';
+import { CashflowEntryUncheckedCreateNestedManyWithoutUserInput } from '../cashflow-entry/cashflow-entry-unchecked-create-nested-many-without-user.input';
+import { RecurringCashflowUncheckedCreateNestedManyWithoutUserInput } from '../recurring-cashflow/recurring-cashflow-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutRatingsAsBuyerInput {
@@ -100,6 +102,15 @@ export class UserUncheckedCreateWithoutRatingsAsBuyerInput {
     @Type(() => PortfolioUncheckedCreateNestedManyWithoutUserInput)
     portfolios?: PortfolioUncheckedCreateNestedManyWithoutUserInput;
 
-    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
-    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    @Field(() => CashflowCategoryUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowCategoryUncheckedCreateNestedManyWithoutUserInput)
+    cashflowCategories?: CashflowCategoryUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => CashflowEntryUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowEntryUncheckedCreateNestedManyWithoutUserInput)
+    cashflowEntries?: CashflowEntryUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => RecurringCashflowUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RecurringCashflowUncheckedCreateNestedManyWithoutUserInput)
+    recurringCashflows?: RecurringCashflowUncheckedCreateNestedManyWithoutUserInput;
 }

@@ -30,5 +30,11 @@ export class UserCount {
     portfolios?: number;
 
     @Field(() => Int, {nullable:false})
-    refreshTokens?: number;
+    cashflowCategories?: number;
+
+    @Field(() => Int, {nullable:false})
+    cashflowEntries?: number;
+
+    @Field(() => Int, {nullable:false})
+    recurringCashflows?: number;
 }

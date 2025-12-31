@@ -4,6 +4,7 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DiscartItemUpdateOneRequiredWithoutCommentsNestedInput } from '../discart-item/discart-item-update-one-required-without-comments-nested.input';
 import { UserUpdateOneRequiredWithoutCommentsNestedInput } from '../user/user-update-one-required-without-comments-nested.input';
+import { Type } from 'class-transformer';
 import { CommentUpdateOneWithoutRepliesNestedInput } from './comment-update-one-without-replies-nested.input';
 import { CommentUpdateManyWithoutParentNestedInput } from './comment-update-many-without-parent-nested.input';
 
@@ -23,6 +24,7 @@ export class CommentUpdateInput {
     discartItem?: DiscartItemUpdateOneRequiredWithoutCommentsNestedInput;
 
     @Field(() => UserUpdateOneRequiredWithoutCommentsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutCommentsNestedInput)
     user?: UserUpdateOneRequiredWithoutCommentsNestedInput;
 
     @Field(() => CommentUpdateOneWithoutRepliesNestedInput, {nullable:true})

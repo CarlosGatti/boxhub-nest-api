@@ -79,4 +79,15 @@ export class AssetsService {
       },
     });
   }
+
+  async findAll(limit?: number, skip?: number) {
+    return this.prisma.asset.findMany({
+      take: limit,
+      skip: skip,
+      orderBy: [
+        { ticker: 'asc' },
+        { name: 'asc' },
+      ],
+    });
+  }
 }

@@ -7,6 +7,7 @@ import { IntFilter } from '../prisma/int-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class RatingWhereUniqueInput {
@@ -42,8 +43,10 @@ export class RatingWhereUniqueInput {
     createdAt?: DateTimeFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     seller?: UserRelationFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     buyer?: UserRelationFilter;
 }

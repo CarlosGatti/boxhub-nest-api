@@ -4,6 +4,7 @@ import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { DiscartItemOrderByWithRelationInput } from '../discart-item/discart-item-order-by-with-relation.input';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { Type } from 'class-transformer';
 import { CommentOrderByRelationAggregateInput } from './comment-order-by-relation-aggregate.input';
 
 @InputType()
@@ -34,6 +35,7 @@ export class CommentOrderByWithRelationInput {
     discartItem?: DiscartItemOrderByWithRelationInput;
 
     @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
     user?: UserOrderByWithRelationInput;
 
     @Field(() => CommentOrderByWithRelationInput, {nullable:true})

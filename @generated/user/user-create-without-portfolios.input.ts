@@ -8,7 +8,10 @@ import { CommentCreateNestedManyWithoutUserInput } from '../comment/comment-crea
 import { RatingCreateNestedManyWithoutSellerInput } from '../rating/rating-create-nested-many-without-seller.input';
 import { RatingCreateNestedManyWithoutBuyerInput } from '../rating/rating-create-nested-many-without-buyer.input';
 import { UserAppAccessCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-create-nested-many-without-user.input';
-import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
+import { CashflowCategoryCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-create-nested-many-without-user.input';
+import { Type } from 'class-transformer';
+import { CashflowEntryCreateNestedManyWithoutUserInput } from '../cashflow-entry/cashflow-entry-create-nested-many-without-user.input';
+import { RecurringCashflowCreateNestedManyWithoutUserInput } from '../recurring-cashflow/recurring-cashflow-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutPortfoliosInput {
@@ -94,6 +97,15 @@ export class UserCreateWithoutPortfoliosInput {
     @Field(() => UserAppAccessCreateNestedManyWithoutUserInput, {nullable:true})
     apps?: UserAppAccessCreateNestedManyWithoutUserInput;
 
-    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput;
+    @Field(() => CashflowCategoryCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowCategoryCreateNestedManyWithoutUserInput)
+    cashflowCategories?: CashflowCategoryCreateNestedManyWithoutUserInput;
+
+    @Field(() => CashflowEntryCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowEntryCreateNestedManyWithoutUserInput)
+    cashflowEntries?: CashflowEntryCreateNestedManyWithoutUserInput;
+
+    @Field(() => RecurringCashflowCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RecurringCashflowCreateNestedManyWithoutUserInput)
+    recurringCashflows?: RecurringCashflowCreateNestedManyWithoutUserInput;
 }

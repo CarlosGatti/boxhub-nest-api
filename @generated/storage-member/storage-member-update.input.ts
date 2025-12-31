@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { EnumStorageRoleFieldUpdateOperationsInput } from '../prisma/enum-storage-role-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { UserUpdateOneRequiredWithoutStorageMembershipsNestedInput } from '../user/user-update-one-required-without-storage-memberships-nested.input';
+import { Type } from 'class-transformer';
 import { StorageUpdateOneRequiredWithoutMembersNestedInput } from '../storage/storage-update-one-required-without-members-nested.input';
 
 @InputType()
@@ -18,6 +19,7 @@ export class StorageMemberUpdateInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => UserUpdateOneRequiredWithoutStorageMembershipsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutStorageMembershipsNestedInput)
     user?: UserUpdateOneRequiredWithoutStorageMembershipsNestedInput;
 
     @Field(() => StorageUpdateOneRequiredWithoutMembersNestedInput, {nullable:true})

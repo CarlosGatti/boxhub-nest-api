@@ -6,8 +6,8 @@ import { IntFilter } from '../prisma/int-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
-import { HoldingListRelationFilter } from '../holding/holding-list-relation-filter.input';
 import { Type } from 'class-transformer';
+import { HoldingListRelationFilter } from '../holding/holding-list-relation-filter.input';
 import { TransactionListRelationFilter } from '../transaction/transaction-list-relation-filter.input';
 
 @InputType()
@@ -41,6 +41,7 @@ export class PortfolioWhereUniqueInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     user?: UserRelationFilter;
 
     @Field(() => HoldingListRelationFilter, {nullable:true})

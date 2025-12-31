@@ -10,7 +10,9 @@ import { RatingOrderByRelationAggregateInput } from '../rating/rating-order-by-r
 import { UserAppAccessOrderByRelationAggregateInput } from '../user-app-access/user-app-access-order-by-relation-aggregate.input';
 import { PortfolioOrderByRelationAggregateInput } from '../portfolio/portfolio-order-by-relation-aggregate.input';
 import { Type } from 'class-transformer';
-import { RefreshTokenOrderByRelationAggregateInput } from '../refresh-token/refresh-token-order-by-relation-aggregate.input';
+import { CashflowCategoryOrderByRelationAggregateInput } from '../cashflow-category/cashflow-category-order-by-relation-aggregate.input';
+import { CashflowEntryOrderByRelationAggregateInput } from '../cashflow-entry/cashflow-entry-order-by-relation-aggregate.input';
+import { RecurringCashflowOrderByRelationAggregateInput } from '../recurring-cashflow/recurring-cashflow-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -103,6 +105,15 @@ export class UserOrderByWithRelationInput {
     @Type(() => PortfolioOrderByRelationAggregateInput)
     portfolios?: PortfolioOrderByRelationAggregateInput;
 
-    @Field(() => RefreshTokenOrderByRelationAggregateInput, {nullable:true})
-    refreshTokens?: RefreshTokenOrderByRelationAggregateInput;
+    @Field(() => CashflowCategoryOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => CashflowCategoryOrderByRelationAggregateInput)
+    cashflowCategories?: CashflowCategoryOrderByRelationAggregateInput;
+
+    @Field(() => CashflowEntryOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => CashflowEntryOrderByRelationAggregateInput)
+    cashflowEntries?: CashflowEntryOrderByRelationAggregateInput;
+
+    @Field(() => RecurringCashflowOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => RecurringCashflowOrderByRelationAggregateInput)
+    recurringCashflows?: RecurringCashflowOrderByRelationAggregateInput;
 }

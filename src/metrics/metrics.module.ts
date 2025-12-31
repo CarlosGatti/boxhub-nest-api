@@ -1,5 +1,6 @@
 import { AuthModule } from '../auth/auth.module';
 import { MetricsService } from './metrics.service';
+import { MetricsResolver } from './metrics.resolver';
 import { Module } from '@nestjs/common';
 import { PricingModule } from '../pricing/pricing.module';
 import { PrismaService } from '../prisma.service';
@@ -7,7 +8,7 @@ import { PrismaService } from '../prisma.service';
 @Module({
   imports: [PricingModule, AuthModule],
   controllers: [],
-  providers: [MetricsService, PrismaService],
+  providers: [MetricsService, MetricsResolver, PrismaService],
   exports: [MetricsService],
 })
 export class MetricsModule {}

@@ -5,6 +5,7 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { UserUpdateOneWithoutLogsNestedInput } from '../user/user-update-one-without-logs-nested.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class LogUpdateInput {
@@ -28,5 +29,6 @@ export class LogUpdateInput {
     createdAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => UserUpdateOneWithoutLogsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneWithoutLogsNestedInput)
     user?: UserUpdateOneWithoutLogsNestedInput;
 }

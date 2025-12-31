@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { LogAction } from '../prisma/log-action.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 import { UserCreateNestedOneWithoutLogsInput } from '../user/user-create-nested-one-without-logs.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class LogCreateInput {
@@ -26,5 +27,6 @@ export class LogCreateInput {
     createdAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutLogsInput, {nullable:true})
+    @Type(() => UserCreateNestedOneWithoutLogsInput)
     user?: UserCreateNestedOneWithoutLogsInput;
 }

@@ -1,8 +1,8 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { UserCreateNestedOneWithoutPortfoliosInput } from '../user/user-create-nested-one-without-portfolios.input';
-import { HoldingCreateNestedManyWithoutPortfolioInput } from '../holding/holding-create-nested-many-without-portfolio.input';
 import { Type } from 'class-transformer';
+import { HoldingCreateNestedManyWithoutPortfolioInput } from '../holding/holding-create-nested-many-without-portfolio.input';
 
 @InputType()
 export class PortfolioCreateWithoutTransactionsInput {
@@ -20,6 +20,7 @@ export class PortfolioCreateWithoutTransactionsInput {
     updatedAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutPortfoliosInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutPortfoliosInput)
     user!: UserCreateNestedOneWithoutPortfoliosInput;
 
     @Field(() => HoldingCreateNestedManyWithoutPortfolioInput, {nullable:true})

@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { UserCreateNestedOneWithoutRatingsAsBuyerInput } from '../user/user-create-nested-one-without-ratings-as-buyer.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class RatingCreateWithoutSellerInput {
@@ -16,5 +17,6 @@ export class RatingCreateWithoutSellerInput {
     createdAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutRatingsAsBuyerInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutRatingsAsBuyerInput)
     buyer!: UserCreateNestedOneWithoutRatingsAsBuyerInput;
 }

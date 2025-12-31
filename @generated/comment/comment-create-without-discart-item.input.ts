@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { UserCreateNestedOneWithoutCommentsInput } from '../user/user-create-nested-one-without-comments.input';
+import { Type } from 'class-transformer';
 import { CommentCreateNestedOneWithoutRepliesInput } from './comment-create-nested-one-without-replies.input';
 import { CommentCreateNestedManyWithoutParentInput } from './comment-create-nested-many-without-parent.input';
 
@@ -17,6 +18,7 @@ export class CommentCreateWithoutDiscartItemInput {
     updatedAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutCommentsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutCommentsInput)
     user!: UserCreateNestedOneWithoutCommentsInput;
 
     @Field(() => CommentCreateNestedOneWithoutRepliesInput, {nullable:true})

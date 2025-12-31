@@ -59,14 +59,14 @@ model Item {
   category    String // Categoria adicional, se necessário
   containerId Int
   container   Container @relation(fields: [containerId], references: [id])
-  
+
   // Transição para Discart-me
   donatedToDiscartMe Boolean   @default(false) // Indica se o item foi doado no Discart-me
-  discartItemId      Int?      // ID do DiscartItem criado quando doado
+  discartItemId      Int? // ID do DiscartItem criado quando doado
   donatedAt          DateTime? // Data em que foi doado
-  
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model DiscartItem {
@@ -129,7 +129,7 @@ model User {
   storageMemberships StorageMember[]
   logs               Log[]
 
-  discartItems       DiscartItem[]
+  discartItems DiscartItem[]
 
   // Comments and Ratings
   comments        Comment[] @relation("CommentAuthor")
@@ -137,11 +137,15 @@ model User {
   ratingsAsBuyer  Rating[]  @relation("BuyerRatings")
 
   // Multi-app access
-  apps            UserAppAccess[]
+  apps UserAppAccess[]
 
   // Wealth Tracker
-  portfolios      Portfolio[]     @relation("UserPortfolios")
-  refreshTokens   RefreshToken[]
+  portfolios Portfolio[] @relation("UserPortfolios")
+
+  // Cash Flow
+  cashflowCategories CashflowCategory[]
+  cashflowEntries    CashflowEntry[]
+  recurringCashflows RecurringCashflow[]
 
   @@index([email], map: "userEmail")
 }
@@ -271,23 +275,23 @@ model Rating {
 }
 
 model App {
-  id          Int              @id @default(autoincrement())
-  code        String           @unique
+  id          Int             @id @default(autoincrement())
+  code        String          @unique
   name        String
   description String?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   users       UserAppAccess[]
 }
 
 model UserAppAccess {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   appId     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  app       App   @relation(fields: [appId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  app       App      @relation(fields: [appId], references: [id], onDelete: Cascade)
 
   @@unique([userId, appId])
   @@index([userId])
@@ -298,44 +302,32 @@ model UserAppAccess {
 // Wealth Tracker Models
 // ============================================
 
-model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  token     String   @unique // Hashed refresh token
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([token])
-}
-
 model Portfolio {
-  id          Int          @id @default(autoincrement())
-  userId      Int
-  name        String
-  baseCurrency String      @default("USD")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  user        User         @relation("UserPortfolios", fields: [userId], references: [id], onDelete: Cascade)
-  holdings    Holding[]
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  name         String
+  baseCurrency String        @default("USD")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation("UserPortfolios", fields: [userId], references: [id], onDelete: Cascade)
+  holdings     Holding[]
   transactions Transaction[]
 
   @@index([userId])
 }
 
 model Asset {
-  id          Int          @id @default(autoincrement())
-  type        AssetType
-  ticker      String?     // Nullable for CASH/REAL_ESTATE
-  name        String
-  currency    String       @default("USD")
-  exchange    String?
-  metadata    Json?       // Additional metadata (e.g., sector, market cap)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  holdings    Holding[]
-  pricePoints PricePoint[]
+  id           Int           @id @default(autoincrement())
+  type         AssetType
+  ticker       String? // Nullable for CASH/REAL_ESTATE
+  name         String
+  currency     String        @default("USD")
+  exchange     String?
+  metadata     Json? // Additional metadata (e.g., sector, market cap)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  holdings     Holding[]
+  pricePoints  PricePoint[]
   transactions Transaction[] @relation("AssetTransactions")
 
   @@unique([type, ticker], name: "unique_asset_ticker")
@@ -360,14 +352,14 @@ model Holding {
 }
 
 model PricePoint {
-  id        Int       @id @default(autoincrement())
-  assetId  Int
-  price    Decimal   @db.Decimal(20, 8)
-  currency String
-  asOf     DateTime
-  source   String    // Provider name (e.g., "mock", "yahoo")
-  createdAt DateTime  @default(now())
-  asset    Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  assetId   Int
+  price     Decimal  @db.Decimal(20, 8)
+  currency  String
+  asOf      DateTime
+  source    String // Provider name (e.g., "mock", "yahoo")
+  createdAt DateTime @default(now())
+  asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
   @@unique([assetId, asOf])
   @@index([assetId, asOf])
@@ -375,19 +367,19 @@ model PricePoint {
 }
 
 model Transaction {
-  id          Int          @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   portfolioId Int
   assetId     Int
   type        TransactionType
-  quantity    Decimal      @db.Decimal(20, 8)
-  price       Decimal      @db.Decimal(20, 8)
-  fees        Decimal?     @db.Decimal(20, 8)
+  quantity    Decimal         @db.Decimal(20, 8)
+  price       Decimal         @db.Decimal(20, 8)
+  fees        Decimal?        @db.Decimal(20, 8)
   notes       String?
-  executedAt  DateTime     @default(now())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  portfolio   Portfolio    @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
-  asset       Asset        @relation("AssetTransactions", fields: [assetId], references: [id], onDelete: Restrict)
+  executedAt  DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  portfolio   Portfolio       @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  asset       Asset           @relation("AssetTransactions", fields: [assetId], references: [id], onDelete: Restrict)
 
   @@index([portfolioId])
   @@index([assetId])
@@ -405,4 +397,78 @@ enum AssetType {
 enum TransactionType {
   BUY
   SELL
+}
+
+enum CashflowType {
+  INCOME
+  EXPENSE
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+model CashflowCategory {
+  id          Int                 @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String?
+  color       String? // Hex color for UI
+  icon        String? // Icon identifier
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries     CashflowEntry[]
+  recurring   RecurringCashflow[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model CashflowEntry {
+  id          Int              @id @default(autoincrement())
+  userId      Int
+  categoryId  Int
+  type        CashflowType
+  amount      Decimal          @db.Decimal(20, 2)
+  description String?
+  date        DateTime         @default(now())
+  notes       String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    CashflowCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([date])
+  @@index([type])
+}
+
+model RecurringCashflow {
+  id          Int                 @id @default(autoincrement())
+  userId      Int
+  categoryId  Int
+  type        CashflowType
+  amount      Decimal             @db.Decimal(20, 2)
+  description String?
+  frequency   RecurrenceFrequency
+  startDate   DateTime
+  endDate     DateTime? // Null means ongoing
+  nextDueDate DateTime
+  notes       String?
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    CashflowCategory    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([nextDueDate])
+  @@index([isActive])
 }

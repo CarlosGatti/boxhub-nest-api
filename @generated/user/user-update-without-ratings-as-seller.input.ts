@@ -14,7 +14,9 @@ import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update
 import { UserAppAccessUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-update-many-without-user-nested.input';
 import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
 import { Type } from 'class-transformer';
-import { RefreshTokenUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-update-many-without-user-nested.input';
+import { CashflowCategoryUpdateManyWithoutUserNestedInput } from '../cashflow-category/cashflow-category-update-many-without-user-nested.input';
+import { CashflowEntryUpdateManyWithoutUserNestedInput } from '../cashflow-entry/cashflow-entry-update-many-without-user-nested.input';
+import { RecurringCashflowUpdateManyWithoutUserNestedInput } from '../recurring-cashflow/recurring-cashflow-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutRatingsAsSellerInput {
@@ -101,6 +103,15 @@ export class UserUpdateWithoutRatingsAsSellerInput {
     @Type(() => PortfolioUpdateManyWithoutUserNestedInput)
     portfolios?: PortfolioUpdateManyWithoutUserNestedInput;
 
-    @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, {nullable:true})
-    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
+    @Field(() => CashflowCategoryUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => CashflowCategoryUpdateManyWithoutUserNestedInput)
+    cashflowCategories?: CashflowCategoryUpdateManyWithoutUserNestedInput;
+
+    @Field(() => CashflowEntryUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => CashflowEntryUpdateManyWithoutUserNestedInput)
+    cashflowEntries?: CashflowEntryUpdateManyWithoutUserNestedInput;
+
+    @Field(() => RecurringCashflowUpdateManyWithoutUserNestedInput, {nullable:true})
+    @Type(() => RecurringCashflowUpdateManyWithoutUserNestedInput)
+    recurringCashflows?: RecurringCashflowUpdateManyWithoutUserNestedInput;
 }

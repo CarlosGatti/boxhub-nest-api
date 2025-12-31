@@ -2,6 +2,7 @@ import { AuthModule } from '../auth/auth.module';
 import { MockPriceProvider } from './providers/mock.provider';
 import { Module } from '@nestjs/common';
 import { PricingService } from './pricing.service';
+import { PricingResolver } from './pricing.resolver';
 import { PrismaService } from '../prisma.service';
 import { YahooPriceProvider } from './providers/yahoo.provider';
 
@@ -10,6 +11,7 @@ import { YahooPriceProvider } from './providers/yahoo.provider';
   controllers: [],
   providers: [
     PricingService,
+    PricingResolver,
     PrismaService,
     MockPriceProvider,
     YahooPriceProvider,

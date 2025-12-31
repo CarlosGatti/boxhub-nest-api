@@ -7,6 +7,7 @@ import { IntFilter } from '../prisma/int-filter.input';
 import { EnumStorageRoleFilter } from '../prisma/enum-storage-role-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { Type } from 'class-transformer';
 import { StorageRelationFilter } from '../storage/storage-relation-filter.input';
 
 @InputType()
@@ -43,6 +44,7 @@ export class StorageMemberWhereUniqueInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     user?: UserRelationFilter;
 
     @Field(() => StorageRelationFilter, {nullable:true})

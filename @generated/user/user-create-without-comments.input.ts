@@ -9,7 +9,9 @@ import { RatingCreateNestedManyWithoutBuyerInput } from '../rating/rating-create
 import { UserAppAccessCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-create-nested-many-without-user.input';
 import { PortfolioCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
-import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
+import { CashflowCategoryCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-create-nested-many-without-user.input';
+import { CashflowEntryCreateNestedManyWithoutUserInput } from '../cashflow-entry/cashflow-entry-create-nested-many-without-user.input';
+import { RecurringCashflowCreateNestedManyWithoutUserInput } from '../recurring-cashflow/recurring-cashflow-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutCommentsInput {
@@ -96,6 +98,15 @@ export class UserCreateWithoutCommentsInput {
     @Type(() => PortfolioCreateNestedManyWithoutUserInput)
     portfolios?: PortfolioCreateNestedManyWithoutUserInput;
 
-    @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, {nullable:true})
-    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput;
+    @Field(() => CashflowCategoryCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowCategoryCreateNestedManyWithoutUserInput)
+    cashflowCategories?: CashflowCategoryCreateNestedManyWithoutUserInput;
+
+    @Field(() => CashflowEntryCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => CashflowEntryCreateNestedManyWithoutUserInput)
+    cashflowEntries?: CashflowEntryCreateNestedManyWithoutUserInput;
+
+    @Field(() => RecurringCashflowCreateNestedManyWithoutUserInput, {nullable:true})
+    @Type(() => RecurringCashflowCreateNestedManyWithoutUserInput)
+    recurringCashflows?: RecurringCashflowCreateNestedManyWithoutUserInput;
 }

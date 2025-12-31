@@ -15,7 +15,9 @@ import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
 import { PortfolioListRelationFilter } from '../portfolio/portfolio-list-relation-filter.input';
 import { Type } from 'class-transformer';
-import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-list-relation-filter.input';
+import { CashflowCategoryListRelationFilter } from '../cashflow-category/cashflow-category-list-relation-filter.input';
+import { CashflowEntryListRelationFilter } from '../cashflow-entry/cashflow-entry-list-relation-filter.input';
+import { RecurringCashflowListRelationFilter } from '../recurring-cashflow/recurring-cashflow-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -117,6 +119,15 @@ export class UserWhereInput {
     @Type(() => PortfolioListRelationFilter)
     portfolios?: PortfolioListRelationFilter;
 
-    @Field(() => RefreshTokenListRelationFilter, {nullable:true})
-    refreshTokens?: RefreshTokenListRelationFilter;
+    @Field(() => CashflowCategoryListRelationFilter, {nullable:true})
+    @Type(() => CashflowCategoryListRelationFilter)
+    cashflowCategories?: CashflowCategoryListRelationFilter;
+
+    @Field(() => CashflowEntryListRelationFilter, {nullable:true})
+    @Type(() => CashflowEntryListRelationFilter)
+    cashflowEntries?: CashflowEntryListRelationFilter;
+
+    @Field(() => RecurringCashflowListRelationFilter, {nullable:true})
+    @Type(() => RecurringCashflowListRelationFilter)
+    recurringCashflows?: RecurringCashflowListRelationFilter;
 }

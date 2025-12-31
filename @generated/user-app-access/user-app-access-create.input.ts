@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { UserCreateNestedOneWithoutAppsInput } from '../user/user-create-nested-one-without-apps.input';
+import { Type } from 'class-transformer';
 import { AppCreateNestedOneWithoutUsersInput } from '../app/app-create-nested-one-without-users.input';
 
 @InputType()
@@ -13,6 +14,7 @@ export class UserAppAccessCreateInput {
     updatedAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutAppsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutAppsInput)
     user!: UserCreateNestedOneWithoutAppsInput;
 
     @Field(() => AppCreateNestedOneWithoutUsersInput, {nullable:false})

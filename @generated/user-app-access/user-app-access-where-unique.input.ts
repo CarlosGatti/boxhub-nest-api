@@ -6,6 +6,7 @@ import { UserAppAccessWhereInput } from './user-app-access-where.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
+import { Type } from 'class-transformer';
 import { AppRelationFilter } from '../app/app-relation-filter.input';
 
 @InputType()
@@ -39,6 +40,7 @@ export class UserAppAccessWhereUniqueInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})
+    @Type(() => UserRelationFilter)
     user?: UserRelationFilter;
 
     @Field(() => AppRelationFilter, {nullable:true})

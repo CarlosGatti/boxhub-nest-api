@@ -9,7 +9,9 @@ import { Comment } from '../comment/comment.model';
 import { Rating } from '../rating/rating.model';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
 import { Portfolio } from '../portfolio/portfolio.model';
-import { RefreshToken } from '../refresh-token/refresh-token.model';
+import { CashflowCategory } from '../cashflow-category/cashflow-category.model';
+import { CashflowEntry } from '../cashflow-entry/cashflow-entry.model';
+import { RecurringCashflow } from '../recurring-cashflow/recurring-cashflow.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -102,8 +104,14 @@ export class User {
     @Field(() => [Portfolio], {nullable:true})
     portfolios?: Array<Portfolio>;
 
-    @Field(() => [RefreshToken], {nullable:true})
-    refreshTokens?: Array<RefreshToken>;
+    @Field(() => [CashflowCategory], {nullable:true})
+    cashflowCategories?: Array<CashflowCategory>;
+
+    @Field(() => [CashflowEntry], {nullable:true})
+    cashflowEntries?: Array<CashflowEntry>;
+
+    @Field(() => [RecurringCashflow], {nullable:true})
+    recurringCashflows?: Array<RecurringCashflow>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

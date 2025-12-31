@@ -2,8 +2,8 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
-import { HoldingOrderByRelationAggregateInput } from '../holding/holding-order-by-relation-aggregate.input';
 import { Type } from 'class-transformer';
+import { HoldingOrderByRelationAggregateInput } from '../holding/holding-order-by-relation-aggregate.input';
 import { TransactionOrderByRelationAggregateInput } from '../transaction/transaction-order-by-relation-aggregate.input';
 
 @InputType()
@@ -28,6 +28,7 @@ export class PortfolioOrderByWithRelationInput {
     updatedAt?: keyof typeof SortOrder;
 
     @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
     user?: UserOrderByWithRelationInput;
 
     @Field(() => HoldingOrderByRelationAggregateInput, {nullable:true})

@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StorageRole } from '../prisma/storage-role.enum';
 import { UserCreateNestedOneWithoutStorageMembershipsInput } from '../user/user-create-nested-one-without-storage-memberships.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class StorageMemberCreateWithoutStorageInput {
@@ -16,5 +17,6 @@ export class StorageMemberCreateWithoutStorageInput {
     updatedAt?: Date | string;
 
     @Field(() => UserCreateNestedOneWithoutStorageMembershipsInput, {nullable:false})
+    @Type(() => UserCreateNestedOneWithoutStorageMembershipsInput)
     user!: UserCreateNestedOneWithoutStorageMembershipsInput;
 }

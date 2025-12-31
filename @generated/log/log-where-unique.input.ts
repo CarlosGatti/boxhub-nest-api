@@ -8,6 +8,7 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserNullableRelationFilter } from '../user/user-nullable-relation-filter.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class LogWhereUniqueInput {
@@ -46,5 +47,6 @@ export class LogWhereUniqueInput {
     createdAt?: DateTimeFilter;
 
     @Field(() => UserNullableRelationFilter, {nullable:true})
+    @Type(() => UserNullableRelationFilter)
     user?: UserNullableRelationFilter;
 }
