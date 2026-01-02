@@ -28,6 +28,9 @@ export class RecurringCashflowOrderByWithAggregationInput {
     amount?: keyof typeof SortOrder;
 
     @Field(() => SortOrderInput, {nullable:true})
+    source?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
     description?: SortOrderInput;
 
     @Field(() => SortOrder, {nullable:true})

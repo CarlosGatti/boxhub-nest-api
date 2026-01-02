@@ -42,6 +42,9 @@ export class RecurringCashflowScalarWhereWithAggregatesInput {
     amount?: DecimalWithAggregatesFilter;
 
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    source?: StringNullableWithAggregatesFilter;
+
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     description?: StringNullableWithAggregatesFilter;
 
     @Field(() => EnumRecurrenceFrequencyWithAggregatesFilter, {nullable:true})

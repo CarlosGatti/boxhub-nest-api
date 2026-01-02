@@ -27,6 +27,9 @@ export class RecurringCashflowCreateManyCategoryInput {
     amount!: Decimal;
 
     @Field(() => String, {nullable:true})
+    source?: string;
+
+    @Field(() => String, {nullable:true})
     description?: string;
 
     @Field(() => RecurrenceFrequency, {nullable:false})

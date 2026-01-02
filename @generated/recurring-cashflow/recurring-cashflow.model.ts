@@ -28,6 +28,9 @@ export class RecurringCashflow {
     amount!: Decimal;
 
     @Field(() => String, {nullable:true})
+    source!: string | null;
+
+    @Field(() => String, {nullable:true})
     description!: string | null;
 
     @Field(() => RecurrenceFrequency, {nullable:false})

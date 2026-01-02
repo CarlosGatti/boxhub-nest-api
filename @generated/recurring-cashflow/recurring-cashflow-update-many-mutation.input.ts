@@ -20,6 +20,9 @@ export class RecurringCashflowUpdateManyMutationInput {
     amount?: DecimalFieldUpdateOperationsInput;
 
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    source?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     description?: NullableStringFieldUpdateOperationsInput;
 
     @Field(() => EnumRecurrenceFrequencyFieldUpdateOperationsInput, {nullable:true})

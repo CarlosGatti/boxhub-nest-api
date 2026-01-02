@@ -436,6 +436,7 @@ model CashflowEntry {
   categoryId  Int
   type        CashflowType
   amount      Decimal          @db.Decimal(20, 2)
+  source      String? // Origin/source: "Netflix", "Trader Joes", "Salary Company", etc.
   description String?
   date        DateTime         @default(now())
   notes       String?
@@ -448,6 +449,7 @@ model CashflowEntry {
   @@index([categoryId])
   @@index([date])
   @@index([type])
+  @@index([source])
 }
 
 model RecurringCashflow {
@@ -456,6 +458,7 @@ model RecurringCashflow {
   categoryId  Int
   type        CashflowType
   amount      Decimal             @db.Decimal(20, 2)
+  source      String? // Origin/source: "Netflix", "Trader Joes", "Salary Company", etc.
   description String?
   frequency   RecurrenceFrequency
   startDate   DateTime
@@ -472,4 +475,5 @@ model RecurringCashflow {
   @@index([categoryId])
   @@index([nextDueDate])
   @@index([isActive])
+  @@index([source])
 }

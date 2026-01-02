@@ -21,6 +21,9 @@ export class CashflowEntryCreateInput {
     amount!: Decimal;
 
     @Field(() => String, {nullable:true})
+    source?: string;
+
+    @Field(() => String, {nullable:true})
     description?: string;
 
     @Field(() => Date, {nullable:true})

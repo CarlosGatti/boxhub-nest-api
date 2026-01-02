@@ -6,6 +6,7 @@ export enum CashflowEntryScalarFieldEnum {
     categoryId = "categoryId",
     type = "type",
     amount = "amount",
+    source = "source",
     description = "description",
     date = "date",
     notes = "notes",

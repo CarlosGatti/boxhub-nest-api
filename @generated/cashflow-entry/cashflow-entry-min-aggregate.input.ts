@@ -20,6 +20,9 @@ export class CashflowEntryMinAggregateInput {
     amount?: true;
 
     @Field(() => Boolean, {nullable:true})
+    source?: true;
+
+    @Field(() => Boolean, {nullable:true})
     description?: true;
 
     @Field(() => Boolean, {nullable:true})

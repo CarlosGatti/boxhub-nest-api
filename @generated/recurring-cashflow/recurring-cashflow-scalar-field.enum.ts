@@ -6,6 +6,7 @@ export enum RecurringCashflowScalarFieldEnum {
     categoryId = "categoryId",
     type = "type",
     amount = "amount",
+    source = "source",
     description = "description",
     frequency = "frequency",
     startDate = "startDate",

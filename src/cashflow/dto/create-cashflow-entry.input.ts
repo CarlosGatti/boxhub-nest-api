@@ -26,6 +26,12 @@ export class CreateCashflowEntryInput {
   @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
+  @MaxLength(255)
+  source?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
   @MaxLength(500)
   description?: string;
 

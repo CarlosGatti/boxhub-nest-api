@@ -21,6 +21,9 @@ export class RecurringCashflowCountAggregate {
     amount!: number;
 
     @Field(() => Int, {nullable:false})
+    source!: number;
+
+    @Field(() => Int, {nullable:false})
     description!: number;
 
     @Field(() => Int, {nullable:false})

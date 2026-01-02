@@ -41,6 +41,9 @@ export class CashflowEntryWhereInput {
     amount?: DecimalFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
+    source?: StringNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
     description?: StringNullableFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})

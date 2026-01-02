@@ -44,6 +44,9 @@ export class RecurringCashflowWhereInput {
     amount?: DecimalFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
+    source?: StringNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
     description?: StringNullableFilter;
 
     @Field(() => EnumRecurrenceFrequencyFilter, {nullable:true})
