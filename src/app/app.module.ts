@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AssetsModule } from '../assets/assets.module';
 import { AuthModule } from '../auth/auth.module';
+import { CashflowModule } from '../cashflow/cashflow.module';
 import { CommentsModule } from '../comments/comments.module';
 import { DiscartItemModule } from 'src/discart-item/discart-item.module';
 import { DiscartItemUploadController } from '../discart-item/upload/upload.controller';
@@ -60,6 +61,8 @@ import { UserModule } from '../user/user.module';
     HoldingsModule,
     PricingModule,
     MetricsModule,
+    // Cash Flow module
+    CashflowModule,
   ],
   controllers: [
     AppController,

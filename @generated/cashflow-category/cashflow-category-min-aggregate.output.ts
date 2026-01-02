@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import { CashflowType } from '../prisma/cashflow-type.enum';
 
 @ObjectType()
 export class CashflowCategoryMinAggregate {
@@ -13,6 +14,9 @@ export class CashflowCategoryMinAggregate {
 
     @Field(() => String, {nullable:true})
     name?: string;
+
+    @Field(() => CashflowType, {nullable:true})
+    type?: keyof typeof CashflowType;
 
     @Field(() => String, {nullable:true})
     description?: string;

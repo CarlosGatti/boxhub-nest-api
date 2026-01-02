@@ -14,6 +14,9 @@ export class CashflowCategoryMaxAggregateInput {
     name?: true;
 
     @Field(() => Boolean, {nullable:true})
+    type?: true;
+
+    @Field(() => Boolean, {nullable:true})
     description?: true;
 
     @Field(() => Boolean, {nullable:true})

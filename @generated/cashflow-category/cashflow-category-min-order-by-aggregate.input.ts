@@ -15,6 +15,9 @@ export class CashflowCategoryMinOrderByAggregateInput {
     name?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    type?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     description?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

@@ -4,6 +4,7 @@ export enum CashflowCategoryScalarFieldEnum {
     id = "id",
     userId = "userId",
     name = "name",
+    type = "type",
     description = "description",
     color = "color",
     icon = "icon",

@@ -1,10 +1,11 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { CashflowCategoryUserIdNameCompoundUniqueInput } from './cashflow-category-user-id-name-compound-unique.input';
+import { CashflowCategoryUserIdNameTypeCompoundUniqueInput } from './cashflow-category-user-id-name-type-compound-unique.input';
 import { CashflowCategoryWhereInput } from './cashflow-category-where.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
+import { EnumCashflowTypeFilter } from '../prisma/enum-cashflow-type-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
@@ -18,8 +19,8 @@ export class CashflowCategoryWhereUniqueInput {
     @Field(() => Int, {nullable:true})
     id?: number;
 
-    @Field(() => CashflowCategoryUserIdNameCompoundUniqueInput, {nullable:true})
-    userId_name?: CashflowCategoryUserIdNameCompoundUniqueInput;
+    @Field(() => CashflowCategoryUserIdNameTypeCompoundUniqueInput, {nullable:true})
+    userId_name_type?: CashflowCategoryUserIdNameTypeCompoundUniqueInput;
 
     @Field(() => [CashflowCategoryWhereInput], {nullable:true})
     AND?: Array<CashflowCategoryWhereInput>;
@@ -35,6 +36,9 @@ export class CashflowCategoryWhereUniqueInput {
 
     @Field(() => StringFilter, {nullable:true})
     name?: StringFilter;
+
+    @Field(() => EnumCashflowTypeFilter, {nullable:true})
+    type?: EnumCashflowTypeFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     description?: StringNullableFilter;

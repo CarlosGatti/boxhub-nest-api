@@ -416,6 +416,7 @@ model CashflowCategory {
   id          Int                 @id @default(autoincrement())
   userId      Int
   name        String
+  type        CashflowType
   description String?
   color       String? // Hex color for UI
   icon        String? // Icon identifier
@@ -425,8 +426,8 @@ model CashflowCategory {
   entries     CashflowEntry[]
   recurring   RecurringCashflow[]
 
-  @@unique([userId, name])
-  @@index([userId])
+  @@unique([userId, name, type])
+  @@index([userId, type])
 }
 
 model CashflowEntry {

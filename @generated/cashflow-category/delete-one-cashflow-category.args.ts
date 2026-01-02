@@ -9,5 +9,5 @@ export class DeleteOneCashflowCategoryArgs {
 
     @Field(() => CashflowCategoryWhereUniqueInput, {nullable:false})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    where!: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>;
+    where!: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>;
 }

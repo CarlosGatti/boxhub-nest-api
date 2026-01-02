@@ -19,7 +19,7 @@ export class FindManyCashflowCategoryArgs {
     orderBy?: Array<CashflowCategoryOrderByWithRelationInput>;
 
     @Field(() => CashflowCategoryWhereUniqueInput, {nullable:true})
-    cursor?: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>;
+    cursor?: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>;
 
     @Field(() => Int, {nullable:true})
     take?: number;

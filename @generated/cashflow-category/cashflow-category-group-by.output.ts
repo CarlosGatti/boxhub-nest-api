@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import { CashflowType } from '../prisma/cashflow-type.enum';
 import { CashflowCategoryCountAggregate } from './cashflow-category-count-aggregate.output';
 import { CashflowCategoryAvgAggregate } from './cashflow-category-avg-aggregate.output';
 import { CashflowCategorySumAggregate } from './cashflow-category-sum-aggregate.output';
@@ -18,6 +19,9 @@ export class CashflowCategoryGroupBy {
 
     @Field(() => String, {nullable:false})
     name!: string;
+
+    @Field(() => CashflowType, {nullable:false})
+    type!: keyof typeof CashflowType;
 
     @Field(() => String, {nullable:true})
     description?: string;

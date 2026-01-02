@@ -15,6 +15,9 @@ export class CashflowCategoryCountAggregate {
     name!: number;
 
     @Field(() => Int, {nullable:false})
+    type!: number;
+
+    @Field(() => Int, {nullable:false})
     description!: number;
 
     @Field(() => Int, {nullable:false})

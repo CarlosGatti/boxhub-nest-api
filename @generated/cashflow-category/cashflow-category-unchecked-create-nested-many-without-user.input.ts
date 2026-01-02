@@ -24,5 +24,5 @@ export class CashflowCategoryUncheckedCreateNestedManyWithoutUserInput {
 
     @Field(() => [CashflowCategoryWhereUniqueInput], {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>>;
+    connect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>>;
 }

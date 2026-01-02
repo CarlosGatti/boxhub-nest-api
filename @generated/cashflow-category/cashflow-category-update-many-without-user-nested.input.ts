@@ -32,19 +32,19 @@ export class CashflowCategoryUpdateManyWithoutUserNestedInput {
 
     @Field(() => [CashflowCategoryWhereUniqueInput], {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    set?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>>;
+    set?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>>;
 
     @Field(() => [CashflowCategoryWhereUniqueInput], {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    disconnect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>>;
+    disconnect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>>;
 
     @Field(() => [CashflowCategoryWhereUniqueInput], {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    delete?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>>;
+    delete?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>>;
 
     @Field(() => [CashflowCategoryWhereUniqueInput], {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    connect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>>;
+    connect?: Array<Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>>;
 
     @Field(() => [CashflowCategoryUpdateWithWhereUniqueWithoutUserInput], {nullable:true})
     @Type(() => CashflowCategoryUpdateWithWhereUniqueWithoutUserInput)

@@ -19,5 +19,5 @@ export class CashflowCategoryCreateNestedOneWithoutEntriesInput {
 
     @Field(() => CashflowCategoryWhereUniqueInput, {nullable:true})
     @Type(() => CashflowCategoryWhereUniqueInput)
-    connect?: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name'>;
+    connect?: Prisma.AtLeast<CashflowCategoryWhereUniqueInput, 'id' | 'userId_name_type'>;
 }

@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import { CashflowType } from '../prisma/cashflow-type.enum';
 import { CashflowEntryUncheckedCreateNestedManyWithoutCategoryInput } from '../cashflow-entry/cashflow-entry-unchecked-create-nested-many-without-category.input';
 import { Type } from 'class-transformer';
 import { RecurringCashflowUncheckedCreateNestedManyWithoutCategoryInput } from '../recurring-cashflow/recurring-cashflow-unchecked-create-nested-many-without-category.input';
@@ -16,6 +17,9 @@ export class CashflowCategoryUncheckedCreateInput {
 
     @Field(() => String, {nullable:false})
     name!: string;
+
+    @Field(() => CashflowType, {nullable:false})
+    type!: keyof typeof CashflowType;
 
     @Field(() => String, {nullable:true})
     description?: string;
