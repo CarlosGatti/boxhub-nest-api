@@ -1,14 +1,20 @@
 import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { SignJWT, jwtVerify } from 'jose';
+import * as jwt from 'jsonwebtoken';
+
+interface TokenPayload {
+  name?: string;
+  discountId: string;
+  iat?: number;
+}
 
 @Injectable()
 export class TjService {
-  private getSecret(): Uint8Array {
+  private getSecret(): string {
     const secret = process.env.TJ_PASS_SECRET;
     if (!secret || secret.length < 32) {
       throw new Error('TJ_PASS_SECRET must be at least 32 characters');
     }
-    return new TextEncoder().encode(secret);
+    return secret;
   }
 
   async mintToken(name: string | undefined, discountId: string): Promise<string> {
@@ -19,14 +25,18 @@ export class TjService {
 
     const secret = this.getSecret();
 
-    const token = await new SignJWT({
-      name: name || undefined,
+    const payload: TokenPayload = {
       discountId,
-    })
-      .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-      .setIssuedAt()
-      .setExpirationTime('365d') // Token expires in 365 days
-      .sign(secret);
+    };
+
+    if (name) {
+      payload.name = name;
+    }
+
+    const token = jwt.sign(payload, secret, {
+      algorithm: 'HS256',
+      expiresIn: '365d', // Token expires in 365 days
+    });
 
     return token;
   }
@@ -38,9 +48,9 @@ export class TjService {
 
     try {
       const secret = this.getSecret();
-      const { payload } = await jwtVerify(token, secret, {
+      const payload = jwt.verify(token, secret, {
         algorithms: ['HS256'],
-      });
+      }) as TokenPayload;
 
       const name = typeof payload?.name === 'string' ? payload.name : '';
       const discountId =
@@ -54,6 +64,10 @@ export class TjService {
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw error;
+      }
+      // jwt.verify throws JsonWebTokenError or TokenExpiredError
+      if (error instanceof jwt.JsonWebTokenError || error instanceof jwt.TokenExpiredError) {
+        throw new UnauthorizedException('Invalid or expired token');
       }
       throw new UnauthorizedException('Invalid or expired token');
     }
