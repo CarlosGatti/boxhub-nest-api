@@ -1,18 +1,9 @@
 import { NextResponse } from "next/server";
-import * as jwt from "jsonwebtoken";
-import { headers } from "next/headers";
 
-function requireEnv(name: string) {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing env: ${name}`);
-  return v;
-}
-
-function isValidDiscountId(id: string) {
-  return /^[0-9]{6,20}$/.test(id);
-}
-
-// Handle CORS preflight
+/**
+ * Proxy route for TJ token minting
+ * Forwards requests to backend NestJS API
+ */
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
@@ -27,61 +18,51 @@ export async function OPTIONS() {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
-    const name = String(body?.name ?? "").trim();
-    const discountId = String(body?.discountId ?? "").trim();
+    
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.discart.me";
+    const backendUrl = `${apiUrl}/api/tj/mint`;
 
-    // Validate discountId
-    if (!discountId || discountId.length === 0) {
-      return NextResponse.json(
-        { error: "discountId is required" },
-        { status: 400 }
-      );
-    }
+    console.log("[TJ Mint Proxy] Calling backend:", backendUrl);
 
-    if (!isValidDiscountId(discountId)) {
-      return NextResponse.json(
-        { error: "Invalid discountId format. Must be 6-20 digits." },
-        { status: 400 }
-      );
-    }
-
-    const secret = requireEnv("TJ_PASS_SECRET");
-
-    const payload: { name?: string; discountId: string } = {
-      discountId,
-    };
-
-    if (name) {
-      payload.name = name;
-    }
-
-    const token = jwt.sign(payload, secret, {
-      algorithm: "HS256",
-      expiresIn: "365d",
+    const res = await fetch(backendUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     });
 
-    // Build baseUrl safely (works behind proxies/Vercel)
-    const h = headers();
-    const host = h.get("host") || "localhost:3001";
-    const proto = h.get("x-forwarded-proto") || "https";
+    const data = await res.json().catch(() => ({}));
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${proto}://${host}`;
-    const url = `${baseUrl}/tj/${encodeURIComponent(token)}`;
+    if (!res.ok) {
+      console.error("[TJ Mint Proxy] Backend error:", data);
+      return NextResponse.json(
+        { error: data?.error || "Failed to mint token" },
+        {
+          status: res.status,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+          },
+        }
+      );
+    }
 
+    console.log("[TJ Mint Proxy] Success:", { token: data?.token?.substring(0, 20) + "..." });
+
+    return NextResponse.json(data, {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  } catch (error: any) {
+    console.error("[TJ Mint Proxy] Error:", error);
     return NextResponse.json(
-      { token, url },
-      {
-        status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      }
-    );
-  } catch (e: any) {
-    return NextResponse.json(
-      { error: e?.message || "Server error" },
+      { error: error?.message || "Failed to mint token" },
       { status: 500 }
     );
   }
