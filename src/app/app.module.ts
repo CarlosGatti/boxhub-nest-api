@@ -18,6 +18,7 @@ import { PricingModule } from '../pricing/pricing.module';
 import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RatingsModule } from '../ratings/ratings.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { TjModule } from '../tj/tj.module';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -63,6 +64,8 @@ import { UserModule } from '../user/user.module';
     MetricsModule,
     // Cash Flow module
     CashflowModule,
+    // TJ Discount Barcode module
+    TjModule,
   ],
   controllers: [
     AppController,

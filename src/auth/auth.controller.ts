@@ -12,7 +12,7 @@ export class AuthController {
     @Res() res: Response,
   ) {
     if (!token) {
-      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
       return res.redirect(
         `${frontendUrl}/verify-email?error=missing_token`,
       );
@@ -20,7 +20,7 @@ export class AuthController {
 
     try {
       const result = await this.authService.verifyEmail(token);
-      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
       
       if (result.success) {
         // Redirect to frontend with success message
@@ -35,7 +35,7 @@ export class AuthController {
       }
     } catch (error) {
       console.error('Error verifying email:', error);
-      const frontendUrl = process.env.FRONTEND_URL || 'https://www.discart.me';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
       return res.redirect(
         `${frontendUrl}/verify-email?error=${encodeURIComponent('Invalid or expired token')}`,
       );
