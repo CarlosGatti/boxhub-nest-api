@@ -13,6 +13,9 @@ import { CommentUncheckedUpdateManyWithoutUserNestedInput } from '../comment/com
 import { RatingUncheckedUpdateManyWithoutSellerNestedInput } from '../rating/rating-unchecked-update-many-without-seller-nested.input';
 import { RatingUncheckedUpdateManyWithoutBuyerNestedInput } from '../rating/rating-unchecked-update-many-without-buyer-nested.input';
 import { UserAppAccessUncheckedUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-unchecked-update-many-without-user-nested.input';
+import { FeedbackUncheckedUpdateManyWithoutUserNestedInput } from '../feedback/feedback-unchecked-update-many-without-user-nested.input';
+import { FeedProfileUncheckedUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-unchecked-update-one-without-user-nested.input';
+import { FeedItemStateUncheckedUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-unchecked-update-many-without-user-nested.input';
 import { PortfolioUncheckedUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-unchecked-update-many-without-user-nested.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUncheckedUpdateManyWithoutUserNestedInput } from '../cashflow-category/cashflow-category-unchecked-update-many-without-user-nested.input';
@@ -102,6 +105,15 @@ export class UserUncheckedUpdateWithoutStorageMembershipsInput {
 
     @Field(() => UserAppAccessUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     apps?: UserAppAccessUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedbackUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedProfileUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    feedProfile?: FeedProfileUncheckedUpdateOneWithoutUserNestedInput;
+
+    @Field(() => FeedItemStateUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedItemStates?: FeedItemStateUncheckedUpdateManyWithoutUserNestedInput;
 
     @Field(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput)

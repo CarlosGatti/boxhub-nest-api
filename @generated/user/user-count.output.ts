@@ -27,6 +27,12 @@ export class UserCount {
     apps?: number;
 
     @Field(() => Int, {nullable:false})
+    feedbacks?: number;
+
+    @Field(() => Int, {nullable:false})
+    feedItemStates?: number;
+
+    @Field(() => Int, {nullable:false})
     portfolios?: number;
 
     @Field(() => Int, {nullable:false})

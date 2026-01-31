@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { FeedbackUpdateManyWithoutTargetAppNestedInput } from '../feedback/feedback-update-many-without-target-app-nested.input';
 
 @InputType()
 export class AppUpdateWithoutUsersInput {
@@ -21,4 +22,7 @@ export class AppUpdateWithoutUsersInput {
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => FeedbackUpdateManyWithoutTargetAppNestedInput, {nullable:true})
+    feedbacks?: FeedbackUpdateManyWithoutTargetAppNestedInput;
 }

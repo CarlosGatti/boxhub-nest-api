@@ -7,6 +7,9 @@ import { DiscartItemCreateNestedManyWithoutCreatedByInput } from '../discart-ite
 import { CommentCreateNestedManyWithoutUserInput } from '../comment/comment-create-nested-many-without-user.input';
 import { RatingCreateNestedManyWithoutSellerInput } from '../rating/rating-create-nested-many-without-seller.input';
 import { UserAppAccessCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-create-nested-many-without-user.input';
+import { FeedbackCreateNestedManyWithoutUserInput } from '../feedback/feedback-create-nested-many-without-user.input';
+import { FeedProfileCreateNestedOneWithoutUserInput } from '../feed-profile/feed-profile-create-nested-one-without-user.input';
+import { FeedItemStateCreateNestedManyWithoutUserInput } from '../feed-item-state/feed-item-state-create-nested-many-without-user.input';
 import { PortfolioCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-create-nested-many-without-user.input';
@@ -93,6 +96,15 @@ export class UserCreateWithoutRatingsAsBuyerInput {
 
     @Field(() => UserAppAccessCreateNestedManyWithoutUserInput, {nullable:true})
     apps?: UserAppAccessCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedbackCreateNestedManyWithoutUserInput, {nullable:true})
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedProfileCreateNestedOneWithoutUserInput, {nullable:true})
+    feedProfile?: FeedProfileCreateNestedOneWithoutUserInput;
+
+    @Field(() => FeedItemStateCreateNestedManyWithoutUserInput, {nullable:true})
+    feedItemStates?: FeedItemStateCreateNestedManyWithoutUserInput;
 
     @Field(() => PortfolioCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => PortfolioCreateNestedManyWithoutUserInput)

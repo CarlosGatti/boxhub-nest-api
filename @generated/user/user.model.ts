@@ -8,6 +8,9 @@ import { DiscartItem } from '../discart-item/discart-item.model';
 import { Comment } from '../comment/comment.model';
 import { Rating } from '../rating/rating.model';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
+import { Feedback } from '../feedback/feedback.model';
+import { FeedProfile } from '../feed-profile/feed-profile.model';
+import { FeedItemState } from '../feed-item-state/feed-item-state.model';
 import { Portfolio } from '../portfolio/portfolio.model';
 import { CashflowCategory } from '../cashflow-category/cashflow-category.model';
 import { CashflowEntry } from '../cashflow-entry/cashflow-entry.model';
@@ -100,6 +103,15 @@ export class User {
 
     @Field(() => [UserAppAccess], {nullable:true})
     apps?: Array<UserAppAccess>;
+
+    @Field(() => [Feedback], {nullable:true})
+    feedbacks?: Array<Feedback>;
+
+    @Field(() => FeedProfile, {nullable:true})
+    feedProfile?: FeedProfile | null;
+
+    @Field(() => [FeedItemState], {nullable:true})
+    feedItemStates?: Array<FeedItemState>;
 
     @Field(() => [Portfolio], {nullable:true})
     portfolios?: Array<Portfolio>;

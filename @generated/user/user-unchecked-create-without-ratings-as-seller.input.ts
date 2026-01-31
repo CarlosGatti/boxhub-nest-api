@@ -8,6 +8,9 @@ import { DiscartItemUncheckedCreateNestedManyWithoutCreatedByInput } from '../di
 import { CommentUncheckedCreateNestedManyWithoutUserInput } from '../comment/comment-unchecked-create-nested-many-without-user.input';
 import { RatingUncheckedCreateNestedManyWithoutBuyerInput } from '../rating/rating-unchecked-create-nested-many-without-buyer.input';
 import { UserAppAccessUncheckedCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-user.input';
+import { FeedbackUncheckedCreateNestedManyWithoutUserInput } from '../feedback/feedback-unchecked-create-nested-many-without-user.input';
+import { FeedProfileUncheckedCreateNestedOneWithoutUserInput } from '../feed-profile/feed-profile-unchecked-create-nested-one-without-user.input';
+import { FeedItemStateUncheckedCreateNestedManyWithoutUserInput } from '../feed-item-state/feed-item-state-unchecked-create-nested-many-without-user.input';
 import { PortfolioUncheckedCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-unchecked-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUncheckedCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-unchecked-create-nested-many-without-user.input';
@@ -97,6 +100,15 @@ export class UserUncheckedCreateWithoutRatingsAsSellerInput {
 
     @Field(() => UserAppAccessUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     apps?: UserAppAccessUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedbackUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedProfileUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    feedProfile?: FeedProfileUncheckedCreateNestedOneWithoutUserInput;
+
+    @Field(() => FeedItemStateUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    feedItemStates?: FeedItemStateUncheckedCreateNestedManyWithoutUserInput;
 
     @Field(() => PortfolioUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => PortfolioUncheckedCreateNestedManyWithoutUserInput)

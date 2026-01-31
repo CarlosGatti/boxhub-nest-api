@@ -139,6 +139,13 @@ model User {
   // Multi-app access
   apps UserAppAccess[]
 
+  // Feedback / Evaluation
+  feedbacks Feedback[]
+
+  // SignalBoard
+  feedProfile    FeedProfile?
+  feedItemStates FeedItemState[]
+
   // Wealth Tracker
   portfolios Portfolio[] @relation("UserPortfolios")
 
@@ -181,6 +188,47 @@ enum LogAction {
   USER_DELETED
   STORAGE_CREATED
   STORAGE_DELETED
+}
+
+enum FeedbackStatus {
+  PENDING
+  PUBLISHED
+  HIDDEN
+  SPAM
+}
+
+enum FeedSourceType {
+  RSS
+  YOUTUBE_CHANNEL
+  YOUTUBE_PLAYLIST
+  GOOGLE_NEWS_RSS
+  CUSTOM
+}
+
+enum FeedItemType {
+  ARTICLE
+  VIDEO
+  POST
+}
+
+enum FeedItemStatus {
+  ACTIVE
+  REMOVED
+}
+
+enum FeedItemReadStatus {
+  UNREAD
+  READ
+}
+
+enum FeedItemSaveStatus {
+  NONE
+  SAVED
+}
+
+enum FeedItemVisibility {
+  VISIBLE
+  HIDDEN
 }
 
 enum Role {
@@ -282,6 +330,7 @@ model App {
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   users       UserAppAccess[]
+  feedbacks   Feedback[]
 }
 
 model UserAppAccess {
@@ -296,6 +345,162 @@ model UserAppAccess {
   @@unique([userId, appId])
   @@index([userId])
   @@index([appId])
+}
+
+// ============================================
+// Feedback / Evaluation
+// ============================================
+
+model Feedback {
+  id Int @id @default(autoincrement())
+
+  // Which app/project is being reviewed
+  targetAppId Int
+  targetApp   App @relation(fields: [targetAppId], references: [id], onDelete: Cascade)
+
+  // Actor (either logged user or anonymous)
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  anonymousId  String?
+  contactEmail String?
+
+  // Feedback content
+  rating      Int?
+  message     String
+  tags        String[] @default([])
+  contextPath String?
+  metadata    Json?
+
+  status FeedbackStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([targetAppId])
+  @@index([userId])
+  @@index([anonymousId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([targetAppId, createdAt])
+  @@index([targetAppId, status, createdAt])
+}
+
+// ============================================
+// SignalBoard Models
+// ============================================
+
+model FeedProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  timezone  String?
+  language  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collections FeedCollection[]
+
+  @@index([userId])
+}
+
+model FeedCollection {
+  id               Int      @id @default(autoincrement())
+  profileId        Int
+  name             String
+  description      String?
+  icon             String?
+  color            String?
+  keywords         String[] @default([])
+  blocked          String[] @default([])
+  preferredDomains String[] @default([])
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  profile FeedProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  sources FeedSource[]
+
+  @@unique([profileId, name])
+  @@index([profileId])
+  @@index([isActive])
+}
+
+model FeedSource {
+  id            Int            @id @default(autoincrement())
+  collectionId  Int
+  type          FeedSourceType
+  name          String
+  url           String
+  isActive      Boolean        @default(true)
+  fetchEveryMin Int?
+  lastFetchedAt DateTime?
+  failureCount  Int            @default(0)
+  metadata      Json?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  collection FeedCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  items      FeedItem[]
+
+  @@index([collectionId])
+  @@index([isActive])
+  @@index([type])
+}
+
+model FeedItem {
+  id           Int            @id @default(autoincrement())
+  sourceId     Int
+  type         FeedItemType   @default(ARTICLE)
+  status       FeedItemStatus @default(ACTIVE)
+  title        String
+  canonicalUrl String?
+  publishedAt  DateTime?
+  contentText  String?
+  imageUrl     String?
+  metrics      Json?
+  contentHash  String         @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  source  FeedSource       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  states  FeedItemState[]
+  summary FeedItemSummary?
+
+  @@index([sourceId])
+  @@index([publishedAt])
+}
+
+model FeedItemState {
+  id         Int                @id @default(autoincrement())
+  userId     Int
+  itemId     Int
+  readStatus FeedItemReadStatus @default(UNREAD)
+  saveStatus FeedItemSaveStatus @default(NONE)
+  visibility FeedItemVisibility @default(VISIBLE)
+  readAt     DateTime?
+  savedAt    DateTime?
+  hiddenAt   DateTime?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item FeedItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+  @@index([userId])
+  @@index([itemId])
+}
+
+model FeedItemSummary {
+  id        Int      @id @default(autoincrement())
+  itemId    Int      @unique
+  summary   String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  item FeedItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 // ============================================

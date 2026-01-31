@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
+import { Feedback } from '../feedback/feedback.model';
 import { AppCount } from './app-count.output';
 
 @ObjectType()
@@ -27,6 +28,9 @@ export class App {
 
     @Field(() => [UserAppAccess], {nullable:true})
     users?: Array<UserAppAccess>;
+
+    @Field(() => [Feedback], {nullable:true})
+    feedbacks?: Array<Feedback>;
 
     @Field(() => AppCount, {nullable:false})
     _count?: AppCount;

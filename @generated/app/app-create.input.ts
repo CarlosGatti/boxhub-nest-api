@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { UserAppAccessCreateNestedManyWithoutAppInput } from '../user-app-access/user-app-access-create-nested-many-without-app.input';
+import { FeedbackCreateNestedManyWithoutTargetAppInput } from '../feedback/feedback-create-nested-many-without-target-app.input';
 
 @InputType()
 export class AppCreateInput {
@@ -22,4 +23,7 @@ export class AppCreateInput {
 
     @Field(() => UserAppAccessCreateNestedManyWithoutAppInput, {nullable:true})
     users?: UserAppAccessCreateNestedManyWithoutAppInput;
+
+    @Field(() => FeedbackCreateNestedManyWithoutTargetAppInput, {nullable:true})
+    feedbacks?: FeedbackCreateNestedManyWithoutTargetAppInput;
 }

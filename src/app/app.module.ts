@@ -18,6 +18,8 @@ import { PricingModule } from '../pricing/pricing.module';
 import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RatingsModule } from '../ratings/ratings.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { FeedbackModule } from 'src/apps/feedback/feedback.module';
+import { SignalboardModule } from 'src/apps/signalboard/signalboard.module';
 import { TjModule } from '../tj/tj.module';
 import { UserModule } from '../user/user.module';
 
@@ -66,6 +68,10 @@ import { UserModule } from '../user/user.module';
     CashflowModule,
     // TJ Discount Barcode module
     TjModule,
+    // SignalBoard module
+    SignalboardModule,
+    // Feedback module
+    FeedbackModule,
   ],
   controllers: [
     AppController,

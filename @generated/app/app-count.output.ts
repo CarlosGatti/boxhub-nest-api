@@ -7,4 +7,7 @@ export class AppCount {
 
     @Field(() => Int, {nullable:false})
     users?: number;
+
+    @Field(() => Int, {nullable:false})
+    feedbacks?: number;
 }

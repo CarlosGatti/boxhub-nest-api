@@ -12,6 +12,9 @@ import { CommentUpdateManyWithoutUserNestedInput } from '../comment/comment-upda
 import { RatingUpdateManyWithoutSellerNestedInput } from '../rating/rating-update-many-without-seller-nested.input';
 import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
 import { UserAppAccessUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-update-many-without-user-nested.input';
+import { FeedbackUpdateManyWithoutUserNestedInput } from '../feedback/feedback-update-many-without-user-nested.input';
+import { FeedProfileUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-update-one-without-user-nested.input';
+import { FeedItemStateUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-update-many-without-user-nested.input';
 import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUpdateManyWithoutUserNestedInput } from '../cashflow-category/cashflow-category-update-many-without-user-nested.input';
@@ -98,6 +101,15 @@ export class UserUpdateWithoutDiscartItemsInput {
 
     @Field(() => UserAppAccessUpdateManyWithoutUserNestedInput, {nullable:true})
     apps?: UserAppAccessUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedbackUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedProfileUpdateOneWithoutUserNestedInput, {nullable:true})
+    feedProfile?: FeedProfileUpdateOneWithoutUserNestedInput;
+
+    @Field(() => FeedItemStateUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedItemStates?: FeedItemStateUpdateManyWithoutUserNestedInput;
 
     @Field(() => PortfolioUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => PortfolioUpdateManyWithoutUserNestedInput)

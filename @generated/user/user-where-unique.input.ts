@@ -14,6 +14,9 @@ import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list
 import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
 import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.input';
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
+import { FeedbackListRelationFilter } from '../feedback/feedback-list-relation-filter.input';
+import { FeedProfileNullableRelationFilter } from '../feed-profile/feed-profile-nullable-relation-filter.input';
+import { FeedItemStateListRelationFilter } from '../feed-item-state/feed-item-state-list-relation-filter.input';
 import { PortfolioListRelationFilter } from '../portfolio/portfolio-list-relation-filter.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryListRelationFilter } from '../cashflow-category/cashflow-category-list-relation-filter.input';
@@ -115,6 +118,15 @@ export class UserWhereUniqueInput {
 
     @Field(() => UserAppAccessListRelationFilter, {nullable:true})
     apps?: UserAppAccessListRelationFilter;
+
+    @Field(() => FeedbackListRelationFilter, {nullable:true})
+    feedbacks?: FeedbackListRelationFilter;
+
+    @Field(() => FeedProfileNullableRelationFilter, {nullable:true})
+    feedProfile?: FeedProfileNullableRelationFilter;
+
+    @Field(() => FeedItemStateListRelationFilter, {nullable:true})
+    feedItemStates?: FeedItemStateListRelationFilter;
 
     @Field(() => PortfolioListRelationFilter, {nullable:true})
     @Type(() => PortfolioListRelationFilter)

@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { FeedbackCreateNestedManyWithoutTargetAppInput } from '../feedback/feedback-create-nested-many-without-target-app.input';
 
 @InputType()
 export class AppCreateWithoutUsersInput {
@@ -18,4 +19,7 @@ export class AppCreateWithoutUsersInput {
 
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+
+    @Field(() => FeedbackCreateNestedManyWithoutTargetAppInput, {nullable:true})
+    feedbacks?: FeedbackCreateNestedManyWithoutTargetAppInput;
 }

@@ -5,6 +5,7 @@ import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
+import { FeedbackListRelationFilter } from '../feedback/feedback-list-relation-filter.input';
 
 @InputType()
 export class AppWhereInput {
@@ -38,4 +39,7 @@ export class AppWhereInput {
 
     @Field(() => UserAppAccessListRelationFilter, {nullable:true})
     users?: UserAppAccessListRelationFilter;
+
+    @Field(() => FeedbackListRelationFilter, {nullable:true})
+    feedbacks?: FeedbackListRelationFilter;
 }

@@ -8,6 +8,9 @@ import { DiscartItemOrderByRelationAggregateInput } from '../discart-item/discar
 import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-by-relation-aggregate.input';
 import { RatingOrderByRelationAggregateInput } from '../rating/rating-order-by-relation-aggregate.input';
 import { UserAppAccessOrderByRelationAggregateInput } from '../user-app-access/user-app-access-order-by-relation-aggregate.input';
+import { FeedbackOrderByRelationAggregateInput } from '../feedback/feedback-order-by-relation-aggregate.input';
+import { FeedProfileOrderByWithRelationInput } from '../feed-profile/feed-profile-order-by-with-relation.input';
+import { FeedItemStateOrderByRelationAggregateInput } from '../feed-item-state/feed-item-state-order-by-relation-aggregate.input';
 import { PortfolioOrderByRelationAggregateInput } from '../portfolio/portfolio-order-by-relation-aggregate.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryOrderByRelationAggregateInput } from '../cashflow-category/cashflow-category-order-by-relation-aggregate.input';
@@ -100,6 +103,15 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => UserAppAccessOrderByRelationAggregateInput, {nullable:true})
     apps?: UserAppAccessOrderByRelationAggregateInput;
+
+    @Field(() => FeedbackOrderByRelationAggregateInput, {nullable:true})
+    feedbacks?: FeedbackOrderByRelationAggregateInput;
+
+    @Field(() => FeedProfileOrderByWithRelationInput, {nullable:true})
+    feedProfile?: FeedProfileOrderByWithRelationInput;
+
+    @Field(() => FeedItemStateOrderByRelationAggregateInput, {nullable:true})
+    feedItemStates?: FeedItemStateOrderByRelationAggregateInput;
 
     @Field(() => PortfolioOrderByRelationAggregateInput, {nullable:true})
     @Type(() => PortfolioOrderByRelationAggregateInput)

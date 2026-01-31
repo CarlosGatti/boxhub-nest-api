@@ -4,6 +4,7 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { UserAppAccessUpdateManyWithoutAppNestedInput } from '../user-app-access/user-app-access-update-many-without-app-nested.input';
+import { FeedbackUpdateManyWithoutTargetAppNestedInput } from '../feedback/feedback-update-many-without-target-app-nested.input';
 
 @InputType()
 export class AppUpdateInput {
@@ -25,4 +26,7 @@ export class AppUpdateInput {
 
     @Field(() => UserAppAccessUpdateManyWithoutAppNestedInput, {nullable:true})
     users?: UserAppAccessUpdateManyWithoutAppNestedInput;
+
+    @Field(() => FeedbackUpdateManyWithoutTargetAppNestedInput, {nullable:true})
+    feedbacks?: FeedbackUpdateManyWithoutTargetAppNestedInput;
 }

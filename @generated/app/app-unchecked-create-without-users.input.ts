@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import { FeedbackUncheckedCreateNestedManyWithoutTargetAppInput } from '../feedback/feedback-unchecked-create-nested-many-without-target-app.input';
 
 @InputType()
 export class AppUncheckedCreateWithoutUsersInput {
@@ -22,4 +23,7 @@ export class AppUncheckedCreateWithoutUsersInput {
 
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+
+    @Field(() => FeedbackUncheckedCreateNestedManyWithoutTargetAppInput, {nullable:true})
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutTargetAppInput;
 }
