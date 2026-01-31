@@ -62,6 +62,8 @@ nano .env
 ```
 Ensure to update database credentials.
 
+**Feedback app code note:** feedback submissions resolve `App.code` at runtime. Ensure `seed.apps.ts` includes `TJ_PASS`, `NEWS_PORTAL`, and `PERSONAL_SITE`, and that the runtime `DATABASE_URL` points to the same database seeded with those app codes.
+
 4️⃣ **Run database migrations:**
 ```sh
 npm run prisma:migrate

@@ -121,5 +121,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.apps.ts && ts-node prisma/seed.wealth-tracker.ts"
   }
 }

@@ -24,13 +24,13 @@ export class CreateFeedbackInput {
   @IsInt()
   @Min(1)
   @Max(5)
-  rating?: number;
+  rating?: number | null;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
+  @IsOptional()
   @IsString()
-  @MinLength(5)
   @MaxLength(5000)
-  message: string;
+  message?: string | null;
 
   @Field(() => [String], { nullable: true })
   @IsOptional()

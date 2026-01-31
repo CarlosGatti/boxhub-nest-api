@@ -10,7 +10,23 @@ import { join } from "path";
 
 dotenv.config();
 
+function logDatabaseTarget() {
+  const rawUrl = process.env.DATABASE_URL;
+  if (!rawUrl) {
+    console.log('⚠️  DATABASE_URL not set');
+    return;
+  }
+  try {
+    const url = new URL(rawUrl);
+    const dbName = url.pathname.replace('/', '');
+    console.log(`🗄️  Prisma DB target: ${url.hostname}:${url.port || '5432'}/${dbName}`);
+  } catch (error) {
+    console.log('⚠️  Failed to parse DATABASE_URL');
+  }
+}
+
 async function bootstrap() {
+  logDatabaseTarget();
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Global validation pipe for DTOs
