@@ -87,6 +87,11 @@ export class RegisterUserInput {
   @IsOptional()
   @IsString()
   apartment?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  appCode?: string;
 }
 
 @ObjectType()

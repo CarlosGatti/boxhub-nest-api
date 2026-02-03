@@ -14,6 +14,13 @@ import { RatingUpdateManyWithoutSellerNestedInput } from '../rating/rating-updat
 import { RatingUpdateManyWithoutBuyerNestedInput } from '../rating/rating-update-many-without-buyer-nested.input';
 import { UserAppAccessUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-update-many-without-user-nested.input';
 import { FeedbackUpdateManyWithoutUserNestedInput } from '../feedback/feedback-update-many-without-user-nested.input';
+import { HomeOpsHouseholdUpdateManyWithoutOwnerNestedInput } from '../home-ops-household/home-ops-household-update-many-without-owner-nested.input';
+import { HomeOpsHouseholdMemberUpdateManyWithoutUserNestedInput } from '../home-ops-household-member/home-ops-household-member-update-many-without-user-nested.input';
+import { HomeOpsTaskTemplateUpdateManyWithoutCreatedByNestedInput } from '../home-ops-task-template/home-ops-task-template-update-many-without-created-by-nested.input';
+import { HomeOpsTaskTemplateUpdateManyWithoutFixedAssigneeNestedInput } from '../home-ops-task-template/home-ops-task-template-update-many-without-fixed-assignee-nested.input';
+import { HomeOpsTaskInstanceUpdateManyWithoutAssigneeNestedInput } from '../home-ops-task-instance/home-ops-task-instance-update-many-without-assignee-nested.input';
+import { HomeOpsTaskInstanceUpdateManyWithoutCompletedByNestedInput } from '../home-ops-task-instance/home-ops-task-instance-update-many-without-completed-by-nested.input';
+import { HomeOpsWorkloadLedgerUpdateManyWithoutUserNestedInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-update-many-without-user-nested.input';
 import { FeedProfileUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-update-one-without-user-nested.input';
 import { FeedItemStateUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-update-many-without-user-nested.input';
 import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
@@ -108,6 +115,27 @@ export class UserUpdateInput {
 
     @Field(() => FeedbackUpdateManyWithoutUserNestedInput, {nullable:true})
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput;
+
+    @Field(() => HomeOpsHouseholdUpdateManyWithoutOwnerNestedInput, {nullable:true})
+    homeOpsHouseholdsOwned?: HomeOpsHouseholdUpdateManyWithoutOwnerNestedInput;
+
+    @Field(() => HomeOpsHouseholdMemberUpdateManyWithoutUserNestedInput, {nullable:true})
+    homeOpsHouseholdMemberships?: HomeOpsHouseholdMemberUpdateManyWithoutUserNestedInput;
+
+    @Field(() => HomeOpsTaskTemplateUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    homeOpsTaskTemplatesCreated?: HomeOpsTaskTemplateUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => HomeOpsTaskTemplateUpdateManyWithoutFixedAssigneeNestedInput, {nullable:true})
+    homeOpsTaskTemplatesAssigned?: HomeOpsTaskTemplateUpdateManyWithoutFixedAssigneeNestedInput;
+
+    @Field(() => HomeOpsTaskInstanceUpdateManyWithoutAssigneeNestedInput, {nullable:true})
+    homeOpsTaskInstancesAssigned?: HomeOpsTaskInstanceUpdateManyWithoutAssigneeNestedInput;
+
+    @Field(() => HomeOpsTaskInstanceUpdateManyWithoutCompletedByNestedInput, {nullable:true})
+    homeOpsTaskInstancesCompleted?: HomeOpsTaskInstanceUpdateManyWithoutCompletedByNestedInput;
+
+    @Field(() => HomeOpsWorkloadLedgerUpdateManyWithoutUserNestedInput, {nullable:true})
+    homeOpsWorkloadLedgers?: HomeOpsWorkloadLedgerUpdateManyWithoutUserNestedInput;
 
     @Field(() => FeedProfileUpdateOneWithoutUserNestedInput, {nullable:true})
     feedProfile?: FeedProfileUpdateOneWithoutUserNestedInput;

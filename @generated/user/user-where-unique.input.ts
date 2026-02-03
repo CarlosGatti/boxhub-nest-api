@@ -15,6 +15,11 @@ import { CommentListRelationFilter } from '../comment/comment-list-relation-filt
 import { RatingListRelationFilter } from '../rating/rating-list-relation-filter.input';
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
 import { FeedbackListRelationFilter } from '../feedback/feedback-list-relation-filter.input';
+import { HomeOpsHouseholdListRelationFilter } from '../home-ops-household/home-ops-household-list-relation-filter.input';
+import { HomeOpsHouseholdMemberListRelationFilter } from '../home-ops-household-member/home-ops-household-member-list-relation-filter.input';
+import { HomeOpsTaskTemplateListRelationFilter } from '../home-ops-task-template/home-ops-task-template-list-relation-filter.input';
+import { HomeOpsTaskInstanceListRelationFilter } from '../home-ops-task-instance/home-ops-task-instance-list-relation-filter.input';
+import { HomeOpsWorkloadLedgerListRelationFilter } from '../home-ops-workload-ledger/home-ops-workload-ledger-list-relation-filter.input';
 import { FeedProfileNullableRelationFilter } from '../feed-profile/feed-profile-nullable-relation-filter.input';
 import { FeedItemStateListRelationFilter } from '../feed-item-state/feed-item-state-list-relation-filter.input';
 import { PortfolioListRelationFilter } from '../portfolio/portfolio-list-relation-filter.input';
@@ -121,6 +126,27 @@ export class UserWhereUniqueInput {
 
     @Field(() => FeedbackListRelationFilter, {nullable:true})
     feedbacks?: FeedbackListRelationFilter;
+
+    @Field(() => HomeOpsHouseholdListRelationFilter, {nullable:true})
+    homeOpsHouseholdsOwned?: HomeOpsHouseholdListRelationFilter;
+
+    @Field(() => HomeOpsHouseholdMemberListRelationFilter, {nullable:true})
+    homeOpsHouseholdMemberships?: HomeOpsHouseholdMemberListRelationFilter;
+
+    @Field(() => HomeOpsTaskTemplateListRelationFilter, {nullable:true})
+    homeOpsTaskTemplatesCreated?: HomeOpsTaskTemplateListRelationFilter;
+
+    @Field(() => HomeOpsTaskTemplateListRelationFilter, {nullable:true})
+    homeOpsTaskTemplatesAssigned?: HomeOpsTaskTemplateListRelationFilter;
+
+    @Field(() => HomeOpsTaskInstanceListRelationFilter, {nullable:true})
+    homeOpsTaskInstancesAssigned?: HomeOpsTaskInstanceListRelationFilter;
+
+    @Field(() => HomeOpsTaskInstanceListRelationFilter, {nullable:true})
+    homeOpsTaskInstancesCompleted?: HomeOpsTaskInstanceListRelationFilter;
+
+    @Field(() => HomeOpsWorkloadLedgerListRelationFilter, {nullable:true})
+    homeOpsWorkloadLedgers?: HomeOpsWorkloadLedgerListRelationFilter;
 
     @Field(() => FeedProfileNullableRelationFilter, {nullable:true})
     feedProfile?: FeedProfileNullableRelationFilter;

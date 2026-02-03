@@ -9,6 +9,11 @@ import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-b
 import { RatingOrderByRelationAggregateInput } from '../rating/rating-order-by-relation-aggregate.input';
 import { UserAppAccessOrderByRelationAggregateInput } from '../user-app-access/user-app-access-order-by-relation-aggregate.input';
 import { FeedbackOrderByRelationAggregateInput } from '../feedback/feedback-order-by-relation-aggregate.input';
+import { HomeOpsHouseholdOrderByRelationAggregateInput } from '../home-ops-household/home-ops-household-order-by-relation-aggregate.input';
+import { HomeOpsHouseholdMemberOrderByRelationAggregateInput } from '../home-ops-household-member/home-ops-household-member-order-by-relation-aggregate.input';
+import { HomeOpsTaskTemplateOrderByRelationAggregateInput } from '../home-ops-task-template/home-ops-task-template-order-by-relation-aggregate.input';
+import { HomeOpsTaskInstanceOrderByRelationAggregateInput } from '../home-ops-task-instance/home-ops-task-instance-order-by-relation-aggregate.input';
+import { HomeOpsWorkloadLedgerOrderByRelationAggregateInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-order-by-relation-aggregate.input';
 import { FeedProfileOrderByWithRelationInput } from '../feed-profile/feed-profile-order-by-with-relation.input';
 import { FeedItemStateOrderByRelationAggregateInput } from '../feed-item-state/feed-item-state-order-by-relation-aggregate.input';
 import { PortfolioOrderByRelationAggregateInput } from '../portfolio/portfolio-order-by-relation-aggregate.input';
@@ -106,6 +111,27 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => FeedbackOrderByRelationAggregateInput, {nullable:true})
     feedbacks?: FeedbackOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsHouseholdOrderByRelationAggregateInput, {nullable:true})
+    homeOpsHouseholdsOwned?: HomeOpsHouseholdOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsHouseholdMemberOrderByRelationAggregateInput, {nullable:true})
+    homeOpsHouseholdMemberships?: HomeOpsHouseholdMemberOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsTaskTemplateOrderByRelationAggregateInput, {nullable:true})
+    homeOpsTaskTemplatesCreated?: HomeOpsTaskTemplateOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsTaskTemplateOrderByRelationAggregateInput, {nullable:true})
+    homeOpsTaskTemplatesAssigned?: HomeOpsTaskTemplateOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsTaskInstanceOrderByRelationAggregateInput, {nullable:true})
+    homeOpsTaskInstancesAssigned?: HomeOpsTaskInstanceOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsTaskInstanceOrderByRelationAggregateInput, {nullable:true})
+    homeOpsTaskInstancesCompleted?: HomeOpsTaskInstanceOrderByRelationAggregateInput;
+
+    @Field(() => HomeOpsWorkloadLedgerOrderByRelationAggregateInput, {nullable:true})
+    homeOpsWorkloadLedgers?: HomeOpsWorkloadLedgerOrderByRelationAggregateInput;
 
     @Field(() => FeedProfileOrderByWithRelationInput, {nullable:true})
     feedProfile?: FeedProfileOrderByWithRelationInput;

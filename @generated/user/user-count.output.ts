@@ -30,6 +30,27 @@ export class UserCount {
     feedbacks?: number;
 
     @Field(() => Int, {nullable:false})
+    homeOpsHouseholdsOwned?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsHouseholdMemberships?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsTaskTemplatesCreated?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsTaskTemplatesAssigned?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsTaskInstancesAssigned?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsTaskInstancesCompleted?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsWorkloadLedgers?: number;
+
+    @Field(() => Int, {nullable:false})
     feedItemStates?: number;
 
     @Field(() => Int, {nullable:false})

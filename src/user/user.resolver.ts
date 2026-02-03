@@ -1,12 +1,12 @@
-import { Args, Mutation, Query, Resolver, ResolveField } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver, ResolveField, Context } from "@nestjs/graphql";
 
 import { CurrentUser } from "./current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { MeDto } from "./dto/me.dto";
-import { UseGuards, BadRequestException } from "@nestjs/common";
+import { UseGuards, BadRequestException, UsePipes, ValidationPipe } from "@nestjs/common";
 import { User } from "../../@generated/user/user.model";
 import { UserService } from "./user.service";
-import { UserUpdateInput } from "../../@generated/user/user-update.input";
+import { UpdateUserInput } from "./dto/update-user.input";
 import { PaginationArgs } from "../shared/types/pagination.input";
 import { UserCreateInput } from "../../@generated/user/user-create.input";
 import { CreateUserWithoutPassword } from "./dto/createUser.dto";
@@ -77,10 +77,10 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { name: "updateUser" })
-  @UseGuards(JwtAuthGuard, ProGuard)
+  @UseGuards(JwtAuthGuard)
   updateUser(
     @CurrentUser() currentUser: User,
-    @Args("data") data: UserUpdateInput
+    @Args("data") data: UpdateUserInput
   ) {
     return this.userService.updateUser(currentUser, data);
   }
@@ -93,11 +93,15 @@ export class UserResolver {
   @Mutation(() => LoginResult, { name: "register" })
   async register(
     @Args("user") userInput: RegisterUserInput,
-    @Args("appCode", { nullable: true, type: () => String }) appCode?: string
+    @Args("appCode", { nullable: true, type: () => String }) appCode?: string,
+    @Context('req') request?: any
   ): Promise<LoginResult> {
     const email = userInput.email.toLowerCase().trim();
+    const headerAppCode = request?.headers?.['x-app-code'];
+    const rawAppCode = appCode || userInput.appCode || headerAppCode;
+    const normalizedAppCode = rawAppCode ? String(rawAppCode).trim().toUpperCase() : undefined;
     console.log("📝 Registering user with email:", email);
-    console.log("📝 AppCode received:", appCode || "NOT PROVIDED");
+    console.log("📝 AppCode received:", normalizedAppCode || "NOT PROVIDED");
     
     try {
       // 1. Buscar usuário existente
@@ -139,16 +143,16 @@ export class UserResolver {
       }
 
       // 3. Se appCode foi enviado, associar o user ao app usando upsert
-      if (appCode) {
+      if (normalizedAppCode) {
         const app = await (this.userService as any).prismaService.app.findUnique({
-          where: { code: appCode },
+          where: { code: normalizedAppCode },
         });
 
         if (!app) {
-          throw new BadRequestException(`App not found: ${appCode}`);
+          throw new BadRequestException(`App not found: ${normalizedAppCode}`);
         }
 
-        await (this.userService as any).prismaService.userAppAccess.upsert({
+        const association = await (this.userService as any).prismaService.userAppAccess.upsert({
           where: {
             userId_appId: {
               userId: user.id,
@@ -161,7 +165,11 @@ export class UserResolver {
             appId: app.id,
           },
         });
-        console.log(`✅ Associated user with app: ${appCode}`);
+        console.log(`✅ Associated user with app: ${normalizedAppCode}`, {
+          associationId: association.id,
+          userId: user.id,
+          appId: app.id,
+        });
       }
 
       // 4. Recarregar com apps
@@ -186,7 +194,7 @@ export class UserResolver {
       if (!user.emailVerified) {
         try {
           const verificationToken = this.authService.createJwt(completeUser as any).token;
-          await this.userService.sendEmailVerification(completeUser as any, verificationToken, appCode);
+          await this.userService.sendEmailVerification(completeUser as any, verificationToken, normalizedAppCode);
           console.log("📧 Email verification sent");
         } catch (emailError) {
           console.error("⚠️  Error sending verification email (non-critical):", emailError);

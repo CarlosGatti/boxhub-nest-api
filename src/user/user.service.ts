@@ -8,7 +8,7 @@ import { MeDto } from "./dto/me.dto";
 import { PaginationArgs } from "../shared/types/pagination.input";
 import { PrismaService } from "../prisma.service";
 import { UserCreateInput } from "../../@generated/user/user-create.input";
-import { UserUpdateInput } from "../../@generated/user/user-update.input";
+import { UpdateUserInput } from "./dto/update-user.input";
 import { generate } from "generate-password";
 import { hashSync } from "bcryptjs";
 
@@ -233,20 +233,21 @@ export class UserService {
 
   async updateUser(
     currentUser: User,
-    updateOneUserArgs: UserUpdateInput
+    updateOneUserArgs: UpdateUserInput
   ): Promise<User> {
     return this.prismaService.user.update({
       where: {
         id: currentUser.id,
       },
       data: {
-        firstName: updateOneUserArgs.firstName,
-        lastName: updateOneUserArgs.lastName,
-        nickname: updateOneUserArgs.nickname,
-        email: updateOneUserArgs.email,
-        profilePicture: updateOneUserArgs.profilePicture,
-        public: updateOneUserArgs.public,
-        about: updateOneUserArgs.about,
+        firstName: updateOneUserArgs.firstName ?? undefined,
+        lastName: updateOneUserArgs.lastName ?? undefined,
+        nickname: updateOneUserArgs.nickname ?? undefined,
+        email: updateOneUserArgs.email ?? undefined,
+        apartment: updateOneUserArgs.apartment ?? undefined,
+        profilePicture: updateOneUserArgs.profilePicture ?? undefined,
+        public: updateOneUserArgs.public ?? undefined,
+        about: updateOneUserArgs.about ?? undefined,
       },
     });
   }

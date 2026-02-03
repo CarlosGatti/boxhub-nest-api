@@ -9,6 +9,11 @@ import { Comment } from '../comment/comment.model';
 import { Rating } from '../rating/rating.model';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
 import { Feedback } from '../feedback/feedback.model';
+import { HomeOpsHousehold } from '../home-ops-household/home-ops-household.model';
+import { HomeOpsHouseholdMember } from '../home-ops-household-member/home-ops-household-member.model';
+import { HomeOpsTaskTemplate } from '../home-ops-task-template/home-ops-task-template.model';
+import { HomeOpsTaskInstance } from '../home-ops-task-instance/home-ops-task-instance.model';
+import { HomeOpsWorkloadLedger } from '../home-ops-workload-ledger/home-ops-workload-ledger.model';
 import { FeedProfile } from '../feed-profile/feed-profile.model';
 import { FeedItemState } from '../feed-item-state/feed-item-state.model';
 import { Portfolio } from '../portfolio/portfolio.model';
@@ -106,6 +111,27 @@ export class User {
 
     @Field(() => [Feedback], {nullable:true})
     feedbacks?: Array<Feedback>;
+
+    @Field(() => [HomeOpsHousehold], {nullable:true})
+    homeOpsHouseholdsOwned?: Array<HomeOpsHousehold>;
+
+    @Field(() => [HomeOpsHouseholdMember], {nullable:true})
+    homeOpsHouseholdMemberships?: Array<HomeOpsHouseholdMember>;
+
+    @Field(() => [HomeOpsTaskTemplate], {nullable:true})
+    homeOpsTaskTemplatesCreated?: Array<HomeOpsTaskTemplate>;
+
+    @Field(() => [HomeOpsTaskTemplate], {nullable:true})
+    homeOpsTaskTemplatesAssigned?: Array<HomeOpsTaskTemplate>;
+
+    @Field(() => [HomeOpsTaskInstance], {nullable:true})
+    homeOpsTaskInstancesAssigned?: Array<HomeOpsTaskInstance>;
+
+    @Field(() => [HomeOpsTaskInstance], {nullable:true})
+    homeOpsTaskInstancesCompleted?: Array<HomeOpsTaskInstance>;
+
+    @Field(() => [HomeOpsWorkloadLedger], {nullable:true})
+    homeOpsWorkloadLedgers?: Array<HomeOpsWorkloadLedger>;
 
     @Field(() => FeedProfile, {nullable:true})
     feedProfile?: FeedProfile | null;

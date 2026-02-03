@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { FeedbackUncheckedCreateNestedManyWithoutTargetAppInput } from '../feedback/feedback-unchecked-create-nested-many-without-target-app.input';
+import { HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput } from '../home-ops-household/home-ops-household-unchecked-create-nested-many-without-app.input';
 
 @InputType()
 export class AppUncheckedCreateWithoutUsersInput {
@@ -26,4 +27,7 @@ export class AppUncheckedCreateWithoutUsersInput {
 
     @Field(() => FeedbackUncheckedCreateNestedManyWithoutTargetAppInput, {nullable:true})
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutTargetAppInput;
+
+    @Field(() => HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput, {nullable:true})
+    homeOpsHouseholds?: HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput;
 }

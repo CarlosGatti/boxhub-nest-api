@@ -7,6 +7,7 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserAppAccessListRelationFilter } from '../user-app-access/user-app-access-list-relation-filter.input';
 import { FeedbackListRelationFilter } from '../feedback/feedback-list-relation-filter.input';
+import { HomeOpsHouseholdListRelationFilter } from '../home-ops-household/home-ops-household-list-relation-filter.input';
 
 @InputType()
 export class AppWhereUniqueInput {
@@ -43,4 +44,7 @@ export class AppWhereUniqueInput {
 
     @Field(() => FeedbackListRelationFilter, {nullable:true})
     feedbacks?: FeedbackListRelationFilter;
+
+    @Field(() => HomeOpsHouseholdListRelationFilter, {nullable:true})
+    homeOpsHouseholds?: HomeOpsHouseholdListRelationFilter;
 }

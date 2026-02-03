@@ -14,6 +14,13 @@ import { CommentUncheckedUpdateManyWithoutUserNestedInput } from '../comment/com
 import { RatingUncheckedUpdateManyWithoutSellerNestedInput } from '../rating/rating-unchecked-update-many-without-seller-nested.input';
 import { UserAppAccessUncheckedUpdateManyWithoutUserNestedInput } from '../user-app-access/user-app-access-unchecked-update-many-without-user-nested.input';
 import { FeedbackUncheckedUpdateManyWithoutUserNestedInput } from '../feedback/feedback-unchecked-update-many-without-user-nested.input';
+import { HomeOpsHouseholdUncheckedUpdateManyWithoutOwnerNestedInput } from '../home-ops-household/home-ops-household-unchecked-update-many-without-owner-nested.input';
+import { HomeOpsHouseholdMemberUncheckedUpdateManyWithoutUserNestedInput } from '../home-ops-household-member/home-ops-household-member-unchecked-update-many-without-user-nested.input';
+import { HomeOpsTaskTemplateUncheckedUpdateManyWithoutCreatedByNestedInput } from '../home-ops-task-template/home-ops-task-template-unchecked-update-many-without-created-by-nested.input';
+import { HomeOpsTaskTemplateUncheckedUpdateManyWithoutFixedAssigneeNestedInput } from '../home-ops-task-template/home-ops-task-template-unchecked-update-many-without-fixed-assignee-nested.input';
+import { HomeOpsTaskInstanceUncheckedUpdateManyWithoutAssigneeNestedInput } from '../home-ops-task-instance/home-ops-task-instance-unchecked-update-many-without-assignee-nested.input';
+import { HomeOpsTaskInstanceUncheckedUpdateManyWithoutCompletedByNestedInput } from '../home-ops-task-instance/home-ops-task-instance-unchecked-update-many-without-completed-by-nested.input';
+import { HomeOpsWorkloadLedgerUncheckedUpdateManyWithoutUserNestedInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-unchecked-update-many-without-user-nested.input';
 import { FeedProfileUncheckedUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-unchecked-update-one-without-user-nested.input';
 import { FeedItemStateUncheckedUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-unchecked-update-many-without-user-nested.input';
 import { PortfolioUncheckedUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-unchecked-update-many-without-user-nested.input';
@@ -108,6 +115,27 @@ export class UserUncheckedUpdateWithoutRatingsAsBuyerInput {
 
     @Field(() => FeedbackUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => HomeOpsHouseholdUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
+    homeOpsHouseholdsOwned?: HomeOpsHouseholdUncheckedUpdateManyWithoutOwnerNestedInput;
+
+    @Field(() => HomeOpsHouseholdMemberUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    homeOpsHouseholdMemberships?: HomeOpsHouseholdMemberUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => HomeOpsTaskTemplateUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    homeOpsTaskTemplatesCreated?: HomeOpsTaskTemplateUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => HomeOpsTaskTemplateUncheckedUpdateManyWithoutFixedAssigneeNestedInput, {nullable:true})
+    homeOpsTaskTemplatesAssigned?: HomeOpsTaskTemplateUncheckedUpdateManyWithoutFixedAssigneeNestedInput;
+
+    @Field(() => HomeOpsTaskInstanceUncheckedUpdateManyWithoutAssigneeNestedInput, {nullable:true})
+    homeOpsTaskInstancesAssigned?: HomeOpsTaskInstanceUncheckedUpdateManyWithoutAssigneeNestedInput;
+
+    @Field(() => HomeOpsTaskInstanceUncheckedUpdateManyWithoutCompletedByNestedInput, {nullable:true})
+    homeOpsTaskInstancesCompleted?: HomeOpsTaskInstanceUncheckedUpdateManyWithoutCompletedByNestedInput;
+
+    @Field(() => HomeOpsWorkloadLedgerUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    homeOpsWorkloadLedgers?: HomeOpsWorkloadLedgerUncheckedUpdateManyWithoutUserNestedInput;
 
     @Field(() => FeedProfileUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
     feedProfile?: FeedProfileUncheckedUpdateOneWithoutUserNestedInput;

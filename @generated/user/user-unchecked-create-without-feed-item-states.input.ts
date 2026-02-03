@@ -10,6 +10,13 @@ import { RatingUncheckedCreateNestedManyWithoutSellerInput } from '../rating/rat
 import { RatingUncheckedCreateNestedManyWithoutBuyerInput } from '../rating/rating-unchecked-create-nested-many-without-buyer.input';
 import { UserAppAccessUncheckedCreateNestedManyWithoutUserInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-user.input';
 import { FeedbackUncheckedCreateNestedManyWithoutUserInput } from '../feedback/feedback-unchecked-create-nested-many-without-user.input';
+import { HomeOpsHouseholdUncheckedCreateNestedManyWithoutOwnerInput } from '../home-ops-household/home-ops-household-unchecked-create-nested-many-without-owner.input';
+import { HomeOpsHouseholdMemberUncheckedCreateNestedManyWithoutUserInput } from '../home-ops-household-member/home-ops-household-member-unchecked-create-nested-many-without-user.input';
+import { HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutCreatedByInput } from '../home-ops-task-template/home-ops-task-template-unchecked-create-nested-many-without-created-by.input';
+import { HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutFixedAssigneeInput } from '../home-ops-task-template/home-ops-task-template-unchecked-create-nested-many-without-fixed-assignee.input';
+import { HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutAssigneeInput } from '../home-ops-task-instance/home-ops-task-instance-unchecked-create-nested-many-without-assignee.input';
+import { HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutCompletedByInput } from '../home-ops-task-instance/home-ops-task-instance-unchecked-create-nested-many-without-completed-by.input';
+import { HomeOpsWorkloadLedgerUncheckedCreateNestedManyWithoutUserInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-unchecked-create-nested-many-without-user.input';
 import { FeedProfileUncheckedCreateNestedOneWithoutUserInput } from '../feed-profile/feed-profile-unchecked-create-nested-one-without-user.input';
 import { PortfolioUncheckedCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-unchecked-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
@@ -106,6 +113,27 @@ export class UserUncheckedCreateWithoutFeedItemStatesInput {
 
     @Field(() => FeedbackUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => HomeOpsHouseholdUncheckedCreateNestedManyWithoutOwnerInput, {nullable:true})
+    homeOpsHouseholdsOwned?: HomeOpsHouseholdUncheckedCreateNestedManyWithoutOwnerInput;
+
+    @Field(() => HomeOpsHouseholdMemberUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    homeOpsHouseholdMemberships?: HomeOpsHouseholdMemberUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    homeOpsTaskTemplatesCreated?: HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutFixedAssigneeInput, {nullable:true})
+    homeOpsTaskTemplatesAssigned?: HomeOpsTaskTemplateUncheckedCreateNestedManyWithoutFixedAssigneeInput;
+
+    @Field(() => HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutAssigneeInput, {nullable:true})
+    homeOpsTaskInstancesAssigned?: HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutAssigneeInput;
+
+    @Field(() => HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutCompletedByInput, {nullable:true})
+    homeOpsTaskInstancesCompleted?: HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutCompletedByInput;
+
+    @Field(() => HomeOpsWorkloadLedgerUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    homeOpsWorkloadLedgers?: HomeOpsWorkloadLedgerUncheckedCreateNestedManyWithoutUserInput;
 
     @Field(() => FeedProfileUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     feedProfile?: FeedProfileUncheckedCreateNestedOneWithoutUserInput;

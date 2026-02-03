@@ -10,4 +10,7 @@ export class AppCount {
 
     @Field(() => Int, {nullable:false})
     feedbacks?: number;
+
+    @Field(() => Int, {nullable:false})
+    homeOpsHouseholds?: number;
 }

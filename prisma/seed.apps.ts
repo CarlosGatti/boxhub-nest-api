@@ -32,6 +32,11 @@ async function main() {
       description: 'carlosgatti.com',
     },
     {
+      code: 'HOMEOPS',
+      name: 'HomeOps',
+      description: 'Family and home task management',
+    },
+    {
       code: 'QRACK',
       name: 'QRACK',
       description: 'Gestão de containers e itens via QR Code',

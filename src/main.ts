@@ -11,6 +11,9 @@ import { join } from "path";
 dotenv.config();
 
 function logDatabaseTarget() {
+  if (process.env.LOG_DB_TARGET !== 'true') {
+    return;
+  }
   const rawUrl = process.env.DATABASE_URL;
   if (!rawUrl) {
     console.log('⚠️  DATABASE_URL not set');
@@ -27,7 +30,16 @@ function logDatabaseTarget() {
 
 async function bootstrap() {
   logDatabaseTarget();
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const isProduction = process.env.NODE_ENV === 'production';
+  const logLevels = process.env.LOG_LEVELS
+    ? process.env.LOG_LEVELS.split(',').map((level) => level.trim())
+    : isProduction
+      ? ['error', 'warn']
+      : ['error', 'warn', 'log'];
+
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: logLevels as any,
+  });
 
   // Global validation pipe for DTOs
   app.useGlobalPipes(
@@ -69,7 +81,6 @@ async function bootstrap() {
    * 1. NODE_ENV NÃO for 'production' (desenvolvimento local)
    * 2. OU ENABLE_LOCAL_CORS='true' (explicitamente habilitado)
    */
-  const isProduction = process.env.NODE_ENV === 'production';
   const enableLocalCors = process.env.ENABLE_LOCAL_CORS === 'true';
   const shouldEnableCors = !isProduction || enableLocalCors;
   
@@ -127,10 +138,12 @@ async function bootstrap() {
   });
 
   // Log
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log(`📥 ${req.method} ${req.path}`);
-    next();
-  });
+  if (process.env.LOG_HTTP === 'true') {
+    app.use((req: Request, res: Response, next: NextFunction) => {
+      console.log(`📥 ${req.method} ${req.path}`);
+      next();
+    });
+  }
 
   // Serve static uploads
   app.useStaticAssets(join(process.cwd(), "uploads"), {

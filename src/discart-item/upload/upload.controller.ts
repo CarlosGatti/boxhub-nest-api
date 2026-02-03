@@ -2,6 +2,7 @@
 import {
   Controller,
   Post,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -9,7 +10,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
@@ -72,6 +73,71 @@ const createMulterOptions = (folder: string) => {
 
 @Controller('uploads')
 export class DiscartItemUploadController {
+  @Post('avatars')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file', createMulterOptions('avatars')))
+  async uploadAvatar(@UploadedFile() file: Express.Multer["File"]) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    try {
+      const filePath = join(process.cwd(), 'uploads', 'avatars', file.filename);
+
+      // Verify file exists
+      if (!existsSync(filePath)) {
+        return { url: `/uploads/avatars/${file.filename}` };
+      }
+
+      // Process image (resize/compress)
+      try {
+        const image = sharp(filePath);
+        const metadata = await image.metadata();
+
+        let processedImage = image;
+        if (metadata.width && metadata.height) {
+          if (metadata.width > MAX_WIDTH || metadata.height > MAX_HEIGHT) {
+            processedImage = processedImage.resize(MAX_WIDTH, MAX_HEIGHT, {
+              fit: 'inside',
+              withoutEnlargement: true,
+            });
+          }
+        }
+
+        const outputPath = filePath.replace(extname(file.filename), '.jpg');
+        await processedImage
+          .jpeg({ quality: QUALITY, mozjpeg: true })
+          .toFile(outputPath);
+
+        if (existsSync(outputPath)) {
+          if (extname(file.filename).toLowerCase() !== '.jpg' && extname(file.filename).toLowerCase() !== '.jpeg') {
+            const fs = await import('fs/promises');
+            await fs.unlink(filePath).catch(() => {});
+          }
+
+          const finalFilename = file.filename.replace(extname(file.filename), '.jpg');
+          return { url: `/uploads/avatars/${finalFilename}` };
+        }
+
+        return { url: `/uploads/avatars/${file.filename}` };
+      } catch (processError: any) {
+        console.warn(`⚠️ Avatar processing failed, using original:`, processError.message);
+        return { url: `/uploads/avatars/${file.filename}` };
+      }
+    } catch (error: any) {
+      if (error.code === 'EACCES' || error.code === 'EPERM') {
+        throw new HttpException(
+          `Permission denied: Cannot write to upload directory. Please check folder permissions.`,
+          HttpStatus.FORBIDDEN
+        );
+      }
+      if (error.code === 'ENOSPC') {
+        throw new HttpException('No space left on device', 507);
+      }
+      throw error;
+    }
+  }
+
   @Post('discart-items')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('files', 10, createMulterOptions('discart-items')))

@@ -19,6 +19,7 @@ import { QrcodeModule } from 'src/qrcode/qrcode.module';
 import { RatingsModule } from '../ratings/ratings.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { FeedbackModule } from 'src/apps/feedback/feedback.module';
+import { HomeOpsModule } from 'src/apps/homeops/homeops.module';
 import { SignalboardModule } from 'src/apps/signalboard/signalboard.module';
 import { TjModule } from '../tj/tj.module';
 import { UserModule } from '../user/user.module';
@@ -72,6 +73,8 @@ import { UserModule } from '../user/user.module';
     SignalboardModule,
     // Feedback module
     FeedbackModule,
+    // HomeOps module
+    HomeOpsModule,
   ],
   controllers: [
     AppController,
