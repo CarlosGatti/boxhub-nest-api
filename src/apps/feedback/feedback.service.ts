@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { FeedbackStatus, LogAction, Prisma } from '@prisma/client';
-import { PrismaService } from '../../prisma.service';
-import { createLog } from '../../services/create-log';
+import { PrismaService } from '../../core/prisma/prisma.service';
+import { createLog } from '../../core/services/create-log';
 import { CreateFeedbackInput } from './dto/create-feedback.input';
 import { FeedbackFilterInput } from './dto/feedback-filter.input';
 import { UpdateFeedbackStatusInput } from './dto/update-feedback-status.input';

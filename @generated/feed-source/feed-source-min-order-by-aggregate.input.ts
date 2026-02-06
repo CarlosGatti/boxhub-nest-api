@@ -24,6 +24,9 @@ export class FeedSourceMinOrderByAggregateInput {
     isActive?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    includeShorts?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     fetchEveryMin?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

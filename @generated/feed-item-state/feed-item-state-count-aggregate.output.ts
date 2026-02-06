@@ -24,6 +24,21 @@ export class FeedItemStateCountAggregate {
     visibility!: number;
 
     @Field(() => Int, {nullable:false})
+    openedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    skippedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    skipCount!: number;
+
+    @Field(() => Int, {nullable:false})
+    actionCount!: number;
+
+    @Field(() => Int, {nullable:false})
+    lastAction!: number;
+
+    @Field(() => Int, {nullable:false})
     readAt!: number;
 
     @Field(() => Int, {nullable:false})

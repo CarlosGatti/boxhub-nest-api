@@ -1,155 +1,205 @@
-# 📦 Deploying a NestJS API with PostgreSQL for QR Code Container Management
+# BoxHub Backend
+Production-ready NestJS + Prisma backend powering multiple product modules under a single API.
 
-## 🚀 Overview 
-This project is a **QR Code-based container management system**, allowing users to **create, scan, and organize containers and items** efficiently. It features a **NestJS API**, a **PostgreSQL database**, and a frontend built with **Next.js** and **Tailwind CSS**.
+## Table of Contents
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Environment Variables](#environment-variables)
+- [Database & Prisma](#database--prisma)
+- [API](#api)
+- [Auth](#auth)
+- [Scripts](#scripts)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
+- [Observability](#observability)
+- [Contributing](#contributing)
+- [License](#license)
+- [Assumptions / To Confirm](#assumptions--to-confirm)
 
----
+## Overview
+This repository hosts a NestJS API that serves multiple product areas (apps and domains) behind a single GraphQL endpoint. It uses Prisma for data access, Redis for caching/queues, and integrates email delivery via SMTP templates.
 
-## 🔧 Prerequisites
-Ensure you have the following installed:
-
-- **VPS Server** (e.g., VPSdime) running Ubuntu - 
-- **Node.js** and **PostgreSQL**
-- **PM2** for process management
-- **GitHub** repository for version control
-
----
-
-## 📌 Step 1: Server Setup
-
-1️⃣ **Connect to your VPS:**
-```sh
-ssh user@your-server-ip
+High-level architecture:
+```
+Clients (Web / Mobile)
+        |
+        v
+   GraphQL API (NestJS)
+        |
+        +--> Prisma ORM --> PostgreSQL
+        |
+        +--> Redis
+        |
+        +--> SMTP (email templates)
 ```
 
-2️⃣ **Install Node.js and PostgreSQL:**
-```sh
-sudo apt update
-sudo apt install nodejs npm postgresql
+## Tech Stack
+- **Runtime:** Node.js
+- **Framework:** NestJS (Express)
+- **API:** GraphQL (Apollo)
+- **ORM:** Prisma
+- **Database:** PostgreSQL
+- **Cache/Queue:** Redis
+- **Auth:** Passport JWT
+- **Email:** Nodemailer + Handlebars templates
+
+## Requirements
+- **Node.js:** 18.x recommended (CI uses Node 18)
+- **Package manager:** Yarn (recommended) or npm
+- **PostgreSQL:** 15+
+- **Redis:** 6+
+- **Docker (optional):** for local Postgres/Redis/Hasura via `docker-compose.yml`
+
+## Quick Start
+### 1) Install
+```bash
+yarn install
 ```
 
-3️⃣ **Create PostgreSQL database & user:**
-```sh
-sudo -u postgres psql
-```
-Inside PostgreSQL:
-```sql
-CREATE DATABASE qrcode_db;
-CREATE USER qrcode_user WITH ENCRYPTED PASSWORD 'securepassword';
-GRANT ALL PRIVILEGES ON DATABASE qrcode_db TO qrcode_user;
-\q
+### 2) Configure environment
+```bash
+cp .env.ex .env
+# or use .env.production.example as a starting point
 ```
 
----
+### 3) Run database (Docker)
+```bash
+docker compose up -d
+```
+`docker-compose.yml` includes Postgres + Redis (and a Hasura stack for optional use). Adjust credentials before using in shared environments.
 
-## 📌 Step 2: Deploy the API
-
-1️⃣ **Clone the repository:**
-```sh
-git clone git@github.com:CarlosGatti/qrcode-backend.git
-cd qrcode-backend
+### 4) Run Prisma migrations
+```bash
+npx prisma generate
+npx prisma migrate dev
 ```
 
-2️⃣ **Install dependencies:**
-```sh
-npm install
+### 5) Seed (optional)
+```bash
+yarn seed:apps
+# or
+yarn seed:all
 ```
 
-3️⃣ **Set up the environment variables (.env):**
-```sh
-cp .env.example .env
-nano .env
+### 6) Start dev server
+```bash
+yarn start:dev
 ```
-Ensure to update database credentials.
+API runs on `http://localhost:3000` by default.
 
-**Feedback app code note:** feedback submissions resolve `App.code` at runtime. Ensure `seed.apps.ts` includes `TJ_PASS`, `NEWS_PORTAL`, and `PERSONAL_SITE`, and that the runtime `DATABASE_URL` points to the same database seeded with those app codes.
+## Environment Variables
+Source of truth: `.env.ex`, `.env.production.example`, and usage in `src/main.ts` and services.
 
-4️⃣ **Run database migrations:**
-```sh
-npm run prisma:migrate
-```
+| Variable | Required | Example | Description |
+|---|---|---|---|
+| `DATABASE_URL` | Yes | `postgresql://user:pass@localhost:5432/db?schema=public` | Prisma database connection |
+| `SHADOW_DATABASE_URL` | For migrate dev | `postgresql://user:pass@localhost:5432/db_shadow?schema=public` | Prisma shadow DB for migrations |
+| `JWT_ACCESS_SECRET` | Yes (auth) | `super-long-secret` | JWT secret for access tokens |
+| `JWT_SECRET` | To confirm | `super-long-secret` | Present in `.env.production.example` |
+| `PORT` | No | `3000` | API port |
+| `NODE_ENV` | No | `development` | Environment (`production` disables CORS in app) |
+| `REDIS_HOST` | No | `localhost` | Redis host |
+| `REDIS_PASSWORD` | No | `password` | Redis password |
+| `GOOGLE_API_KEY` | No | `AIza...` | Google API integrations |
+| `LEMON_SECRET` | No | `sk_live_...` | Lemon Squeezy integration |
+| `FRONTEND_URL_LOCAL` | No | `http://localhost:3000` | Used in app flows |
+| `FRONTEND_URL_PROD` | No | `https://example.com` | Used in app flows |
+| `SMTP_HOST` | No | `smtp.gmail.com` | SMTP host |
+| `SMTP_PORT` | No | `465` | SMTP port |
+| `SMTP_USERNAME` | No | `user@example.com` | SMTP username |
+| `SMTP_PASSWORD` | No | `password` | SMTP password |
+| `HANDLEBARS_CLIENT_NAME` | No | `BoxHub` | Email sender display name |
+| `HANDLEBARS_CLIENT_EMAIL` | No | `no-reply@example.com` | Email sender address |
+| `TJ_PASS_SECRET` | No | `...` | TJ app secret |
+| `LOG_DB_TARGET` | No | `true` | Logs Prisma DB target on boot |
+| `LOG_LEVELS` | No | `error,warn,log` | NestJS logger levels |
+| `LOG_HTTP` | No | `true` | Logs inbound HTTP requests |
+| `ENABLE_LOCAL_CORS` | No | `true` | Force-enable CORS in non-prod |
 
-5️⃣ **Start the API using PM2:**
-```sh
-pm2 start npm --name qrcode-api -- run start:prod
-```
+## Database & Prisma
+- Prisma is configured for PostgreSQL (`prisma/schema.prisma`).
+- Migrations live in `prisma/migrations/`.
 
-6️⃣ **Ensure the API restarts on server reboot:**
-```sh
-pm2 save
-pm2 startup
-```
-
----
-
-## 📌 Step 3: Deploy the Frontend (Next.js)
-
-1️⃣ **Clone the frontend repository:**
-```sh
-git clone git@github.com:CarlosGatti/qrcode-frontend.git
-cd qrcode-frontend
-```
-
-2️⃣ **Install dependencies:**
-```sh
-npm install
-```
-
-3️⃣ **Set up environment variables:**
-```sh
-cp .env.example .env
-nano .env
-```
-
-4️⃣ **Start the frontend server:**
-```sh
-npm run build
-npm start
+Common commands:
+```bash
+npx prisma generate
+npx prisma migrate dev
+npx prisma migrate deploy
 ```
 
----
+## API
+### GraphQL
+- **Endpoint:** `/graphql`
+- **Playground:** enabled by default in `AppModule`
+- **Auth:** Bearer JWT in `Authorization` header
 
-## 🎯 Features
-
-✅ **QR Code-based Container & Item Management**  
-✅ **Secure User Authentication**  
-✅ **Cloud-hosted PostgreSQL Database**  
-✅ **Fast API with NestJS**  
-✅ **Responsive UI with Tailwind CSS**  
-✅ **Item Image Upload & Storage**  
-✅ **Automatic Deployment via PM2**  
-
----
-
-## 🚀 Future Enhancements
-
-🔹 **AI-based Image Recognition for Item Categorization**  
-🔹 **Container Inventory Alerts & Notifications**  
-🔹 **Multi-user Access with Role-based Permissions**  
-🔹 **Mobile App Integration for Faster Scanning**  
-
----
-
-## 🎯 API Playground
-GraphQL Playground:  
-🔗 [https://yourapi.com/graphql](https://yourapi.com/graphql)
-
----
-
-## 💰 Cost Breakdown
-| Service  | Cost |
-|----------|------|
-| Domain   | $1.99 |
-| VPS (VPSDime) | $5.00 |
-
----
-
-## 🛠 Maintenance
-To restart the API after an update:
-```sh
-git pull origin main
-npm install
-pm2 restart qrcode-api
+Example request:
+```graphql
+query {
+  signalboardCollections {
+    id
+    name
+  }
+}
 ```
 
----
+### REST (minimal)
+- `GET /` → `Hello World!`
+- `GET /health` → `{ status: "ok", timestamp: "..." }`
+
+## Auth
+Authentication uses **JWT (Passport)** with `Authorization: Bearer <token>`.  
+Several GraphQL resolvers are protected with `JwtAuthGuard` and `RequireApp('...')` via `AppPermissionGuard`.
+
+## Scripts
+Key npm/yarn scripts:
+- `yarn start:dev` — start NestJS with watch
+- `yarn build` — build TypeScript to `dist/`
+- `yarn start:prod` — run compiled server
+- `yarn lint` — ESLint auto-fix
+- `yarn test` — Jest tests
+- `yarn prisma:migrate` — `prisma migrate dev`
+- `yarn seed:apps` / `yarn seed:all` — seed scripts
+
+## Project Structure
+```
+src/
+  app/            # NestJS bootstrap module/controller/service
+  apps/           # product-level modules (signalboard, homeops, feedback)
+  core/           # cross-cutting infra (auth, prisma, redis, services)
+  domains/        # feature modules grouped by bounded context
+  shared/         # shared DTOs and types
+  static/         # email templates/assets
+```
+
+## Deployment
+This repo includes a production deployment flow via **GitHub Actions + VPS + PM2**:
+- Workflow: `.github/workflows/deploy.yml`
+- Process manager: `ecosystem.config.js`
+- Deployment docs: `.github/CI_CD_SETUP.md`, `.github/ROTINA_DEPLOY.md`
+
+Production checklist:
+- [ ] Configure `.env` on server with DB/Redis/JWT settings
+- [ ] Run Prisma migrations (`prisma migrate deploy`)
+- [ ] Run seeds (if needed)
+- [ ] Ensure PM2 process is running
+- [ ] Verify Nginx/CORS configuration if used
+
+## Observability
+- Console logging with configurable levels (`LOG_LEVELS`)
+- Optional HTTP request logging (`LOG_HTTP=true`)
+- Application logs stored via `createLog` service (Prisma)
+
+## Contributing
+- Keep changes scoped to the correct domain/app module.
+- Prefer DTO validation for all input.
+- Add Prisma migrations for schema changes (never edit existing migrations).
+
+## License
+UNLICENSED — All rights reserved.
+
+## Assumptions / To Confirm
+- `JWT_ACCESS_SECRET` is the active JWT secret in code; `.env.production.example` lists `JWT_SECRET`. Align and document the intended variable.
+- Docker compose includes Hasura (optional) — confirm whether it is used in local dev.

@@ -5,6 +5,7 @@ import { EnumFeedItemReadStatusWithAggregatesFilter } from '../prisma/enum-feed-
 import { EnumFeedItemSaveStatusWithAggregatesFilter } from '../prisma/enum-feed-item-save-status-with-aggregates-filter.input';
 import { EnumFeedItemVisibilityWithAggregatesFilter } from '../prisma/enum-feed-item-visibility-with-aggregates-filter.input';
 import { DateTimeNullableWithAggregatesFilter } from '../prisma/date-time-nullable-with-aggregates-filter.input';
+import { EnumFeedItemLastActionNullableWithAggregatesFilter } from '../prisma/enum-feed-item-last-action-nullable-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 
 @InputType()
@@ -36,6 +37,21 @@ export class FeedItemStateScalarWhereWithAggregatesInput {
 
     @Field(() => EnumFeedItemVisibilityWithAggregatesFilter, {nullable:true})
     visibility?: EnumFeedItemVisibilityWithAggregatesFilter;
+
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    openedAt?: DateTimeNullableWithAggregatesFilter;
+
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    skippedAt?: DateTimeNullableWithAggregatesFilter;
+
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    skipCount?: IntWithAggregatesFilter;
+
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    actionCount?: IntWithAggregatesFilter;
+
+    @Field(() => EnumFeedItemLastActionNullableWithAggregatesFilter, {nullable:true})
+    lastAction?: EnumFeedItemLastActionNullableWithAggregatesFilter;
 
     @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
     readAt?: DateTimeNullableWithAggregatesFilter;

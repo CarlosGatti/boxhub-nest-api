@@ -39,6 +39,9 @@ export class FeedSourceScalarWhereWithAggregatesInput {
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     isActive?: BoolWithAggregatesFilter;
 
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    includeShorts?: BoolWithAggregatesFilter;
+
     @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
     fetchEveryMin?: IntNullableWithAggregatesFilter;
 

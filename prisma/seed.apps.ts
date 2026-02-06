@@ -51,6 +51,11 @@ async function main() {
       name: 'Wealth Tracker',
       description: 'Investment portfolio and net worth tracking',
     },
+    {
+      code: 'REVIEW_CARDS',
+      name: 'Review Cards',
+      description: 'QR review card generator',
+    },
   ];
 
   for (const app of apps) {

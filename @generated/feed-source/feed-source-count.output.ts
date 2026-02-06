@@ -7,4 +7,13 @@ export class FeedSourceCount {
 
     @Field(() => Int, {nullable:false})
     items?: number;
+
+    @Field(() => Int, {nullable:false})
+    events?: number;
+
+    @Field(() => Int, {nullable:false})
+    nudges?: number;
+
+    @Field(() => Int, {nullable:false})
+    preferences?: number;
 }

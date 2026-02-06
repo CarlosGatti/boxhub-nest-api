@@ -9,6 +9,9 @@ import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-d
 import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { FeedItemUncheckedUpdateManyWithoutSourceNestedInput } from '../feed-item/feed-item-unchecked-update-many-without-source-nested.input';
+import { FeedEventUncheckedUpdateManyWithoutSourceNestedInput } from '../feed-event/feed-event-unchecked-update-many-without-source-nested.input';
+import { FeedSourceNudgeUncheckedUpdateManyWithoutSourceNestedInput } from '../feed-source-nudge/feed-source-nudge-unchecked-update-many-without-source-nested.input';
+import { FeedSourcePreferenceUncheckedUpdateManyWithoutSourceNestedInput } from '../feed-source-preference/feed-source-preference-unchecked-update-many-without-source-nested.input';
 
 @InputType()
 export class FeedSourceUncheckedUpdateWithoutCollectionInput {
@@ -27,6 +30,9 @@ export class FeedSourceUncheckedUpdateWithoutCollectionInput {
 
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isActive?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    includeShorts?: BoolFieldUpdateOperationsInput;
 
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     fetchEveryMin?: NullableIntFieldUpdateOperationsInput;
@@ -48,4 +54,13 @@ export class FeedSourceUncheckedUpdateWithoutCollectionInput {
 
     @Field(() => FeedItemUncheckedUpdateManyWithoutSourceNestedInput, {nullable:true})
     items?: FeedItemUncheckedUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedEventUncheckedUpdateManyWithoutSourceNestedInput, {nullable:true})
+    events?: FeedEventUncheckedUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourceNudgeUncheckedUpdateManyWithoutSourceNestedInput, {nullable:true})
+    nudges?: FeedSourceNudgeUncheckedUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourcePreferenceUncheckedUpdateManyWithoutSourceNestedInput, {nullable:true})
+    preferences?: FeedSourcePreferenceUncheckedUpdateManyWithoutSourceNestedInput;
 }

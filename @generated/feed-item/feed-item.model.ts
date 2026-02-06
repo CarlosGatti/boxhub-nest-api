@@ -8,6 +8,7 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { FeedSource } from '../feed-source/feed-source.model';
 import { FeedItemState } from '../feed-item-state/feed-item-state.model';
 import { FeedItemSummary } from '../feed-item-summary/feed-item-summary.model';
+import { FeedEvent } from '../feed-event/feed-event.model';
 import { FeedItemCount } from './feed-item-count.output';
 
 @ObjectType()
@@ -60,6 +61,9 @@ export class FeedItem {
 
     @Field(() => FeedItemSummary, {nullable:true})
     summary?: FeedItemSummary | null;
+
+    @Field(() => [FeedEvent], {nullable:true})
+    events?: Array<FeedEvent>;
 
     @Field(() => FeedItemCount, {nullable:false})
     _count?: FeedItemCount;

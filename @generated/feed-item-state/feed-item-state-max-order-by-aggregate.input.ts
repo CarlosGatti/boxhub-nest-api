@@ -24,6 +24,21 @@ export class FeedItemStateMaxOrderByAggregateInput {
     visibility?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    openedAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    skippedAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    skipCount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    actionCount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    lastAction?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     readAt?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

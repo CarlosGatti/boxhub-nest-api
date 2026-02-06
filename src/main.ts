@@ -88,10 +88,17 @@ async function bootstrap() {
     // 🟢 Desenvolvimento: Habilitar CORS para funcionar localmente
     console.log('🟢 CORS habilitado para desenvolvimento local');
     app.enableCors({
-      origin: true, // Permite qualquer origem em desenvolvimento
+      origin: true, // allow any origin in dev
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'X-App',
+        'X-App-Code',
+        'X-App-Name',
+      ],
     });
     
     // Responder OPTIONS requests (preflight)
@@ -99,7 +106,7 @@ async function bootstrap() {
       if (req.method === 'OPTIONS') {
         res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-App, X-App-Code, X-App-Name');
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Max-Age', '86400');
         return res.sendStatus(200);

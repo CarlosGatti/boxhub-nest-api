@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from '../../auth/auth.module';
-import { PrismaService } from '../../prisma.service';
+import { AuthModule } from '../../core/auth/auth.module';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { HomeOpsResolver } from './homeops.resolver';
 import { HomeOpsService } from './homeops.service';
 

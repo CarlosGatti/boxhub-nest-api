@@ -1,9 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Feedback } from '../../../@generated/feedback/feedback.model';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { AdminGuard } from '../../auth/guards/admin.guard';
-import { CurrentUser } from '../../user/current-user.decorator';
+import { Feedback } from '@generated/feedback/feedback.model';
+import { JwtAuthGuard } from '../../core/auth/guards/jwt-auth.guard';
+import { AdminGuard } from '../../core/auth/guards/admin.guard';
+import { CurrentUser } from '../../domains/user/current-user.decorator';
 import { FeedbackService } from './feedback.service';
 import { CreateFeedbackInput } from './dto/create-feedback.input';
 import { FeedbackFilterInput } from './dto/feedback-filter.input';

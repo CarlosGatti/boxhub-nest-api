@@ -30,6 +30,9 @@ export class FeedSourceGroupBy {
     @Field(() => Boolean, {nullable:false})
     isActive!: boolean;
 
+    @Field(() => Boolean, {nullable:false})
+    includeShorts!: boolean;
+
     @Field(() => Int, {nullable:true})
     fetchEveryMin?: number;
 

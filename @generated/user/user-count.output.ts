@@ -54,6 +54,15 @@ export class UserCount {
     feedItemStates?: number;
 
     @Field(() => Int, {nullable:false})
+    feedEvents?: number;
+
+    @Field(() => Int, {nullable:false})
+    feedSourceNudges?: number;
+
+    @Field(() => Int, {nullable:false})
+    feedSourcePreferences?: number;
+
+    @Field(() => Int, {nullable:false})
     portfolios?: number;
 
     @Field(() => Int, {nullable:false})
@@ -64,4 +73,13 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     recurringCashflows?: number;
+
+    @Field(() => Int, {nullable:false})
+    reviewCardBusinesses?: number;
+
+    @Field(() => Int, {nullable:false})
+    reviewCardProjects?: number;
+
+    @Field(() => Int, {nullable:false})
+    reviewCardPremiumRequests?: number;
 }

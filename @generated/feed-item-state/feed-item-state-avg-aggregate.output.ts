@@ -13,4 +13,10 @@ export class FeedItemStateAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     itemId?: number;
+
+    @Field(() => Float, {nullable:true})
+    skipCount?: number;
+
+    @Field(() => Float, {nullable:true})
+    actionCount?: number;
 }

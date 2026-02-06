@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { HouseholdRole } from '../../../../@generated/prisma/household-role.enum';
+import { HouseholdRole } from '@generated/prisma/household-role.enum';
 
 @InputType()
 export class HomeOpsMemberInput {

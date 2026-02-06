@@ -27,6 +27,9 @@ export class FeedSourceUncheckedUpdateManyWithoutCollectionInput {
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isActive?: BoolFieldUpdateOperationsInput;
 
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    includeShorts?: BoolFieldUpdateOperationsInput;
+
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     fetchEveryMin?: NullableIntFieldUpdateOperationsInput;
 

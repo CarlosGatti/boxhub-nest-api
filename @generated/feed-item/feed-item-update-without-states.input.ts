@@ -9,6 +9,7 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { FeedSourceUpdateOneRequiredWithoutItemsNestedInput } from '../feed-source/feed-source-update-one-required-without-items-nested.input';
 import { FeedItemSummaryUpdateOneWithoutItemNestedInput } from '../feed-item-summary/feed-item-summary-update-one-without-item-nested.input';
+import { FeedEventUpdateManyWithoutItemNestedInput } from '../feed-event/feed-event-update-many-without-item-nested.input';
 
 @InputType()
 export class FeedItemUpdateWithoutStatesInput {
@@ -51,4 +52,7 @@ export class FeedItemUpdateWithoutStatesInput {
 
     @Field(() => FeedItemSummaryUpdateOneWithoutItemNestedInput, {nullable:true})
     summary?: FeedItemSummaryUpdateOneWithoutItemNestedInput;
+
+    @Field(() => FeedEventUpdateManyWithoutItemNestedInput, {nullable:true})
+    events?: FeedEventUpdateManyWithoutItemNestedInput;
 }

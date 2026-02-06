@@ -13,4 +13,10 @@ export class FeedItemStateSumAggregate {
 
     @Field(() => Int, {nullable:true})
     itemId?: number;
+
+    @Field(() => Int, {nullable:true})
+    skipCount?: number;
+
+    @Field(() => Int, {nullable:true})
+    actionCount?: number;
 }

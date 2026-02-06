@@ -2,27 +2,28 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AssetsModule } from '../assets/assets.module';
-import { AuthModule } from '../auth/auth.module';
-import { CashflowModule } from '../cashflow/cashflow.module';
-import { CommentsModule } from '../comments/comments.module';
-import { DiscartItemModule } from 'src/discart-item/discart-item.module';
-import { DiscartItemUploadController } from '../discart-item/upload/upload.controller';
+import { AssetsModule } from '../domains/assets/assets.module';
+import { AuthModule } from '../core/auth/auth.module';
+import { CashflowModule } from '../domains/cashflow/cashflow.module';
+import { CommentsModule } from '../domains/comments/comments.module';
+import { DiscartItemModule } from '../domains/discart-item/discart-item.module';
+import { DiscartItemUploadController } from '../domains/discart-item/upload/upload.controller';
 import { GraphQLModule } from '@nestjs/graphql';
-import { HoldingsModule } from '../holdings/holdings.module';
-import { MetricsModule } from '../metrics/metrics.module';
+import { HoldingsModule } from '../domains/holdings/holdings.module';
+import { MetricsModule } from '../domains/metrics/metrics.module';
 import { Module } from '@nestjs/common';
 // Wealth Tracker modules
-import { PortfoliosModule } from '../portfolios/portfolios.module';
-import { PricingModule } from '../pricing/pricing.module';
-import { QrcodeModule } from 'src/qrcode/qrcode.module';
-import { RatingsModule } from '../ratings/ratings.module';
+import { PortfoliosModule } from '../domains/portfolios/portfolios.module';
+import { PricingModule } from '../domains/pricing/pricing.module';
+import { QrcodeModule } from '../domains/qrcode/qrcode.module';
+import { RatingsModule } from '../domains/ratings/ratings.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { FeedbackModule } from 'src/apps/feedback/feedback.module';
 import { HomeOpsModule } from 'src/apps/homeops/homeops.module';
 import { SignalboardModule } from 'src/apps/signalboard/signalboard.module';
-import { TjModule } from '../tj/tj.module';
-import { UserModule } from '../user/user.module';
+import { TjModule } from '../domains/tj/tj.module';
+import { UserModule } from '../domains/user/user.module';
+import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
 
 @Module({
   imports: [
@@ -75,6 +76,8 @@ import { UserModule } from '../user/user.module';
     FeedbackModule,
     // HomeOps module
     HomeOpsModule,
+    // Review Cards module
+    ReviewCardsModule,
   ],
   controllers: [
     AppController,

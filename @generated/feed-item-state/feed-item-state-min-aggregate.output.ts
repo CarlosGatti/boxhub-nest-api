@@ -4,6 +4,7 @@ import { Int } from '@nestjs/graphql';
 import { FeedItemReadStatus } from '../prisma/feed-item-read-status.enum';
 import { FeedItemSaveStatus } from '../prisma/feed-item-save-status.enum';
 import { FeedItemVisibility } from '../prisma/feed-item-visibility.enum';
+import { FeedItemLastAction } from '../prisma/feed-item-last-action.enum';
 
 @ObjectType()
 export class FeedItemStateMinAggregate {
@@ -25,6 +26,21 @@ export class FeedItemStateMinAggregate {
 
     @Field(() => FeedItemVisibility, {nullable:true})
     visibility?: keyof typeof FeedItemVisibility;
+
+    @Field(() => Date, {nullable:true})
+    openedAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    skippedAt?: Date | string;
+
+    @Field(() => Int, {nullable:true})
+    skipCount?: number;
+
+    @Field(() => Int, {nullable:true})
+    actionCount?: number;
+
+    @Field(() => FeedItemLastAction, {nullable:true})
+    lastAction?: keyof typeof FeedItemLastAction;
 
     @Field(() => Date, {nullable:true})
     readAt?: Date | string;

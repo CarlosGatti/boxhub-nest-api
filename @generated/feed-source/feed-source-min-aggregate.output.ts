@@ -24,6 +24,9 @@ export class FeedSourceMinAggregate {
     @Field(() => Boolean, {nullable:true})
     isActive?: boolean;
 
+    @Field(() => Boolean, {nullable:true})
+    includeShorts?: boolean;
+
     @Field(() => Int, {nullable:true})
     fetchEveryMin?: number;
 

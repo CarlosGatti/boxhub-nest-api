@@ -1,12 +1,14 @@
+import { AuthModule } from '../../core/auth/auth.module';
 import { Module } from '@nestjs/common';
-import { AuthModule } from '../../auth/auth.module';
-import { PrismaService } from '../../prisma.service';
+import { HttpModule } from '@nestjs/axios';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { SignalboardResolver } from './signalboard.resolver';
+import { SignalboardIngestionService } from './ingestion/signalboard-ingestion.service';
 import { SignalboardService } from './signalboard.service';
 
 @Module({
-  imports: [AuthModule],
-  providers: [SignalboardService, SignalboardResolver, PrismaService],
+  imports: [AuthModule, HttpModule],
+  providers: [SignalboardService, SignalboardResolver, PrismaService, SignalboardIngestionService],
   exports: [SignalboardService],
 })
 export class SignalboardModule {}

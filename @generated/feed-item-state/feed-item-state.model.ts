@@ -5,6 +5,7 @@ import { Int } from '@nestjs/graphql';
 import { FeedItemReadStatus } from '../prisma/feed-item-read-status.enum';
 import { FeedItemSaveStatus } from '../prisma/feed-item-save-status.enum';
 import { FeedItemVisibility } from '../prisma/feed-item-visibility.enum';
+import { FeedItemLastAction } from '../prisma/feed-item-last-action.enum';
 import { User } from '../user/user.model';
 import { FeedItem } from '../feed-item/feed-item.model';
 
@@ -28,6 +29,21 @@ export class FeedItemState {
 
     @Field(() => FeedItemVisibility, {nullable:false,defaultValue:'VISIBLE'})
     visibility!: keyof typeof FeedItemVisibility;
+
+    @Field(() => Date, {nullable:true})
+    openedAt!: Date | null;
+
+    @Field(() => Date, {nullable:true})
+    skippedAt!: Date | null;
+
+    @Field(() => Int, {nullable:false,defaultValue:0})
+    skipCount!: number;
+
+    @Field(() => Int, {nullable:false,defaultValue:0})
+    actionCount!: number;
+
+    @Field(() => FeedItemLastAction, {nullable:true})
+    lastAction!: keyof typeof FeedItemLastAction | null;
 
     @Field(() => Date, {nullable:true})
     readAt!: Date | null;

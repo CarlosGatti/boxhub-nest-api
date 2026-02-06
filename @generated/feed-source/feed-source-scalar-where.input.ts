@@ -39,6 +39,9 @@ export class FeedSourceScalarWhereInput {
     @Field(() => BoolFilter, {nullable:true})
     isActive?: BoolFilter;
 
+    @Field(() => BoolFilter, {nullable:true})
+    includeShorts?: BoolFilter;
+
     @Field(() => IntNullableFilter, {nullable:true})
     fetchEveryMin?: IntNullableFilter;
 

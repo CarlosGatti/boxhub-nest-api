@@ -16,10 +16,16 @@ import { HomeOpsTaskInstance } from '../home-ops-task-instance/home-ops-task-ins
 import { HomeOpsWorkloadLedger } from '../home-ops-workload-ledger/home-ops-workload-ledger.model';
 import { FeedProfile } from '../feed-profile/feed-profile.model';
 import { FeedItemState } from '../feed-item-state/feed-item-state.model';
+import { FeedEvent } from '../feed-event/feed-event.model';
+import { FeedSourceNudge } from '../feed-source-nudge/feed-source-nudge.model';
+import { FeedSourcePreference } from '../feed-source-preference/feed-source-preference.model';
 import { Portfolio } from '../portfolio/portfolio.model';
 import { CashflowCategory } from '../cashflow-category/cashflow-category.model';
 import { CashflowEntry } from '../cashflow-entry/cashflow-entry.model';
 import { RecurringCashflow } from '../recurring-cashflow/recurring-cashflow.model';
+import { ReviewCardBusiness } from '../review-card-business/review-card-business.model';
+import { ReviewCardProject } from '../review-card-project/review-card-project.model';
+import { ReviewCardPremiumRequest } from '../review-card-premium-request/review-card-premium-request.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -139,6 +145,15 @@ export class User {
     @Field(() => [FeedItemState], {nullable:true})
     feedItemStates?: Array<FeedItemState>;
 
+    @Field(() => [FeedEvent], {nullable:true})
+    feedEvents?: Array<FeedEvent>;
+
+    @Field(() => [FeedSourceNudge], {nullable:true})
+    feedSourceNudges?: Array<FeedSourceNudge>;
+
+    @Field(() => [FeedSourcePreference], {nullable:true})
+    feedSourcePreferences?: Array<FeedSourcePreference>;
+
     @Field(() => [Portfolio], {nullable:true})
     portfolios?: Array<Portfolio>;
 
@@ -150,6 +165,15 @@ export class User {
 
     @Field(() => [RecurringCashflow], {nullable:true})
     recurringCashflows?: Array<RecurringCashflow>;
+
+    @Field(() => [ReviewCardBusiness], {nullable:true})
+    reviewCardBusinesses?: Array<ReviewCardBusiness>;
+
+    @Field(() => [ReviewCardProject], {nullable:true})
+    reviewCardProjects?: Array<ReviewCardProject>;
+
+    @Field(() => [ReviewCardPremiumRequest], {nullable:true})
+    reviewCardPremiumRequests?: Array<ReviewCardPremiumRequest>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

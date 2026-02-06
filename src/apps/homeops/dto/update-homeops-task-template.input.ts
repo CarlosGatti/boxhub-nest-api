@@ -12,9 +12,9 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { HomeOpsAssignmentMode } from '../../../../@generated/prisma/home-ops-assignment-mode.enum';
-import { HomeOpsFrequency } from '../../../../@generated/prisma/home-ops-frequency.enum';
-import { HomeOpsWeekday } from '../../../../@generated/prisma/home-ops-weekday.enum';
+import { HomeOpsAssignmentMode } from '@generated/prisma/home-ops-assignment-mode.enum';
+import { HomeOpsFrequency } from '@generated/prisma/home-ops-frequency.enum';
+import { HomeOpsWeekday } from '@generated/prisma/home-ops-weekday.enum';
 import { Type } from 'class-transformer';
 import { HomeOpsTemplateSlotInput } from './create-homeops-task-template.input';
 

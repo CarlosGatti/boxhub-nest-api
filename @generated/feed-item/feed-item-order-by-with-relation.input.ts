@@ -5,6 +5,7 @@ import { SortOrderInput } from '../prisma/sort-order.input';
 import { FeedSourceOrderByWithRelationInput } from '../feed-source/feed-source-order-by-with-relation.input';
 import { FeedItemStateOrderByRelationAggregateInput } from '../feed-item-state/feed-item-state-order-by-relation-aggregate.input';
 import { FeedItemSummaryOrderByWithRelationInput } from '../feed-item-summary/feed-item-summary-order-by-with-relation.input';
+import { FeedEventOrderByRelationAggregateInput } from '../feed-event/feed-event-order-by-relation-aggregate.input';
 
 @InputType()
 export class FeedItemOrderByWithRelationInput {
@@ -56,4 +57,7 @@ export class FeedItemOrderByWithRelationInput {
 
     @Field(() => FeedItemSummaryOrderByWithRelationInput, {nullable:true})
     summary?: FeedItemSummaryOrderByWithRelationInput;
+
+    @Field(() => FeedEventOrderByRelationAggregateInput, {nullable:true})
+    events?: FeedEventOrderByRelationAggregateInput;
 }

@@ -24,7 +24,8 @@
     "prisma": "prisma",
     "seed:apps": "ts-node prisma/seed.apps.ts",
     "seed:wealth-tracker": "ts-node prisma/seed.wealth-tracker.ts",
-    "seed:all": "npm run seed:apps && npm run seed:wealth-tracker",
+    "seed:review-cards": "ts-node prisma/seed.review-cards.ts",
+    "seed:all": "npm run seed:apps && npm run seed:wealth-tracker && npm run seed:review-cards",
     "copy:templates": "cp -r src/static dist/src/"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/schedule": "^2.2.3",
     "@prisma/client": "^5.22.0",
     "@types/node-fetch": "^2.6.3",
     "apollo-server-express": "^3.11.1",
@@ -69,6 +71,7 @@
     "redis-json": "^6.0.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
+    "rss-parser": "^3.13.0",
     "rxjs": "^7.2.0",
     "sharp": "^0.33.5",
     "tradingview-api-adapter": "^1.2.2",
@@ -123,6 +126,6 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.apps.ts && ts-node prisma/seed.wealth-tracker.ts"
+    "seed": "ts-node prisma/seed.apps.ts && ts-node prisma/seed.wealth-tracker.ts && ts-node prisma/seed.review-cards.ts"
   }
 }

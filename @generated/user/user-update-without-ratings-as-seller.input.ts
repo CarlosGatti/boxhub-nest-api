@@ -22,11 +22,17 @@ import { HomeOpsTaskInstanceUpdateManyWithoutCompletedByNestedInput } from '../h
 import { HomeOpsWorkloadLedgerUpdateManyWithoutUserNestedInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-update-many-without-user-nested.input';
 import { FeedProfileUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-update-one-without-user-nested.input';
 import { FeedItemStateUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-update-many-without-user-nested.input';
+import { FeedEventUpdateManyWithoutUserNestedInput } from '../feed-event/feed-event-update-many-without-user-nested.input';
+import { FeedSourceNudgeUpdateManyWithoutUserNestedInput } from '../feed-source-nudge/feed-source-nudge-update-many-without-user-nested.input';
+import { FeedSourcePreferenceUpdateManyWithoutUserNestedInput } from '../feed-source-preference/feed-source-preference-update-many-without-user-nested.input';
 import { PortfolioUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-update-many-without-user-nested.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUpdateManyWithoutUserNestedInput } from '../cashflow-category/cashflow-category-update-many-without-user-nested.input';
 import { CashflowEntryUpdateManyWithoutUserNestedInput } from '../cashflow-entry/cashflow-entry-update-many-without-user-nested.input';
 import { RecurringCashflowUpdateManyWithoutUserNestedInput } from '../recurring-cashflow/recurring-cashflow-update-many-without-user-nested.input';
+import { ReviewCardBusinessUpdateManyWithoutUserNestedInput } from '../review-card-business/review-card-business-update-many-without-user-nested.input';
+import { ReviewCardProjectUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-update-many-without-user-nested.input';
+import { ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutRatingsAsSellerInput {
@@ -139,6 +145,15 @@ export class UserUpdateWithoutRatingsAsSellerInput {
     @Field(() => FeedItemStateUpdateManyWithoutUserNestedInput, {nullable:true})
     feedItemStates?: FeedItemStateUpdateManyWithoutUserNestedInput;
 
+    @Field(() => FeedEventUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedEvents?: FeedEventUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedSourceNudgeUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedSourcePreferenceUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceUpdateManyWithoutUserNestedInput;
+
     @Field(() => PortfolioUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => PortfolioUpdateManyWithoutUserNestedInput)
     portfolios?: PortfolioUpdateManyWithoutUserNestedInput;
@@ -154,4 +169,13 @@ export class UserUpdateWithoutRatingsAsSellerInput {
     @Field(() => RecurringCashflowUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => RecurringCashflowUpdateManyWithoutUserNestedInput)
     recurringCashflows?: RecurringCashflowUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardBusinessUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardProjectUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput;
 }

@@ -5,6 +5,7 @@ import { EnumFeedItemReadStatusFilter } from '../prisma/enum-feed-item-read-stat
 import { EnumFeedItemSaveStatusFilter } from '../prisma/enum-feed-item-save-status-filter.input';
 import { EnumFeedItemVisibilityFilter } from '../prisma/enum-feed-item-visibility-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
+import { EnumFeedItemLastActionNullableFilter } from '../prisma/enum-feed-item-last-action-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
 import { Type } from 'class-transformer';
@@ -39,6 +40,21 @@ export class FeedItemStateWhereInput {
 
     @Field(() => EnumFeedItemVisibilityFilter, {nullable:true})
     visibility?: EnumFeedItemVisibilityFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    openedAt?: DateTimeNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    skippedAt?: DateTimeNullableFilter;
+
+    @Field(() => IntFilter, {nullable:true})
+    skipCount?: IntFilter;
+
+    @Field(() => IntFilter, {nullable:true})
+    actionCount?: IntFilter;
+
+    @Field(() => EnumFeedItemLastActionNullableFilter, {nullable:true})
+    lastAction?: EnumFeedItemLastActionNullableFilter;
 
     @Field(() => DateTimeNullableFilter, {nullable:true})
     readAt?: DateTimeNullableFilter;

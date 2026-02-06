@@ -12,4 +12,10 @@ export class FeedItemStateSumAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     itemId?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    skipCount?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    actionCount?: true;
 }

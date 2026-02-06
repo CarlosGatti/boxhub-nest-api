@@ -18,11 +18,17 @@ import { HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutAssigneeInput } from
 import { HomeOpsTaskInstanceUncheckedCreateNestedManyWithoutCompletedByInput } from '../home-ops-task-instance/home-ops-task-instance-unchecked-create-nested-many-without-completed-by.input';
 import { HomeOpsWorkloadLedgerUncheckedCreateNestedManyWithoutUserInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-unchecked-create-nested-many-without-user.input';
 import { FeedProfileUncheckedCreateNestedOneWithoutUserInput } from '../feed-profile/feed-profile-unchecked-create-nested-one-without-user.input';
+import { FeedEventUncheckedCreateNestedManyWithoutUserInput } from '../feed-event/feed-event-unchecked-create-nested-many-without-user.input';
+import { FeedSourceNudgeUncheckedCreateNestedManyWithoutUserInput } from '../feed-source-nudge/feed-source-nudge-unchecked-create-nested-many-without-user.input';
+import { FeedSourcePreferenceUncheckedCreateNestedManyWithoutUserInput } from '../feed-source-preference/feed-source-preference-unchecked-create-nested-many-without-user.input';
 import { PortfolioUncheckedCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-unchecked-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUncheckedCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-unchecked-create-nested-many-without-user.input';
 import { CashflowEntryUncheckedCreateNestedManyWithoutUserInput } from '../cashflow-entry/cashflow-entry-unchecked-create-nested-many-without-user.input';
 import { RecurringCashflowUncheckedCreateNestedManyWithoutUserInput } from '../recurring-cashflow/recurring-cashflow-unchecked-create-nested-many-without-user.input';
+import { ReviewCardBusinessUncheckedCreateNestedManyWithoutUserInput } from '../review-card-business/review-card-business-unchecked-create-nested-many-without-user.input';
+import { ReviewCardProjectUncheckedCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-unchecked-create-nested-many-without-user.input';
+import { ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutFeedItemStatesInput {
@@ -138,6 +144,15 @@ export class UserUncheckedCreateWithoutFeedItemStatesInput {
     @Field(() => FeedProfileUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
     feedProfile?: FeedProfileUncheckedCreateNestedOneWithoutUserInput;
 
+    @Field(() => FeedEventUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    feedEvents?: FeedEventUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedSourceNudgeUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedSourcePreferenceUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceUncheckedCreateNestedManyWithoutUserInput;
+
     @Field(() => PortfolioUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => PortfolioUncheckedCreateNestedManyWithoutUserInput)
     portfolios?: PortfolioUncheckedCreateNestedManyWithoutUserInput;
@@ -153,4 +168,13 @@ export class UserUncheckedCreateWithoutFeedItemStatesInput {
     @Field(() => RecurringCashflowUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => RecurringCashflowUncheckedCreateNestedManyWithoutUserInput)
     recurringCashflows?: RecurringCashflowUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardBusinessUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardProjectUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput;
 }

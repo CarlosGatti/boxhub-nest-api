@@ -23,6 +23,21 @@ export class FeedItemStateMaxAggregateInput {
     visibility?: true;
 
     @Field(() => Boolean, {nullable:true})
+    openedAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    skippedAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    skipCount?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    actionCount?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    lastAction?: true;
+
+    @Field(() => Boolean, {nullable:true})
     readAt?: true;
 
     @Field(() => Boolean, {nullable:true})

@@ -10,6 +10,9 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { FeedCollectionUpdateOneRequiredWithoutSourcesNestedInput } from '../feed-collection/feed-collection-update-one-required-without-sources-nested.input';
 import { FeedItemUpdateManyWithoutSourceNestedInput } from '../feed-item/feed-item-update-many-without-source-nested.input';
+import { FeedEventUpdateManyWithoutSourceNestedInput } from '../feed-event/feed-event-update-many-without-source-nested.input';
+import { FeedSourceNudgeUpdateManyWithoutSourceNestedInput } from '../feed-source-nudge/feed-source-nudge-update-many-without-source-nested.input';
+import { FeedSourcePreferenceUpdateManyWithoutSourceNestedInput } from '../feed-source-preference/feed-source-preference-update-many-without-source-nested.input';
 
 @InputType()
 export class FeedSourceUpdateInput {
@@ -25,6 +28,9 @@ export class FeedSourceUpdateInput {
 
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isActive?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    includeShorts?: BoolFieldUpdateOperationsInput;
 
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     fetchEveryMin?: NullableIntFieldUpdateOperationsInput;
@@ -49,4 +55,13 @@ export class FeedSourceUpdateInput {
 
     @Field(() => FeedItemUpdateManyWithoutSourceNestedInput, {nullable:true})
     items?: FeedItemUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedEventUpdateManyWithoutSourceNestedInput, {nullable:true})
+    events?: FeedEventUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourceNudgeUpdateManyWithoutSourceNestedInput, {nullable:true})
+    nudges?: FeedSourceNudgeUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourcePreferenceUpdateManyWithoutSourceNestedInput, {nullable:true})
+    preferences?: FeedSourcePreferenceUpdateManyWithoutSourceNestedInput;
 }

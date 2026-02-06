@@ -1,13 +1,13 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { AppPermissionGuard, RequireApp } from '../../auth/guards/app-permission.guard';
-import { CurrentUser } from '../../user/current-user.decorator';
-import { User } from '../../../@generated/user/user.model';
-import { HomeOpsHousehold } from '../../../@generated/home-ops-household/home-ops-household.model';
-import { HomeOpsHouseholdMember } from '../../../@generated/home-ops-household-member/home-ops-household-member.model';
-import { HomeOpsTaskTemplate } from '../../../@generated/home-ops-task-template/home-ops-task-template.model';
-import { HomeOpsTaskInstance } from '../../../@generated/home-ops-task-instance/home-ops-task-instance.model';
+import { JwtAuthGuard } from '../../core/auth/guards/jwt-auth.guard';
+import { AppPermissionGuard, RequireApp } from '../../core/auth/guards/app-permission.guard';
+import { CurrentUser } from '../../domains/user/current-user.decorator';
+import { User } from '@generated/user/user.model';
+import { HomeOpsHousehold } from '@generated/home-ops-household/home-ops-household.model';
+import { HomeOpsHouseholdMember } from '@generated/home-ops-household-member/home-ops-household-member.model';
+import { HomeOpsTaskTemplate } from '@generated/home-ops-task-template/home-ops-task-template.model';
+import { HomeOpsTaskInstance } from '@generated/home-ops-task-instance/home-ops-task-instance.model';
 import { CreateHomeOpsHouseholdInput } from './dto/create-homeops-household.input';
 import { RenameHomeOpsHouseholdInput } from './dto/rename-homeops-household.input';
 import { HomeOpsMemberInput } from './dto/homeops-member.input';
@@ -22,7 +22,7 @@ import { HomeOpsMyTasksFilterInput } from './dto/homeops-my-tasks-filter.input';
 import { UpdateHomeOpsTaskStatusInput } from './dto/update-homeops-task-status.input';
 import { ReassignHomeOpsTaskInput } from './dto/reassign-homeops-task.input';
 import { HomeOpsService } from './homeops.service';
-import { HomeOpsWeeklyPlan } from '../../../@generated/home-ops-weekly-plan/home-ops-weekly-plan.model';
+import { HomeOpsWeeklyPlan } from '@generated/home-ops-weekly-plan/home-ops-weekly-plan.model';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, AppPermissionGuard)

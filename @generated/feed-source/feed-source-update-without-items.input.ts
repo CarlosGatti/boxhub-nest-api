@@ -9,6 +9,9 @@ import { IntFieldUpdateOperationsInput } from '../prisma/int-field-update-operat
 import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { FeedCollectionUpdateOneRequiredWithoutSourcesNestedInput } from '../feed-collection/feed-collection-update-one-required-without-sources-nested.input';
+import { FeedEventUpdateManyWithoutSourceNestedInput } from '../feed-event/feed-event-update-many-without-source-nested.input';
+import { FeedSourceNudgeUpdateManyWithoutSourceNestedInput } from '../feed-source-nudge/feed-source-nudge-update-many-without-source-nested.input';
+import { FeedSourcePreferenceUpdateManyWithoutSourceNestedInput } from '../feed-source-preference/feed-source-preference-update-many-without-source-nested.input';
 
 @InputType()
 export class FeedSourceUpdateWithoutItemsInput {
@@ -24,6 +27,9 @@ export class FeedSourceUpdateWithoutItemsInput {
 
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     isActive?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    includeShorts?: BoolFieldUpdateOperationsInput;
 
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     fetchEveryMin?: NullableIntFieldUpdateOperationsInput;
@@ -45,4 +51,13 @@ export class FeedSourceUpdateWithoutItemsInput {
 
     @Field(() => FeedCollectionUpdateOneRequiredWithoutSourcesNestedInput, {nullable:true})
     collection?: FeedCollectionUpdateOneRequiredWithoutSourcesNestedInput;
+
+    @Field(() => FeedEventUpdateManyWithoutSourceNestedInput, {nullable:true})
+    events?: FeedEventUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourceNudgeUpdateManyWithoutSourceNestedInput, {nullable:true})
+    nudges?: FeedSourceNudgeUpdateManyWithoutSourceNestedInput;
+
+    @Field(() => FeedSourcePreferenceUpdateManyWithoutSourceNestedInput, {nullable:true})
+    preferences?: FeedSourcePreferenceUpdateManyWithoutSourceNestedInput;
 }

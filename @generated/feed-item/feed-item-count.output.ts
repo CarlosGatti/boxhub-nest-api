@@ -7,4 +7,7 @@ export class FeedItemCount {
 
     @Field(() => Int, {nullable:false})
     states?: number;
+
+    @Field(() => Int, {nullable:false})
+    events?: number;
 }

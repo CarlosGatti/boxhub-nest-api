@@ -24,10 +24,16 @@ import { HomeOpsTaskInstanceUncheckedUpdateManyWithoutCompletedByNestedInput } f
 import { HomeOpsWorkloadLedgerUncheckedUpdateManyWithoutUserNestedInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-unchecked-update-many-without-user-nested.input';
 import { FeedProfileUncheckedUpdateOneWithoutUserNestedInput } from '../feed-profile/feed-profile-unchecked-update-one-without-user-nested.input';
 import { FeedItemStateUncheckedUpdateManyWithoutUserNestedInput } from '../feed-item-state/feed-item-state-unchecked-update-many-without-user-nested.input';
+import { FeedEventUncheckedUpdateManyWithoutUserNestedInput } from '../feed-event/feed-event-unchecked-update-many-without-user-nested.input';
+import { FeedSourceNudgeUncheckedUpdateManyWithoutUserNestedInput } from '../feed-source-nudge/feed-source-nudge-unchecked-update-many-without-user-nested.input';
+import { FeedSourcePreferenceUncheckedUpdateManyWithoutUserNestedInput } from '../feed-source-preference/feed-source-preference-unchecked-update-many-without-user-nested.input';
 import { PortfolioUncheckedUpdateManyWithoutUserNestedInput } from '../portfolio/portfolio-unchecked-update-many-without-user-nested.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryUncheckedUpdateManyWithoutUserNestedInput } from '../cashflow-category/cashflow-category-unchecked-update-many-without-user-nested.input';
 import { CashflowEntryUncheckedUpdateManyWithoutUserNestedInput } from '../cashflow-entry/cashflow-entry-unchecked-update-many-without-user-nested.input';
+import { ReviewCardBusinessUncheckedUpdateManyWithoutUserNestedInput } from '../review-card-business/review-card-business-unchecked-update-many-without-user-nested.input';
+import { ReviewCardProjectUncheckedUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-unchecked-update-many-without-user-nested.input';
+import { ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutRecurringCashflowsInput {
@@ -146,6 +152,15 @@ export class UserUncheckedUpdateWithoutRecurringCashflowsInput {
     @Field(() => FeedItemStateUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     feedItemStates?: FeedItemStateUncheckedUpdateManyWithoutUserNestedInput;
 
+    @Field(() => FeedEventUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedEvents?: FeedEventUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedSourceNudgeUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => FeedSourcePreferenceUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceUncheckedUpdateManyWithoutUserNestedInput;
+
     @Field(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => PortfolioUncheckedUpdateManyWithoutUserNestedInput)
     portfolios?: PortfolioUncheckedUpdateManyWithoutUserNestedInput;
@@ -157,4 +172,13 @@ export class UserUncheckedUpdateWithoutRecurringCashflowsInput {
     @Field(() => CashflowEntryUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     @Type(() => CashflowEntryUncheckedUpdateManyWithoutUserNestedInput)
     cashflowEntries?: CashflowEntryUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardBusinessUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardProjectUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput;
 }

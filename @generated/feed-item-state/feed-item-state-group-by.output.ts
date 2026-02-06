@@ -4,6 +4,7 @@ import { Int } from '@nestjs/graphql';
 import { FeedItemReadStatus } from '../prisma/feed-item-read-status.enum';
 import { FeedItemSaveStatus } from '../prisma/feed-item-save-status.enum';
 import { FeedItemVisibility } from '../prisma/feed-item-visibility.enum';
+import { FeedItemLastAction } from '../prisma/feed-item-last-action.enum';
 import { FeedItemStateCountAggregate } from './feed-item-state-count-aggregate.output';
 import { FeedItemStateAvgAggregate } from './feed-item-state-avg-aggregate.output';
 import { FeedItemStateSumAggregate } from './feed-item-state-sum-aggregate.output';
@@ -30,6 +31,21 @@ export class FeedItemStateGroupBy {
 
     @Field(() => FeedItemVisibility, {nullable:false})
     visibility!: keyof typeof FeedItemVisibility;
+
+    @Field(() => Date, {nullable:true})
+    openedAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    skippedAt?: Date | string;
+
+    @Field(() => Int, {nullable:false})
+    skipCount!: number;
+
+    @Field(() => Int, {nullable:false})
+    actionCount!: number;
+
+    @Field(() => FeedItemLastAction, {nullable:true})
+    lastAction?: keyof typeof FeedItemLastAction;
 
     @Field(() => Date, {nullable:true})
     readAt?: Date | string;

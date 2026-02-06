@@ -5,6 +5,7 @@ import { FeedItemStatus } from '../prisma/feed-item-status.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 import { FeedSourceCreateNestedOneWithoutItemsInput } from '../feed-source/feed-source-create-nested-one-without-items.input';
 import { FeedItemSummaryCreateNestedOneWithoutItemInput } from '../feed-item-summary/feed-item-summary-create-nested-one-without-item.input';
+import { FeedEventCreateNestedManyWithoutItemInput } from '../feed-event/feed-event-create-nested-many-without-item.input';
 
 @InputType()
 export class FeedItemCreateWithoutStatesInput {
@@ -47,4 +48,7 @@ export class FeedItemCreateWithoutStatesInput {
 
     @Field(() => FeedItemSummaryCreateNestedOneWithoutItemInput, {nullable:true})
     summary?: FeedItemSummaryCreateNestedOneWithoutItemInput;
+
+    @Field(() => FeedEventCreateNestedManyWithoutItemInput, {nullable:true})
+    events?: FeedEventCreateNestedManyWithoutItemInput;
 }

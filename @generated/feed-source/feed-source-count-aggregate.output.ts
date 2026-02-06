@@ -24,6 +24,9 @@ export class FeedSourceCountAggregate {
     isActive!: number;
 
     @Field(() => Int, {nullable:false})
+    includeShorts!: number;
+
+    @Field(() => Int, {nullable:false})
     fetchEveryMin!: number;
 
     @Field(() => Int, {nullable:false})

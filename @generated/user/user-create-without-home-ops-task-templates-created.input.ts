@@ -17,11 +17,17 @@ import { HomeOpsTaskInstanceCreateNestedManyWithoutCompletedByInput } from '../h
 import { HomeOpsWorkloadLedgerCreateNestedManyWithoutUserInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-create-nested-many-without-user.input';
 import { FeedProfileCreateNestedOneWithoutUserInput } from '../feed-profile/feed-profile-create-nested-one-without-user.input';
 import { FeedItemStateCreateNestedManyWithoutUserInput } from '../feed-item-state/feed-item-state-create-nested-many-without-user.input';
+import { FeedEventCreateNestedManyWithoutUserInput } from '../feed-event/feed-event-create-nested-many-without-user.input';
+import { FeedSourceNudgeCreateNestedManyWithoutUserInput } from '../feed-source-nudge/feed-source-nudge-create-nested-many-without-user.input';
+import { FeedSourcePreferenceCreateNestedManyWithoutUserInput } from '../feed-source-preference/feed-source-preference-create-nested-many-without-user.input';
 import { PortfolioCreateNestedManyWithoutUserInput } from '../portfolio/portfolio-create-nested-many-without-user.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryCreateNestedManyWithoutUserInput } from '../cashflow-category/cashflow-category-create-nested-many-without-user.input';
 import { CashflowEntryCreateNestedManyWithoutUserInput } from '../cashflow-entry/cashflow-entry-create-nested-many-without-user.input';
 import { RecurringCashflowCreateNestedManyWithoutUserInput } from '../recurring-cashflow/recurring-cashflow-create-nested-many-without-user.input';
+import { ReviewCardBusinessCreateNestedManyWithoutUserInput } from '../review-card-business/review-card-business-create-nested-many-without-user.input';
+import { ReviewCardProjectCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-create-nested-many-without-user.input';
+import { ReviewCardPremiumRequestCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutHomeOpsTaskTemplatesCreatedInput {
@@ -134,6 +140,15 @@ export class UserCreateWithoutHomeOpsTaskTemplatesCreatedInput {
     @Field(() => FeedItemStateCreateNestedManyWithoutUserInput, {nullable:true})
     feedItemStates?: FeedItemStateCreateNestedManyWithoutUserInput;
 
+    @Field(() => FeedEventCreateNestedManyWithoutUserInput, {nullable:true})
+    feedEvents?: FeedEventCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedSourceNudgeCreateNestedManyWithoutUserInput, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeCreateNestedManyWithoutUserInput;
+
+    @Field(() => FeedSourcePreferenceCreateNestedManyWithoutUserInput, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceCreateNestedManyWithoutUserInput;
+
     @Field(() => PortfolioCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => PortfolioCreateNestedManyWithoutUserInput)
     portfolios?: PortfolioCreateNestedManyWithoutUserInput;
@@ -149,4 +164,13 @@ export class UserCreateWithoutHomeOpsTaskTemplatesCreatedInput {
     @Field(() => RecurringCashflowCreateNestedManyWithoutUserInput, {nullable:true})
     @Type(() => RecurringCashflowCreateNestedManyWithoutUserInput)
     recurringCashflows?: RecurringCashflowCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardBusinessCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardProjectCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectCreateNestedManyWithoutUserInput;
+
+    @Field(() => ReviewCardPremiumRequestCreateNestedManyWithoutUserInput, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestCreateNestedManyWithoutUserInput;
 }

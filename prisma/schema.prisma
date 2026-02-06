@@ -152,8 +152,11 @@ model User {
   homeOpsWorkloadLedgers        HomeOpsWorkloadLedger[]
 
   // SignalBoard
-  feedProfile    FeedProfile?
-  feedItemStates FeedItemState[]
+  feedProfile           FeedProfile?
+  feedItemStates        FeedItemState[]
+  feedEvents            FeedEvent[]
+  feedSourceNudges      FeedSourceNudge[]
+  feedSourcePreferences FeedSourcePreference[]
 
   // Wealth Tracker
   portfolios Portfolio[] @relation("UserPortfolios")
@@ -162,6 +165,11 @@ model User {
   cashflowCategories CashflowCategory[]
   cashflowEntries    CashflowEntry[]
   recurringCashflows RecurringCashflow[]
+
+  // Review Cards
+  reviewCardBusinesses      ReviewCardBusiness[]
+  reviewCardProjects        ReviewCardProject[]
+  reviewCardPremiumRequests ReviewCardPremiumRequest[]
 
   @@index([email], map: "userEmail")
 }
@@ -250,6 +258,34 @@ enum HomeOpsFrequency {
   CUSTOM
 }
 
+enum ReviewCardProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ReviewCardLinkMode {
+  DIRECT
+  REDIRECT
+}
+
+enum ReviewCardExportType {
+  PNG
+  PDF
+}
+
+enum ReviewCardExportStatus {
+  QUEUED
+  DONE
+  FAILED
+}
+
+enum ReviewCardPremiumRequestStatus {
+  OPEN
+  IN_PROGRESS
+  DELIVERED
+}
+
 enum FeedSourceType {
   RSS
   YOUTUBE_CHANNEL
@@ -282,6 +318,19 @@ enum FeedItemSaveStatus {
 enum FeedItemVisibility {
   VISIBLE
   HIDDEN
+}
+
+enum FeedEventAction {
+  OPENED
+  SKIPPED
+}
+
+enum FeedItemLastAction {
+  OPEN
+  READ
+  SKIP
+  SAVE
+  HIDE
 }
 
 enum Role {
@@ -502,9 +551,9 @@ model HomeOpsTaskTemplate {
   createdAt        DateTime              @default(now())
   updatedAt        DateTime              @updatedAt
 
-  household     HomeOpsHousehold      @relation(fields: [householdId], references: [id], onDelete: Cascade)
-  createdBy     User                  @relation("HomeOpsTemplateCreator", fields: [createdById], references: [id], onDelete: Restrict)
-  fixedAssignee User?                 @relation("HomeOpsTemplateAssignee", fields: [fixedAssigneeId], references: [id], onDelete: SetNull)
+  household     HomeOpsHousehold          @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  createdBy     User                      @relation("HomeOpsTemplateCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  fixedAssignee User?                     @relation("HomeOpsTemplateAssignee", fields: [fixedAssigneeId], references: [id], onDelete: SetNull)
   slots         HomeOpsTaskTemplateSlot[]
   taskInstances HomeOpsTaskInstance[]
 
@@ -513,7 +562,7 @@ model HomeOpsTaskTemplate {
 }
 
 model HomeOpsTaskTemplateSlot {
-  id          Int      @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   templateId  Int
   label       String
   windowStart String
@@ -557,12 +606,12 @@ model HomeOpsTaskInstance {
   assignee    User?                @relation("HomeOpsInstanceAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
   completedBy User?                @relation("HomeOpsInstanceCompletedBy", fields: [completedById], references: [id], onDelete: SetNull)
 
+  @@unique([weeklyPlanId, sourceKey])
   @@index([householdId])
   @@index([dueDate])
   @@index([status])
   @@index([assigneeId])
   @@index([weeklyPlanId])
-  @@unique([weeklyPlanId, sourceKey])
 }
 
 model HomeOpsWeeklyPlan {
@@ -573,7 +622,7 @@ model HomeOpsWeeklyPlan {
   createdAt     DateTime                @default(now())
   updatedAt     DateTime                @updatedAt
 
-  household HomeOpsHousehold   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  household HomeOpsHousehold      @relation(fields: [householdId], references: [id], onDelete: Cascade)
   tasks     HomeOpsTaskInstance[]
 
   @@unique([householdId, weekStartDate])
@@ -597,6 +646,126 @@ model HomeOpsWorkloadLedger {
   @@unique([householdId, userId, weekStart])
   @@index([householdId])
   @@index([userId])
+}
+
+// ============================================
+// Review Cards Models
+// ============================================
+
+model ReviewCardBusiness {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  name            String
+  placeId         String?
+  googleReviewUrl String?
+  website         String?
+  phone           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects ReviewCardProject[]
+
+  @@index([userId])
+}
+
+model ReviewCardTemplate {
+  id                 Int      @id @default(autoincrement())
+  key                String   @unique
+  name               String
+  category           String
+  aspect             String
+  schemaVersion      Int
+  isActive           Boolean  @default(true)
+  previewImageUrl    String?
+  defaultDesignJson  Json
+  editableFieldsJson Json
+  constraintsJson    Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  projects ReviewCardProject[]
+
+  @@index([isActive])
+  @@index([aspect])
+  @@index([category])
+}
+
+model ReviewCardProject {
+  id                   Int                     @id @default(autoincrement())
+  userId               Int
+  businessId           Int
+  templateId           Int
+  name                 String
+  slug                 String?                 @unique
+  status               ReviewCardProjectStatus @default(DRAFT)
+  reviewLinkMode       ReviewCardLinkMode      @default(REDIRECT)
+  googleReviewUrlFinal String?
+  designJson           Json?
+  assetsJson           Json?
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+
+  user            User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business        ReviewCardBusiness         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  template        ReviewCardTemplate         @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  exports         ReviewCardExport[]
+  scans           ReviewCardScanEvent[]
+  premiumRequests ReviewCardPremiumRequest[]
+
+  @@index([userId])
+  @@index([businessId])
+  @@index([templateId])
+  @@index([status])
+}
+
+model ReviewCardExport {
+  id           Int                    @id @default(autoincrement())
+  projectId    Int
+  type         ReviewCardExportType
+  format       String
+  status       ReviewCardExportStatus @default(QUEUED)
+  fileUrl      String?
+  errorMessage String?
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  project ReviewCardProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([status])
+}
+
+model ReviewCardScanEvent {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  ipHash    String?
+  userAgent String?
+  referer   String?
+  createdAt DateTime @default(now())
+
+  project ReviewCardProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([createdAt])
+  @@index([projectId, createdAt])
+}
+
+model ReviewCardPremiumRequest {
+  id        Int                            @id @default(autoincrement())
+  userId    Int
+  projectId Int?
+  notes     String
+  status    ReviewCardPremiumRequestStatus @default(OPEN)
+  createdAt DateTime                       @default(now())
+  updatedAt DateTime                       @updatedAt
+
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project ReviewCardProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([status])
 }
 
 // ============================================
@@ -646,6 +815,7 @@ model FeedSource {
   name          String
   url           String
   isActive      Boolean        @default(true)
+  includeShorts Boolean        @default(false)
   fetchEveryMin Int?
   lastFetchedAt DateTime?
   failureCount  Int            @default(0)
@@ -653,8 +823,11 @@ model FeedSource {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  collection FeedCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  items      FeedItem[]
+  collection  FeedCollection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  items       FeedItem[]
+  events      FeedEvent[]
+  nudges      FeedSourceNudge[]
+  preferences FeedSourcePreference[]
 
   @@index([collectionId])
   @@index([isActive])
@@ -679,6 +852,7 @@ model FeedItem {
   source  FeedSource       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
   states  FeedItemState[]
   summary FeedItemSummary?
+  events  FeedEvent[]
 
   @@index([sourceId])
   @@index([publishedAt])
@@ -691,6 +865,11 @@ model FeedItemState {
   readStatus FeedItemReadStatus @default(UNREAD)
   saveStatus FeedItemSaveStatus @default(NONE)
   visibility FeedItemVisibility @default(VISIBLE)
+  openedAt   DateTime?
+  skippedAt  DateTime?
+  skipCount  Int                @default(0)
+  actionCount Int               @default(0)
+  lastAction FeedItemLastAction?
   readAt     DateTime?
   savedAt    DateTime?
   hiddenAt   DateTime?
@@ -714,6 +893,58 @@ model FeedItemSummary {
   updatedAt DateTime @updatedAt
 
   item FeedItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model FeedEvent {
+  id        Int             @id @default(autoincrement())
+  userId    Int
+  itemId    Int
+  sourceId  Int
+  action    FeedEventAction
+  createdAt DateTime        @default(now())
+
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item   FeedItem   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  source FeedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([userId, sourceId, createdAt])
+  @@index([userId, itemId, createdAt])
+}
+
+model FeedSourceNudge {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  sourceId  Int
+  reason    String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source FeedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([userId, sourceId, status])
+}
+
+model FeedSourcePreference {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  sourceId         Int
+  notifyOnNew      Boolean  @default(false)
+  isMuted          Boolean  @default(false)
+  mutedUntil       DateTime?
+  consecutiveSkips Int      @default(0)
+  lastInteractedAt DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source FeedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sourceId])
+  @@index([userId])
+  @@index([sourceId])
+  @@index([consecutiveSkips])
 }
 
 // ============================================

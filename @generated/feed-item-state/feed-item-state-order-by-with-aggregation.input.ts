@@ -30,6 +30,21 @@ export class FeedItemStateOrderByWithAggregationInput {
     visibility?: keyof typeof SortOrder;
 
     @Field(() => SortOrderInput, {nullable:true})
+    openedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    skippedAt?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    skipCount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    actionCount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    lastAction?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
     readAt?: SortOrderInput;
 
     @Field(() => SortOrderInput, {nullable:true})

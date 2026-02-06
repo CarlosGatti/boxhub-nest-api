@@ -7,6 +7,7 @@ export enum FeedSourceScalarFieldEnum {
     name = "name",
     url = "url",
     isActive = "isActive",
+    includeShorts = "includeShorts",
     fetchEveryMin = "fetchEveryMin",
     lastFetchedAt = "lastFetchedAt",
     failureCount = "failureCount",

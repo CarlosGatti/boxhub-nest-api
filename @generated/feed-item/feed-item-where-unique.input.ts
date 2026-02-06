@@ -13,6 +13,7 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { FeedSourceRelationFilter } from '../feed-source/feed-source-relation-filter.input';
 import { FeedItemStateListRelationFilter } from '../feed-item-state/feed-item-state-list-relation-filter.input';
 import { FeedItemSummaryNullableRelationFilter } from '../feed-item-summary/feed-item-summary-nullable-relation-filter.input';
+import { FeedEventListRelationFilter } from '../feed-event/feed-event-list-relation-filter.input';
 
 @InputType()
 export class FeedItemWhereUniqueInput {
@@ -73,4 +74,7 @@ export class FeedItemWhereUniqueInput {
 
     @Field(() => FeedItemSummaryNullableRelationFilter, {nullable:true})
     summary?: FeedItemSummaryNullableRelationFilter;
+
+    @Field(() => FeedEventListRelationFilter, {nullable:true})
+    events?: FeedEventListRelationFilter;
 }

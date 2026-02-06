@@ -9,6 +9,7 @@ import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-d
 import { GraphQLJSON } from 'graphql-type-json';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { FeedItemSummaryUncheckedUpdateOneWithoutItemNestedInput } from '../feed-item-summary/feed-item-summary-unchecked-update-one-without-item-nested.input';
+import { FeedEventUncheckedUpdateManyWithoutItemNestedInput } from '../feed-event/feed-event-unchecked-update-many-without-item-nested.input';
 
 @InputType()
 export class FeedItemUncheckedUpdateWithoutStatesInput {
@@ -54,4 +55,7 @@ export class FeedItemUncheckedUpdateWithoutStatesInput {
 
     @Field(() => FeedItemSummaryUncheckedUpdateOneWithoutItemNestedInput, {nullable:true})
     summary?: FeedItemSummaryUncheckedUpdateOneWithoutItemNestedInput;
+
+    @Field(() => FeedEventUncheckedUpdateManyWithoutItemNestedInput, {nullable:true})
+    events?: FeedEventUncheckedUpdateManyWithoutItemNestedInput;
 }

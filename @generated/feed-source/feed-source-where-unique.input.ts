@@ -12,6 +12,9 @@ import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { FeedCollectionRelationFilter } from '../feed-collection/feed-collection-relation-filter.input';
 import { FeedItemListRelationFilter } from '../feed-item/feed-item-list-relation-filter.input';
+import { FeedEventListRelationFilter } from '../feed-event/feed-event-list-relation-filter.input';
+import { FeedSourceNudgeListRelationFilter } from '../feed-source-nudge/feed-source-nudge-list-relation-filter.input';
+import { FeedSourcePreferenceListRelationFilter } from '../feed-source-preference/feed-source-preference-list-relation-filter.input';
 
 @InputType()
 export class FeedSourceWhereUniqueInput {
@@ -43,6 +46,9 @@ export class FeedSourceWhereUniqueInput {
     @Field(() => BoolFilter, {nullable:true})
     isActive?: BoolFilter;
 
+    @Field(() => BoolFilter, {nullable:true})
+    includeShorts?: BoolFilter;
+
     @Field(() => IntNullableFilter, {nullable:true})
     fetchEveryMin?: IntNullableFilter;
 
@@ -66,4 +72,13 @@ export class FeedSourceWhereUniqueInput {
 
     @Field(() => FeedItemListRelationFilter, {nullable:true})
     items?: FeedItemListRelationFilter;
+
+    @Field(() => FeedEventListRelationFilter, {nullable:true})
+    events?: FeedEventListRelationFilter;
+
+    @Field(() => FeedSourceNudgeListRelationFilter, {nullable:true})
+    nudges?: FeedSourceNudgeListRelationFilter;
+
+    @Field(() => FeedSourcePreferenceListRelationFilter, {nullable:true})
+    preferences?: FeedSourcePreferenceListRelationFilter;
 }

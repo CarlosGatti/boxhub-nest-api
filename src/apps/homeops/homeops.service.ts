@@ -18,13 +18,13 @@ import { HomeOpsMemberInput } from './dto/homeops-member.input';
 import { HomeOpsMyTasksFilterInput } from './dto/homeops-my-tasks-filter.input';
 import { HomeOpsTaskRangeInput } from './dto/homeops-task-range.input';
 import { HomeOpsTasksFilterInput } from './dto/homeops-tasks-filter.input';
-import { PrismaService } from '../../prisma.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { ReassignHomeOpsTaskInput } from './dto/reassign-homeops-task.input';
 import { RenameHomeOpsHouseholdInput } from './dto/rename-homeops-household.input';
 import { ToggleHomeOpsTaskTemplateInput } from './dto/toggle-homeops-task-template.input';
 import { UpdateHomeOpsTaskStatusInput } from './dto/update-homeops-task-status.input';
 import { UpdateHomeOpsTaskTemplateInput } from './dto/update-homeops-task-template.input';
-import { createLog } from '../../services/create-log';
+import { createLog } from '../../core/services/create-log';
 
 @Injectable()
 export class HomeOpsService {

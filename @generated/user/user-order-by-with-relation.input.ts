@@ -16,11 +16,17 @@ import { HomeOpsTaskInstanceOrderByRelationAggregateInput } from '../home-ops-ta
 import { HomeOpsWorkloadLedgerOrderByRelationAggregateInput } from '../home-ops-workload-ledger/home-ops-workload-ledger-order-by-relation-aggregate.input';
 import { FeedProfileOrderByWithRelationInput } from '../feed-profile/feed-profile-order-by-with-relation.input';
 import { FeedItemStateOrderByRelationAggregateInput } from '../feed-item-state/feed-item-state-order-by-relation-aggregate.input';
+import { FeedEventOrderByRelationAggregateInput } from '../feed-event/feed-event-order-by-relation-aggregate.input';
+import { FeedSourceNudgeOrderByRelationAggregateInput } from '../feed-source-nudge/feed-source-nudge-order-by-relation-aggregate.input';
+import { FeedSourcePreferenceOrderByRelationAggregateInput } from '../feed-source-preference/feed-source-preference-order-by-relation-aggregate.input';
 import { PortfolioOrderByRelationAggregateInput } from '../portfolio/portfolio-order-by-relation-aggregate.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryOrderByRelationAggregateInput } from '../cashflow-category/cashflow-category-order-by-relation-aggregate.input';
 import { CashflowEntryOrderByRelationAggregateInput } from '../cashflow-entry/cashflow-entry-order-by-relation-aggregate.input';
 import { RecurringCashflowOrderByRelationAggregateInput } from '../recurring-cashflow/recurring-cashflow-order-by-relation-aggregate.input';
+import { ReviewCardBusinessOrderByRelationAggregateInput } from '../review-card-business/review-card-business-order-by-relation-aggregate.input';
+import { ReviewCardProjectOrderByRelationAggregateInput } from '../review-card-project/review-card-project-order-by-relation-aggregate.input';
+import { ReviewCardPremiumRequestOrderByRelationAggregateInput } from '../review-card-premium-request/review-card-premium-request-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -139,6 +145,15 @@ export class UserOrderByWithRelationInput {
     @Field(() => FeedItemStateOrderByRelationAggregateInput, {nullable:true})
     feedItemStates?: FeedItemStateOrderByRelationAggregateInput;
 
+    @Field(() => FeedEventOrderByRelationAggregateInput, {nullable:true})
+    feedEvents?: FeedEventOrderByRelationAggregateInput;
+
+    @Field(() => FeedSourceNudgeOrderByRelationAggregateInput, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeOrderByRelationAggregateInput;
+
+    @Field(() => FeedSourcePreferenceOrderByRelationAggregateInput, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceOrderByRelationAggregateInput;
+
     @Field(() => PortfolioOrderByRelationAggregateInput, {nullable:true})
     @Type(() => PortfolioOrderByRelationAggregateInput)
     portfolios?: PortfolioOrderByRelationAggregateInput;
@@ -154,4 +169,13 @@ export class UserOrderByWithRelationInput {
     @Field(() => RecurringCashflowOrderByRelationAggregateInput, {nullable:true})
     @Type(() => RecurringCashflowOrderByRelationAggregateInput)
     recurringCashflows?: RecurringCashflowOrderByRelationAggregateInput;
+
+    @Field(() => ReviewCardBusinessOrderByRelationAggregateInput, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessOrderByRelationAggregateInput;
+
+    @Field(() => ReviewCardProjectOrderByRelationAggregateInput, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectOrderByRelationAggregateInput;
+
+    @Field(() => ReviewCardPremiumRequestOrderByRelationAggregateInput, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestOrderByRelationAggregateInput;
 }

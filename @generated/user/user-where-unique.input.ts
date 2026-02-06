@@ -22,11 +22,17 @@ import { HomeOpsTaskInstanceListRelationFilter } from '../home-ops-task-instance
 import { HomeOpsWorkloadLedgerListRelationFilter } from '../home-ops-workload-ledger/home-ops-workload-ledger-list-relation-filter.input';
 import { FeedProfileNullableRelationFilter } from '../feed-profile/feed-profile-nullable-relation-filter.input';
 import { FeedItemStateListRelationFilter } from '../feed-item-state/feed-item-state-list-relation-filter.input';
+import { FeedEventListRelationFilter } from '../feed-event/feed-event-list-relation-filter.input';
+import { FeedSourceNudgeListRelationFilter } from '../feed-source-nudge/feed-source-nudge-list-relation-filter.input';
+import { FeedSourcePreferenceListRelationFilter } from '../feed-source-preference/feed-source-preference-list-relation-filter.input';
 import { PortfolioListRelationFilter } from '../portfolio/portfolio-list-relation-filter.input';
 import { Type } from 'class-transformer';
 import { CashflowCategoryListRelationFilter } from '../cashflow-category/cashflow-category-list-relation-filter.input';
 import { CashflowEntryListRelationFilter } from '../cashflow-entry/cashflow-entry-list-relation-filter.input';
 import { RecurringCashflowListRelationFilter } from '../recurring-cashflow/recurring-cashflow-list-relation-filter.input';
+import { ReviewCardBusinessListRelationFilter } from '../review-card-business/review-card-business-list-relation-filter.input';
+import { ReviewCardProjectListRelationFilter } from '../review-card-project/review-card-project-list-relation-filter.input';
+import { ReviewCardPremiumRequestListRelationFilter } from '../review-card-premium-request/review-card-premium-request-list-relation-filter.input';
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -154,6 +160,15 @@ export class UserWhereUniqueInput {
     @Field(() => FeedItemStateListRelationFilter, {nullable:true})
     feedItemStates?: FeedItemStateListRelationFilter;
 
+    @Field(() => FeedEventListRelationFilter, {nullable:true})
+    feedEvents?: FeedEventListRelationFilter;
+
+    @Field(() => FeedSourceNudgeListRelationFilter, {nullable:true})
+    feedSourceNudges?: FeedSourceNudgeListRelationFilter;
+
+    @Field(() => FeedSourcePreferenceListRelationFilter, {nullable:true})
+    feedSourcePreferences?: FeedSourcePreferenceListRelationFilter;
+
     @Field(() => PortfolioListRelationFilter, {nullable:true})
     @Type(() => PortfolioListRelationFilter)
     portfolios?: PortfolioListRelationFilter;
@@ -169,4 +184,13 @@ export class UserWhereUniqueInput {
     @Field(() => RecurringCashflowListRelationFilter, {nullable:true})
     @Type(() => RecurringCashflowListRelationFilter)
     recurringCashflows?: RecurringCashflowListRelationFilter;
+
+    @Field(() => ReviewCardBusinessListRelationFilter, {nullable:true})
+    reviewCardBusinesses?: ReviewCardBusinessListRelationFilter;
+
+    @Field(() => ReviewCardProjectListRelationFilter, {nullable:true})
+    reviewCardProjects?: ReviewCardProjectListRelationFilter;
+
+    @Field(() => ReviewCardPremiumRequestListRelationFilter, {nullable:true})
+    reviewCardPremiumRequests?: ReviewCardPremiumRequestListRelationFilter;
 }

@@ -13,4 +13,10 @@ export class FeedItemStateSumOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     itemId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    skipCount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    actionCount?: keyof typeof SortOrder;
 }

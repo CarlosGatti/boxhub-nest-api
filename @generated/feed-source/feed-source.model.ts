@@ -6,6 +6,9 @@ import { FeedSourceType } from '../prisma/feed-source-type.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 import { FeedCollection } from '../feed-collection/feed-collection.model';
 import { FeedItem } from '../feed-item/feed-item.model';
+import { FeedEvent } from '../feed-event/feed-event.model';
+import { FeedSourceNudge } from '../feed-source-nudge/feed-source-nudge.model';
+import { FeedSourcePreference } from '../feed-source-preference/feed-source-preference.model';
 import { FeedSourceCount } from './feed-source-count.output';
 
 @ObjectType()
@@ -28,6 +31,9 @@ export class FeedSource {
 
     @Field(() => Boolean, {nullable:false,defaultValue:true})
     isActive!: boolean;
+
+    @Field(() => Boolean, {nullable:false,defaultValue:false})
+    includeShorts!: boolean;
 
     @Field(() => Int, {nullable:true})
     fetchEveryMin!: number | null;
@@ -52,6 +58,15 @@ export class FeedSource {
 
     @Field(() => [FeedItem], {nullable:true})
     items?: Array<FeedItem>;
+
+    @Field(() => [FeedEvent], {nullable:true})
+    events?: Array<FeedEvent>;
+
+    @Field(() => [FeedSourceNudge], {nullable:true})
+    nudges?: Array<FeedSourceNudge>;
+
+    @Field(() => [FeedSourcePreference], {nullable:true})
+    preferences?: Array<FeedSourcePreference>;
 
     @Field(() => FeedSourceCount, {nullable:false})
     _count?: FeedSourceCount;

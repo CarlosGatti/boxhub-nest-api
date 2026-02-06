@@ -1,7 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
 import { HomeOpsTaskRangeInput } from './homeops-task-range.input';
-import { HomeOpsTaskStatus } from '../../../../@generated/prisma/home-ops-task-status.enum';
+import { HomeOpsTaskStatus } from '@generated/prisma/home-ops-task-status.enum';
 import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 

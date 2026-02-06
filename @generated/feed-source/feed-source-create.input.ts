@@ -5,6 +5,9 @@ import { Int } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 import { FeedCollectionCreateNestedOneWithoutSourcesInput } from '../feed-collection/feed-collection-create-nested-one-without-sources.input';
 import { FeedItemCreateNestedManyWithoutSourceInput } from '../feed-item/feed-item-create-nested-many-without-source.input';
+import { FeedEventCreateNestedManyWithoutSourceInput } from '../feed-event/feed-event-create-nested-many-without-source.input';
+import { FeedSourceNudgeCreateNestedManyWithoutSourceInput } from '../feed-source-nudge/feed-source-nudge-create-nested-many-without-source.input';
+import { FeedSourcePreferenceCreateNestedManyWithoutSourceInput } from '../feed-source-preference/feed-source-preference-create-nested-many-without-source.input';
 
 @InputType()
 export class FeedSourceCreateInput {
@@ -20,6 +23,9 @@ export class FeedSourceCreateInput {
 
     @Field(() => Boolean, {nullable:true})
     isActive?: boolean;
+
+    @Field(() => Boolean, {nullable:true})
+    includeShorts?: boolean;
 
     @Field(() => Int, {nullable:true})
     fetchEveryMin?: number;
@@ -44,4 +50,13 @@ export class FeedSourceCreateInput {
 
     @Field(() => FeedItemCreateNestedManyWithoutSourceInput, {nullable:true})
     items?: FeedItemCreateNestedManyWithoutSourceInput;
+
+    @Field(() => FeedEventCreateNestedManyWithoutSourceInput, {nullable:true})
+    events?: FeedEventCreateNestedManyWithoutSourceInput;
+
+    @Field(() => FeedSourceNudgeCreateNestedManyWithoutSourceInput, {nullable:true})
+    nudges?: FeedSourceNudgeCreateNestedManyWithoutSourceInput;
+
+    @Field(() => FeedSourcePreferenceCreateNestedManyWithoutSourceInput, {nullable:true})
+    preferences?: FeedSourcePreferenceCreateNestedManyWithoutSourceInput;
 }

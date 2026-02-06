@@ -23,6 +23,9 @@ export class FeedSourceCountAggregateInput {
     isActive?: true;
 
     @Field(() => Boolean, {nullable:true})
+    includeShorts?: true;
+
+    @Field(() => Boolean, {nullable:true})
     fetchEveryMin?: true;
 
     @Field(() => Boolean, {nullable:true})
