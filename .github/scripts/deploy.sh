@@ -240,6 +240,7 @@ if [ -d "$APP_DIR/uploads" ]; then
 else
   mkdir -p "$APP_DIR/uploads"
   mkdir -p "$APP_DIR/uploads/discart-items"
+  mkdir -p "$APP_DIR/uploads/qrack-items"
   mkdir -p "$APP_DIR/uploads/avatars"
   mkdir -p "$APP_DIR/uploads/construction-logs"
   mkdir -p "$APP_DIR/uploads/project-documents"

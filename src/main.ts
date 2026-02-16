@@ -58,6 +58,7 @@ async function bootstrap() {
   const uploadsDir = join(process.cwd(), "uploads");
   const uploadDirs = [
     "discart-items",
+    "qrack-items",
     "avatars",
   ];
 

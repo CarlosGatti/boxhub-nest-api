@@ -244,5 +244,94 @@ export class DiscartItemUploadController {
 
     return { urls: processedUrls };
   }
+
+  @Post('qrack-items')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FilesInterceptor('files', 10, createMulterOptions('qrack-items')))
+  async uploadQrackItemImages(@UploadedFiles() files: Array<Express.Multer["File"]>) {
+    console.log('📤 QRack upload request received');
+    console.log('📦 Files received:', files?.length || 0);
+
+    if (!files || files.length === 0) {
+      console.error('❌ No files in request');
+      throw new BadRequestException('No files uploaded');
+    }
+
+    const processedUrls: string[] = [];
+
+    for (const file of files) {
+      try {
+        const filePath = join(process.cwd(), 'uploads', 'qrack-items', file.filename);
+
+        console.log(`📸 Processing image: ${file.originalname} (${(file.size / 1024).toFixed(2)}KB)`);
+        console.log(`📁 File saved at: ${filePath}`);
+
+        if (!existsSync(filePath)) {
+          console.error(`❌ File not found after upload: ${filePath}`);
+          processedUrls.push(`/uploads/qrack-items/${file.filename}`);
+          continue;
+        }
+
+        try {
+          const image = sharp(filePath);
+          const metadata = await image.metadata();
+
+          let processedImage = image;
+
+          if (metadata.width && metadata.height) {
+            if (metadata.width > MAX_WIDTH || metadata.height > MAX_HEIGHT) {
+              processedImage = processedImage.resize(MAX_WIDTH, MAX_HEIGHT, {
+                fit: 'inside',
+                withoutEnlargement: true,
+              });
+            }
+          }
+
+          const outputPath = filePath.replace(extname(file.filename), '.jpg');
+          await processedImage
+            .jpeg({ quality: QUALITY, mozjpeg: true })
+            .toFile(outputPath);
+
+          if (existsSync(outputPath)) {
+            if (extname(file.filename).toLowerCase() !== '.jpg' && extname(file.filename).toLowerCase() !== '.jpeg') {
+              const fs = await import('fs/promises');
+              await fs.unlink(filePath).catch(() => {});
+            }
+
+            const finalFilename = file.filename.replace(extname(file.filename), '.jpg');
+            processedUrls.push(`/uploads/qrack-items/${finalFilename}`);
+            console.log(`✅ Image processed successfully: ${finalFilename}`);
+          } else {
+            processedUrls.push(`/uploads/qrack-items/${file.filename}`);
+            console.log(`⚠️ Processing failed, using original: ${file.filename}`);
+          }
+        } catch (processError: any) {
+          console.warn(`⚠️ Image processing failed, using original:`, processError.message);
+          processedUrls.push(`/uploads/qrack-items/${file.filename}`);
+        }
+      } catch (error: any) {
+        console.error(`❌ Error with file ${file.originalname}:`, error);
+
+        if (error.code === 'EACCES' || error.code === 'EPERM') {
+          throw new HttpException(
+            `Permission denied: Cannot write to upload directory. Please check folder permissions.`,
+            HttpStatus.FORBIDDEN
+          );
+        }
+
+        if (error.code === 'ENOSPC') {
+          throw new HttpException('No space left on device', 507);
+        }
+
+        console.error(`⚠️ Skipping file due to error: ${file.originalname}`);
+      }
+    }
+
+    if (processedUrls.length === 0) {
+      throw new BadRequestException('Failed to process any files');
+    }
+
+    return { urls: processedUrls };
+  }
 }
 
