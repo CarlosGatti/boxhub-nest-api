@@ -9,6 +9,31 @@ Authorization: Bearer <your-jwt-token>
 
 ---
 
+## File Uploads (REST)
+
+Before creating/updating goals with `coverUrl` or adding media to logs, upload files via REST:
+
+### Cover image (Vision Board)
+```http
+POST /uploads/bucket-goals/cover
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+Body: file=<image>
+Response: { "url": "/uploads/bucket-goals/cover/file-xxx.jpg" }
+```
+
+### Media (memories, event photos, travel photos)
+```http
+POST /uploads/bucket-goals/media
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+Body: files=<image|video|pdf>
+Response: { "urls": ["/uploads/bucket-goals/media/file-xxx.jpg", ...] }
+```
+Allowed: JPEG, PNG, GIF, WebP, MP4, WebM, PDF. Max 10 files, 10MB each.
+
+---
+
 ## Queries
 
 ### 1. List Goals (Vision Board)

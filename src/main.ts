@@ -60,6 +60,9 @@ async function bootstrap() {
     "discart-items",
     "qrack-items",
     "avatars",
+    // Bucket List (goals, memories, events, travel)
+    "bucket-goals/cover",
+    "bucket-goals/media",
   ];
 
   if (!existsSync(uploadsDir)) {

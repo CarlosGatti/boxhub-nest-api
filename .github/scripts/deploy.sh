@@ -237,11 +237,15 @@ fi
 # Copiar pasta uploads (manter arquivos existentes)
 if [ -d "$APP_DIR/uploads" ]; then
   echo -e "${YELLOW}📁 Mantendo pasta uploads existente${NC}"
+  mkdir -p "$APP_DIR/uploads/bucket-goals/cover"
+  mkdir -p "$APP_DIR/uploads/bucket-goals/media"
 else
   mkdir -p "$APP_DIR/uploads"
   mkdir -p "$APP_DIR/uploads/discart-items"
   mkdir -p "$APP_DIR/uploads/qrack-items"
   mkdir -p "$APP_DIR/uploads/avatars"
+  mkdir -p "$APP_DIR/uploads/bucket-goals/cover"
+  mkdir -p "$APP_DIR/uploads/bucket-goals/media"
   mkdir -p "$APP_DIR/uploads/construction-logs"
   mkdir -p "$APP_DIR/uploads/project-documents"
   mkdir -p "$APP_DIR/uploads/project-permits"
