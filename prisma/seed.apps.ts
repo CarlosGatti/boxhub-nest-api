@@ -56,6 +56,11 @@ async function main() {
       name: 'Review Cards',
       description: 'QR review card generator',
     },
+    {
+      code: 'BUCKET',
+      name: 'Bucket List',
+      description: 'Personal goals, memories, and map pins',
+    },
   ];
 
   for (const app of apps) {

@@ -70,11 +70,12 @@ docker compose up -d
 ```
 `docker-compose.yml` includes Postgres + Redis (and a Hasura stack for optional use). Adjust credentials before using in shared environments.
 
-### 4) Run Prisma migrations
+### 4) Sync database schema (local dev)
 ```bash
 npx prisma generate
-npx prisma migrate dev
+npx prisma db push
 ```
+> **Note:** We use `db push` for local development until migration workflows are finalized. Production uses `prisma migrate deploy`.
 
 ### 5) Seed (optional)
 ```bash
@@ -120,13 +121,14 @@ Source of truth: `.env.ex`, `.env.production.example`, and usage in `src/main.ts
 
 ## Database & Prisma
 - Prisma is configured for PostgreSQL (`prisma/schema.prisma`).
-- Migrations live in `prisma/migrations/`.
+- Migrations live in `prisma/migrations/` (used in production).
 
 Common commands:
 ```bash
 npx prisma generate
-npx prisma migrate dev
-npx prisma migrate deploy
+npx prisma db push          # Local dev: sync schema without migrations
+npx prisma migrate dev      # (Future) Local: create migration
+npx prisma migrate deploy   # Production: apply migrations
 ```
 
 ## API

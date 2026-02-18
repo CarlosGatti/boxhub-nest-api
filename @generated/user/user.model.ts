@@ -26,6 +26,7 @@ import { RecurringCashflow } from '../recurring-cashflow/recurring-cashflow.mode
 import { ReviewCardBusiness } from '../review-card-business/review-card-business.model';
 import { ReviewCardProject } from '../review-card-project/review-card-project.model';
 import { ReviewCardPremiumRequest } from '../review-card-premium-request/review-card-premium-request.model';
+import { BucketGoal } from '../bucket-goal/bucket-goal.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -174,6 +175,9 @@ export class User {
 
     @Field(() => [ReviewCardPremiumRequest], {nullable:true})
     reviewCardPremiumRequests?: Array<ReviewCardPremiumRequest>;
+
+    @Field(() => [BucketGoal], {nullable:true})
+    bucketGoals?: Array<BucketGoal>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

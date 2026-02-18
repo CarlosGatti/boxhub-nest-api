@@ -20,6 +20,8 @@ class WelcomeTemplate extends Template {
       '..',
       '..',
       '..',
+      '..',
+      '..',
       'static',
       'email',
       'templates',
@@ -43,6 +45,7 @@ class ForgotPasswordTemplate extends Template {
       '..',
       '..',
       '..',
+      '..',
       'static',
       'email',
       'templates',
@@ -56,6 +59,7 @@ class SendPassword extends Template {
   get file() {
     return resolve(
       __dirname,
+      '..',
       '..',
       '..',
       '..',
@@ -79,6 +83,7 @@ class Contact extends Template {
       '..',
       '..',
       '..',
+      '..',
       'static',
       'email',
       'templates',
@@ -92,6 +97,7 @@ class ResidentApprovedTemplate extends Template {
   get file() {
     return resolve(
       __dirname,
+      '..',
       '..',
       '..',
       '..',
@@ -115,6 +121,7 @@ class ResidentRejectedTemplate extends Template {
       '..',
       '..',
       '..',
+      '..',
       'static',
       'email',
       'templates',
@@ -128,6 +135,7 @@ class EmailVerificationTemplate extends Template {
   get file() {
     return resolve(
       __dirname,
+      '..',
       '..',
       '..',
       '..',

@@ -24,6 +24,7 @@ import { SignalboardModule } from 'src/apps/signalboard/signalboard.module';
 import { TjModule } from '../domains/tj/tj.module';
 import { UserModule } from '../domains/user/user.module';
 import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
+import { BucketModule } from '../modules/bucket/bucket.module';
 
 @Module({
   imports: [
@@ -78,6 +79,8 @@ import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
     HomeOpsModule,
     // Review Cards module
     ReviewCardsModule,
+    // Bucket List (goals + memories)
+    BucketModule,
   ],
   controllers: [
     AppController,

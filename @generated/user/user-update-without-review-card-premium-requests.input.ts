@@ -33,6 +33,7 @@ import { CashflowEntryUpdateManyWithoutUserNestedInput } from '../cashflow-entry
 import { RecurringCashflowUpdateManyWithoutUserNestedInput } from '../recurring-cashflow/recurring-cashflow-update-many-without-user-nested.input';
 import { ReviewCardBusinessUpdateManyWithoutUserNestedInput } from '../review-card-business/review-card-business-update-many-without-user-nested.input';
 import { ReviewCardProjectUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-update-many-without-user-nested.input';
+import { BucketGoalUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutReviewCardPremiumRequestsInput {
@@ -178,4 +179,7 @@ export class UserUpdateWithoutReviewCardPremiumRequestsInput {
 
     @Field(() => ReviewCardProjectUpdateManyWithoutUserNestedInput, {nullable:true})
     reviewCardProjects?: ReviewCardProjectUpdateManyWithoutUserNestedInput;
+
+    @Field(() => BucketGoalUpdateManyWithoutUserNestedInput, {nullable:true})
+    bucketGoals?: BucketGoalUpdateManyWithoutUserNestedInput;
 }

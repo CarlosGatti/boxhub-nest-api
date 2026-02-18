@@ -34,6 +34,7 @@ import { CashflowEntryUncheckedUpdateManyWithoutUserNestedInput } from '../cashf
 import { RecurringCashflowUncheckedUpdateManyWithoutUserNestedInput } from '../recurring-cashflow/recurring-cashflow-unchecked-update-many-without-user-nested.input';
 import { ReviewCardProjectUncheckedUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-unchecked-update-many-without-user-nested.input';
 import { ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-unchecked-update-many-without-user-nested.input';
+import { BucketGoalUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutReviewCardBusinessesInput {
@@ -182,4 +183,7 @@ export class UserUncheckedUpdateWithoutReviewCardBusinessesInput {
 
     @Field(() => ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     reviewCardPremiumRequests?: ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => BucketGoalUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    bucketGoals?: BucketGoalUncheckedUpdateManyWithoutUserNestedInput;
 }

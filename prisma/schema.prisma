@@ -171,6 +171,9 @@ model User {
   reviewCardProjects        ReviewCardProject[]
   reviewCardPremiumRequests ReviewCardPremiumRequest[]
 
+  // Bucket List (goals + memories)
+  bucketGoals BucketGoal[]
+
   @@index([email], map: "userEmail")
 }
 
@@ -1125,4 +1128,119 @@ model RecurringCashflow {
   @@index([nextDueDate])
   @@index([isActive])
   @@index([source])
+}
+
+// ============================================
+// Bucket List (Goals + Memories)
+// ============================================
+
+enum BucketGoalType {
+  GENERAL
+  TRAVEL
+  EVENT
+  PLACE_COLLECTION
+  ACHIEVEMENT
+}
+
+enum BucketGoalStatus {
+  IDEA
+  PLANNED
+  IN_PROGRESS
+  DONE
+  DROPPED
+}
+
+enum BucketPinSource {
+  MANUAL
+  NOMINATIM
+  GOOGLE
+}
+
+enum BucketMediaType {
+  IMAGE
+  VIDEO
+  LINK
+}
+
+model BucketGoal {
+  id          Int             @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String?
+  type        BucketGoalType  @default(GENERAL)
+  status      BucketGoalStatus @default(IDEA)
+  priority    Int             @default(0)
+  details     Json?
+  coverUrl    String?
+  tags        String[]        @default([])
+  targetDate  DateTime?
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  user  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs  BucketGoalLog[]
+  pins  BucketGoalPin[]
+  media BucketGoalMedia[]
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, type])
+  @@index([userId, status])
+  @@index([userId, createdAt])
+}
+
+model BucketGoalLog {
+  id         Int       @id @default(autoincrement())
+  goalId     Int
+  note       String
+  happenedAt DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  goal   BucketGoal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  media  BucketGoalMedia[]
+
+  @@index([goalId])
+  @@index([happenedAt])
+  @@index([goalId, happenedAt])
+}
+
+model BucketGoalPin {
+  id       Int            @id @default(autoincrement())
+  goalId   Int
+  lat      Float
+  lng      Float
+  label    String?
+  source   BucketPinSource @default(MANUAL)
+  placeId  String?
+  address  String?
+  raw      Json?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  goal BucketGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@index([source])
+  @@index([goalId, lat, lng])
+}
+
+model BucketGoalMedia {
+  id       Int           @id @default(autoincrement())
+  goalId   Int?
+  logId    Int?
+  url      String
+  type     BucketMediaType @default(IMAGE)
+  metadata Json?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  goal BucketGoal?    @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  log  BucketGoalLog? @relation(fields: [logId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@index([logId])
 }

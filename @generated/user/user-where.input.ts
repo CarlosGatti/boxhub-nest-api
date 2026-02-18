@@ -32,6 +32,7 @@ import { RecurringCashflowListRelationFilter } from '../recurring-cashflow/recur
 import { ReviewCardBusinessListRelationFilter } from '../review-card-business/review-card-business-list-relation-filter.input';
 import { ReviewCardProjectListRelationFilter } from '../review-card-project/review-card-project-list-relation-filter.input';
 import { ReviewCardPremiumRequestListRelationFilter } from '../review-card-premium-request/review-card-premium-request-list-relation-filter.input';
+import { BucketGoalListRelationFilter } from '../bucket-goal/bucket-goal-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -192,4 +193,7 @@ export class UserWhereInput {
 
     @Field(() => ReviewCardPremiumRequestListRelationFilter, {nullable:true})
     reviewCardPremiumRequests?: ReviewCardPremiumRequestListRelationFilter;
+
+    @Field(() => BucketGoalListRelationFilter, {nullable:true})
+    bucketGoals?: BucketGoalListRelationFilter;
 }

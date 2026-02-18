@@ -82,4 +82,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     reviewCardPremiumRequests?: number;
+
+    @Field(() => Int, {nullable:false})
+    bucketGoals?: number;
 }

@@ -27,6 +27,7 @@ import { RecurringCashflowOrderByRelationAggregateInput } from '../recurring-cas
 import { ReviewCardBusinessOrderByRelationAggregateInput } from '../review-card-business/review-card-business-order-by-relation-aggregate.input';
 import { ReviewCardProjectOrderByRelationAggregateInput } from '../review-card-project/review-card-project-order-by-relation-aggregate.input';
 import { ReviewCardPremiumRequestOrderByRelationAggregateInput } from '../review-card-premium-request/review-card-premium-request-order-by-relation-aggregate.input';
+import { BucketGoalOrderByRelationAggregateInput } from '../bucket-goal/bucket-goal-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -178,4 +179,7 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => ReviewCardPremiumRequestOrderByRelationAggregateInput, {nullable:true})
     reviewCardPremiumRequests?: ReviewCardPremiumRequestOrderByRelationAggregateInput;
+
+    @Field(() => BucketGoalOrderByRelationAggregateInput, {nullable:true})
+    bucketGoals?: BucketGoalOrderByRelationAggregateInput;
 }
