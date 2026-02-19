@@ -12,4 +12,7 @@ export class BucketGoalAvgAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     priority?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    detailsSchemaVersion?: true;
 }

@@ -85,4 +85,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     bucketGoals?: number;
+
+    @Field(() => Int, {nullable:false})
+    bucketVisionBoards?: number;
 }

@@ -174,6 +174,9 @@ model User {
   // Bucket List (goals + memories)
   bucketGoals BucketGoal[]
 
+  // Bucket Vision Board
+  bucketVisionBoards BucketVisionBoard[]
+
   @@index([email], map: "userEmail")
 }
 
@@ -1140,6 +1143,11 @@ enum BucketGoalType {
   EVENT
   PLACE_COLLECTION
   ACHIEVEMENT
+  // Specialized goal categories for dedicated frontend views
+  GAME
+  MOVIE
+  TV_SHOW
+  BOOK
 }
 
 enum BucketGoalStatus {
@@ -1163,25 +1171,28 @@ enum BucketMediaType {
 }
 
 model BucketGoal {
-  id          Int             @id @default(autoincrement())
-  userId      Int
-  title       String
-  description String?
-  type        BucketGoalType  @default(GENERAL)
-  status      BucketGoalStatus @default(IDEA)
-  priority    Int             @default(0)
-  details     Json?
-  coverUrl    String?
-  tags        String[]        @default([])
-  targetDate  DateTime?
-  completedAt DateTime?
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id                    Int             @id @default(autoincrement())
+  userId                Int
+  title                 String
+  description           String?
+  type                  BucketGoalType  @default(GENERAL)
+  status                BucketGoalStatus @default(IDEA)
+  priority              Int             @default(0)
+  details               Json?
+  detailsSchemaVersion  Int             @default(1)
+  coverUrl              String?
+  tags                  String[]        @default([])
+  targetDate            DateTime?
+  completedAt           DateTime?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
   user  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   logs  BucketGoalLog[]
   pins  BucketGoalPin[]
   media BucketGoalMedia[]
+
+  bucketVisionGoalLinks BucketVisionGoalLink[]
 
   @@index([userId])
   @@index([type])
@@ -1243,4 +1254,128 @@ model BucketGoalMedia {
 
   @@index([goalId])
   @@index([logId])
+}
+
+// ============================================
+// Bucket Vision Board (guided prompts + visual inspiration)
+// ============================================
+
+enum BucketVisionPeriodType {
+  YEAR
+  QUARTER
+  CUSTOM
+}
+
+enum BucketVisionSectionType {
+  LIFE_WELLBEING
+  SCHOOL_LEARNING
+  DREAM_BIG
+  CAREER_GROWTH
+  VISUAL_INSPIRATION
+  CUSTOM
+}
+
+enum BucketVisionItemType {
+  IMAGE
+  QUOTE
+  COLOR
+  LINK
+  GOAL_REF
+}
+
+enum BucketVisionLayoutMode {
+  FORM
+  CANVAS
+}
+
+model BucketVisionBoard {
+  id         Int                   @id @default(autoincrement())
+  userId     Int
+  title      String                @default("Your Vision Board")
+  periodType BucketVisionPeriodType @default(YEAR)
+  year       Int?
+  periodKey  String?
+  startDate  DateTime?
+  endDate    DateTime?
+  theme      String?
+  layoutMode BucketVisionLayoutMode @default(FORM)
+  coverUrl   String?
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  user     User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections BucketVisionSection[]
+  items    BucketVisionItem[]
+  goalLinks BucketVisionGoalLink[]
+  checkins BucketVisionCheckin[]
+
+  @@unique([userId, year])
+  @@index([userId])
+  @@index([userId, year])
+  @@index([userId, periodKey])
+}
+
+model BucketVisionSection {
+  id        Int                   @id @default(autoincrement())
+  boardId   Int
+  type      BucketVisionSectionType
+  title     String?
+  content   Json?
+  order     Int                   @default(0)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, type])
+  @@index([boardId])
+}
+
+model BucketVisionItem {
+  id       Int            @id @default(autoincrement())
+  boardId  Int
+  type     BucketVisionItemType
+  text     String?
+  url      String?
+  color    String?
+  metadata Json?
+  order    Int            @default(0)
+  layout   Json?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
+  @@index([boardId, type])
+}
+
+model BucketVisionGoalLink {
+  id        Int      @id @default(autoincrement())
+  boardId   Int
+  goalId    Int
+  label     String?
+  createdAt DateTime @default(now())
+
+  board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  goal  BucketGoal        @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, goalId])
+  @@index([boardId])
+  @@index([goalId])
+}
+
+model BucketVisionCheckin {
+  id        Int      @id @default(autoincrement())
+  boardId   Int
+  kind      String?
+  notes     String?
+  mood      Json?
+  snapshot  Json?
+  createdAt DateTime @default(now())
+
+  board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
+  @@index([boardId, createdAt])
 }

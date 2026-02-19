@@ -30,6 +30,9 @@ export class BucketGoalCountAggregate {
     details!: number;
 
     @Field(() => Int, {nullable:false})
+    detailsSchemaVersion!: number;
+
+    @Field(() => Int, {nullable:false})
     coverUrl!: number;
 
     @Field(() => Int, {nullable:false})

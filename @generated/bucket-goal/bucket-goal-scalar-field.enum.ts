@@ -9,6 +9,7 @@ export enum BucketGoalScalarFieldEnum {
     status = "status",
     priority = "priority",
     details = "details",
+    detailsSchemaVersion = "detailsSchemaVersion",
     coverUrl = "coverUrl",
     tags = "tags",
     targetDate = "targetDate",

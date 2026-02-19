@@ -7,6 +7,7 @@ import { GraphQLJSON } from 'graphql-type-json';
 import { BucketGoalCreatetagsInput } from './bucket-goal-createtags.input';
 import { BucketGoalPinUncheckedCreateNestedManyWithoutGoalInput } from '../bucket-goal-pin/bucket-goal-pin-unchecked-create-nested-many-without-goal.input';
 import { BucketGoalMediaUncheckedCreateNestedManyWithoutGoalInput } from '../bucket-goal-media/bucket-goal-media-unchecked-create-nested-many-without-goal.input';
+import { BucketVisionGoalLinkUncheckedCreateNestedManyWithoutGoalInput } from '../bucket-vision-goal-link/bucket-vision-goal-link-unchecked-create-nested-many-without-goal.input';
 
 @InputType()
 export class BucketGoalUncheckedCreateWithoutLogsInput {
@@ -35,6 +36,9 @@ export class BucketGoalUncheckedCreateWithoutLogsInput {
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
 
+    @Field(() => Int, {nullable:true})
+    detailsSchemaVersion?: number;
+
     @Field(() => String, {nullable:true})
     coverUrl?: string;
 
@@ -58,4 +62,7 @@ export class BucketGoalUncheckedCreateWithoutLogsInput {
 
     @Field(() => BucketGoalMediaUncheckedCreateNestedManyWithoutGoalInput, {nullable:true})
     media?: BucketGoalMediaUncheckedCreateNestedManyWithoutGoalInput;
+
+    @Field(() => BucketVisionGoalLinkUncheckedCreateNestedManyWithoutGoalInput, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkUncheckedCreateNestedManyWithoutGoalInput;
 }

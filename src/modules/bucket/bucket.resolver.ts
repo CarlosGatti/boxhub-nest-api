@@ -6,12 +6,14 @@ import { User } from '@generated/user/user.model';
 import { BucketService } from './bucket.service';
 import { BucketGoal } from '@generated/bucket-goal/bucket-goal.model';
 import { BucketGoalLog } from '@generated/bucket-goal-log/bucket-goal-log.model';
+import { BucketGoalMedia } from '@generated/bucket-goal-media/bucket-goal-media.model';
 import { BucketGoalPin } from '@generated/bucket-goal-pin/bucket-goal-pin.model';
 import { CreateBucketGoalInput } from './dto/create-bucket-goal.input';
 import { UpdateBucketGoalInput } from './dto/update-bucket-goal.input';
 import { BucketGoalsFilterInput } from './dto/bucket-goals-filter.input';
 import { CreateBucketGoalLogInput } from './dto/create-bucket-goal-log.input';
 import { AddBucketGoalPinInput } from './dto/add-bucket-goal-pin.input';
+import { AddBucketGoalMediaInput } from './dto/add-bucket-goal-media.input';
 import { BucketMapPinsFilterInput } from './dto/bucket-map-pins-filter.input';
 import { BucketDashboardSummary } from './types/bucket-dashboard-summary.type';
 import { BucketMapPinOutput } from './types/bucket-map-pin-output.type';
@@ -104,6 +106,30 @@ export class BucketResolver {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Mutation(() => BucketGoal, {
+    name: 'removeBucketGoalCover',
+    description: 'Remove cover image from a goal (clears coverUrl, deletes local file if applicable)',
+  })
+  async removeBucketGoalCover(
+    @Args('goalId', { type: () => Int }) goalId: number,
+    @CurrentUser() user: User,
+  ) {
+    return this.bucketService.removeBucketGoalCover(user.id, goalId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Boolean, {
+    name: 'deleteBucketGoalMedia',
+    description: 'Delete a goal media record and its local file if applicable',
+  })
+  async deleteBucketGoalMedia(
+    @Args('mediaId', { type: () => Int }) mediaId: number,
+    @CurrentUser() user: User,
+  ) {
+    return this.bucketService.deleteBucketGoalMedia(user.id, mediaId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => BucketGoalLog, {
     name: 'addBucketGoalLog',
     description: 'Add a memory/log entry to a goal',
@@ -139,5 +165,16 @@ export class BucketResolver {
     @CurrentUser() user: User,
   ) {
     return this.bucketService.addPin(user.id, goalId, input);
+  }
+
+  @Mutation(() => BucketGoalMedia, {
+    name: 'addBucketGoalMedia',
+    description: 'Add media to a goal or log. Exactly one of goalId or logId required (XOR).',
+  })
+  async addBucketGoalMedia(
+    @Args('input') input: AddBucketGoalMediaInput,
+    @CurrentUser() user: User,
+  ) {
+    return this.bucketService.addBucketGoalMedia(user.id, input);
   }
 }

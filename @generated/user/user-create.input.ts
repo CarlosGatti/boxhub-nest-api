@@ -30,6 +30,7 @@ import { ReviewCardBusinessCreateNestedManyWithoutUserInput } from '../review-ca
 import { ReviewCardProjectCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-create-nested-many-without-user.input';
 import { ReviewCardPremiumRequestCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-create-nested-many-without-user.input';
 import { BucketGoalCreateNestedManyWithoutUserInput } from '../bucket-goal/bucket-goal-create-nested-many-without-user.input';
+import { BucketVisionBoardCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateInput {
@@ -181,4 +182,7 @@ export class UserCreateInput {
 
     @Field(() => BucketGoalCreateNestedManyWithoutUserInput, {nullable:true})
     bucketGoals?: BucketGoalCreateNestedManyWithoutUserInput;
+
+    @Field(() => BucketVisionBoardCreateNestedManyWithoutUserInput, {nullable:true})
+    bucketVisionBoards?: BucketVisionBoardCreateNestedManyWithoutUserInput;
 }

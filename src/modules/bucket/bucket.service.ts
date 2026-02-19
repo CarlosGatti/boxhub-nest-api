@@ -5,14 +5,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { BucketGoalType, BucketGoalStatus, BucketPinSource, LogAction } from '@prisma/client';
+import { BucketGoalType, BucketGoalStatus, BucketMediaType, BucketPinSource, LogAction } from '@prisma/client';
 import { createLog } from '../../core/services/create-log';
+import { deleteUploadByUrl } from '../../core/utils/upload-delete.util';
 import { validateDetails } from './validation/details.schemas';
 import { CreateBucketGoalInput } from './dto/create-bucket-goal.input';
 import { UpdateBucketGoalInput } from './dto/update-bucket-goal.input';
 import { BucketGoalsFilterInput } from './dto/bucket-goals-filter.input';
 import { CreateBucketGoalLogInput } from './dto/create-bucket-goal-log.input';
 import { AddBucketGoalPinInput } from './dto/add-bucket-goal-pin.input';
+import { AddBucketGoalMediaInput } from './dto/add-bucket-goal-media.input';
 import { BucketMapPinsFilterInput } from './dto/bucket-map-pins-filter.input';
 import {
   BucketDashboardSummary,
@@ -53,6 +55,21 @@ export class BucketService {
     return log;
   }
 
+  private async assertMediaOwnership(mediaId: number, userId: number) {
+    const media = await this.prisma.bucketGoalMedia.findUnique({
+      where: { id: mediaId },
+      include: { goal: true, log: { include: { goal: true } } },
+    });
+    if (!media) {
+      throw new NotFoundException(`Bucket goal media with ID ${mediaId} not found`);
+    }
+    const ownerId = media.goal?.userId ?? media.log?.goal?.userId;
+    if (ownerId === undefined || ownerId !== userId) {
+      throw new ForbiddenException('You do not have access to this media');
+    }
+    return media;
+  }
+
   async createGoal(userId: number, input: CreateBucketGoalInput) {
     const type = input.type ?? BucketGoalType.GENERAL;
     let details: object | undefined;
@@ -71,6 +88,7 @@ export class BucketService {
         status: input.status ?? BucketGoalStatus.IDEA,
         priority: input.priority ?? 0,
         details: details as Prisma.JsonObject | undefined,
+        detailsSchemaVersion: 1,
         coverUrl: input.coverUrl,
         tags: input.tags ?? [],
         targetDate: input.targetDate,
@@ -144,22 +162,77 @@ export class BucketService {
     return true;
   }
 
+  async removeBucketGoalCover(userId: number, goalId: number) {
+    const goal = await this.assertGoalOwnership(goalId, userId);
+    const oldCoverUrl = goal.coverUrl;
+
+    const updated = await this.prisma.bucketGoal.update({
+      where: { id: goalId },
+      data: { coverUrl: null },
+    });
+
+    await deleteUploadByUrl(oldCoverUrl);
+
+    await createLog({
+      action: LogAction.CUSTOM_ACTION,
+      userId,
+      details: 'GOAL_COVER_REMOVED',
+      metadata: { goalId },
+    });
+
+    return updated;
+  }
+
+  async deleteBucketGoalMedia(userId: number, mediaId: number) {
+    const media = await this.assertMediaOwnership(mediaId, userId);
+    const mediaUrl = media.url;
+
+    await this.prisma.bucketGoalMedia.delete({
+      where: { id: mediaId },
+    });
+
+    await deleteUploadByUrl(mediaUrl);
+
+    await createLog({
+      action: LogAction.CUSTOM_ACTION,
+      userId,
+      details: 'GOAL_MEDIA_DELETED',
+      metadata: { mediaId },
+    });
+
+    return true;
+  }
+
   async listGoals(
     userId: number,
     filter?: BucketGoalsFilterInput,
   ) {
     const where: Prisma.BucketGoalWhereInput = { userId };
 
-    if (filter?.type) {
+    // Type filter: typeIn takes precedence, else single type (backward compatible)
+    if (filter?.typeIn?.length) {
+      where.type = { in: filter.typeIn };
+    } else if (filter?.type) {
       where.type = filter.type;
     }
-    if (filter?.status) {
+
+    // Status filter: statusIn takes precedence, else single status (backward compatible)
+    if (filter?.statusIn?.length) {
+      where.status = { in: filter.statusIn };
+    } else if (filter?.status) {
       where.status = filter.status;
     }
-    if (filter?.search && filter.search.trim()) {
+
+    // Tags filter: goals that have at least one of the specified tags
+    if (filter?.tagsHasAny?.length) {
+      where.tags = { hasSome: filter.tagsHasAny };
+    }
+
+    // Search: case-insensitive match on title or description
+    if (filter?.search?.trim()) {
       where.OR = [
-        { title: { contains: filter.search, mode: 'insensitive' } },
-        { description: { contains: filter.search, mode: 'insensitive' } },
+        { title: { contains: filter.search.trim(), mode: 'insensitive' } },
+        { description: { contains: filter.search.trim(), mode: 'insensitive' } },
       ];
     }
 
@@ -257,6 +330,63 @@ export class BucketService {
     return pin;
   }
 
+  /**
+   * Add BucketGoalMedia. Enforces XOR: exactly one of goalId or logId must be provided.
+   * Validates ownership before creating.
+   */
+  async addBucketGoalMedia(userId: number, input: AddBucketGoalMediaInput) {
+    const hasGoalId = input.goalId != null && input.goalId > 0;
+    const hasLogId = input.logId != null && input.logId > 0;
+
+    if (hasGoalId && hasLogId) {
+      throw new BadRequestException(
+        'Provide exactly one of goalId or logId, not both. Media must be attached to either a goal or a log.',
+      );
+    }
+    if (!hasGoalId && !hasLogId) {
+      throw new BadRequestException(
+        'Provide exactly one of goalId or logId. Media must be attached to either a goal or a log.',
+      );
+    }
+
+    let goalId: number | null = null;
+    let logId: number | null = null;
+
+    if (hasGoalId) {
+      await this.assertGoalOwnership(input.goalId!, userId);
+      goalId = input.goalId!;
+    } else {
+      await this.assertLogOwnership(input.logId!, userId);
+      const log = await this.prisma.bucketGoalLog.findUnique({
+        where: { id: input.logId! },
+        include: { goal: true },
+      });
+      if (!log) {
+        throw new NotFoundException(`Log with ID ${input.logId} not found`);
+      }
+      logId = input.logId!;
+    }
+
+    const media = await this.prisma.bucketGoalMedia.create({
+      data: {
+        goalId,
+        logId,
+        url: input.url,
+        type: (input.type as BucketMediaType) ?? BucketMediaType.IMAGE,
+        metadata: (input.metadata ?? undefined) as Prisma.JsonObject | undefined,
+      },
+    });
+
+    await createLog({
+      action: LogAction.CUSTOM_ACTION,
+      userId,
+      details: 'GOAL_MEDIA_ADDED',
+      metadata: { mediaId: media.id, goalId, logId },
+    });
+
+    return media;
+  }
+
   async listMapPins(userId: number, filter?: BucketMapPinsFilterInput) {
     const where: Prisma.BucketGoalPinWhereInput = {
       goal: {
@@ -321,6 +451,10 @@ export class BucketService {
       EVENT: 0,
       PLACE_COLLECTION: 0,
       ACHIEVEMENT: 0,
+      GAME: 0,
+      MOVIE: 0,
+      TV_SHOW: 0,
+      BOOK: 0,
     };
     byType.forEach((t) => {
       typeMap[t.type] = t._count.id;

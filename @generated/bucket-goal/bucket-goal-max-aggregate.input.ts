@@ -26,6 +26,9 @@ export class BucketGoalMaxAggregateInput {
     priority?: true;
 
     @Field(() => Boolean, {nullable:true})
+    detailsSchemaVersion?: true;
+
+    @Field(() => Boolean, {nullable:true})
     coverUrl?: true;
 
     @Field(() => Boolean, {nullable:true})

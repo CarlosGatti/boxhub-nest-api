@@ -9,6 +9,7 @@ import { UserCreateNestedOneWithoutBucketGoalsInput } from '../user/user-create-
 import { Type } from 'class-transformer';
 import { BucketGoalPinCreateNestedManyWithoutGoalInput } from '../bucket-goal-pin/bucket-goal-pin-create-nested-many-without-goal.input';
 import { BucketGoalMediaCreateNestedManyWithoutGoalInput } from '../bucket-goal-media/bucket-goal-media-create-nested-many-without-goal.input';
+import { BucketVisionGoalLinkCreateNestedManyWithoutGoalInput } from '../bucket-vision-goal-link/bucket-vision-goal-link-create-nested-many-without-goal.input';
 
 @InputType()
 export class BucketGoalCreateWithoutLogsInput {
@@ -30,6 +31,9 @@ export class BucketGoalCreateWithoutLogsInput {
 
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
+
+    @Field(() => Int, {nullable:true})
+    detailsSchemaVersion?: number;
 
     @Field(() => String, {nullable:true})
     coverUrl?: string;
@@ -58,4 +62,7 @@ export class BucketGoalCreateWithoutLogsInput {
 
     @Field(() => BucketGoalMediaCreateNestedManyWithoutGoalInput, {nullable:true})
     media?: BucketGoalMediaCreateNestedManyWithoutGoalInput;
+
+    @Field(() => BucketVisionGoalLinkCreateNestedManyWithoutGoalInput, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkCreateNestedManyWithoutGoalInput;
 }

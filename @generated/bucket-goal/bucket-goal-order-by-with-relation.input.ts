@@ -7,6 +7,7 @@ import { Type } from 'class-transformer';
 import { BucketGoalLogOrderByRelationAggregateInput } from '../bucket-goal-log/bucket-goal-log-order-by-relation-aggregate.input';
 import { BucketGoalPinOrderByRelationAggregateInput } from '../bucket-goal-pin/bucket-goal-pin-order-by-relation-aggregate.input';
 import { BucketGoalMediaOrderByRelationAggregateInput } from '../bucket-goal-media/bucket-goal-media-order-by-relation-aggregate.input';
+import { BucketVisionGoalLinkOrderByRelationAggregateInput } from '../bucket-vision-goal-link/bucket-vision-goal-link-order-by-relation-aggregate.input';
 
 @InputType()
 export class BucketGoalOrderByWithRelationInput {
@@ -34,6 +35,9 @@ export class BucketGoalOrderByWithRelationInput {
 
     @Field(() => SortOrderInput, {nullable:true})
     details?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    detailsSchemaVersion?: keyof typeof SortOrder;
 
     @Field(() => SortOrderInput, {nullable:true})
     coverUrl?: SortOrderInput;
@@ -65,4 +69,7 @@ export class BucketGoalOrderByWithRelationInput {
 
     @Field(() => BucketGoalMediaOrderByRelationAggregateInput, {nullable:true})
     media?: BucketGoalMediaOrderByRelationAggregateInput;
+
+    @Field(() => BucketVisionGoalLinkOrderByRelationAggregateInput, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkOrderByRelationAggregateInput;
 }

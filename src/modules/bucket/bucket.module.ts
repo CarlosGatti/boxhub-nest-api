@@ -3,10 +3,13 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { BucketService } from './bucket.service';
 import { BucketResolver } from './bucket.resolver';
+import { BucketGoalsUploadController } from './upload/bucket-goals-upload.controller';
+import { BucketGoalsUploadService } from './upload/bucket-goals-upload.service';
 
 @Module({
   imports: [AuthModule],
-  providers: [BucketService, BucketResolver, PrismaService],
+  controllers: [BucketGoalsUploadController],
+  providers: [BucketService, BucketResolver, BucketGoalsUploadService, PrismaService],
   exports: [BucketService],
 })
 export class BucketModule {}

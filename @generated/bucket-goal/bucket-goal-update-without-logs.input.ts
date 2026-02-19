@@ -13,6 +13,7 @@ import { UserUpdateOneRequiredWithoutBucketGoalsNestedInput } from '../user/user
 import { Type } from 'class-transformer';
 import { BucketGoalPinUpdateManyWithoutGoalNestedInput } from '../bucket-goal-pin/bucket-goal-pin-update-many-without-goal-nested.input';
 import { BucketGoalMediaUpdateManyWithoutGoalNestedInput } from '../bucket-goal-media/bucket-goal-media-update-many-without-goal-nested.input';
+import { BucketVisionGoalLinkUpdateManyWithoutGoalNestedInput } from '../bucket-vision-goal-link/bucket-vision-goal-link-update-many-without-goal-nested.input';
 
 @InputType()
 export class BucketGoalUpdateWithoutLogsInput {
@@ -34,6 +35,9 @@ export class BucketGoalUpdateWithoutLogsInput {
 
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
+
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    detailsSchemaVersion?: IntFieldUpdateOperationsInput;
 
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     coverUrl?: NullableStringFieldUpdateOperationsInput;
@@ -62,4 +66,7 @@ export class BucketGoalUpdateWithoutLogsInput {
 
     @Field(() => BucketGoalMediaUpdateManyWithoutGoalNestedInput, {nullable:true})
     media?: BucketGoalMediaUpdateManyWithoutGoalNestedInput;
+
+    @Field(() => BucketVisionGoalLinkUpdateManyWithoutGoalNestedInput, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkUpdateManyWithoutGoalNestedInput;
 }

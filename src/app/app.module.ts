@@ -25,6 +25,7 @@ import { TjModule } from '../domains/tj/tj.module';
 import { UserModule } from '../domains/user/user.module';
 import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
 import { BucketModule } from '../modules/bucket/bucket.module';
+import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.module';
 
 @Module({
   imports: [
@@ -81,6 +82,8 @@ import { BucketModule } from '../modules/bucket/bucket.module';
     ReviewCardsModule,
     // Bucket List (goals + memories)
     BucketModule,
+    // Bucket Vision Board
+    BucketVisionModule,
   ],
   controllers: [
     AppController,

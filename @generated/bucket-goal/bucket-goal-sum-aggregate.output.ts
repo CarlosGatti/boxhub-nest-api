@@ -13,4 +13,7 @@ export class BucketGoalSumAggregate {
 
     @Field(() => Int, {nullable:true})
     priority?: number;
+
+    @Field(() => Int, {nullable:true})
+    detailsSchemaVersion?: number;
 }

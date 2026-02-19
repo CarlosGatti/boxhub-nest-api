@@ -12,6 +12,7 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { BucketGoalLogUncheckedUpdateManyWithoutGoalNestedInput } from '../bucket-goal-log/bucket-goal-log-unchecked-update-many-without-goal-nested.input';
 import { BucketGoalPinUncheckedUpdateManyWithoutGoalNestedInput } from '../bucket-goal-pin/bucket-goal-pin-unchecked-update-many-without-goal-nested.input';
 import { BucketGoalMediaUncheckedUpdateManyWithoutGoalNestedInput } from '../bucket-goal-media/bucket-goal-media-unchecked-update-many-without-goal-nested.input';
+import { BucketVisionGoalLinkUncheckedUpdateManyWithoutGoalNestedInput } from '../bucket-vision-goal-link/bucket-vision-goal-link-unchecked-update-many-without-goal-nested.input';
 
 @InputType()
 export class BucketGoalUncheckedUpdateInput {
@@ -40,6 +41,9 @@ export class BucketGoalUncheckedUpdateInput {
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
 
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    detailsSchemaVersion?: IntFieldUpdateOperationsInput;
+
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     coverUrl?: NullableStringFieldUpdateOperationsInput;
 
@@ -66,4 +70,7 @@ export class BucketGoalUncheckedUpdateInput {
 
     @Field(() => BucketGoalMediaUncheckedUpdateManyWithoutGoalNestedInput, {nullable:true})
     media?: BucketGoalMediaUncheckedUpdateManyWithoutGoalNestedInput;
+
+    @Field(() => BucketVisionGoalLinkUncheckedUpdateManyWithoutGoalNestedInput, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkUncheckedUpdateManyWithoutGoalNestedInput;
 }

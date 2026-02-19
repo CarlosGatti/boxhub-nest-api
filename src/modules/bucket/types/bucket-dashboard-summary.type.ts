@@ -36,6 +36,18 @@ export class BucketTypeCounts {
 
   @Field(() => Int)
   ACHIEVEMENT: number;
+
+  @Field(() => Int)
+  GAME: number;
+
+  @Field(() => Int)
+  MOVIE: number;
+
+  @Field(() => Int)
+  TV_SHOW: number;
+
+  @Field(() => Int)
+  BOOK: number;
 }
 
 @ObjectType()

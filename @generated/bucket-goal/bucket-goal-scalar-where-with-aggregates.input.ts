@@ -46,6 +46,9 @@ export class BucketGoalScalarWhereWithAggregatesInput {
     @Field(() => JsonNullableWithAggregatesFilter, {nullable:true})
     details?: JsonNullableWithAggregatesFilter;
 
+    @Field(() => IntWithAggregatesFilter, {nullable:true})
+    detailsSchemaVersion?: IntWithAggregatesFilter;
+
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     coverUrl?: StringNullableWithAggregatesFilter;
 

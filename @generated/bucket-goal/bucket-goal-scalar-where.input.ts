@@ -46,6 +46,9 @@ export class BucketGoalScalarWhereInput {
     @Field(() => JsonNullableFilter, {nullable:true})
     details?: JsonNullableFilter;
 
+    @Field(() => IntFilter, {nullable:true})
+    detailsSchemaVersion?: IntFilter;
+
     @Field(() => StringNullableFilter, {nullable:true})
     coverUrl?: StringNullableFilter;
 

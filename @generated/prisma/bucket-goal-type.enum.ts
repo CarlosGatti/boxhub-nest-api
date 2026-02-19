@@ -5,7 +5,11 @@ export enum BucketGoalType {
     TRAVEL = "TRAVEL",
     EVENT = "EVENT",
     PLACE_COLLECTION = "PLACE_COLLECTION",
-    ACHIEVEMENT = "ACHIEVEMENT"
+    ACHIEVEMENT = "ACHIEVEMENT",
+    GAME = "GAME",
+    MOVIE = "MOVIE",
+    TV_SHOW = "TV_SHOW",
+    BOOK = "BOOK"
 }
 
 

@@ -35,6 +35,9 @@ export class BucketGoalOrderByWithAggregationInput {
     @Field(() => SortOrderInput, {nullable:true})
     details?: SortOrderInput;
 
+    @Field(() => SortOrder, {nullable:true})
+    detailsSchemaVersion?: keyof typeof SortOrder;
+
     @Field(() => SortOrderInput, {nullable:true})
     coverUrl?: SortOrderInput;
 

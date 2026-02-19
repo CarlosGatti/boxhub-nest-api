@@ -13,4 +13,7 @@ export class BucketGoalSumOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     priority?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    detailsSchemaVersion?: keyof typeof SortOrder;
 }

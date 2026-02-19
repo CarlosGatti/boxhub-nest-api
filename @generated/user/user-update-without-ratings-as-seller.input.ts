@@ -34,6 +34,7 @@ import { ReviewCardBusinessUpdateManyWithoutUserNestedInput } from '../review-ca
 import { ReviewCardProjectUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-update-many-without-user-nested.input';
 import { ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-update-many-without-user-nested.input';
 import { BucketGoalUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-update-many-without-user-nested.input';
+import { BucketVisionBoardUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateWithoutRatingsAsSellerInput {
@@ -182,4 +183,7 @@ export class UserUpdateWithoutRatingsAsSellerInput {
 
     @Field(() => BucketGoalUpdateManyWithoutUserNestedInput, {nullable:true})
     bucketGoals?: BucketGoalUpdateManyWithoutUserNestedInput;
+
+    @Field(() => BucketVisionBoardUpdateManyWithoutUserNestedInput, {nullable:true})
+    bucketVisionBoards?: BucketVisionBoardUpdateManyWithoutUserNestedInput;
 }

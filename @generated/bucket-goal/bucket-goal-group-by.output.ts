@@ -37,6 +37,9 @@ export class BucketGoalGroupBy {
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
 
+    @Field(() => Int, {nullable:false})
+    detailsSchemaVersion!: number;
+
     @Field(() => String, {nullable:true})
     coverUrl?: string;
 

@@ -9,6 +9,7 @@ import { User } from '../user/user.model';
 import { BucketGoalLog } from '../bucket-goal-log/bucket-goal-log.model';
 import { BucketGoalPin } from '../bucket-goal-pin/bucket-goal-pin.model';
 import { BucketGoalMedia } from '../bucket-goal-media/bucket-goal-media.model';
+import { BucketVisionGoalLink } from '../bucket-vision-goal-link/bucket-vision-goal-link.model';
 import { BucketGoalCount } from './bucket-goal-count.output';
 
 @ObjectType()
@@ -37,6 +38,9 @@ export class BucketGoal {
 
     @Field(() => GraphQLJSON, {nullable:true})
     details!: any | null;
+
+    @Field(() => Int, {nullable:false,defaultValue:1})
+    detailsSchemaVersion!: number;
 
     @Field(() => String, {nullable:true})
     coverUrl!: string | null;
@@ -67,6 +71,9 @@ export class BucketGoal {
 
     @Field(() => [BucketGoalMedia], {nullable:true})
     media?: Array<BucketGoalMedia>;
+
+    @Field(() => [BucketVisionGoalLink], {nullable:true})
+    bucketVisionGoalLinks?: Array<BucketVisionGoalLink>;
 
     @Field(() => BucketGoalCount, {nullable:false})
     _count?: BucketGoalCount;

@@ -34,6 +34,7 @@ import { ReviewCardBusinessListRelationFilter } from '../review-card-business/re
 import { ReviewCardProjectListRelationFilter } from '../review-card-project/review-card-project-list-relation-filter.input';
 import { ReviewCardPremiumRequestListRelationFilter } from '../review-card-premium-request/review-card-premium-request-list-relation-filter.input';
 import { BucketGoalListRelationFilter } from '../bucket-goal/bucket-goal-list-relation-filter.input';
+import { BucketVisionBoardListRelationFilter } from '../bucket-vision-board/bucket-vision-board-list-relation-filter.input';
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -197,4 +198,7 @@ export class UserWhereUniqueInput {
 
     @Field(() => BucketGoalListRelationFilter, {nullable:true})
     bucketGoals?: BucketGoalListRelationFilter;
+
+    @Field(() => BucketVisionBoardListRelationFilter, {nullable:true})
+    bucketVisionBoards?: BucketVisionBoardListRelationFilter;
 }

@@ -33,6 +33,9 @@ export class BucketGoalCreateManyInput {
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
 
+    @Field(() => Int, {nullable:true})
+    detailsSchemaVersion?: number;
+
     @Field(() => String, {nullable:true})
     coverUrl?: string;
 

@@ -13,4 +13,7 @@ export class BucketGoalCount {
 
     @Field(() => Int, {nullable:false})
     media?: number;
+
+    @Field(() => Int, {nullable:false})
+    bucketVisionGoalLinks?: number;
 }

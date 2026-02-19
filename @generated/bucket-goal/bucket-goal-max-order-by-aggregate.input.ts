@@ -27,6 +27,9 @@ export class BucketGoalMaxOrderByAggregateInput {
     priority?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    detailsSchemaVersion?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     coverUrl?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

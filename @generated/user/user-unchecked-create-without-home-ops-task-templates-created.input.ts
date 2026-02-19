@@ -30,6 +30,7 @@ import { ReviewCardBusinessUncheckedCreateNestedManyWithoutUserInput } from '../
 import { ReviewCardProjectUncheckedCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-unchecked-create-nested-many-without-user.input';
 import { ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-unchecked-create-nested-many-without-user.input';
 import { BucketGoalUncheckedCreateNestedManyWithoutUserInput } from '../bucket-goal/bucket-goal-unchecked-create-nested-many-without-user.input';
+import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutHomeOpsTaskTemplatesCreatedInput {
@@ -181,4 +182,7 @@ export class UserUncheckedCreateWithoutHomeOpsTaskTemplatesCreatedInput {
 
     @Field(() => BucketGoalUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     bucketGoals?: BucketGoalUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    bucketVisionBoards?: BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput;
 }

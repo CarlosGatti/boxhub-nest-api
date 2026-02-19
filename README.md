@@ -118,6 +118,7 @@ Source of truth: `.env.ex`, `.env.production.example`, and usage in `src/main.ts
 | `LOG_LEVELS` | No | `error,warn,log` | NestJS logger levels |
 | `LOG_HTTP` | No | `true` | Logs inbound HTTP requests |
 | `ENABLE_LOCAL_CORS` | No | `true` | Force-enable CORS in non-prod |
+| `PUBLIC_API_URL` | No | `https://api.example.com` | Base URL for upload links (fallback: request host) |
 
 ## Database & Prisma
 - Prisma is configured for PostgreSQL (`prisma/schema.prisma`).
@@ -150,6 +151,7 @@ query {
 ### REST (minimal)
 - `GET /` → `Hello World!`
 - `GET /health` → `{ status: "ok", timestamp: "..." }`
+- **Bucket uploads:** `POST /uploads/bucket-goals/cover`, `POST /uploads/bucket-goals/media` — see [docs/bucket-uploads.md](docs/bucket-uploads.md)
 
 ## Auth
 Authentication uses **JWT (Passport)** with `Authorization: Bearer <token>`.  

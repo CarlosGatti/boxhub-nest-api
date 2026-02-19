@@ -31,6 +31,9 @@ export class BucketGoalUpdateManyMutationInput {
     @Field(() => GraphQLJSON, {nullable:true})
     details?: any;
 
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    detailsSchemaVersion?: IntFieldUpdateOperationsInput;
+
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     coverUrl?: NullableStringFieldUpdateOperationsInput;
 

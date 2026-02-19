@@ -13,4 +13,7 @@ export class BucketGoalAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     priority?: number;
+
+    @Field(() => Float, {nullable:true})
+    detailsSchemaVersion?: number;
 }

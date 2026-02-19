@@ -14,6 +14,7 @@ import { Type } from 'class-transformer';
 import { BucketGoalLogListRelationFilter } from '../bucket-goal-log/bucket-goal-log-list-relation-filter.input';
 import { BucketGoalPinListRelationFilter } from '../bucket-goal-pin/bucket-goal-pin-list-relation-filter.input';
 import { BucketGoalMediaListRelationFilter } from '../bucket-goal-media/bucket-goal-media-list-relation-filter.input';
+import { BucketVisionGoalLinkListRelationFilter } from '../bucket-vision-goal-link/bucket-vision-goal-link-list-relation-filter.input';
 
 @InputType()
 export class BucketGoalWhereInput {
@@ -51,6 +52,9 @@ export class BucketGoalWhereInput {
     @Field(() => JsonNullableFilter, {nullable:true})
     details?: JsonNullableFilter;
 
+    @Field(() => IntFilter, {nullable:true})
+    detailsSchemaVersion?: IntFilter;
+
     @Field(() => StringNullableFilter, {nullable:true})
     coverUrl?: StringNullableFilter;
 
@@ -81,4 +85,7 @@ export class BucketGoalWhereInput {
 
     @Field(() => BucketGoalMediaListRelationFilter, {nullable:true})
     media?: BucketGoalMediaListRelationFilter;
+
+    @Field(() => BucketVisionGoalLinkListRelationFilter, {nullable:true})
+    bucketVisionGoalLinks?: BucketVisionGoalLinkListRelationFilter;
 }

@@ -28,6 +28,9 @@ export class BucketGoalMaxAggregate {
     @Field(() => Int, {nullable:true})
     priority?: number;
 
+    @Field(() => Int, {nullable:true})
+    detailsSchemaVersion?: number;
+
     @Field(() => String, {nullable:true})
     coverUrl?: string;
 
