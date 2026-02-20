@@ -3,7 +3,7 @@
 Guia completo: **o que fazer** → **qual endpoint** → **payload exato**. Todas as operações exigem `Authorization: Bearer <token>`.
 
 **Base URL GraphQL:** `{API_URL}/graphql`  
-**Base URL REST:** `{API_URL}/uploads/bucket-goals/`
+**Base URL REST:** `{API_URL}/api/bucket-goals/upload/`
 
 ---
 
@@ -367,7 +367,7 @@ query BucketMapPins($filter: BucketMapPinsFilterInput) {
 
 ### 2.1 Upload capa
 
-**REST:** `POST /uploads/bucket-goals/cover`
+**REST:** `POST /api/bucket-goals/upload/cover`
 
 **Form-data:**
 | Campo | Tipo | Obrigatório |
@@ -383,7 +383,7 @@ query BucketMapPins($filter: BucketMapPinsFilterInput) {
 
 ### 2.2 Upload mídia
 
-**REST:** `POST /uploads/bucket-goals/media`
+**REST:** `POST /api/bucket-goals/upload/media`
 
 **Form-data:**
 | Campo | Tipo | Obrigatório |

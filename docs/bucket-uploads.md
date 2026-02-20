@@ -2,7 +2,7 @@
 
 REST endpoints for uploading images to Bucket Goals and Vision Board.
 
-**Base path:** `POST /uploads/bucket-goals/`
+**Base path:** `POST /api/bucket-goals/upload/`
 
 **Auth:** All endpoints require `Authorization: Bearer <jwt-token>`.
 
@@ -18,7 +18,7 @@ REST endpoints for uploading images to Bucket Goals and Vision Board.
 
 Upload a cover image for a BucketGoal. The goal's `coverUrl` is updated automatically.
 
-**Endpoint:** `POST /uploads/bucket-goals/cover`
+**Endpoint:** `POST /api/bucket-goals/upload/cover`
 
 **Form fields:**
 - `file` (required): image file
@@ -34,7 +34,7 @@ Upload a cover image for a BucketGoal. The goal's `coverUrl` is updated automati
 
 **Example (curl):**
 ```bash
-curl -X POST http://localhost:3000/uploads/bucket-goals/cover \
+curl -X POST http://localhost:3000/api/bucket-goals/upload/cover \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -F "goalId=123" \
   -F "file=@/path/to/cover.jpg"
@@ -46,7 +46,7 @@ curl -X POST http://localhost:3000/uploads/bucket-goals/cover \
 
 Upload an image for BucketGoalMedia, Vision Board items, or log attachments. Returns the URL; the frontend attaches it via GraphQL mutations.
 
-**Endpoint:** `POST /uploads/bucket-goals/media`
+**Endpoint:** `POST /api/bucket-goals/upload/media`
 
 **Form fields:**
 - `file` (required): image file
@@ -66,7 +66,7 @@ At least one of `goalId`, `boardId`, or `logId` is required.
 
 **Example (curl) — goal media:**
 ```bash
-curl -X POST http://localhost:3000/uploads/bucket-goals/media \
+curl -X POST http://localhost:3000/api/bucket-goals/upload/media \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -F "goalId=5" \
   -F "file=@/path/to/photo.jpg"
@@ -74,7 +74,7 @@ curl -X POST http://localhost:3000/uploads/bucket-goals/media \
 
 **Example (curl) — vision board item:**
 ```bash
-curl -X POST http://localhost:3000/uploads/bucket-goals/media \
+curl -X POST http://localhost:3000/api/bucket-goals/upload/media \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -F "boardId=1" \
   -F "file=@/path/to/inspiration.png"
@@ -82,7 +82,7 @@ curl -X POST http://localhost:3000/uploads/bucket-goals/media \
 
 **Example (curl) — log attachment:**
 ```bash
-curl -X POST http://localhost:3000/uploads/bucket-goals/media \
+curl -X POST http://localhost:3000/api/bucket-goals/upload/media \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -F "logId=42" \
   -F "file=@/path/to/memory.jpg"

@@ -27,7 +27,7 @@ const bucketImageMulterOptions = {
   },
 };
 
-@Controller('uploads/bucket-goals')
+@Controller('api/bucket-goals/upload')
 @UseGuards(JwtAuthGuard)
 export class BucketGoalsUploadController {
   constructor(private readonly uploadService: BucketGoalsUploadService) {}

@@ -141,9 +141,9 @@ export class UserService {
   async sendEmailVerification(user: User, token: string, appCode?: string): Promise<void> {
     // Use environment variable or default URL for logo
     const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
-    // Use backend URL for verification endpoint, which will redirect to frontend
-    const backendUrl = process.env.BACKEND_URL || process.env.API_URL || 'https://api.discart.me';
-    const verifyUrl = `${backendUrl}/auth/verify-email`;
+    // Link must point to FRONTEND - user lands there, frontend calls API (verifyEmail mutation) with the token
+    const frontendUrl = process.env.FRONTEND_URL || 'https://www.carlosgatti.com';
+    const verifyUrl = `${frontendUrl}/verify-email`;
     
     // Determinar o nome do app para o subject (opcional, pode ser genérico)
     const appName = appCode === 'QRACK' ? 'QRACK' : appCode === 'RH' ? 'RH Solution Center' : 'carlosgatti.com';

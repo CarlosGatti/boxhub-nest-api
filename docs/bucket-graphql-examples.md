@@ -15,7 +15,7 @@ Before creating/updating goals with `coverUrl` or adding media to logs, upload f
 
 ### Cover image (Vision Board)
 ```http
-POST /uploads/bucket-goals/cover
+POST /api/bucket-goals/upload/cover
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 Body: file=<image>
@@ -24,7 +24,7 @@ Response: { "url": "/uploads/bucket-goals/cover/file-xxx.jpg" }
 
 ### Media (memories, event photos, travel photos)
 ```http
-POST /uploads/bucket-goals/media
+POST /api/bucket-goals/upload/media
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 Body: files=<image|video|pdf>

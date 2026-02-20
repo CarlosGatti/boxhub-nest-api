@@ -160,7 +160,7 @@ Cada seção tem `type` e `content` (JSON). O schema varia por tipo:
 - **Cache:** usar Apollo Client cache ou React Query; invalidar após mutations (board, sections, items, goalLinks)
 - **Optimistic updates:** em `upsertBucketVisionSection` e `addBucketVisionItem` para UX mais fluida
 - **Erros:** validar `content` no frontend conforme os schemas da doc (evita 400 do backend)
-- **Upload de imagem:** usar `POST /uploads/bucket-goals/media` (form: `file`, `boardId` ou `goalId` ou `logId`). Passar a URL retornada em `addBucketVisionItem` com `type: IMAGE`. Ver [bucket-uploads.md](./bucket-uploads.md).
+- **Upload de imagem:** usar `POST /api/bucket-goals/upload/media` (form: `file`, `boardId` ou `goalId` ou `logId`). Passar a URL retornada em `addBucketVisionItem` com `type: IMAGE`. Ver [bucket-uploads.md](./bucket-uploads.md).
 - **Auth:** todas as operações exigem JWT; tratar 401 e redirecionar para login
 
 ---
