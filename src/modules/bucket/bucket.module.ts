@@ -5,9 +5,10 @@ import { BucketService } from './bucket.service';
 import { BucketResolver } from './bucket.resolver';
 import { BucketGoalsUploadController } from './upload/bucket-goals-upload.controller';
 import { BucketGoalsUploadService } from './upload/bucket-goals-upload.service';
+import { BucketShareModule } from './share/bucket-share.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, BucketShareModule],
   controllers: [BucketGoalsUploadController],
   providers: [BucketService, BucketResolver, BucketGoalsUploadService, PrismaService],
   exports: [BucketService],

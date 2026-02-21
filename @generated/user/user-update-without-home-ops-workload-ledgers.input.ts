@@ -34,6 +34,7 @@ import { ReviewCardBusinessUpdateManyWithoutUserNestedInput } from '../review-ca
 import { ReviewCardProjectUpdateManyWithoutUserNestedInput } from '../review-card-project/review-card-project-update-many-without-user-nested.input';
 import { ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-update-many-without-user-nested.input';
 import { BucketGoalUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-update-many-without-user-nested.input';
+import { BucketShareUpdateManyWithoutUserNestedInput } from '../bucket-share/bucket-share-update-many-without-user-nested.input';
 import { BucketVisionBoardUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-update-many-without-user-nested.input';
 
 @InputType()
@@ -183,6 +184,9 @@ export class UserUpdateWithoutHomeOpsWorkloadLedgersInput {
 
     @Field(() => BucketGoalUpdateManyWithoutUserNestedInput, {nullable:true})
     bucketGoals?: BucketGoalUpdateManyWithoutUserNestedInput;
+
+    @Field(() => BucketShareUpdateManyWithoutUserNestedInput, {nullable:true})
+    bucketShares?: BucketShareUpdateManyWithoutUserNestedInput;
 
     @Field(() => BucketVisionBoardUpdateManyWithoutUserNestedInput, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardUpdateManyWithoutUserNestedInput;

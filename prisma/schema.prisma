@@ -173,6 +173,7 @@ model User {
 
   // Bucket List (goals + memories)
   bucketGoals BucketGoal[]
+  bucketShares BucketShare[]
 
   // Bucket Vision Board
   bucketVisionBoards BucketVisionBoard[]
@@ -1168,6 +1169,26 @@ enum BucketMediaType {
   IMAGE
   VIDEO
   LINK
+}
+
+enum BucketShareType {
+  GOAL
+  TYPE
+  CUSTOM
+}
+
+model BucketShare {
+  id        Int            @id @default(autoincrement())
+  userId    Int
+  token     String         @unique
+  type      BucketShareType
+  payload   Json
+  createdAt DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model BucketGoal {

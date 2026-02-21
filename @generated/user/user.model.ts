@@ -27,6 +27,7 @@ import { ReviewCardBusiness } from '../review-card-business/review-card-business
 import { ReviewCardProject } from '../review-card-project/review-card-project.model';
 import { ReviewCardPremiumRequest } from '../review-card-premium-request/review-card-premium-request.model';
 import { BucketGoal } from '../bucket-goal/bucket-goal.model';
+import { BucketShare } from '../bucket-share/bucket-share.model';
 import { BucketVisionBoard } from '../bucket-vision-board/bucket-vision-board.model';
 import { UserCount } from './user-count.output';
 
@@ -179,6 +180,9 @@ export class User {
 
     @Field(() => [BucketGoal], {nullable:true})
     bucketGoals?: Array<BucketGoal>;
+
+    @Field(() => [BucketShare], {nullable:true})
+    bucketShares?: Array<BucketShare>;
 
     @Field(() => [BucketVisionBoard], {nullable:true})
     bucketVisionBoards?: Array<BucketVisionBoard>;

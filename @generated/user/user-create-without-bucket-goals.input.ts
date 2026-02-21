@@ -29,6 +29,7 @@ import { RecurringCashflowCreateNestedManyWithoutUserInput } from '../recurring-
 import { ReviewCardBusinessCreateNestedManyWithoutUserInput } from '../review-card-business/review-card-business-create-nested-many-without-user.input';
 import { ReviewCardProjectCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-create-nested-many-without-user.input';
 import { ReviewCardPremiumRequestCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-create-nested-many-without-user.input';
+import { BucketShareCreateNestedManyWithoutUserInput } from '../bucket-share/bucket-share-create-nested-many-without-user.input';
 import { BucketVisionBoardCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-create-nested-many-without-user.input';
 
 @InputType()
@@ -178,6 +179,9 @@ export class UserCreateWithoutBucketGoalsInput {
 
     @Field(() => ReviewCardPremiumRequestCreateNestedManyWithoutUserInput, {nullable:true})
     reviewCardPremiumRequests?: ReviewCardPremiumRequestCreateNestedManyWithoutUserInput;
+
+    @Field(() => BucketShareCreateNestedManyWithoutUserInput, {nullable:true})
+    bucketShares?: BucketShareCreateNestedManyWithoutUserInput;
 
     @Field(() => BucketVisionBoardCreateNestedManyWithoutUserInput, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardCreateNestedManyWithoutUserInput;

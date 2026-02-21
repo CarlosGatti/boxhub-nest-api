@@ -30,6 +30,7 @@ import { RecurringCashflowUncheckedCreateNestedManyWithoutUserInput } from '../r
 import { ReviewCardBusinessUncheckedCreateNestedManyWithoutUserInput } from '../review-card-business/review-card-business-unchecked-create-nested-many-without-user.input';
 import { ReviewCardProjectUncheckedCreateNestedManyWithoutUserInput } from '../review-card-project/review-card-project-unchecked-create-nested-many-without-user.input';
 import { ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput } from '../review-card-premium-request/review-card-premium-request-unchecked-create-nested-many-without-user.input';
+import { BucketShareUncheckedCreateNestedManyWithoutUserInput } from '../bucket-share/bucket-share-unchecked-create-nested-many-without-user.input';
 import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-unchecked-create-nested-many-without-user.input';
 
 @InputType()
@@ -182,6 +183,9 @@ export class UserUncheckedCreateWithoutBucketGoalsInput {
 
     @Field(() => ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     reviewCardPremiumRequests?: ReviewCardPremiumRequestUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => BucketShareUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    bucketShares?: BucketShareUncheckedCreateNestedManyWithoutUserInput;
 
     @Field(() => BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput;

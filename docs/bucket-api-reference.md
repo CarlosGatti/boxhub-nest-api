@@ -26,6 +26,10 @@ Guia completo: **o que fazer** → **qual endpoint** → **payload exato**. Toda
 | Adicionar log (memória) | `addBucketGoalLog` | [3.1](#31-adicionar-log) |
 | Adicionar pin no mapa | `addBucketGoalPin` | [3.2](#32-adicionar-pin) |
 | Vision Board: listar/criar | `bucketVisionBoard*` | [4](#4-vision-board) |
+| **Share (público)** | `bucketSharePublic` | [5](#5-share) |
+| Criar share (goal/tipo/custom) | `createBucketShareFromGoal`, `createBucketShareFromType`, `createBucketShareCustom` | [5](#5-share) |
+| Listar meus shares | `bucketMyShares` | [5](#5-share) |
+| Deletar share | `deleteBucketShare` | [5](#5-share) |
 
 ---
 
@@ -547,7 +551,25 @@ Todos os campos são opcionais exceto os marcados. Datas em ISO 8601.
 
 ---
 
-## 6. Erros comuns
+## 6. Share (público)
+
+Compartilhar snapshots read-only via link. **`bucketSharePublic` não exige auth.**
+
+| Operação | Endpoint | Auth |
+|----------|----------|------|
+| Ver share público | `bucketSharePublic(token: String!)` | Não |
+| Criar share de goal | `createBucketShareFromGoal(goalId, title?)` | Sim |
+| Criar share por tipo | `createBucketShareFromType(type, filter?, title?)` | Sim |
+| Criar share custom | `createBucketShareCustom(goalIds, title)` | Sim |
+| Listar meus shares | `bucketMyShares` | Sim |
+| Deletar share | `deleteBucketShare(id)` | Sim |
+
+**Payload:** `version: 1`, `kind`, `title`, `owner.displayName`, `goals[]` (snapshot congelado).  
+**Guia completo:** [docs/bucket/bucket-share-frontend-guide.md](./bucket/bucket-share-frontend-guide.md)
+
+---
+
+## 7. Erros comuns
 
 | Erro | Causa | Solução |
 |------|-------|---------|
@@ -558,9 +580,10 @@ Todos os campos são opcionais exceto os marcados. Datas em ISO 8601.
 
 ---
 
-## 7. Referências
+## 8. Referências
 
 - [bucket-graphql-examples.md](./bucket-graphql-examples.md) — Exemplos GraphQL completos
 - [bucket-uploads.md](./bucket-uploads.md) — Detalhes dos uploads REST
 - [bucket-vision-frontend-ux-guide.md](./bucket-vision-frontend-ux-guide.md) — Fluxos UX do Vision Board
 - [bucket-frontend-auth-guide.md](./bucket-frontend-auth-guide.md) — Login e autenticação
+- [bucket/bucket-share-frontend-guide.md](./bucket/bucket-share-frontend-guide.md) — Share (guia completo)

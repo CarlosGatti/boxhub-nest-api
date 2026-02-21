@@ -23,10 +23,11 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma": "prisma",
     "seed:apps": "ts-node prisma/seed.apps.ts",
+    "seed:dev-user": "ts-node prisma/seed.dev-user.ts",
     "seed:wealth-tracker": "ts-node prisma/seed.wealth-tracker.ts",
     "seed:review-cards": "ts-node prisma/seed.review-cards.ts",
     "seed:bucket": "ts-node prisma/seed.bucket.ts",
-    "seed:all": "npm run seed:apps && npm run seed:wealth-tracker && npm run seed:review-cards && npm run seed:bucket",
+    "seed:all": "npm run seed:apps && npm run seed:dev-user && npm run seed:wealth-tracker && npm run seed:review-cards && npm run seed:bucket",
     "copy:templates": "cp -r src/static dist/src/"
   },
   "dependencies": {
@@ -127,6 +128,6 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.apps.ts && ts-node prisma/seed.wealth-tracker.ts && ts-node prisma/seed.review-cards.ts && ts-node prisma/seed.bucket.ts"
+    "seed": "ts-node prisma/seed.apps.ts && ts-node prisma/seed.dev-user.ts && ts-node prisma/seed.wealth-tracker.ts && ts-node prisma/seed.review-cards.ts && ts-node prisma/seed.bucket.ts"
   }
 }
