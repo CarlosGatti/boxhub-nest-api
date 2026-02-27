@@ -17,5 +17,8 @@ export class BucketShareMaxAggregateInput {
     type?: true;
 
     @Field(() => Boolean, {nullable:true})
+    title?: true;
+
+    @Field(() => Boolean, {nullable:true})
     createdAt?: true;
 }

@@ -18,6 +18,9 @@ export class BucketShareMaxAggregate {
     @Field(() => BucketShareType, {nullable:true})
     type?: keyof typeof BucketShareType;
 
+    @Field(() => String, {nullable:true})
+    title?: string;
+
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;
 }

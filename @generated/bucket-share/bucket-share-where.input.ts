@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { IntFilter } from '../prisma/int-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { EnumBucketShareTypeFilter } from '../prisma/enum-bucket-share-type-filter.input';
+import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { JsonFilter } from '../prisma/json-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
@@ -31,6 +32,9 @@ export class BucketShareWhereInput {
 
     @Field(() => EnumBucketShareTypeFilter, {nullable:true})
     type?: EnumBucketShareTypeFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    title?: StringNullableFilter;
 
     @Field(() => JsonFilter, {nullable:true})
     payload?: JsonFilter;

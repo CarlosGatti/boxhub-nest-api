@@ -14,6 +14,9 @@ export class BucketShareCreateInput {
     @Field(() => BucketShareType, {nullable:false})
     type!: keyof typeof BucketShareType;
 
+    @Field(() => String, {nullable:true})
+    title?: string;
+
     @Field(() => GraphQLJSON, {nullable:false})
     payload!: any;
 

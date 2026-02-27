@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
+import { SortOrderInput } from '../prisma/sort-order.input';
 import { BucketShareCountOrderByAggregateInput } from './bucket-share-count-order-by-aggregate.input';
 import { BucketShareAvgOrderByAggregateInput } from './bucket-share-avg-order-by-aggregate.input';
 import { BucketShareMaxOrderByAggregateInput } from './bucket-share-max-order-by-aggregate.input';
@@ -21,6 +22,9 @@ export class BucketShareOrderByWithAggregationInput {
 
     @Field(() => SortOrder, {nullable:true})
     type?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    title?: SortOrderInput;
 
     @Field(() => SortOrder, {nullable:true})
     payload?: keyof typeof SortOrder;

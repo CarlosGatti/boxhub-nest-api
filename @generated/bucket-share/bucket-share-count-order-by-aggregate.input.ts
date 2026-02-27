@@ -18,6 +18,9 @@ export class BucketShareCountOrderByAggregateInput {
     type?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    title?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     payload?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

@@ -170,6 +170,7 @@ export class BucketShareService {
         userId,
         token,
         type: PrismaBucketShareType.GOAL,
+        title: shareTitle,
         payload: payload as unknown as Prisma.JsonObject,
       },
     });
@@ -255,6 +256,7 @@ export class BucketShareService {
         userId,
         token,
         type: PrismaBucketShareType.TYPE,
+        title: shareTitle,
         payload: payload as unknown as Prisma.JsonObject,
       },
     });
@@ -306,6 +308,7 @@ export class BucketShareService {
         userId,
         token,
         type: PrismaBucketShareType.CUSTOM,
+        title: shareTitle,
         payload: payload as unknown as Prisma.JsonObject,
       },
     });
@@ -347,7 +350,7 @@ export class BucketShareService {
     const shares = await this.prisma.bucketShare.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-      select: { id: true, token: true, type: true, createdAt: true },
+      select: { id: true, token: true, type: true, title: true, createdAt: true },
     });
 
     return shares;

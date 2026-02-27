@@ -5,7 +5,7 @@ import { BucketShareType } from '@generated/prisma/bucket-share-type.enum';
 import { GraphQLJSON } from 'graphql-type-json';
 
 /**
- * Summary for owner's list (id, token, type, createdAt).
+ * Summary for owner's list (id, token, type, title, createdAt).
  * Does not include payload to keep response small.
  */
 @ObjectType()
@@ -18,6 +18,9 @@ export class BucketShareSummary {
 
   @Field(() => BucketShareType)
   type!: keyof typeof BucketShareType;
+
+  @Field(() => String, { nullable: true })
+  title?: string | null;
 
   @Field(() => Date)
   createdAt!: Date;

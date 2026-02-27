@@ -17,6 +17,9 @@ export class BucketShareCountAggregateInput {
     type?: true;
 
     @Field(() => Boolean, {nullable:true})
+    title?: true;
+
+    @Field(() => Boolean, {nullable:true})
     payload?: true;
 
     @Field(() => Boolean, {nullable:true})

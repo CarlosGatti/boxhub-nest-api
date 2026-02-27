@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { IntWithAggregatesFilter } from '../prisma/int-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { EnumBucketShareTypeWithAggregatesFilter } from '../prisma/enum-bucket-share-type-with-aggregates-filter.input';
+import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { JsonWithAggregatesFilter } from '../prisma/json-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 
@@ -29,6 +30,9 @@ export class BucketShareScalarWhereWithAggregatesInput {
 
     @Field(() => EnumBucketShareTypeWithAggregatesFilter, {nullable:true})
     type?: EnumBucketShareTypeWithAggregatesFilter;
+
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    title?: StringNullableWithAggregatesFilter;
 
     @Field(() => JsonWithAggregatesFilter, {nullable:true})
     payload?: JsonWithAggregatesFilter;

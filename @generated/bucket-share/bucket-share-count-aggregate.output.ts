@@ -18,6 +18,9 @@ export class BucketShareCountAggregate {
     type!: number;
 
     @Field(() => Int, {nullable:false})
+    title!: number;
+
+    @Field(() => Int, {nullable:false})
     payload!: number;
 
     @Field(() => Int, {nullable:false})

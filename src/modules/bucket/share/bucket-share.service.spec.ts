@@ -80,6 +80,7 @@ describe('BucketShareService', () => {
           data: expect.objectContaining({
             userId: mockUserId,
             type: 'GOAL',
+            title: 'My Trip',
           }),
         })
       );
@@ -144,6 +145,61 @@ describe('BucketShareService', () => {
     it('throws NotFound when token format is invalid', async () => {
       await expect(service.getPublicByToken('')).rejects.toThrow(NotFoundException);
       await expect(service.getPublicByToken('x')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('listMyShares', () => {
+    it('returns shares with title when present', async () => {
+      (prisma.userAppAccess.findFirst as jest.Mock).mockResolvedValue({ id: 1 });
+      (prisma.bucketShare.findMany as jest.Mock).mockResolvedValue([
+        {
+          id: 1,
+          token: mockToken,
+          type: 'CUSTOM',
+          title: 'My Watchlist',
+          createdAt: new Date(),
+        },
+      ]);
+
+      const result = await service.listMyShares(mockUserId);
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toMatchObject({
+        id: 1,
+        token: mockToken,
+        type: 'CUSTOM',
+        title: 'My Watchlist',
+      });
+      expect(prisma.bucketShare.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          select: expect.objectContaining({ title: true }),
+        })
+      );
+    });
+
+    it('returns shares with null title for legacy rows', async () => {
+      (prisma.userAppAccess.findFirst as jest.Mock).mockResolvedValue({ id: 1 });
+      (prisma.bucketShare.findMany as jest.Mock).mockResolvedValue([
+        {
+          id: 2,
+          token: 'legacy-token-xyz',
+          type: 'GOAL',
+          title: null,
+          createdAt: new Date(),
+        },
+      ]);
+
+      const result = await service.listMyShares(mockUserId);
+
+      expect(result[0].title).toBeNull();
+    });
+
+    it('throws Forbidden when user lacks BUCKET access', async () => {
+      (prisma.userAppAccess.findFirst as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.listMyShares(mockUserId)).rejects.toThrow(
+        ForbiddenException
+      );
     });
   });
 });

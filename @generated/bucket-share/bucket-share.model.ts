@@ -21,6 +21,9 @@ export class BucketShare {
     @Field(() => BucketShareType, {nullable:false})
     type!: keyof typeof BucketShareType;
 
+    @Field(() => String, {nullable:true})
+    title!: string | null;
+
     @Field(() => GraphQLJSON, {nullable:false})
     payload!: any;
 

@@ -1182,6 +1182,7 @@ model BucketShare {
   userId    Int
   token     String         @unique
   type      BucketShareType
+  title     String?
   payload   Json
   createdAt DateTime       @default(now())
 

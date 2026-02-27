@@ -5,6 +5,7 @@ export enum BucketShareScalarFieldEnum {
     userId = "userId",
     token = "token",
     type = "type",
+    title = "title",
     payload = "payload",
     createdAt = "createdAt"
 }
