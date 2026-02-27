@@ -5,10 +5,13 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
--- AlterColumn
+-- AlterColumn: TEXT[] -> HomeOpsWeekday[] (drop default first, then alter type)
+ALTER TABLE "HomeOpsTaskTemplate"
+  ALTER COLUMN "daysOfWeek" DROP DEFAULT;
+
 ALTER TABLE "HomeOpsTaskTemplate"
   ALTER COLUMN "daysOfWeek" TYPE "HomeOpsWeekday"[]
-  USING ARRAY(SELECT unnest("daysOfWeek")::"HomeOpsWeekday");
+  USING "daysOfWeek"::"HomeOpsWeekday"[];
 
 ALTER TABLE "HomeOpsTaskTemplate"
   ALTER COLUMN "daysOfWeek" SET DEFAULT '{}'::"HomeOpsWeekday"[];
