@@ -326,7 +326,7 @@ export class AuthService {
     if (!user.emailVerified) {
       try {
         const verificationToken = await this.generateAndStoreVerificationToken(user.id);
-        const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+        const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
         const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${verificationToken}`;
         await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
       } catch (emailErr) {
@@ -407,7 +407,7 @@ export class AuthService {
 
     try {
       const token = await this.generateAndStoreVerificationToken(user.id);
-      const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+      const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
       const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
       await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
     } catch (err) {

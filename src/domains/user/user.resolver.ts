@@ -210,7 +210,7 @@ export class UserResolver {
       if (!completeUser.emailVerified) {
         try {
           const token = await this.authService.generateAndStoreVerificationToken(completeUser.id);
-          const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+          const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
           const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
           await this.userService.sendEmailVerificationWithLink(completeUser as any, verifyLink, normalizedAppCode);
           console.log("📧 Email verification sent");
