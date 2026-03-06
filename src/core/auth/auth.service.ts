@@ -251,10 +251,15 @@ export class AuthService {
     }
 
     const token = this.createJwt(user).token;
+    const frontendUrl = process.env.FRONTEND_URL || process.env.FRONTEND_URL_PROD || 'https://carlosgatti.com';
+    const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
+    const resetUrl = `${frontendUrl.replace(/\/$/, '')}/reset-password?token=${token}`;
 
     const variables = {
       title: "Defined - Reset Your Password",
-      token: token,
+      token,
+      resetUrl,
+      logoUrl,
       year: new Date().getFullYear(),
     };
 

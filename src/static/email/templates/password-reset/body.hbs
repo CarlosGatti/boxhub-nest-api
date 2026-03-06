@@ -58,8 +58,8 @@
       <div class="content">
 <div class="logo">
   <img
-            src="https://www.carlosgatti.com/static/email/img/logo-defined.png"
-            alt="Defined Logo"
+            src="{{logoUrl}}"
+            alt="carlosgatti.com"
   />
 </div>
     <div class="title">{{title}}</div>
@@ -67,7 +67,7 @@
       A password reset has been requested for your account.<br />
       If this was you, please click the button below to set a new password.
     </div>
-        <a class="cta-button" href="https://www.carlosgatti.com/reset-password?token={{token}}" target="_blank">
+        <a class="cta-button" href="{{resetUrl}}" target="_blank">
         Reset Password
       </a>
         <div class="subtitle" style="margin-top: 24px; font-size: 14px;">
