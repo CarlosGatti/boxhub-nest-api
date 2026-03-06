@@ -345,11 +345,22 @@ export class AuthService {
   }
 
   async verifyEmail(token: string): Promise<BaseResult> {
-    if (!token || typeof token !== 'string' || token.length < 32) {
+    // Normalize: handle array from duplicate query params, trim whitespace
+    const raw = Array.isArray(token) ? token[0] : token;
+    let normalized = '';
+    if (typeof raw === 'string') {
+      try {
+        normalized = decodeURIComponent(raw).trim();
+      } catch {
+        normalized = raw.trim();
+      }
+    }
+    if (!normalized || normalized.length < 32) {
+      console.warn('[verifyEmail] Token inválido: length=', normalized?.length, 'type=', typeof token);
       return { success: false, message: "Token inválido ou expirado" };
     }
 
-    const tokenHash = hashToken(token);
+    const tokenHash = hashToken(normalized);
 
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -359,6 +370,7 @@ export class AuthService {
     });
 
     if (!user) {
+      console.warn('[verifyEmail] Nenhum usuário encontrado para o token hash');
       return { success: false, message: "Token inválido ou expirado" };
     }
 
