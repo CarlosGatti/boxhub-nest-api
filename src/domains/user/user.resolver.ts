@@ -14,7 +14,7 @@ import { BaseResult } from "src/shared/dto/base-error.dto";
 import { ProGuard } from "src/core/auth/guards/pro.guard";
 import { AdminGuard } from "src/core/auth/guards/admin.guard";
 import { MailService } from "src/core/services/providers/mail/mail.service";
-import { RegisterUserInput, LoginResult } from "./dto/user.dto";
+import { RegisterUserInput, LoginResult, RegisterResponse } from "./dto/user.dto";
 import { AuthService } from "src/core/auth/auth.service";
 
 @Resolver(() => User)
@@ -90,12 +90,12 @@ export class UserResolver {
     return this.userService.createUserWithoutPassword(data);
   }
 
-  @Mutation(() => LoginResult, { name: "register" })
+  @Mutation(() => RegisterResponse, { name: "register" })
   async register(
     @Args("user") userInput: RegisterUserInput,
     @Args("appCode", { nullable: true, type: () => String }) appCode?: string,
     @Context('req') request?: any
-  ): Promise<LoginResult> {
+  ): Promise<RegisterResponse> {
     const email = userInput.email.toLowerCase().trim();
     const headerAppCode =
       request?.headers?.['x-app-code'] ||
@@ -206,18 +206,30 @@ export class UserResolver {
       // 5. Gerar token (incluindo apps no payload)
       const loginToken = this.authService.createJwt(completeUser as any).token;
 
-      // 6. Enviar email de verificação (se for novo usuário)
-      if (!user.emailVerified) {
+      // 6. Enviar email de verificação (se não verificado)
+      if (!completeUser.emailVerified) {
         try {
-          const verificationToken = this.authService.createJwt(completeUser as any).token;
-          await this.userService.sendEmailVerification(completeUser as any, verificationToken, normalizedAppCode);
+          const token = await this.authService.generateAndStoreVerificationToken(completeUser.id);
+          const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+          const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
+          await this.userService.sendEmailVerificationWithLink(completeUser as any, verifyLink, normalizedAppCode);
           console.log("📧 Email verification sent");
         } catch (emailError) {
           console.error("⚠️  Error sending verification email (non-critical):", emailError);
         }
       }
 
-      // 7. Retornar no formato GraphQL esperado
+      // 7. Se email NÃO verificado: não emitir token, retornar mensagem para verificar
+      if (!completeUser.emailVerified) {
+        return {
+          success: true,
+          message: "Account created. Please check your email and click the verification link to activate your account.",
+          email: completeUser.email,
+          requiresVerification: true,
+        };
+      }
+
+      // 8. Se já verificado: retornar token (usuário existente que já verificou)
       const loginUser = {
         id: completeUser.id,
         email: completeUser.email,
@@ -232,6 +244,8 @@ export class UserResolver {
       };
 
       return {
+        success: true,
+        requiresVerification: false,
         user: loginUser as any,
         token: loginToken,
       };
@@ -252,6 +266,17 @@ export class UserResolver {
   @Mutation(() => BaseResult, { name: "verifyEmail" })
   async verifyEmail(@Args("token") token: string): Promise<BaseResult> {
     return this.authService.verifyEmail(token);
+  }
+
+  @Mutation(() => BaseResult, { name: "resendVerificationEmail" })
+  async resendVerificationEmail(
+    @Args("email") email: string,
+    @Context('req') request?: any
+  ): Promise<BaseResult> {
+    return this.authService.resendVerificationEmail(
+      email?.toLowerCase?.()?.trim() || email,
+      request?.ip || request?.headers?.['x-forwarded-for'] || request?.connection?.remoteAddress || 'unknown'
+    );
   }
 
 

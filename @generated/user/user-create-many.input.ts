@@ -34,6 +34,12 @@ export class UserCreateManyInput {
     emailVerified?: boolean;
 
     @Field(() => String, {nullable:true})
+    verificationTokenHash?: string;
+
+    @Field(() => Date, {nullable:true})
+    verificationTokenExpiresAt?: Date | string;
+
+    @Field(() => String, {nullable:true})
     profilePicture?: string;
 
     @Field(() => String, {nullable:true})

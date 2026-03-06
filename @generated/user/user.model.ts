@@ -62,6 +62,12 @@ export class User {
     emailVerified!: boolean;
 
     @Field(() => String, {nullable:true})
+    verificationTokenHash!: string | null;
+
+    @Field(() => Date, {nullable:true})
+    verificationTokenExpiresAt!: Date | null;
+
+    @Field(() => String, {nullable:true})
     profilePicture!: string | null;
 
     @Field(() => String, {nullable:true})

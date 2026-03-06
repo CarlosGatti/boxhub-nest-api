@@ -5,8 +5,8 @@ import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-fil
 import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { BoolWithAggregatesFilter } from '../prisma/bool-with-aggregates-filter.input';
 import { EnumRoleWithAggregatesFilter } from '../prisma/enum-role-with-aggregates-filter.input';
-import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 import { DateTimeNullableWithAggregatesFilter } from '../prisma/date-time-nullable-with-aggregates-filter.input';
+import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 
 @InputType()
 export class UserScalarWhereWithAggregatesInput {
@@ -46,6 +46,12 @@ export class UserScalarWhereWithAggregatesInput {
 
     @Field(() => BoolWithAggregatesFilter, {nullable:true})
     emailVerified?: BoolWithAggregatesFilter;
+
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    verificationTokenHash?: StringNullableWithAggregatesFilter;
+
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    verificationTokenExpiresAt?: DateTimeNullableWithAggregatesFilter;
 
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     profilePicture?: StringNullableWithAggregatesFilter;

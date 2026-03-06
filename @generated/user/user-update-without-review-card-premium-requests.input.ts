@@ -4,8 +4,8 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { EnumRoleFieldUpdateOperationsInput } from '../prisma/enum-role-field-update-operations.input';
-import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { StorageMemberUpdateManyWithoutUserNestedInput } from '../storage-member/storage-member-update-many-without-user-nested.input';
 import { LogUpdateManyWithoutUserNestedInput } from '../log/log-update-many-without-user-nested.input';
 import { DiscartItemUpdateManyWithoutCreatedByNestedInput } from '../discart-item/discart-item-update-many-without-created-by-nested.input';
@@ -63,6 +63,12 @@ export class UserUpdateWithoutReviewCardPremiumRequestsInput {
 
     @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
     emailVerified?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    verificationTokenHash?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    verificationTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput;
 
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     profilePicture?: NullableStringFieldUpdateOperationsInput;

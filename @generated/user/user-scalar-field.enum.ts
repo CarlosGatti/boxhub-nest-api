@@ -10,6 +10,8 @@ export enum UserScalarFieldEnum {
     'public' = "public",
     role = "role",
     emailVerified = "emailVerified",
+    verificationTokenHash = "verificationTokenHash",
+    verificationTokenExpiresAt = "verificationTokenExpiresAt",
     profilePicture = "profilePicture",
     about = "about",
     contactPhone = "contactPhone",

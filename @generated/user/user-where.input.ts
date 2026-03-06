@@ -5,8 +5,8 @@ import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
 import { EnumRoleFilter } from '../prisma/enum-role-filter.input';
-import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
+import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StorageMemberListRelationFilter } from '../storage-member/storage-member-list-relation-filter.input';
 import { LogListRelationFilter } from '../log/log-list-relation-filter.input';
 import { DiscartItemListRelationFilter } from '../discart-item/discart-item-list-relation-filter.input';
@@ -74,6 +74,12 @@ export class UserWhereInput {
 
     @Field(() => BoolFilter, {nullable:true})
     emailVerified?: BoolFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    verificationTokenHash?: StringNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    verificationTokenExpiresAt?: DateTimeNullableFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     profilePicture?: StringNullableFilter;

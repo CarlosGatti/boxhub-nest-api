@@ -57,6 +57,28 @@ export class LoginResult {
   token: string;
 }
 
+/** Register response: when emailVerified=true returns user+token; when false returns message+email (no token). */
+@ObjectType()
+export class RegisterResponse {
+  @Field(() => Boolean)
+  success: boolean;
+
+  @Field(() => String, { nullable: true })
+  message?: string;
+
+  @Field(() => String, { nullable: true })
+  email?: string;
+
+  @Field(() => Boolean, { description: 'True when user must verify email before accessing the app' })
+  requiresVerification: boolean;
+
+  @Field(() => LoginUser, { nullable: true })
+  user?: LoginUser;
+
+  @Field(() => String, { nullable: true })
+  token?: string;
+}
+
 @InputType()
 export class RegisterUserInput {
   @Field(() => String)

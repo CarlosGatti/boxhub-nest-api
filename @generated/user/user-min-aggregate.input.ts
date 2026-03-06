@@ -32,6 +32,12 @@ export class UserMinAggregateInput {
     emailVerified?: true;
 
     @Field(() => Boolean, {nullable:true})
+    verificationTokenHash?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    verificationTokenExpiresAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
     profilePicture?: true;
 
     @Field(() => Boolean, {nullable:true})

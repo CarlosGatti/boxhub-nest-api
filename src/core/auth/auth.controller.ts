@@ -1,10 +1,22 @@
-import { Controller, Get, Query, Res, BadRequestException } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { ResendVerificationDto } from './dto/resend-verification.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Post('resend-verification')
+  async resendVerification(
+    @Body() dto: ResendVerificationDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const ip = (req.ip || req.socket?.remoteAddress || req.headers?.['x-forwarded-for'] || 'unknown').toString();
+    const result = await this.authService.resendVerificationEmail(dto?.email ?? '', ip);
+    return res.status(200).json(result);
+  }
 
   @Get('verify-email')
   async verifyEmail(

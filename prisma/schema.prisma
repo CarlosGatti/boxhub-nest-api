@@ -111,6 +111,8 @@ model User {
   public         Boolean   @default(false)
   role           Role      @default(USER)
   emailVerified  Boolean   @default(false)
+  verificationTokenHash    String?
+  verificationTokenExpiresAt DateTime?
   profilePicture String?
   about          String?
   contactPhone   String? // ← NOVO CAMPO

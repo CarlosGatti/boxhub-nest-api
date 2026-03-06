@@ -164,6 +164,7 @@ query BucketMyShares {
     id
     token
     type
+    title
     createdAt
   }
 }

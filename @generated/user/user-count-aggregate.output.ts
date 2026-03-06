@@ -33,6 +33,12 @@ export class UserCountAggregate {
     emailVerified!: number;
 
     @Field(() => Int, {nullable:false})
+    verificationTokenHash!: number;
+
+    @Field(() => Int, {nullable:false})
+    verificationTokenExpiresAt!: number;
+
+    @Field(() => Int, {nullable:false})
     profilePicture!: number;
 
     @Field(() => Int, {nullable:false})

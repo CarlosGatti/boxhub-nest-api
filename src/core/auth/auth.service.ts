@@ -1,5 +1,8 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { ForbiddenException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { createHash, randomBytes } from "crypto";
+import { EMAIL_NOT_VERIFIED_CODE } from "./guards/email-verified.guard";
 import { User } from "@generated/user/user.model";
 import { LoginResult, LoginUserInput } from "../../domains/user/dto/user.dto";
 import { UserService } from "../../domains/user/user.service";
@@ -12,6 +15,34 @@ import { hashSync } from "bcryptjs";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import { LogAction } from "@prisma/client";
 import { createLog } from "../services/create-log";
+
+const RESEND_IP_WINDOW_MS = 60 * 1000;
+const RESEND_IP_MAX = 5;
+const RESEND_EMAIL_WINDOW_MS = 60 * 60 * 1000;
+const RESEND_EMAIL_MAX = 3;
+const VERIFICATION_TOKEN_EXPIRY_HOURS = 24;
+
+function createRateLimiter(windowMs: number, max: number) {
+  const store = new Map<string, { count: number; resetAt: number }>();
+  return (key: string): boolean => {
+    const now = Date.now();
+    const cur = store.get(key);
+    if (!cur || cur.resetAt <= now) {
+      store.set(key, { count: 1, resetAt: now + windowMs });
+      return true;
+    }
+    if (cur.count >= max) return false;
+    cur.count += 1;
+    return true;
+  };
+}
+
+const ipRateLimiter = createRateLimiter(RESEND_IP_WINDOW_MS, RESEND_IP_MAX);
+const emailRateLimiter = createRateLimiter(RESEND_EMAIL_WINDOW_MS, RESEND_EMAIL_MAX);
+
+function hashToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -74,6 +105,14 @@ export class AuthService {
     //TODO Segregar a criação do JWT em uma função separada
 
     if (isMatch) {
+      if (userToAttempt.emailVerified !== true) {
+        throw new ForbiddenException({
+          code: EMAIL_NOT_VERIFIED_CODE,
+          message:
+            'Your email has not been verified. Please check your inbox and click the verification link to activate your account.',
+        });
+      }
+
       const token = this.createJwt(userToAttempt).token;
       
       // Transformar user para LoginUser com apps como array de strings
@@ -135,6 +174,37 @@ export class AuthService {
     }
 
     return undefined;
+  }
+
+  /** Generates secure random token, stores hash+expiry in DB, returns plain token for email link. */
+  async generateAndStoreVerificationToken(userId: number): Promise<string> {
+    const token = randomBytes(32).toString('hex');
+    const tokenHash = hashToken(token);
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + VERIFICATION_TOKEN_EXPIRY_HOURS);
+
+    await this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        verificationTokenHash: tokenHash,
+        verificationTokenExpiresAt: expiresAt,
+      },
+    });
+
+    return token;
+  }
+
+  /** @deprecated Use generateAndStoreVerificationToken for new flows. Kept for GraphQL verifyEmail mutation. */
+  createEmailVerificationToken(user: User | any): string {
+    const payload = {
+      _id: String(user.id),
+      email: user.email,
+      purpose: 'email_verification',
+    };
+    return this.jwtService.sign(payload, {
+      expiresIn: '24h',
+      secret: process.env.JWT_ACCESS_SECRET || '97742c5c0c5ea59ab16e61af76825b8b',
+    });
   }
 
   // TODO  Remover hard-code do JWT (Add .env)
@@ -258,50 +328,75 @@ export class AuthService {
   }
 
   async verifyEmail(token: string): Promise<BaseResult> {
-    try {
-      const payload = this.jwtService.verify(token);
-      
-      if (!payload || !payload._id) {
-        return {
-          success: false,
-          message: "Token inválido ou expirado",
-        };
-      }
-
-      const userId = Number(payload._id);
-      const user = await this.prismaService.user.findUnique({
-        where: { id: userId },
-      });
-
-      if (!user) {
-        return {
-          success: false,
-          message: "Usuário não encontrado",
-        };
-      }
-
-      if (user.emailVerified) {
-        return {
-          success: true,
-          message: "Email já estava verificado",
-        };
-      }
-
-      await this.prismaService.user.update({
-        where: { id: userId },
-        data: { emailVerified: true },
-      });
-
-      return {
-        success: true,
-        message: "Email verificado com sucesso",
-      };
-    } catch (error) {
-      console.error("Error verifying email:", error);
-      return {
-        success: false,
-        message: "Token inválido ou expirado",
-      };
+    if (!token || typeof token !== 'string' || token.length < 32) {
+      return { success: false, message: "Token inválido ou expirado" };
     }
+
+    const tokenHash = hashToken(token);
+
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        verificationTokenHash: tokenHash,
+        emailVerified: false,
+      },
+    });
+
+    if (!user) {
+      return { success: false, message: "Token inválido ou expirado" };
+    }
+
+    if (!user.verificationTokenExpiresAt || user.verificationTokenExpiresAt < new Date()) {
+      return { success: false, message: "Token expirado. Solicite um novo link de verificação." };
+    }
+
+    if (user.emailVerified) {
+      return { success: true, message: "Email já estava verificado" };
+    }
+
+    await this.prismaService.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerified: true,
+        verificationTokenHash: null,
+        verificationTokenExpiresAt: null,
+      },
+    });
+
+    return { success: true, message: "Email verificado com sucesso" };
+  }
+
+  /** Resend verification email. Always returns generic 200 message (prevent email enumeration). */
+  async resendVerificationEmail(email: string, ip: string): Promise<BaseResult> {
+    const generic = { success: true, message: "If an account exists with this email, a verification email has been sent." };
+    const normalizedEmail = email?.toLowerCase?.()?.trim() || '';
+    if (!normalizedEmail) {
+      return generic;
+    }
+
+    if (!ipRateLimiter(`resend:ip:${ip}`)) {
+      return generic;
+    }
+    if (!emailRateLimiter(`resend:email:${normalizedEmail}`)) {
+      return generic;
+    }
+
+    const user = await this.prismaService.user.findUnique({
+      where: { email: normalizedEmail },
+    });
+
+    if (!user || user.emailVerified) {
+      return generic;
+    }
+
+    try {
+      const token = await this.generateAndStoreVerificationToken(user.id);
+      const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+      const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
+      await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
+    } catch (err) {
+      console.error("Error resending verification email:", err);
+    }
+
+    return generic;
   }
 }

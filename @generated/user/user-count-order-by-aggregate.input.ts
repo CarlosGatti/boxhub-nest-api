@@ -33,6 +33,12 @@ export class UserCountOrderByAggregateInput {
     emailVerified?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    verificationTokenHash?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    verificationTokenExpiresAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     profilePicture?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

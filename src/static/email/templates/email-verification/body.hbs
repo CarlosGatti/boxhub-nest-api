@@ -66,7 +66,7 @@
           Thank you for creating your account on carlosgatti.com. Click the button below to verify this email address and
           complete the registration process:
         </div>
-        <a class="cta-button" href="{{verifyUrl}}?token={{token}}" target="_blank">
+        <a class="cta-button" href="{{#if verificationLink}}{{verificationLink}}{{else}}{{verifyUrl}}?token={{token}}{{/if}}" target="_blank">
           Verify My Email
         </a>
         <p class="footer">
