@@ -44,6 +44,23 @@ import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.modul
       installSubscriptionHandlers: true,
       path: '/graphql',
       persistedQueries: false,
+      formatError: (error: { message: string; extensions?: Record<string, unknown> }) => {
+        const ext = error?.extensions as Record<string, unknown> | undefined;
+        const exception = ext?.exception as Record<string, unknown> | undefined;
+        const response = exception?.response as Record<string, unknown> | undefined;
+        const domainCode = response?.code;
+        if (domainCode && typeof domainCode === 'string') {
+          return {
+            message: error.message,
+            extensions: {
+              ...ext,
+              code: domainCode,
+              response: response,
+            },
+          };
+        }
+        return error;
+      },
     }),
     RedisModule.forRoot({
      

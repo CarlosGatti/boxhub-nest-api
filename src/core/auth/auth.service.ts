@@ -237,16 +237,15 @@ export class AuthService {
   }
 
   async requestPasswordReset(email: string): Promise<BaseResult> {
-    const user = await this.usersService.user({
-      where: {
-        email,
-      },
-    });
+    const normalizedEmail = email?.toLowerCase?.()?.trim() || '';
+    const user = normalizedEmail
+      ? await this.usersService.user({ where: { email: normalizedEmail } })
+      : null;
 
     if (!user) {
       return {
-        success: false,
-        message: "Usuário não encontrado, por favor verifique o email",
+        success: true,
+        message: "If an account exists for this email, you will receive a link to reset your password.",
       };
     }
 
@@ -263,25 +262,21 @@ export class AuthService {
       year: new Date().getFullYear(),
     };
 
-    const wasSent = await this.mailService.send({
-      path: "forgot_password",
-      to: user.email,
-      subject: "Defined - Reset Your Password",
-      variables,
-    });
-
-    if (!wasSent) {
-      return {
-        success: false,
-        message:
-          "Não foi possível enviar o email, caso o problema persista entre em contato com o suporte",
-      };
+    try {
+      await this.mailService.send({
+        path: "forgot_password",
+        to: user.email,
+        subject: "Defined - Reset Your Password",
+        variables,
+      });
+    } catch (sendErr) {
+      console.error("Error sending password reset email:", sendErr);
     }
 
     return {
       success: true,
       message:
-        "Email enviado com sucesso, por favor verifique sua caixa de entrada",
+        "If an account exists for this email, you will receive a link to reset your password.",
     };
   }
 
@@ -326,6 +321,23 @@ export class AuthService {
           "Não foi possível atualizar a senha, por favor tente novamente",
       };
     }
+
+    // If account is still unverified, send a fresh verification email
+    if (!user.emailVerified) {
+      try {
+        const verificationToken = await this.generateAndStoreVerificationToken(user.id);
+        const apiUrl = process.env.API_URL || process.env.PUBLIC_API_URL || `http://localhost:${process.env.PORT || 3000}`;
+        const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${verificationToken}`;
+        await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
+      } catch (emailErr) {
+        console.error("Error sending verification email after password reset:", emailErr);
+      }
+      return {
+        success: true,
+        message: "Your password was updated successfully. We also sent you a new verification email.",
+      };
+    }
+
     return {
       success: true,
       message: "Senha atualizada com sucesso",
