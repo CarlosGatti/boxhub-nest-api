@@ -59,16 +59,17 @@ export class AuthService {
     ipAddress: string
   ): Promise<LoginResult | undefined> {
     const { email, password } = loginAttempt;
+    const normalizedEmail = email?.toLowerCase?.()?.trim() || '';
 
     // TODO Retornar uma mensagem amigável de tratamento de erro.
-    console.log("🔐 Initialize validation and sanitization", { email: email?.substring(0, 10) + '...', passwordLength: password?.length });
+    console.log("🔐 Initialize validation and sanitization", { email: normalizedEmail?.substring(0, 10) + '...', passwordLength: password?.length });
     
-    if (isEmpty(email)) {
+    if (isEmpty(normalizedEmail)) {
       console.log("❌ Email is empty");
       return undefined;
     }
-    if (!isEmail(email)) {
-      console.log("❌ Email is not valid:", email);
+    if (!isEmail(normalizedEmail)) {
+      console.log("❌ Email is not valid:", normalizedEmail);
       return undefined;
     }
     if (isEmpty(password)) {
@@ -81,10 +82,10 @@ export class AuthService {
     }
 
     let userToAttempt: User | null = null;
-    if (email) {
-      console.log("🔍 Searching for user with email:", email);
+    if (normalizedEmail) {
+      console.log("🔍 Searching for user with email:", normalizedEmail);
       userToAttempt = await this.usersService.user({
-        where: { email: email },
+        where: { email: normalizedEmail },
       });
     }
 
