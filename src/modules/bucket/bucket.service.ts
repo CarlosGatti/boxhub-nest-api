@@ -269,14 +269,22 @@ export class BucketService {
     return this.prisma.bucketGoal.findUnique({
       where: { id: goalId },
       include: {
-        logs: { orderBy: { happenedAt: 'desc' } },
+        logs: {
+          orderBy: { happenedAt: 'desc' },
+          include: { media: true },
+        },
         pins: true,
         media: true,
       },
     });
   }
 
-  async addLog(userId: number, goalId: number, input: CreateBucketGoalLogInput) {
+  async addLog(
+    userId: number,
+    goalId: number,
+    input: CreateBucketGoalLogInput,
+    mediaUrls?: string[],
+  ) {
     await this.assertGoalOwnership(goalId, userId);
 
     const log = await this.prisma.bucketGoalLog.create({
@@ -287,6 +295,17 @@ export class BucketService {
       },
     });
 
+    if (mediaUrls?.length) {
+      await this.prisma.bucketGoalMedia.createMany({
+        data: mediaUrls.map((url) => ({
+          logId: log.id,
+          goalId: null,
+          url,
+          type: BucketMediaType.IMAGE,
+        })),
+      });
+    }
+
     await createLog({
       action: LogAction.CUSTOM_ACTION,
       userId,
@@ -294,7 +313,10 @@ export class BucketService {
       metadata: { goalId, logId: log.id },
     });
 
-    return log;
+    return this.prisma.bucketGoalLog.findUnique({
+      where: { id: log.id },
+      include: { media: true },
+    }) as Promise<typeof log & { media: Array<{ url: string }> }>;
   }
 
   async deleteLog(userId: number, logId: number) {

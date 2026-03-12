@@ -142,6 +142,32 @@ export class BucketResolver {
     return this.bucketService.addLog(user.id, goalId, input);
   }
 
+  /** Alias for addBucketGoalLog — frontend calls addBucketLog(goalId, note, happenedAt, mediaUrls) */
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => BucketGoalLog, {
+    name: 'addBucketLog',
+    description: 'Add a memory/log entry to a goal (alias for addBucketGoalLog)',
+  })
+  async addBucketLog(
+    @Args('goalId', { type: () => Int }) goalId: number,
+    @Args('note', { type: () => String }) note: string,
+    @Args('happenedAt', { type: () => Date }) happenedAt: Date,
+    @Args('mediaUrls', {
+      type: () => [String],
+      nullable: true,
+      defaultValue: [],
+    })
+    mediaUrls: string[],
+    @CurrentUser() user: User,
+  ) {
+    return this.bucketService.addLog(
+      user.id,
+      goalId,
+      { note, happenedAt },
+      mediaUrls.length ? mediaUrls : undefined,
+    );
+  }
+
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean, {
     name: 'deleteBucketGoalLog',
