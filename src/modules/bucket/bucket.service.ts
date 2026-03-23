@@ -22,6 +22,11 @@ import {
   BucketTypeCounts,
 } from './types/bucket-dashboard-summary.type';
 import { BucketMapPinOutput } from './types/bucket-map-pin-output.type';
+import {
+  BucketGoalsTimelineGoalCard,
+  BucketGoalsTimelineLogSummary,
+  BucketGoalsTimelinePage,
+} from './types/bucket-goals-timeline.type';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -439,6 +444,86 @@ export class BucketService {
       goalType: p.goal.type,
       coverUrl: p.goal.coverUrl,
     })) as BucketMapPinOutput[];
+  }
+
+  /**
+   * Timeline feed of completed goals for the logged-in user.
+   * Sorted by completedAt DESC, then updatedAt DESC, then createdAt DESC.
+   * Includes logs count and latest log for rich timeline cards.
+   */
+  async listCompletedGoalsTimeline(
+    userId: number,
+    page: number,
+    limit: number,
+  ): Promise<BucketGoalsTimelinePage> {
+    const skip = (page - 1) * limit;
+
+    const [goals, total] = await Promise.all([
+      this.prisma.bucketGoal.findMany({
+        where: { userId, status: BucketGoalStatus.DONE },
+        orderBy: [
+          { completedAt: 'desc' },
+          { updatedAt: 'desc' },
+          { createdAt: 'desc' },
+        ],
+        skip,
+        take: limit,
+        include: {
+          _count: { select: { logs: true } },
+          logs: {
+            orderBy: { happenedAt: 'desc' },
+            take: 1,
+            include: {
+              media: {
+                where: { type: BucketMediaType.IMAGE },
+                take: 1,
+                select: { url: true },
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.bucketGoal.count({
+        where: { userId, status: BucketGoalStatus.DONE },
+      }),
+    ]);
+
+    const items = goals.map((g) => {
+      const latestLog = g.logs[0];
+      let latestLogSummary: BucketGoalsTimelineLogSummary | null = null;
+      if (latestLog) {
+        const firstImage = latestLog.media[0];
+        latestLogSummary = {
+          id: latestLog.id,
+          content: latestLog.note,
+          createdAt: latestLog.createdAt,
+          coverImageUrl: firstImage?.url ?? null,
+        };
+      }
+      return {
+        id: g.id,
+        title: g.title,
+        description: g.description,
+        type: g.type,
+        status: g.status,
+        priority: g.priority,
+        tags: g.tags ?? [],
+        createdAt: g.createdAt,
+        updatedAt: g.updatedAt,
+        completedAt: g.completedAt,
+        targetDate: g.targetDate,
+        coverUrl: g.coverUrl,
+        details: g.details as object | null,
+        logsCount: g._count.logs,
+        latestLog: latestLogSummary,
+      };
+    }) as BucketGoalsTimelineGoalCard[];
+
+    return {
+      items,
+      hasMore: skip + goals.length < total,
+      total,
+    };
   }
 
   async dashboardSummary(userId: number): Promise<BucketDashboardSummary> {

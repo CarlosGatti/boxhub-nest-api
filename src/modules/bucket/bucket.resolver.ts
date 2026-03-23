@@ -17,6 +17,8 @@ import { AddBucketGoalMediaInput } from './dto/add-bucket-goal-media.input';
 import { BucketMapPinsFilterInput } from './dto/bucket-map-pins-filter.input';
 import { BucketDashboardSummary } from './types/bucket-dashboard-summary.type';
 import { BucketMapPinOutput } from './types/bucket-map-pin-output.type';
+import { BucketGoalsTimelinePage } from './types/bucket-goals-timeline.type';
+import { BucketGoalsTimelineInput } from './dto/bucket-goals-timeline.input';
 
 @Resolver()
 export class BucketResolver {
@@ -66,6 +68,22 @@ export class BucketResolver {
   })
   async bucketDashboardSummary(@CurrentUser() user: User) {
     return this.bucketService.dashboardSummary(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => BucketGoalsTimelinePage, {
+    name: 'bucketGoalsTimeline',
+    description:
+      'Paginated timeline feed of completed goals for the logged-in user. Sorted by completedAt, updatedAt, createdAt descending.',
+  })
+  async bucketGoalsTimeline(
+    @Args('input', { nullable: true, type: () => BucketGoalsTimelineInput })
+    input: BucketGoalsTimelineInput | undefined,
+    @CurrentUser() user: User,
+  ) {
+    const page = input?.page ?? 1;
+    const limit = input?.limit ?? 20;
+    return this.bucketService.listCompletedGoalsTimeline(user.id, page, limit);
   }
 
   @UseGuards(JwtAuthGuard)
