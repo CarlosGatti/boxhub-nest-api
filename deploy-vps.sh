@@ -9,14 +9,14 @@ echo "🚀 Iniciando deploy na VPS..."
 cd /var/www/khub
 
 # Verificar se há arquivos não rastreados que podem causar conflito
-if [ -f "prisma/migrations/20251119001739_baseline/migration.sql" ]; then
+if [ -f "prisma/migrations/20240101000000_baseline/migration.sql" ]; then
   echo "⚠️  Arquivo de migração local encontrado, fazendo backup..."
   mkdir -p /tmp/khub-backup
-  cp prisma/migrations/20251119001739_baseline/migration.sql \
+  cp prisma/migrations/20240101000000_baseline/migration.sql \
      /tmp/khub-backup/migration.sql.backup 2>/dev/null || true
   
   echo "🗑️  Removendo arquivo local (já existe no repositório)..."
-  rm -f prisma/migrations/20251119001739_baseline/migration.sql
+  rm -f prisma/migrations/20240101000000_baseline/migration.sql
 fi
 
 # Fazer pull das mudanças

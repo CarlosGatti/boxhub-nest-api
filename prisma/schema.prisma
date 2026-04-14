@@ -1403,3 +1403,56 @@ model BucketVisionCheckin {
   @@index([boardId])
   @@index([boardId, createdAt])
 }
+
+// --- Defined marketing / landing-page leads (isolated; DB is source of truth) ---
+
+enum DefinedLeadStatus {
+  RECEIVED
+  STORED
+}
+
+enum DefinedLeadNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum DefinedLeadCrmSyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+  NOT_APPLICABLE
+}
+
+model DefinedLead {
+  id                 Int                           @id @default(autoincrement())
+  fullName           String
+  email              String
+  phone              String?
+  companyName        String?
+  businessType       String?
+  city               String?
+  state              String?
+  selectedPackage    String?
+  serviceInterest    String?
+  message            String?                       @db.Text
+  landingSlug        String?
+  referrer           String?
+  utmSource          String?
+  utmMedium          String?
+  utmCampaign        String?
+  utmContent         String?
+  utmTerm            String?
+  gclid              String?
+  fbclid             String?
+  consent            Boolean
+  status             DefinedLeadStatus             @default(STORED)
+  notificationStatus DefinedLeadNotificationStatus @default(PENDING)
+  crmSyncStatus      DefinedLeadCrmSyncStatus      @default(PENDING)
+  createdAt          DateTime                      @default(now())
+  updatedAt          DateTime                      @updatedAt
+
+  @@index([email])
+  @@index([createdAt])
+  @@index([landingSlug])
+}

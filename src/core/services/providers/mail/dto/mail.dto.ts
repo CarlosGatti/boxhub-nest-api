@@ -4,7 +4,16 @@ interface Attachments {
   cid: string;
 }
 
-type MailPath = 'welcome' | 'forgot_password' | 'send_password' | 'contact_us' | 'resident_approved' | 'resident_rejected' | 'email-verification';
+type MailPath =
+  | 'welcome'
+  | 'forgot_password'
+  | 'send_password'
+  | 'contact_us'
+  | 'resident_approved'
+  | 'resident_rejected'
+  | 'email-verification'
+  | 'defined_lead_notification'
+  | 'defined_lead_client_welcome';
 
 interface IMailSendDTO {
   to: string;

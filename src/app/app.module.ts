@@ -26,6 +26,7 @@ import { UserModule } from '../domains/user/user.module';
 import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
 import { BucketModule } from '../modules/bucket/bucket.module';
 import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.module';
+import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.module';
 
 @Module({
   imports: [
@@ -101,6 +102,8 @@ import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.modul
     BucketModule,
     // Bucket Vision Board
     BucketVisionModule,
+    // Defined marketing leads (landing pages)
+    DefinedLeadsModule,
   ],
   controllers: [
     AppController,

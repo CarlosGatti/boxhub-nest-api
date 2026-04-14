@@ -156,6 +156,70 @@ class EmailVerificationTemplate extends Template {
   }
 }
 
+class DefinedLeadNotificationTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'defined-lead-notification',
+      'body.hbs',
+    );
+  }
+
+  get attachments() {
+    return [];
+  }
+}
+
+class DefinedLeadClientWelcomeTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'defined-lead-client-welcome',
+      'body.hbs',
+    );
+  }
+
+  get attachments() {
+    return [
+      {
+        filename: 'logo-defined.png',
+        path: resolve(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          '..',
+          '..',
+          '..',
+          'static',
+          'email',
+          'img',
+          'logo-defined.png',
+        ),
+        cid: 'defined-logo',
+      },
+    ];
+  }
+}
+
 
 export function createTemplate(templateType: MailPath) {
   switch (templateType) {
@@ -179,6 +243,12 @@ export function createTemplate(templateType: MailPath) {
 
     case 'email-verification':
       return new EmailVerificationTemplate();
+
+    case 'defined_lead_notification':
+      return new DefinedLeadNotificationTemplate();
+
+    case 'defined_lead_client_welcome':
+      return new DefinedLeadClientWelcomeTemplate();
 
     default:
       return new Template();
