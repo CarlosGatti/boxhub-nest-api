@@ -38,6 +38,7 @@ import { ReviewCardPremiumRequestUncheckedUpdateManyWithoutUserNestedInput } fro
 import { BucketGoalUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-unchecked-update-many-without-user-nested.input';
 import { BucketShareUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-share/bucket-share-unchecked-update-many-without-user-nested.input';
 import { BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-unchecked-update-many-without-user-nested.input';
+import { DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-author-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateInput {
@@ -204,4 +205,7 @@ export class UserUncheckedUpdateInput {
 
     @Field(() => BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput, {nullable:true})
+    definedInternalNotes?: DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput;
 }

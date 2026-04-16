@@ -30,6 +30,7 @@ import { ReviewCardPremiumRequestOrderByRelationAggregateInput } from '../review
 import { BucketGoalOrderByRelationAggregateInput } from '../bucket-goal/bucket-goal-order-by-relation-aggregate.input';
 import { BucketShareOrderByRelationAggregateInput } from '../bucket-share/bucket-share-order-by-relation-aggregate.input';
 import { BucketVisionBoardOrderByRelationAggregateInput } from '../bucket-vision-board/bucket-vision-board-order-by-relation-aggregate.input';
+import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -196,4 +197,7 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => BucketVisionBoardOrderByRelationAggregateInput, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardOrderByRelationAggregateInput;
+
+    @Field(() => DefinedInternalNoteOrderByRelationAggregateInput, {nullable:true})
+    definedInternalNotes?: DefinedInternalNoteOrderByRelationAggregateInput;
 }

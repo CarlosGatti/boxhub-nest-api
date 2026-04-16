@@ -36,6 +36,7 @@ import { ReviewCardProjectUpdateManyWithoutUserNestedInput } from '../review-car
 import { ReviewCardPremiumRequestUpdateManyWithoutUserNestedInput } from '../review-card-premium-request/review-card-premium-request-update-many-without-user-nested.input';
 import { BucketGoalUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucket-goal-update-many-without-user-nested.input';
 import { BucketShareUpdateManyWithoutUserNestedInput } from '../bucket-share/bucket-share-update-many-without-user-nested.input';
+import { DefinedInternalNoteUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-author-nested.input';
 
 @InputType()
 export class UserUpdateWithoutBucketVisionBoardsInput {
@@ -196,4 +197,7 @@ export class UserUpdateWithoutBucketVisionBoardsInput {
 
     @Field(() => BucketShareUpdateManyWithoutUserNestedInput, {nullable:true})
     bucketShares?: BucketShareUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedInternalNoteUpdateManyWithoutAuthorNestedInput, {nullable:true})
+    definedInternalNotes?: DefinedInternalNoteUpdateManyWithoutAuthorNestedInput;
 }

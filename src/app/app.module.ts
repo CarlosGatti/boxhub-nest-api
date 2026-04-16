@@ -27,6 +27,7 @@ import { ReviewCardsModule } from '../domains/review-cards/review-cards.module';
 import { BucketModule } from '../modules/bucket/bucket.module';
 import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.module';
 import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.module';
+import { DefinedModule } from '../apps/defined/defined.module';
 
 @Module({
   imports: [
@@ -104,6 +105,8 @@ import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.modul
     BucketVisionModule,
     // Defined marketing leads (landing pages)
     DefinedLeadsModule,
+    // Defined internal backoffice
+    DefinedModule,
   ],
   controllers: [
     AppController,

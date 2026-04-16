@@ -154,7 +154,7 @@ query {
 - **Bucket uploads:** `POST /uploads/bucket-goals/cover`, `POST /uploads/bucket-goals/media` — see [docs/bucket-uploads.md](docs/bucket-uploads.md)
 
 ## Auth
-Authentication uses **JWT (Passport)** with `Authorization: Bearer <token>`.  
+Authentication uses **JWT (Passport)** with `Authorization: Bearer <token>`.
 Several GraphQL resolvers are protected with `JwtAuthGuard` and `RequireApp('...')` via `AppPermissionGuard`.
 
 ## Scripts

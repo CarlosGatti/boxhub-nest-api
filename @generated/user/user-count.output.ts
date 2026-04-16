@@ -91,4 +91,7 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     bucketVisionBoards?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedInternalNotes?: number;
 }

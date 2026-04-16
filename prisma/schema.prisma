@@ -180,6 +180,9 @@ model User {
   // Bucket Vision Board
   bucketVisionBoards BucketVisionBoard[]
 
+  // Defined backoffice (internal)
+  definedInternalNotes DefinedInternalNote[]
+
   @@index([email], map: "userEmail")
 }
 
@@ -1455,4 +1458,106 @@ model DefinedLead {
   @@index([email])
   @@index([createdAt])
   @@index([landingSlug])
+}
+
+// --- Defined internal backoffice (phase 1A) ---
+
+enum DefinedClientType {
+  COMPANY
+  INDIVIDUAL
+}
+
+enum DefinedProjectServiceType {
+  BRANDING
+  WEBSITE
+  VIDEO
+  ADS
+  SOCIAL
+  OTHER
+}
+
+enum DefinedProjectStatus {
+  DRAFT
+  ACTIVE
+  WAITING_ON_CLIENT
+  IN_PROGRESS
+  IN_REVIEW
+  COMPLETED
+  ARCHIVED
+}
+
+model DefinedClient {
+  id              Int               @id @default(autoincrement())
+  type            DefinedClientType
+  companyName     String?
+  legalName       String?
+  contactName     String
+  email           String
+  phone           String?
+  website         String?
+  instagram       String?
+  facebook        String?
+  addressLine1    String?
+  addressLine2    String?
+  city            String?
+  state           String?
+  postalCode      String?
+  country         String?
+  businessType    String?
+  serviceArea     String?
+  yearsInBusiness Int?
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  projects      DefinedProject[]
+  internalNotes DefinedInternalNote[]
+
+  @@index([email])
+  @@index([companyName])
+  @@index([contactName])
+  @@index([createdAt])
+}
+
+model DefinedProject {
+  id          Int                      @id @default(autoincrement())
+  clientId    Int
+  name        String
+  serviceType DefinedProjectServiceType
+  status      DefinedProjectStatus     @default(DRAFT)
+  budget      Float?
+  deadline    DateTime?
+  source      String?
+  assignedTo  String?
+  supplierId  Int?
+  notes       String?
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+
+  client        DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  internalNotes DefinedInternalNote[]
+
+  @@index([clientId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([clientId, status])
+}
+
+model DefinedInternalNote {
+  id        Int      @id @default(autoincrement())
+  clientId  Int?
+  projectId Int?
+  authorId  Int
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  client  DefinedClient?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project DefinedProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  author  User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([authorId])
+  @@index([createdAt])
 }

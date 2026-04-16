@@ -35,6 +35,7 @@ import { ReviewCardPremiumRequestListRelationFilter } from '../review-card-premi
 import { BucketGoalListRelationFilter } from '../bucket-goal/bucket-goal-list-relation-filter.input';
 import { BucketShareListRelationFilter } from '../bucket-share/bucket-share-list-relation-filter.input';
 import { BucketVisionBoardListRelationFilter } from '../bucket-vision-board/bucket-vision-board-list-relation-filter.input';
+import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -210,4 +211,7 @@ export class UserWhereInput {
 
     @Field(() => BucketVisionBoardListRelationFilter, {nullable:true})
     bucketVisionBoards?: BucketVisionBoardListRelationFilter;
+
+    @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
+    definedInternalNotes?: DefinedInternalNoteListRelationFilter;
 }

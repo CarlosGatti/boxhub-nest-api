@@ -29,6 +29,7 @@ import { ReviewCardPremiumRequest } from '../review-card-premium-request/review-
 import { BucketGoal } from '../bucket-goal/bucket-goal.model';
 import { BucketShare } from '../bucket-share/bucket-share.model';
 import { BucketVisionBoard } from '../bucket-vision-board/bucket-vision-board.model';
+import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -192,6 +193,9 @@ export class User {
 
     @Field(() => [BucketVisionBoard], {nullable:true})
     bucketVisionBoards?: Array<BucketVisionBoard>;
+
+    @Field(() => [DefinedInternalNote], {nullable:true})
+    definedInternalNotes?: Array<DefinedInternalNote>;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

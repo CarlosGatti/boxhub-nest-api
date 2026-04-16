@@ -61,6 +61,11 @@ async function main() {
       name: 'Bucket List',
       description: 'Personal goals, memories, and map pins',
     },
+    {
+      code: 'DEFINED',
+      name: 'Defined',
+      description: 'Defined internal backoffice',
+    },
   ];
 
   for (const app of apps) {

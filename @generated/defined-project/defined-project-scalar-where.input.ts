@@ -1,0 +1,63 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { IntFilter } from '../prisma/int-filter.input';
+import { StringFilter } from '../prisma/string-filter.input';
+import { EnumDefinedProjectServiceTypeFilter } from '../prisma/enum-defined-project-service-type-filter.input';
+import { EnumDefinedProjectStatusFilter } from '../prisma/enum-defined-project-status-filter.input';
+import { FloatNullableFilter } from '../prisma/float-nullable-filter.input';
+import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
+import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
+import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
+import { DateTimeFilter } from '../prisma/date-time-filter.input';
+
+@InputType()
+export class DefinedProjectScalarWhereInput {
+
+    @Field(() => [DefinedProjectScalarWhereInput], {nullable:true})
+    AND?: Array<DefinedProjectScalarWhereInput>;
+
+    @Field(() => [DefinedProjectScalarWhereInput], {nullable:true})
+    OR?: Array<DefinedProjectScalarWhereInput>;
+
+    @Field(() => [DefinedProjectScalarWhereInput], {nullable:true})
+    NOT?: Array<DefinedProjectScalarWhereInput>;
+
+    @Field(() => IntFilter, {nullable:true})
+    id?: IntFilter;
+
+    @Field(() => IntFilter, {nullable:true})
+    clientId?: IntFilter;
+
+    @Field(() => StringFilter, {nullable:true})
+    name?: StringFilter;
+
+    @Field(() => EnumDefinedProjectServiceTypeFilter, {nullable:true})
+    serviceType?: EnumDefinedProjectServiceTypeFilter;
+
+    @Field(() => EnumDefinedProjectStatusFilter, {nullable:true})
+    status?: EnumDefinedProjectStatusFilter;
+
+    @Field(() => FloatNullableFilter, {nullable:true})
+    budget?: FloatNullableFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    deadline?: DateTimeNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    source?: StringNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    assignedTo?: StringNullableFilter;
+
+    @Field(() => IntNullableFilter, {nullable:true})
+    supplierId?: IntNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    notes?: StringNullableFilter;
+
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: DateTimeFilter;
+
+    @Field(() => DateTimeFilter, {nullable:true})
+    updatedAt?: DateTimeFilter;
+}
