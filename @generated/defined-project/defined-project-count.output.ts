@@ -7,4 +7,7 @@ export class DefinedProjectCount {
 
     @Field(() => Int, {nullable:false})
     internalNotes?: number;
+
+    @Field(() => Int, {nullable:false})
+    intakeForms?: number;
 }

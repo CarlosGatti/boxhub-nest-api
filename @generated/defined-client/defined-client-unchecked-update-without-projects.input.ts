@@ -7,6 +7,7 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-client-nested.input';
+import { DefinedIntakeFormUncheckedUpdateManyWithoutClientNestedInput } from '../defined-intake-form/defined-intake-form-unchecked-update-many-without-client-nested.input';
 
 @InputType()
 export class DefinedClientUncheckedUpdateWithoutProjectsInput {
@@ -79,4 +80,7 @@ export class DefinedClientUncheckedUpdateWithoutProjectsInput {
 
     @Field(() => DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput, {nullable:true})
     internalNotes?: DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput;
+
+    @Field(() => DefinedIntakeFormUncheckedUpdateManyWithoutClientNestedInput, {nullable:true})
+    intakeForms?: DefinedIntakeFormUncheckedUpdateManyWithoutClientNestedInput;
 }

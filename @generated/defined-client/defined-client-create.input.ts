@@ -4,6 +4,7 @@ import { DefinedClientType } from '../prisma/defined-client-type.enum';
 import { Int } from '@nestjs/graphql';
 import { DefinedProjectCreateNestedManyWithoutClientInput } from '../defined-project/defined-project-create-nested-many-without-client.input';
 import { DefinedInternalNoteCreateNestedManyWithoutClientInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-client.input';
+import { DefinedIntakeFormCreateNestedManyWithoutClientInput } from '../defined-intake-form/defined-intake-form-create-nested-many-without-client.input';
 
 @InputType()
 export class DefinedClientCreateInput {
@@ -76,4 +77,7 @@ export class DefinedClientCreateInput {
 
     @Field(() => DefinedInternalNoteCreateNestedManyWithoutClientInput, {nullable:true})
     internalNotes?: DefinedInternalNoteCreateNestedManyWithoutClientInput;
+
+    @Field(() => DefinedIntakeFormCreateNestedManyWithoutClientInput, {nullable:true})
+    intakeForms?: DefinedIntakeFormCreateNestedManyWithoutClientInput;
 }

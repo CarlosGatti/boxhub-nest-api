@@ -5,6 +5,7 @@ import { DefinedProjectServiceType } from '../prisma/defined-project-service-typ
 import { DefinedProjectStatus } from '../prisma/defined-project-status.enum';
 import { Float } from '@nestjs/graphql';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutProjectInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-project.input';
+import { DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-unchecked-create-nested-many-without-project.input';
 
 @InputType()
 export class DefinedProjectUncheckedCreateWithoutClientInput {
@@ -47,4 +48,7 @@ export class DefinedProjectUncheckedCreateWithoutClientInput {
 
     @Field(() => DefinedInternalNoteUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
     internalNotes?: DefinedInternalNoteUncheckedCreateNestedManyWithoutProjectInput;
+
+    @Field(() => DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
+    intakeForms?: DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput;
 }

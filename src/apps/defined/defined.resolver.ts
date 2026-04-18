@@ -3,6 +3,8 @@ import { UseGuards } from '@nestjs/common';
 import { DefinedClient } from '@generated/defined-client/defined-client.model';
 import { DefinedProject } from '@generated/defined-project/defined-project.model';
 import { DefinedInternalNote } from '@generated/defined-internal-note/defined-internal-note.model';
+import { DefinedIntakeForm } from '@generated/defined-intake-form/defined-intake-form.model';
+import { DefinedIntakeFormType } from '@generated/prisma/defined-intake-form-type.enum';
 import { User } from '@generated/user/user.model';
 import { JwtAuthGuard } from '../../core/auth/guards/jwt-auth.guard';
 import {
@@ -10,6 +12,7 @@ import {
   RequireApp,
 } from '../../core/auth/guards/app-permission.guard';
 import { CurrentUser } from '../../domains/user/current-user.decorator';
+import { GraphQLJSON } from 'graphql-type-json';
 import { CreateDefinedClientInput } from './dto/create-defined-client.input';
 import { UpdateDefinedClientInput } from './dto/update-defined-client.input';
 import { CreateDefinedProjectInput } from './dto/create-defined-project.input';
@@ -18,6 +21,10 @@ import { ChangeDefinedProjectStatusInput } from './dto/change-defined-project-st
 import { CreateDefinedInternalNoteInput } from './dto/create-defined-internal-note.input';
 import { DefinedClientFilterInput } from './dto/defined-client-filter.input';
 import { DefinedProjectFilterInput } from './dto/defined-project-filter.input';
+import { CreateDefinedIntakeFormInput } from './dto/create-defined-intake-form.input';
+import { SubmitDefinedIntakeFormInput } from './dto/submit-defined-intake-form.input';
+import { MarkDefinedIntakeFormReviewedInput } from './dto/mark-defined-intake-form-reviewed.input';
+import { DefinedIntakeShareLinkPayload } from './types/defined-intake-share-link-payload.type';
 import { DefinedService } from './defined.service';
 
 @Resolver()
@@ -116,5 +123,70 @@ export class DefinedResolver {
     @Args('projectId', { type: () => Int }) projectId: number,
   ) {
     return this.definedService.listInternalNotesByProject(projectId);
+  }
+
+  @RequireApp('DEFINED')
+  @Mutation(() => DefinedIntakeShareLinkPayload, {
+    name: 'generateDefinedIntakeShareLink',
+  })
+  async generateDefinedIntakeShareLink(
+    @Args('intakeFormId', { type: () => Int }) intakeFormId: number,
+  ) {
+    return this.definedService.generateIntakeShareLink(intakeFormId);
+  }
+
+  @RequireApp('DEFINED')
+  @Mutation(() => DefinedIntakeForm, { name: 'createDefinedIntakeForm' })
+  async createDefinedIntakeForm(
+    @Args('input') input: CreateDefinedIntakeFormInput,
+  ) {
+    return this.definedService.createIntakeForm(input);
+  }
+
+  @RequireApp('DEFINED')
+  @Query(() => [DefinedIntakeForm], { name: 'definedIntakeFormsByClient' })
+  async definedIntakeFormsByClient(
+    @Args('clientId', { type: () => Int }) clientId: number,
+  ) {
+    return this.definedService.listIntakeFormsByClient(clientId);
+  }
+
+  @RequireApp('DEFINED')
+  @Query(() => [DefinedIntakeForm], { name: 'definedIntakeFormsByProject' })
+  async definedIntakeFormsByProject(
+    @Args('projectId', { type: () => Int }) projectId: number,
+  ) {
+    return this.definedService.listIntakeFormsByProject(projectId);
+  }
+
+  @RequireApp('DEFINED')
+  @Query(() => DefinedIntakeForm, { name: 'definedIntakeForm' })
+  async definedIntakeForm(@Args('id', { type: () => Int }) id: number) {
+    return this.definedService.getIntakeForm(id);
+  }
+
+  @RequireApp('DEFINED')
+  @Mutation(() => DefinedIntakeForm, { name: 'submitDefinedIntakeForm' })
+  async submitDefinedIntakeForm(
+    @Args('input') input: SubmitDefinedIntakeFormInput,
+  ) {
+    return this.definedService.submitIntakeForm(input);
+  }
+
+  @RequireApp('DEFINED')
+  @Mutation(() => DefinedIntakeForm, { name: 'markDefinedIntakeFormReviewed' })
+  async markDefinedIntakeFormReviewed(
+    @Args('input') input: MarkDefinedIntakeFormReviewedInput,
+  ) {
+    return this.definedService.markIntakeFormReviewed(input);
+  }
+
+  @RequireApp('DEFINED')
+  @Query(() => GraphQLJSON, { name: 'definedIntakeTemplate' })
+  async definedIntakeTemplate(
+    @Args('formType', { type: () => DefinedIntakeFormType })
+    formType: DefinedIntakeFormType,
+  ) {
+    return this.definedService.getIntakeTemplate(formType as any);
   }
 }

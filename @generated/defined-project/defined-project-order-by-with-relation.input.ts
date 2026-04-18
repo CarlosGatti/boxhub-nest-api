@@ -4,6 +4,7 @@ import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { DefinedClientOrderByWithRelationInput } from '../defined-client/defined-client-order-by-with-relation.input';
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
+import { DefinedIntakeFormOrderByRelationAggregateInput } from '../defined-intake-form/defined-intake-form-order-by-relation-aggregate.input';
 
 @InputType()
 export class DefinedProjectOrderByWithRelationInput {
@@ -52,4 +53,7 @@ export class DefinedProjectOrderByWithRelationInput {
 
     @Field(() => DefinedInternalNoteOrderByRelationAggregateInput, {nullable:true})
     internalNotes?: DefinedInternalNoteOrderByRelationAggregateInput;
+
+    @Field(() => DefinedIntakeFormOrderByRelationAggregateInput, {nullable:true})
+    intakeForms?: DefinedIntakeFormOrderByRelationAggregateInput;
 }

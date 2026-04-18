@@ -5,6 +5,7 @@ import { DefinedClientType } from '../prisma/defined-client-type.enum';
 import { Int } from '@nestjs/graphql';
 import { DefinedProject } from '../defined-project/defined-project.model';
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
+import { DefinedIntakeForm } from '../defined-intake-form/defined-intake-form.model';
 import { DefinedClientCount } from './defined-client-count.output';
 
 @ObjectType()
@@ -81,6 +82,9 @@ export class DefinedClient {
 
     @Field(() => [DefinedInternalNote], {nullable:true})
     internalNotes?: Array<DefinedInternalNote>;
+
+    @Field(() => [DefinedIntakeForm], {nullable:true})
+    intakeForms?: Array<DefinedIntakeForm>;
 
     @Field(() => DefinedClientCount, {nullable:false})
     _count?: DefinedClientCount;

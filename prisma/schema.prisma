@@ -1486,6 +1486,31 @@ enum DefinedProjectStatus {
   ARCHIVED
 }
 
+enum DefinedIntakeFormType {
+  BUSINESS_INTAKE
+  BRANDING_BRIEF
+  WEBSITE_BRIEF
+  VIDEO_BRIEF
+  ADS_BRIEF
+}
+
+enum DefinedIntakeFormStatus {
+  DRAFT
+  SENT
+  SUBMITTED
+  REVIEWED
+}
+
+enum DefinedIntakeAnswerType {
+  TEXT
+  LONG_TEXT
+  NUMBER
+  BOOLEAN
+  SELECT
+  MULTI_SELECT
+  JSON
+}
+
 model DefinedClient {
   id              Int               @id @default(autoincrement())
   type            DefinedClientType
@@ -1512,6 +1537,7 @@ model DefinedClient {
 
   projects      DefinedProject[]
   internalNotes DefinedInternalNote[]
+  intakeForms   DefinedIntakeForm[]
 
   @@index([email])
   @@index([companyName])
@@ -1536,6 +1562,7 @@ model DefinedProject {
 
   client        DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   internalNotes DefinedInternalNote[]
+  intakeForms   DefinedIntakeForm[]
 
   @@index([clientId])
   @@index([status])
@@ -1560,4 +1587,46 @@ model DefinedInternalNote {
   @@index([projectId])
   @@index([authorId])
   @@index([createdAt])
+}
+
+model DefinedIntakeForm {
+  id          Int                  @id @default(autoincrement())
+  clientId    Int
+  projectId   Int?
+  formType    DefinedIntakeFormType
+  status      DefinedIntakeFormStatus @default(DRAFT)
+  title       String
+  description String?
+  shareToken  String?              @unique
+  shareTokenCreatedAt DateTime?
+  shareTokenExpiresAt DateTime?
+  shareRevokedAt DateTime?
+  submittedAt DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  client  DefinedClient   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project DefinedProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  answers DefinedIntakeAnswer[]
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([status, createdAt])
+  @@index([shareTokenExpiresAt])
+}
+
+model DefinedIntakeAnswer {
+  id           Int                    @id @default(autoincrement())
+  intakeFormId Int
+  questionKey  String
+  questionLabel String?
+  answerType   DefinedIntakeAnswerType
+  answerValue  Json
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  intakeForm DefinedIntakeForm @relation(fields: [intakeFormId], references: [id], onDelete: Cascade)
+
+  @@index([intakeFormId])
+  @@index([questionKey])
 }

@@ -3,7 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { randomBytes } from 'crypto';
+import {
+  DefinedIntakeFormStatus,
+  DefinedIntakeFormType,
+  DefinedProjectStatus,
+  Prisma,
+} from '@prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateDefinedClientInput } from './dto/create-defined-client.input';
 import { UpdateDefinedClientInput } from './dto/update-defined-client.input';
@@ -13,10 +19,81 @@ import { ChangeDefinedProjectStatusInput } from './dto/change-defined-project-st
 import { CreateDefinedInternalNoteInput } from './dto/create-defined-internal-note.input';
 import { DefinedClientFilterInput } from './dto/defined-client-filter.input';
 import { DefinedProjectFilterInput } from './dto/defined-project-filter.input';
+import { CreateDefinedIntakeFormInput } from './dto/create-defined-intake-form.input';
+import { SubmitDefinedIntakeFormInput } from './dto/submit-defined-intake-form.input';
+import { MarkDefinedIntakeFormReviewedInput } from './dto/mark-defined-intake-form-reviewed.input';
+import { SubmitDefinedIntakeFormByShareTokenInput } from './dto/submit-defined-intake-form-by-share-token.input';
 
 @Injectable()
 export class DefinedService {
   constructor(private readonly prisma: PrismaService) {}
+
+  private readonly intakeTemplates: Record<DefinedIntakeFormType, any> = {
+    BUSINESS_INTAKE: {
+      formType: 'BUSINESS_INTAKE',
+      title: 'Business Intake',
+      groups: [
+        { key: 'company_basics', label: 'Company basics' },
+        { key: 'contact_details', label: 'Contact details' },
+        { key: 'business_overview', label: 'Business overview' },
+        { key: 'services_offered', label: 'Services offered' },
+        { key: 'target_audience', label: 'Target audience' },
+        { key: 'service_area', label: 'Service area' },
+        { key: 'goals', label: 'Main goals' },
+        { key: 'online_presence', label: 'Current online presence' },
+      ],
+    },
+    BRANDING_BRIEF: {
+      formType: 'BRANDING_BRIEF',
+      title: 'Branding Brief',
+      groups: [
+        { key: 'brand_context', label: 'Existing or new brand' },
+        { key: 'positioning', label: 'Desired perception' },
+        { key: 'competitors', label: 'Competitors' },
+        { key: 'style_preferences', label: 'Color and style preferences' },
+        { key: 'references', label: 'References and inspirations' },
+        { key: 'usage', label: 'Where the brand will be used' },
+      ],
+    },
+    WEBSITE_BRIEF: {
+      formType: 'WEBSITE_BRIEF',
+      title: 'Website Brief',
+      groups: [
+        { key: 'current_site', label: 'Current website' },
+        { key: 'site_goals', label: 'Site goals' },
+        { key: 'pages', label: 'Pages needed' },
+        { key: 'content', label: 'Services and content' },
+        { key: 'references', label: 'Competitors and references' },
+        { key: 'conversion', label: 'Lead forms and CTA' },
+        { key: 'local_seo', label: 'Local SEO and service area' },
+      ],
+    },
+    VIDEO_BRIEF: {
+      formType: 'VIDEO_BRIEF',
+      title: 'Video Brief',
+      groups: [
+        { key: 'objective', label: 'Objective of the video' },
+        { key: 'location', label: 'Location and restrictions' },
+        { key: 'timeline', label: 'Shoot date preferences' },
+        { key: 'drone', label: 'Drone and safety requirements' },
+        { key: 'references', label: 'References and desired format' },
+        { key: 'campaign_usage', label: 'Ads usage and outcomes' },
+      ],
+    },
+    ADS_BRIEF: {
+      formType: 'ADS_BRIEF',
+      title: 'Ads Brief',
+      groups: [
+        { key: 'campaign_objective', label: 'Campaign objective' },
+        { key: 'targeting', label: 'Target area and audience' },
+        { key: 'priorities', label: 'Services to prioritize' },
+        { key: 'budget', label: 'Estimated ad budget' },
+        { key: 'assets', label: 'Accounts and destination page' },
+        { key: 'offer', label: 'Offer and call to action' },
+        { key: 'competitors', label: 'Competitors' },
+      ],
+    },
+  };
 
   private async ensureClient(clientId: number) {
     const client = await this.prisma.definedClient.findUnique({
@@ -36,6 +113,81 @@ export class DefinedService {
       throw new NotFoundException(`Defined project ${projectId} not found`);
     }
     return project;
+  }
+
+  private async ensureIntakeForm(intakeFormId: number) {
+    const form = await this.prisma.definedIntakeForm.findUnique({
+      where: { id: intakeFormId },
+      include: { project: true },
+    });
+    if (!form) {
+      throw new NotFoundException(`Defined intake form ${intakeFormId} not found`);
+    }
+    return form;
+  }
+
+  private normalizeAnswersForPersistence(
+    answers: Array<{
+      questionKey: string;
+      questionLabel?: string | null;
+      answerType: Prisma.DefinedIntakeAnswerCreateManyInput['answerType'];
+      answerValue: unknown;
+    }>,
+    intakeFormId: number,
+  ) {
+    return answers.map((item) => {
+      const questionKey = item.questionKey?.trim();
+      if (!questionKey) {
+        throw new BadRequestException('questionKey must not be empty');
+      }
+      return {
+        intakeFormId,
+        questionKey,
+        questionLabel: item.questionLabel?.trim() || null,
+        answerType: item.answerType,
+        answerValue: item.answerValue as Prisma.InputJsonValue,
+      };
+    });
+  }
+
+  private async persistSubmittedAnswers(
+    intakeFormId: number,
+    answers: Array<{
+      questionKey: string;
+      questionLabel?: string | null;
+      answerType: Prisma.DefinedIntakeAnswerCreateManyInput['answerType'];
+      answerValue: unknown;
+    }>,
+  ) {
+    const preparedAnswers = this.normalizeAnswersForPersistence(
+      answers,
+      intakeFormId,
+    );
+
+    await this.prisma.$transaction([
+      this.prisma.definedIntakeAnswer.deleteMany({
+        where: { intakeFormId },
+      }),
+      this.prisma.definedIntakeAnswer.createMany({
+        data: preparedAnswers,
+      }),
+      this.prisma.definedIntakeForm.update({
+        where: { id: intakeFormId },
+        data: {
+          status: DefinedIntakeFormStatus.SUBMITTED,
+          submittedAt: new Date(),
+        },
+      }),
+    ]);
+
+    return this.prisma.definedIntakeForm.findUniqueOrThrow({
+      where: { id: intakeFormId },
+      include: {
+        answers: {
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    });
   }
 
   async createClient(input: CreateDefinedClientInput) {
@@ -252,5 +404,171 @@ export class DefinedService {
       where: { projectId },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async createIntakeForm(input: CreateDefinedIntakeFormInput) {
+    await this.ensureClient(input.clientId);
+
+    if (input.projectId) {
+      const project = await this.ensureProject(input.projectId);
+      if (project.clientId !== input.clientId) {
+        throw new BadRequestException(
+          'projectId does not belong to the provided clientId',
+        );
+      }
+    }
+
+    return this.prisma.definedIntakeForm.create({
+      data: {
+        clientId: input.clientId,
+        projectId: input.projectId,
+        formType: input.formType,
+        status: input.status ?? DefinedIntakeFormStatus.DRAFT,
+        title: input.title,
+        description: input.description,
+      },
+    });
+  }
+
+  async listIntakeFormsByClient(clientId: number) {
+    await this.ensureClient(clientId);
+    return this.prisma.definedIntakeForm.findMany({
+      where: { clientId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async listIntakeFormsByProject(projectId: number) {
+    await this.ensureProject(projectId);
+    return this.prisma.definedIntakeForm.findMany({
+      where: { projectId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async getIntakeForm(id: number) {
+    const form = await this.prisma.definedIntakeForm.findUnique({
+      where: { id },
+      include: {
+        answers: {
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    });
+    if (!form) {
+      throw new NotFoundException(`Defined intake form ${id} not found`);
+    }
+    return form;
+  }
+
+  async submitIntakeForm(input: SubmitDefinedIntakeFormInput) {
+    const form = await this.ensureIntakeForm(input.intakeFormId);
+    if (form.project && form.project.status === DefinedProjectStatus.ARCHIVED) {
+      throw new BadRequestException(
+        'Cannot submit intake form for an archived project',
+      );
+    }
+    return this.persistSubmittedAnswers(form.id, input.answers);
+  }
+
+  async markIntakeFormReviewed(input: MarkDefinedIntakeFormReviewedInput) {
+    await this.ensureIntakeForm(input.intakeFormId);
+    return this.prisma.definedIntakeForm.update({
+      where: { id: input.intakeFormId },
+      data: { status: DefinedIntakeFormStatus.REVIEWED },
+    });
+  }
+
+  getIntakeTemplate(formType: DefinedIntakeFormType) {
+    return this.intakeTemplates[formType] ?? null;
+  }
+
+  async generateIntakeShareLink(intakeFormId: number) {
+    await this.ensureIntakeForm(intakeFormId);
+    const token = randomBytes(32).toString('hex');
+
+    const ttlHoursRaw = process.env.DEFINED_INTAKE_SHARE_TOKEN_TTL_HOURS;
+    const ttlHours = ttlHoursRaw ? Number(ttlHoursRaw) : NaN;
+    const shareTokenExpiresAt =
+      Number.isFinite(ttlHours) && ttlHours > 0
+        ? new Date(Date.now() + ttlHours * 60 * 60 * 1000)
+        : null;
+
+    const updated = await this.prisma.definedIntakeForm.update({
+      where: { id: intakeFormId },
+      data: {
+        shareToken: token,
+        shareTokenCreatedAt: new Date(),
+        shareTokenExpiresAt,
+        shareRevokedAt: null,
+      },
+    });
+
+    return {
+      intakeFormId: updated.id,
+      shareToken: token,
+      relativePath: `/forms/intake/${token}`,
+      shareTokenExpiresAt: updated.shareTokenExpiresAt,
+      shareRevokedAt: updated.shareRevokedAt,
+    };
+  }
+
+  private async ensureIntakeFormByShareToken(token: string) {
+    const normalized = token?.trim();
+    if (!normalized) {
+      throw new BadRequestException('Invalid token');
+    }
+
+    const form = await this.prisma.definedIntakeForm.findFirst({
+      where: {
+        shareToken: normalized,
+        shareRevokedAt: null,
+      },
+      include: { project: true },
+    });
+
+    if (!form) {
+      throw new NotFoundException('Intake link not found or revoked');
+    }
+
+    if (form.shareTokenExpiresAt && form.shareTokenExpiresAt < new Date()) {
+      throw new BadRequestException('Intake link has expired');
+    }
+
+    return form;
+  }
+
+  async getIntakeFormForRespondent(token: string) {
+    const form = await this.ensureIntakeFormByShareToken(token);
+    return {
+      formType: form.formType,
+      status: form.status,
+      title: form.title,
+      description: form.description,
+      template: this.getIntakeTemplate(form.formType),
+    };
+  }
+
+  async submitIntakeFormByShareToken(
+    input: SubmitDefinedIntakeFormByShareTokenInput,
+  ) {
+    const form = await this.ensureIntakeFormByShareToken(input.token);
+
+    if (
+      form.status !== DefinedIntakeFormStatus.DRAFT &&
+      form.status !== DefinedIntakeFormStatus.SENT
+    ) {
+      throw new BadRequestException(
+        'This intake form is no longer accepting responses',
+      );
+    }
+
+    if (form.project && form.project.status === DefinedProjectStatus.ARCHIVED) {
+      throw new BadRequestException(
+        'Cannot submit intake form for an archived project',
+      );
+    }
+
+    return this.persistSubmittedAnswers(form.id, input.answers);
   }
 }

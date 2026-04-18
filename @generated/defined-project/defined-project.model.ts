@@ -7,6 +7,7 @@ import { DefinedProjectStatus } from '../prisma/defined-project-status.enum';
 import { Float } from '@nestjs/graphql';
 import { DefinedClient } from '../defined-client/defined-client.model';
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
+import { DefinedIntakeForm } from '../defined-intake-form/defined-intake-form.model';
 import { DefinedProjectCount } from './defined-project-count.output';
 
 @ObjectType()
@@ -56,6 +57,9 @@ export class DefinedProject {
 
     @Field(() => [DefinedInternalNote], {nullable:true})
     internalNotes?: Array<DefinedInternalNote>;
+
+    @Field(() => [DefinedIntakeForm], {nullable:true})
+    intakeForms?: Array<DefinedIntakeForm>;
 
     @Field(() => DefinedProjectCount, {nullable:false})
     _count?: DefinedProjectCount;

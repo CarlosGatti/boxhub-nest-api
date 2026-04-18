@@ -13,6 +13,7 @@ import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DefinedClientRelationFilter } from '../defined-client/defined-client-relation-filter.input';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
+import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
 
 @InputType()
 export class DefinedProjectWhereUniqueInput {
@@ -70,4 +71,7 @@ export class DefinedProjectWhereUniqueInput {
 
     @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
     internalNotes?: DefinedInternalNoteListRelationFilter;
+
+    @Field(() => DefinedIntakeFormListRelationFilter, {nullable:true})
+    intakeForms?: DefinedIntakeFormListRelationFilter;
 }
