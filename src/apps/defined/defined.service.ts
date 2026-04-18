@@ -524,7 +524,7 @@ export class DefinedService {
         shareToken: normalized,
         shareRevokedAt: null,
       },
-      include: { project: true },
+      include: { project: true, client: true },
     });
 
     if (!form) {
@@ -540,12 +540,20 @@ export class DefinedService {
 
   async getIntakeFormForRespondent(token: string) {
     const form = await this.ensureIntakeFormByShareToken(token);
+    const client = form.client;
+    const clientDisplayName =
+      client?.companyName?.trim() ||
+      client?.contactName?.trim() ||
+      client?.email?.trim() ||
+      'Client';
     return {
       formType: form.formType,
       status: form.status,
       title: form.title,
       description: form.description,
       template: this.getIntakeTemplate(form.formType),
+      clientDisplayName,
+      projectName: form.project?.name ?? null,
     };
   }
 

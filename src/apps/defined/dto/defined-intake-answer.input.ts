@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 import { DefinedIntakeAnswerType } from '@generated/prisma/defined-intake-answer-type.enum';
 import {
+  Allow,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -28,5 +29,6 @@ export class DefinedIntakeAnswerInput {
   answerType: DefinedIntakeAnswerType;
 
   @Field(() => GraphQLJSON)
+  @Allow()
   answerValue: unknown;
 }

@@ -19,4 +19,11 @@ export class DefinedIntakeRespondentView {
 
   @Field(() => GraphQLJSON)
   template: unknown;
+
+  /** Helps the respondent recognize who this brief is for (no sensitive internal IDs). */
+  @Field(() => String)
+  clientDisplayName: string;
+
+  @Field(() => String, { nullable: true })
+  projectName?: string | null;
 }
