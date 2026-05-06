@@ -10,6 +10,8 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-intake-form/defined-intake-form-unchecked-update-many-without-project-nested.input';
+import { PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-project-nested.input';
+import { PomodoroSessionUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-project-nested.input';
 
 @InputType()
 export class DefinedProjectUncheckedUpdateWithoutInternalNotesInput {
@@ -55,4 +57,10 @@ export class DefinedProjectUncheckedUpdateWithoutInternalNotesInput {
 
     @Field(() => DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => PomodoroSessionUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutProjectNestedInput;
 }

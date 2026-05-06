@@ -33,6 +33,9 @@ import { BucketGoalUncheckedCreateNestedManyWithoutUserInput } from '../bucket-g
 import { BucketShareUncheckedCreateNestedManyWithoutUserInput } from '../bucket-share/bucket-share-unchecked-create-nested-many-without-user.input';
 import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-unchecked-create-nested-many-without-user.input';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-author.input';
+import { PomodoroTaskUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-user.input';
+import { PomodoroSessionUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-user.input';
+import { PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-create-nested-one-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutFeedEventsInput {
@@ -199,4 +202,13 @@ export class UserUncheckedCreateWithoutFeedEventsInput {
 
     @Field(() => DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput;
+
+    @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => PomodoroSessionUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput, {nullable:true})
+    pomodoroSettings?: PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput;
 }

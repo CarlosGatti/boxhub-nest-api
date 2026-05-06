@@ -5,6 +5,8 @@ import { DefinedProjectServiceType } from '../prisma/defined-project-service-typ
 import { DefinedProjectStatus } from '../prisma/defined-project-status.enum';
 import { Float } from '@nestjs/graphql';
 import { DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-unchecked-create-nested-many-without-project.input';
+import { PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-project.input';
+import { PomodoroSessionUncheckedCreateNestedManyWithoutProjectInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-project.input';
 
 @InputType()
 export class DefinedProjectUncheckedCreateWithoutInternalNotesInput {
@@ -50,4 +52,10 @@ export class DefinedProjectUncheckedCreateWithoutInternalNotesInput {
 
     @Field(() => DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput;
+
+    @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput;
+
+    @Field(() => PomodoroSessionUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionUncheckedCreateNestedManyWithoutProjectInput;
 }

@@ -36,6 +36,9 @@ import { BucketGoalListRelationFilter } from '../bucket-goal/bucket-goal-list-re
 import { BucketShareListRelationFilter } from '../bucket-share/bucket-share-list-relation-filter.input';
 import { BucketVisionBoardListRelationFilter } from '../bucket-vision-board/bucket-vision-board-list-relation-filter.input';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
+import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
+import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
+import { PomodoroUserSettingsNullableRelationFilter } from '../pomodoro-user-settings/pomodoro-user-settings-nullable-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -214,4 +217,13 @@ export class UserWhereInput {
 
     @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteListRelationFilter;
+
+    @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
+    pomodoroTasks?: PomodoroTaskListRelationFilter;
+
+    @Field(() => PomodoroSessionListRelationFilter, {nullable:true})
+    pomodoroSessions?: PomodoroSessionListRelationFilter;
+
+    @Field(() => PomodoroUserSettingsNullableRelationFilter, {nullable:true})
+    pomodoroSettings?: PomodoroUserSettingsNullableRelationFilter;
 }

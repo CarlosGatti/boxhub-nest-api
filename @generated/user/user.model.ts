@@ -30,6 +30,9 @@ import { BucketGoal } from '../bucket-goal/bucket-goal.model';
 import { BucketShare } from '../bucket-share/bucket-share.model';
 import { BucketVisionBoard } from '../bucket-vision-board/bucket-vision-board.model';
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
+import { PomodoroTask } from '../pomodoro-task/pomodoro-task.model';
+import { PomodoroSession } from '../pomodoro-session/pomodoro-session.model';
+import { PomodoroUserSettings } from '../pomodoro-user-settings/pomodoro-user-settings.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -196,6 +199,15 @@ export class User {
 
     @Field(() => [DefinedInternalNote], {nullable:true})
     definedInternalNotes?: Array<DefinedInternalNote>;
+
+    @Field(() => [PomodoroTask], {nullable:true})
+    pomodoroTasks?: Array<PomodoroTask>;
+
+    @Field(() => [PomodoroSession], {nullable:true})
+    pomodoroSessions?: Array<PomodoroSession>;
+
+    @Field(() => PomodoroUserSettings, {nullable:true})
+    pomodoroSettings?: PomodoroUserSettings | null;
 
     @Field(() => UserCount, {nullable:false})
     _count?: UserCount;

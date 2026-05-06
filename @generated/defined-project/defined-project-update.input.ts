@@ -11,6 +11,8 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { DefinedClientUpdateOneRequiredWithoutProjectsNestedInput } from '../defined-client/defined-client-update-one-required-without-projects-nested.input';
 import { DefinedInternalNoteUpdateManyWithoutProjectNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-project-nested.input';
 import { DefinedIntakeFormUpdateManyWithoutProjectNestedInput } from '../defined-intake-form/defined-intake-form-update-many-without-project-nested.input';
+import { PomodoroTaskUpdateManyWithoutProjectNestedInput } from '../pomodoro-task/pomodoro-task-update-many-without-project-nested.input';
+import { PomodoroSessionUpdateManyWithoutProjectNestedInput } from '../pomodoro-session/pomodoro-session-update-many-without-project-nested.input';
 
 @InputType()
 export class DefinedProjectUpdateInput {
@@ -56,4 +58,10 @@ export class DefinedProjectUpdateInput {
 
     @Field(() => DefinedIntakeFormUpdateManyWithoutProjectNestedInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => PomodoroTaskUpdateManyWithoutProjectNestedInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => PomodoroSessionUpdateManyWithoutProjectNestedInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionUpdateManyWithoutProjectNestedInput;
 }

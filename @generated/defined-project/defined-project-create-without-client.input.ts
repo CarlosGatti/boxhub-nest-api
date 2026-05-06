@@ -6,6 +6,8 @@ import { Float } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { DefinedInternalNoteCreateNestedManyWithoutProjectInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-project.input';
 import { DefinedIntakeFormCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-create-nested-many-without-project.input';
+import { PomodoroTaskCreateNestedManyWithoutProjectInput } from '../pomodoro-task/pomodoro-task-create-nested-many-without-project.input';
+import { PomodoroSessionCreateNestedManyWithoutProjectInput } from '../pomodoro-session/pomodoro-session-create-nested-many-without-project.input';
 
 @InputType()
 export class DefinedProjectCreateWithoutClientInput {
@@ -48,4 +50,10 @@ export class DefinedProjectCreateWithoutClientInput {
 
     @Field(() => DefinedIntakeFormCreateNestedManyWithoutProjectInput, {nullable:true})
     intakeForms?: DefinedIntakeFormCreateNestedManyWithoutProjectInput;
+
+    @Field(() => PomodoroTaskCreateNestedManyWithoutProjectInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskCreateNestedManyWithoutProjectInput;
+
+    @Field(() => PomodoroSessionCreateNestedManyWithoutProjectInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutProjectInput;
 }

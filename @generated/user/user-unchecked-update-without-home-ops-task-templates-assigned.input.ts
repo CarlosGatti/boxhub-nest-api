@@ -38,6 +38,9 @@ import { BucketGoalUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-g
 import { BucketShareUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-share/bucket-share-unchecked-update-many-without-user-nested.input';
 import { BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-unchecked-update-many-without-user-nested.input';
 import { DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-author-nested.input';
+import { PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-user-nested.input';
+import { PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-user-nested.input';
+import { PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-update-one-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutHomeOpsTaskTemplatesAssignedInput {
@@ -204,4 +207,13 @@ export class UserUncheckedUpdateWithoutHomeOpsTaskTemplatesAssignedInput {
 
     @Field(() => DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput;
+
+    @Field(() => PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput, {nullable:true})
+    pomodoroSettings?: PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput;
 }

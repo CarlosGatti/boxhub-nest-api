@@ -1,0 +1,30 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { PomodoroTaskStatus } from '../prisma/pomodoro-task-status.enum';
+import { DefinedProjectCreateNestedOneWithoutPomodoroTasksInput } from '../defined-project/defined-project-create-nested-one-without-pomodoro-tasks.input';
+import { PomodoroSessionCreateNestedManyWithoutTaskInput } from '../pomodoro-session/pomodoro-session-create-nested-many-without-task.input';
+
+@InputType()
+export class PomodoroTaskCreateWithoutUserInput {
+
+    @Field(() => String, {nullable:false})
+    title!: string;
+
+    @Field(() => String, {nullable:true})
+    description?: string;
+
+    @Field(() => PomodoroTaskStatus, {nullable:true})
+    status?: keyof typeof PomodoroTaskStatus;
+
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+
+    @Field(() => DefinedProjectCreateNestedOneWithoutPomodoroTasksInput, {nullable:true})
+    project?: DefinedProjectCreateNestedOneWithoutPomodoroTasksInput;
+
+    @Field(() => PomodoroSessionCreateNestedManyWithoutTaskInput, {nullable:true})
+    sessions?: PomodoroSessionCreateNestedManyWithoutTaskInput;
+}

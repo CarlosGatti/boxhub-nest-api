@@ -10,4 +10,10 @@ export class DefinedProjectCount {
 
     @Field(() => Int, {nullable:false})
     intakeForms?: number;
+
+    @Field(() => Int, {nullable:false})
+    pomodoroTasks?: number;
+
+    @Field(() => Int, {nullable:false})
+    pomodoroSessions?: number;
 }

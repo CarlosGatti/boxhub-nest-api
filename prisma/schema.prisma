@@ -183,6 +183,11 @@ model User {
   // Defined backoffice (internal)
   definedInternalNotes DefinedInternalNote[]
 
+  // Pomodoro
+  pomodoroTasks    PomodoroTask[]
+  pomodoroSessions PomodoroSession[]
+  pomodoroSettings PomodoroUserSettings?
+
   @@index([email], map: "userEmail")
 }
 
@@ -1486,6 +1491,26 @@ enum DefinedProjectStatus {
   ARCHIVED
 }
 
+enum PomodoroTaskStatus {
+  TODO
+  DOING
+  DONE
+  ARCHIVED
+}
+
+enum PomodoroSessionMode {
+  FOCUS
+  SHORT_BREAK
+  LONG_BREAK
+}
+
+enum PomodoroSessionStatus {
+  RUNNING
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
 enum DefinedIntakeFormType {
   BUSINESS_INTAKE
   BRANDING_BRIEF
@@ -1563,11 +1588,77 @@ model DefinedProject {
   client        DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   internalNotes DefinedInternalNote[]
   intakeForms   DefinedIntakeForm[]
+  pomodoroTasks PomodoroTask[]
+  pomodoroSessions PomodoroSession[]
 
   @@index([clientId])
   @@index([status])
   @@index([createdAt])
   @@index([clientId, status])
+}
+
+model PomodoroTask {
+  id          Int                @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String?
+  status      PomodoroTaskStatus @default(TODO)
+  projectId   Int?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project  DefinedProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  sessions PomodoroSession[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([projectId])
+  @@index([createdAt])
+}
+
+model PomodoroSession {
+  id              Int                  @id @default(autoincrement())
+  userId          Int
+  taskId          Int?
+  projectId       Int?
+  mode            PomodoroSessionMode
+  status          PomodoroSessionStatus @default(RUNNING)
+  durationMinutes Int
+  startedAt       DateTime
+  pausedAt        DateTime?
+  resumedAt       DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task    PomodoroTask?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  project DefinedProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([taskId])
+  @@index([projectId])
+  @@index([status])
+  @@index([mode])
+  @@index([createdAt])
+}
+
+model PomodoroUserSettings {
+  userId           Int     @id
+  focusMinutes     Int     @default(25)
+  shortBreakMinutes Int    @default(5)
+  longBreakMinutes Int     @default(15)
+  longBreakEvery   Int     @default(4)
+  autoStartBreaks  Boolean @default(false)
+  autoStartFocus   Boolean @default(false)
+  timezone         String  @default("UTC")
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model DefinedInternalNote {

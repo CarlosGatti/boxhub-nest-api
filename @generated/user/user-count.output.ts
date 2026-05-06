@@ -94,4 +94,10 @@ export class UserCount {
 
     @Field(() => Int, {nullable:false})
     definedInternalNotes?: number;
+
+    @Field(() => Int, {nullable:false})
+    pomodoroTasks?: number;
+
+    @Field(() => Int, {nullable:false})
+    pomodoroSessions?: number;
 }

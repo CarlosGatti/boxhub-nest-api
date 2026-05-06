@@ -31,6 +31,9 @@ import { BucketGoalOrderByRelationAggregateInput } from '../bucket-goal/bucket-g
 import { BucketShareOrderByRelationAggregateInput } from '../bucket-share/bucket-share-order-by-relation-aggregate.input';
 import { BucketVisionBoardOrderByRelationAggregateInput } from '../bucket-vision-board/bucket-vision-board-order-by-relation-aggregate.input';
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
+import { PomodoroTaskOrderByRelationAggregateInput } from '../pomodoro-task/pomodoro-task-order-by-relation-aggregate.input';
+import { PomodoroSessionOrderByRelationAggregateInput } from '../pomodoro-session/pomodoro-session-order-by-relation-aggregate.input';
+import { PomodoroUserSettingsOrderByWithRelationInput } from '../pomodoro-user-settings/pomodoro-user-settings-order-by-with-relation.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -200,4 +203,13 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => DefinedInternalNoteOrderByRelationAggregateInput, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteOrderByRelationAggregateInput;
+
+    @Field(() => PomodoroTaskOrderByRelationAggregateInput, {nullable:true})
+    pomodoroTasks?: PomodoroTaskOrderByRelationAggregateInput;
+
+    @Field(() => PomodoroSessionOrderByRelationAggregateInput, {nullable:true})
+    pomodoroSessions?: PomodoroSessionOrderByRelationAggregateInput;
+
+    @Field(() => PomodoroUserSettingsOrderByWithRelationInput, {nullable:true})
+    pomodoroSettings?: PomodoroUserSettingsOrderByWithRelationInput;
 }

@@ -28,6 +28,7 @@ import { BucketModule } from '../modules/bucket/bucket.module';
 import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.module';
 import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.module';
 import { DefinedModule } from '../apps/defined/defined.module';
+import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
 
 @Module({
   imports: [
@@ -107,6 +108,8 @@ import { DefinedModule } from '../apps/defined/defined.module';
     DefinedLeadsModule,
     // Defined internal backoffice
     DefinedModule,
+    // Pomodoro focus/tasks sessions
+    PomodoroModule,
   ],
   controllers: [
     AppController,
