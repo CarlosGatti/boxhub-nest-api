@@ -1,0 +1,44 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { Decimal } from '@prisma/client/runtime/library';
+import { GraphQLDecimal } from 'prisma-graphql-type-decimal';
+import { transformToDecimal } from 'prisma-graphql-type-decimal';
+import { Transform } from 'class-transformer';
+import { Type } from 'class-transformer';
+import { Int } from '@nestjs/graphql';
+import { DefinedInvoiceCreateNestedOneWithoutItemsInput } from '../defined-invoice/defined-invoice-create-nested-one-without-items.input';
+
+@InputType()
+export class DefinedInvoiceItemCreateInput {
+
+    @Field(() => String, {nullable:false})
+    description!: string;
+
+    @Field(() => GraphQLDecimal, {nullable:true})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    quantity?: Decimal;
+
+    @Field(() => GraphQLDecimal, {nullable:false})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    unitPrice!: Decimal;
+
+    @Field(() => GraphQLDecimal, {nullable:false})
+    @Type(() => Object)
+    @Transform(transformToDecimal)
+    total!: Decimal;
+
+    @Field(() => Int, {nullable:true})
+    sortOrder?: number;
+
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+
+    @Field(() => DefinedInvoiceCreateNestedOneWithoutItemsInput, {nullable:false})
+    @Type(() => DefinedInvoiceCreateNestedOneWithoutItemsInput)
+    invoice!: DefinedInvoiceCreateNestedOneWithoutItemsInput;
+}

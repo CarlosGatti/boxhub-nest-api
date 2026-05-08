@@ -10,8 +10,10 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DefinedClientRelationFilter } from '../defined-client/defined-client-relation-filter.input';
+import { Type } from 'class-transformer';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
+import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 
@@ -67,6 +69,7 @@ export class DefinedProjectWhereInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => DefinedClientRelationFilter, {nullable:true})
+    @Type(() => DefinedClientRelationFilter)
     client?: DefinedClientRelationFilter;
 
     @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
@@ -74,6 +77,10 @@ export class DefinedProjectWhereInput {
 
     @Field(() => DefinedIntakeFormListRelationFilter, {nullable:true})
     intakeForms?: DefinedIntakeFormListRelationFilter;
+
+    @Field(() => DefinedInvoiceListRelationFilter, {nullable:true})
+    @Type(() => DefinedInvoiceListRelationFilter)
+    invoices?: DefinedInvoiceListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

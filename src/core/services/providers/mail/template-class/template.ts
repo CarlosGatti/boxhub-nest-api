@@ -220,6 +220,29 @@ class DefinedLeadClientWelcomeTemplate extends Template {
   }
 }
 
+class DefinedInvoiceEmailTemplate extends Template {
+  get file() {
+    return resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      '..',
+      'static',
+      'email',
+      'templates',
+      'defined-invoice-email',
+      'body.hbs',
+    );
+  }
+
+  get attachments() {
+    return [];
+  }
+}
+
 
 export function createTemplate(templateType: MailPath) {
   switch (templateType) {
@@ -249,6 +272,9 @@ export function createTemplate(templateType: MailPath) {
 
     case 'defined_lead_client_welcome':
       return new DefinedLeadClientWelcomeTemplate();
+
+    case 'defined_invoice_email':
+      return new DefinedInvoiceEmailTemplate();
 
     default:
       return new Template();

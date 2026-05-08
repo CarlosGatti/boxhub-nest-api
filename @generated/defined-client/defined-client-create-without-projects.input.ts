@@ -2,6 +2,8 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { DefinedClientType } from '../prisma/defined-client-type.enum';
 import { Int } from '@nestjs/graphql';
+import { DefinedInvoiceCreateNestedManyWithoutClientInput } from '../defined-invoice/defined-invoice-create-nested-many-without-client.input';
+import { Type } from 'class-transformer';
 import { DefinedInternalNoteCreateNestedManyWithoutClientInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-client.input';
 import { DefinedIntakeFormCreateNestedManyWithoutClientInput } from '../defined-intake-form/defined-intake-form-create-nested-many-without-client.input';
 
@@ -70,6 +72,10 @@ export class DefinedClientCreateWithoutProjectsInput {
 
     @Field(() => Date, {nullable:true})
     updatedAt?: Date | string;
+
+    @Field(() => DefinedInvoiceCreateNestedManyWithoutClientInput, {nullable:true})
+    @Type(() => DefinedInvoiceCreateNestedManyWithoutClientInput)
+    invoices?: DefinedInvoiceCreateNestedManyWithoutClientInput;
 
     @Field(() => DefinedInternalNoteCreateNestedManyWithoutClientInput, {nullable:true})
     internalNotes?: DefinedInternalNoteCreateNestedManyWithoutClientInput;

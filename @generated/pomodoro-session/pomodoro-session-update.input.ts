@@ -51,5 +51,6 @@ export class PomodoroSessionUpdateInput {
     task?: PomodoroTaskUpdateOneWithoutSessionsNestedInput;
 
     @Field(() => DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput)
     project?: DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput;
 }

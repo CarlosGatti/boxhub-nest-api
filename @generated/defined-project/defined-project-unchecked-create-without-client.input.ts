@@ -6,6 +6,8 @@ import { DefinedProjectStatus } from '../prisma/defined-project-status.enum';
 import { Float } from '@nestjs/graphql';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutProjectInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-project.input';
 import { DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-unchecked-create-nested-many-without-project.input';
+import { DefinedInvoiceUncheckedCreateNestedManyWithoutProjectInput } from '../defined-invoice/defined-invoice-unchecked-create-nested-many-without-project.input';
+import { Type } from 'class-transformer';
 import { PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-project.input';
 import { PomodoroSessionUncheckedCreateNestedManyWithoutProjectInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-project.input';
 
@@ -53,6 +55,10 @@ export class DefinedProjectUncheckedCreateWithoutClientInput {
 
     @Field(() => DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUncheckedCreateNestedManyWithoutProjectInput;
+
+    @Field(() => DefinedInvoiceUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
+    @Type(() => DefinedInvoiceUncheckedCreateNestedManyWithoutProjectInput)
+    invoices?: DefinedInvoiceUncheckedCreateNestedManyWithoutProjectInput;
 
     @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutProjectInput;

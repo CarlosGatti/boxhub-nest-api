@@ -96,6 +96,9 @@ export class UserCount {
     definedInternalNotes?: number;
 
     @Field(() => Int, {nullable:false})
+    definedInvoicesCreated?: number;
+
+    @Field(() => Int, {nullable:false})
     pomodoroTasks?: number;
 
     @Field(() => Int, {nullable:false})

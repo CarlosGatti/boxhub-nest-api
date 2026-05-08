@@ -7,6 +7,7 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedClientUpdateOneRequiredWithoutIntakeFormsNestedInput } from '../defined-client/defined-client-update-one-required-without-intake-forms-nested.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectUpdateOneWithoutIntakeFormsNestedInput } from '../defined-project/defined-project-update-one-without-intake-forms-nested.input';
 import { DefinedIntakeAnswerUpdateManyWithoutIntakeFormNestedInput } from '../defined-intake-answer/defined-intake-answer-update-many-without-intake-form-nested.input';
 
@@ -47,9 +48,11 @@ export class DefinedIntakeFormUpdateInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => DefinedClientUpdateOneRequiredWithoutIntakeFormsNestedInput, {nullable:true})
+    @Type(() => DefinedClientUpdateOneRequiredWithoutIntakeFormsNestedInput)
     client?: DefinedClientUpdateOneRequiredWithoutIntakeFormsNestedInput;
 
     @Field(() => DefinedProjectUpdateOneWithoutIntakeFormsNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateOneWithoutIntakeFormsNestedInput)
     project?: DefinedProjectUpdateOneWithoutIntakeFormsNestedInput;
 
     @Field(() => DefinedIntakeAnswerUpdateManyWithoutIntakeFormNestedInput, {nullable:true})

@@ -11,6 +11,8 @@ import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-fi
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedInternalNoteUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-project-nested.input';
 import { DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-intake-form/defined-intake-form-unchecked-update-many-without-project-nested.input';
+import { DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-invoice/defined-invoice-unchecked-update-many-without-project-nested.input';
+import { Type } from 'class-transformer';
 import { PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-project-nested.input';
 import { PomodoroSessionUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-project-nested.input';
 
@@ -61,6 +63,10 @@ export class DefinedProjectUncheckedUpdateInput {
 
     @Field(() => DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
+    @Type(() => DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput)
+    invoices?: DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput;
 
     @Field(() => PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput;

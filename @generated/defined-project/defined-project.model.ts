@@ -8,6 +8,7 @@ import { Float } from '@nestjs/graphql';
 import { DefinedClient } from '../defined-client/defined-client.model';
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
 import { DefinedIntakeForm } from '../defined-intake-form/defined-intake-form.model';
+import { DefinedInvoice } from '../defined-invoice/defined-invoice.model';
 import { PomodoroTask } from '../pomodoro-task/pomodoro-task.model';
 import { PomodoroSession } from '../pomodoro-session/pomodoro-session.model';
 import { DefinedProjectCount } from './defined-project-count.output';
@@ -62,6 +63,9 @@ export class DefinedProject {
 
     @Field(() => [DefinedIntakeForm], {nullable:true})
     intakeForms?: Array<DefinedIntakeForm>;
+
+    @Field(() => [DefinedInvoice], {nullable:true})
+    invoices?: Array<DefinedInvoice>;
 
     @Field(() => [PomodoroTask], {nullable:true})
     pomodoroTasks?: Array<PomodoroTask>;

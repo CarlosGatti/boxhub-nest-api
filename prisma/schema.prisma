@@ -182,6 +182,7 @@ model User {
 
   // Defined backoffice (internal)
   definedInternalNotes DefinedInternalNote[]
+  definedInvoicesCreated DefinedInvoice[] @relation("DefinedInvoiceCreator")
 
   // Pomodoro
   pomodoroTasks    PomodoroTask[]
@@ -1491,6 +1492,21 @@ enum DefinedProjectStatus {
   ARCHIVED
 }
 
+enum DefinedInvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum DefinedInvoicePaymentStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  REFUNDED
+}
+
 enum PomodoroTaskStatus {
   TODO
   DOING
@@ -1561,6 +1577,7 @@ model DefinedClient {
   updatedAt       DateTime          @updatedAt
 
   projects      DefinedProject[]
+  invoices      DefinedInvoice[]
   internalNotes DefinedInternalNote[]
   intakeForms   DefinedIntakeForm[]
 
@@ -1588,6 +1605,7 @@ model DefinedProject {
   client        DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   internalNotes DefinedInternalNote[]
   intakeForms   DefinedIntakeForm[]
+  invoices      DefinedInvoice[]
   pomodoroTasks PomodoroTask[]
   pomodoroSessions PomodoroSession[]
 
@@ -1595,6 +1613,61 @@ model DefinedProject {
   @@index([status])
   @@index([createdAt])
   @@index([clientId, status])
+}
+
+model DefinedInvoice {
+  id                    Int                         @id @default(autoincrement())
+  projectId             Int
+  clientId              Int
+  invoiceNumber         String                      @unique
+  status                DefinedInvoiceStatus        @default(DRAFT)
+  paymentStatus         DefinedInvoicePaymentStatus @default(UNPAID)
+  currency              String                      @default("USD")
+  issueDate             DateTime                    @default(now())
+  dueDate               DateTime?
+  sentAt                DateTime?
+  paidAt                DateTime?
+  subtotal              Decimal                     @db.Decimal(20, 2)
+  discountAmount        Decimal                     @default(0) @db.Decimal(20, 2)
+  taxAmount             Decimal                     @default(0) @db.Decimal(20, 2)
+  total                 Decimal                     @db.Decimal(20, 2)
+  paymentInstructions   String?
+  notes                 String?
+  terms                 String?
+  publicToken           String?                     @unique
+  pdfUrl                String?
+  createdById           Int?
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+
+  project   DefinedProject      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  client    DefinedClient       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdBy User?               @relation("DefinedInvoiceCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  items     DefinedInvoiceItem[]
+
+  @@index([projectId])
+  @@index([clientId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@index([dueDate])
+}
+
+model DefinedInvoiceItem {
+  id          Int            @id @default(autoincrement())
+  invoiceId   Int
+  description String
+  quantity    Decimal        @default(1) @db.Decimal(20, 2)
+  unitPrice   Decimal        @db.Decimal(20, 2)
+  total       Decimal        @db.Decimal(20, 2)
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  invoice DefinedInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@index([sortOrder])
 }
 
 model PomodoroTask {

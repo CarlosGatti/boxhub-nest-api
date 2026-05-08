@@ -6,6 +6,8 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedProjectUpdateManyWithoutClientNestedInput } from '../defined-project/defined-project-update-many-without-client-nested.input';
+import { Type } from 'class-transformer';
+import { DefinedInvoiceUpdateManyWithoutClientNestedInput } from '../defined-invoice/defined-invoice-update-many-without-client-nested.input';
 import { DefinedInternalNoteUpdateManyWithoutClientNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-client-nested.input';
 import { DefinedIntakeFormUpdateManyWithoutClientNestedInput } from '../defined-intake-form/defined-intake-form-update-many-without-client-nested.input';
 
@@ -76,7 +78,12 @@ export class DefinedClientUpdateInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => DefinedProjectUpdateManyWithoutClientNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateManyWithoutClientNestedInput)
     projects?: DefinedProjectUpdateManyWithoutClientNestedInput;
+
+    @Field(() => DefinedInvoiceUpdateManyWithoutClientNestedInput, {nullable:true})
+    @Type(() => DefinedInvoiceUpdateManyWithoutClientNestedInput)
+    invoices?: DefinedInvoiceUpdateManyWithoutClientNestedInput;
 
     @Field(() => DefinedInternalNoteUpdateManyWithoutClientNestedInput, {nullable:true})
     internalNotes?: DefinedInternalNoteUpdateManyWithoutClientNestedInput;

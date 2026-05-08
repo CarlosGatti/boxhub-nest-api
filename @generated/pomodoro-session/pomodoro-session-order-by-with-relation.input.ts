@@ -60,5 +60,6 @@ export class PomodoroSessionOrderByWithRelationInput {
     task?: PomodoroTaskOrderByWithRelationInput;
 
     @Field(() => DefinedProjectOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedProjectOrderByWithRelationInput)
     project?: DefinedProjectOrderByWithRelationInput;
 }

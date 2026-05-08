@@ -12,6 +12,9 @@ export class DefinedProjectCount {
     intakeForms?: number;
 
     @Field(() => Int, {nullable:false})
+    invoices?: number;
+
+    @Field(() => Int, {nullable:false})
     pomodoroTasks?: number;
 
     @Field(() => Int, {nullable:false})

@@ -52,6 +52,7 @@ export class PomodoroTaskWhereInput {
     user?: UserRelationFilter;
 
     @Field(() => DefinedProjectNullableRelationFilter, {nullable:true})
+    @Type(() => DefinedProjectNullableRelationFilter)
     project?: DefinedProjectNullableRelationFilter;
 
     @Field(() => PomodoroSessionListRelationFilter, {nullable:true})

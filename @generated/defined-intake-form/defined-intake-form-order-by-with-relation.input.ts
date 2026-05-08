@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { DefinedClientOrderByWithRelationInput } from '../defined-client/defined-client-order-by-with-relation.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectOrderByWithRelationInput } from '../defined-project/defined-project-order-by-with-relation.input';
 import { DefinedIntakeAnswerOrderByRelationAggregateInput } from '../defined-intake-answer/defined-intake-answer-order-by-relation-aggregate.input';
 
@@ -52,9 +53,11 @@ export class DefinedIntakeFormOrderByWithRelationInput {
     updatedAt?: keyof typeof SortOrder;
 
     @Field(() => DefinedClientOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedClientOrderByWithRelationInput)
     client?: DefinedClientOrderByWithRelationInput;
 
     @Field(() => DefinedProjectOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedProjectOrderByWithRelationInput)
     project?: DefinedProjectOrderByWithRelationInput;
 
     @Field(() => DefinedIntakeAnswerOrderByRelationAggregateInput, {nullable:true})

@@ -37,6 +37,7 @@ import { BucketGoalUpdateManyWithoutUserNestedInput } from '../bucket-goal/bucke
 import { BucketShareUpdateManyWithoutUserNestedInput } from '../bucket-share/bucket-share-update-many-without-user-nested.input';
 import { BucketVisionBoardUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-update-many-without-user-nested.input';
 import { DefinedInternalNoteUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-author-nested.input';
+import { DefinedInvoiceUpdateManyWithoutCreatedByNestedInput } from '../defined-invoice/defined-invoice-update-many-without-created-by-nested.input';
 import { PomodoroTaskUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-update-many-without-user-nested.input';
 import { PomodoroSessionUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-update-one-without-user-nested.input';
@@ -203,6 +204,10 @@ export class UserUpdateWithoutHomeOpsTaskInstancesCompletedInput {
 
     @Field(() => DefinedInternalNoteUpdateManyWithoutAuthorNestedInput, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteUpdateManyWithoutAuthorNestedInput;
+
+    @Field(() => DefinedInvoiceUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    @Type(() => DefinedInvoiceUpdateManyWithoutCreatedByNestedInput)
+    definedInvoicesCreated?: DefinedInvoiceUpdateManyWithoutCreatedByNestedInput;
 
     @Field(() => PomodoroTaskUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUpdateManyWithoutUserNestedInput;

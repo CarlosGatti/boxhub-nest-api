@@ -3,9 +3,9 @@ import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedClientUpdateOneWithoutInternalNotesNestedInput } from '../defined-client/defined-client-update-one-without-internal-notes-nested.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectUpdateOneWithoutInternalNotesNestedInput } from '../defined-project/defined-project-update-one-without-internal-notes-nested.input';
 import { UserUpdateOneRequiredWithoutDefinedInternalNotesNestedInput } from '../user/user-update-one-required-without-defined-internal-notes-nested.input';
-import { Type } from 'class-transformer';
 
 @InputType()
 export class DefinedInternalNoteUpdateInput {
@@ -20,9 +20,11 @@ export class DefinedInternalNoteUpdateInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => DefinedClientUpdateOneWithoutInternalNotesNestedInput, {nullable:true})
+    @Type(() => DefinedClientUpdateOneWithoutInternalNotesNestedInput)
     client?: DefinedClientUpdateOneWithoutInternalNotesNestedInput;
 
     @Field(() => DefinedProjectUpdateOneWithoutInternalNotesNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateOneWithoutInternalNotesNestedInput)
     project?: DefinedProjectUpdateOneWithoutInternalNotesNestedInput;
 
     @Field(() => UserUpdateOneRequiredWithoutDefinedInternalNotesNestedInput, {nullable:true})

@@ -52,6 +52,7 @@ class MailService implements MailEntity {
     path,
     subject,
     to,
+    cc,
     variables,
     attachments,
   }: IMailSendDTO): Promise<boolean> {
@@ -72,9 +73,10 @@ class MailService implements MailEntity {
     const message = await this._CLIENT.sendMail({
       from: `${process.env.HANDLEBARS_CLIENT_NAME} <${process.env.HANDLEBARS_CLIENT_EMAIL}>`,
       to,
+      cc,
       subject,
       html: templateHTML,
-      attachments: template.attachments,
+      attachments: [...(template.attachments || []), ...(attachments || [])],
     });
 
     Logger.log(`Message send: ${message.messageId}`, 'MailService');

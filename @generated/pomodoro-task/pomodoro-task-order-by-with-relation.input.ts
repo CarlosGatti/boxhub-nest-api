@@ -39,6 +39,7 @@ export class PomodoroTaskOrderByWithRelationInput {
     user?: UserOrderByWithRelationInput;
 
     @Field(() => DefinedProjectOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedProjectOrderByWithRelationInput)
     project?: DefinedProjectOrderByWithRelationInput;
 
     @Field(() => PomodoroSessionOrderByRelationAggregateInput, {nullable:true})

@@ -75,5 +75,6 @@ export class PomodoroSessionWhereUniqueInput {
     task?: PomodoroTaskNullableRelationFilter;
 
     @Field(() => DefinedProjectNullableRelationFilter, {nullable:true})
+    @Type(() => DefinedProjectNullableRelationFilter)
     project?: DefinedProjectNullableRelationFilter;
 }

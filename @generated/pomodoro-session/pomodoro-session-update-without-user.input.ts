@@ -7,6 +7,7 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
 import { PomodoroTaskUpdateOneWithoutSessionsNestedInput } from '../pomodoro-task/pomodoro-task-update-one-without-sessions-nested.input';
 import { DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput } from '../defined-project/defined-project-update-one-without-pomodoro-sessions-nested.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class PomodoroSessionUpdateWithoutUserInput {
@@ -45,5 +46,6 @@ export class PomodoroSessionUpdateWithoutUserInput {
     task?: PomodoroTaskUpdateOneWithoutSessionsNestedInput;
 
     @Field(() => DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput)
     project?: DefinedProjectUpdateOneWithoutPomodoroSessionsNestedInput;
 }

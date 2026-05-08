@@ -5,6 +5,7 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { EnumPomodoroTaskStatusFieldUpdateOperationsInput } from '../prisma/enum-pomodoro-task-status-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedProjectUpdateOneWithoutPomodoroTasksNestedInput } from '../defined-project/defined-project-update-one-without-pomodoro-tasks-nested.input';
+import { Type } from 'class-transformer';
 import { PomodoroSessionUpdateManyWithoutTaskNestedInput } from '../pomodoro-session/pomodoro-session-update-many-without-task-nested.input';
 
 @InputType()
@@ -26,6 +27,7 @@ export class PomodoroTaskUpdateWithoutUserInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => DefinedProjectUpdateOneWithoutPomodoroTasksNestedInput, {nullable:true})
+    @Type(() => DefinedProjectUpdateOneWithoutPomodoroTasksNestedInput)
     project?: DefinedProjectUpdateOneWithoutPomodoroTasksNestedInput;
 
     @Field(() => PomodoroSessionUpdateManyWithoutTaskNestedInput, {nullable:true})

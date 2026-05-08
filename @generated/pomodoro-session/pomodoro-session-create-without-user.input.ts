@@ -5,6 +5,7 @@ import { PomodoroSessionStatus } from '../prisma/pomodoro-session-status.enum';
 import { Int } from '@nestjs/graphql';
 import { PomodoroTaskCreateNestedOneWithoutSessionsInput } from '../pomodoro-task/pomodoro-task-create-nested-one-without-sessions.input';
 import { DefinedProjectCreateNestedOneWithoutPomodoroSessionsInput } from '../defined-project/defined-project-create-nested-one-without-pomodoro-sessions.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class PomodoroSessionCreateWithoutUserInput {
@@ -43,5 +44,6 @@ export class PomodoroSessionCreateWithoutUserInput {
     task?: PomodoroTaskCreateNestedOneWithoutSessionsInput;
 
     @Field(() => DefinedProjectCreateNestedOneWithoutPomodoroSessionsInput, {nullable:true})
+    @Type(() => DefinedProjectCreateNestedOneWithoutPomodoroSessionsInput)
     project?: DefinedProjectCreateNestedOneWithoutPomodoroSessionsInput;
 }

@@ -1,8 +1,8 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { DefinedClientCreateNestedOneWithoutInternalNotesInput } from '../defined-client/defined-client-create-nested-one-without-internal-notes.input';
-import { UserCreateNestedOneWithoutDefinedInternalNotesInput } from '../user/user-create-nested-one-without-defined-internal-notes.input';
 import { Type } from 'class-transformer';
+import { UserCreateNestedOneWithoutDefinedInternalNotesInput } from '../user/user-create-nested-one-without-defined-internal-notes.input';
 
 @InputType()
 export class DefinedInternalNoteCreateWithoutProjectInput {
@@ -17,6 +17,7 @@ export class DefinedInternalNoteCreateWithoutProjectInput {
     updatedAt?: Date | string;
 
     @Field(() => DefinedClientCreateNestedOneWithoutInternalNotesInput, {nullable:true})
+    @Type(() => DefinedClientCreateNestedOneWithoutInternalNotesInput)
     client?: DefinedClientCreateNestedOneWithoutInternalNotesInput;
 
     @Field(() => UserCreateNestedOneWithoutDefinedInternalNotesInput, {nullable:false})

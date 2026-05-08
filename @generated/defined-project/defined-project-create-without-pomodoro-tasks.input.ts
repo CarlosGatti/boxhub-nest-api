@@ -5,8 +5,10 @@ import { DefinedProjectStatus } from '../prisma/defined-project-status.enum';
 import { Float } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
 import { DefinedClientCreateNestedOneWithoutProjectsInput } from '../defined-client/defined-client-create-nested-one-without-projects.input';
+import { Type } from 'class-transformer';
 import { DefinedInternalNoteCreateNestedManyWithoutProjectInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-project.input';
 import { DefinedIntakeFormCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-create-nested-many-without-project.input';
+import { DefinedInvoiceCreateNestedManyWithoutProjectInput } from '../defined-invoice/defined-invoice-create-nested-many-without-project.input';
 import { PomodoroSessionCreateNestedManyWithoutProjectInput } from '../pomodoro-session/pomodoro-session-create-nested-many-without-project.input';
 
 @InputType()
@@ -46,6 +48,7 @@ export class DefinedProjectCreateWithoutPomodoroTasksInput {
     updatedAt?: Date | string;
 
     @Field(() => DefinedClientCreateNestedOneWithoutProjectsInput, {nullable:false})
+    @Type(() => DefinedClientCreateNestedOneWithoutProjectsInput)
     client!: DefinedClientCreateNestedOneWithoutProjectsInput;
 
     @Field(() => DefinedInternalNoteCreateNestedManyWithoutProjectInput, {nullable:true})
@@ -53,6 +56,10 @@ export class DefinedProjectCreateWithoutPomodoroTasksInput {
 
     @Field(() => DefinedIntakeFormCreateNestedManyWithoutProjectInput, {nullable:true})
     intakeForms?: DefinedIntakeFormCreateNestedManyWithoutProjectInput;
+
+    @Field(() => DefinedInvoiceCreateNestedManyWithoutProjectInput, {nullable:true})
+    @Type(() => DefinedInvoiceCreateNestedManyWithoutProjectInput)
+    invoices?: DefinedInvoiceCreateNestedManyWithoutProjectInput;
 
     @Field(() => PomodoroSessionCreateNestedManyWithoutProjectInput, {nullable:true})
     pomodoroSessions?: PomodoroSessionCreateNestedManyWithoutProjectInput;

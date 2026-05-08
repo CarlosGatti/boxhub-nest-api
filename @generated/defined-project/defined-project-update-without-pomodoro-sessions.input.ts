@@ -9,8 +9,10 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedClientUpdateOneRequiredWithoutProjectsNestedInput } from '../defined-client/defined-client-update-one-required-without-projects-nested.input';
+import { Type } from 'class-transformer';
 import { DefinedInternalNoteUpdateManyWithoutProjectNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-project-nested.input';
 import { DefinedIntakeFormUpdateManyWithoutProjectNestedInput } from '../defined-intake-form/defined-intake-form-update-many-without-project-nested.input';
+import { DefinedInvoiceUpdateManyWithoutProjectNestedInput } from '../defined-invoice/defined-invoice-update-many-without-project-nested.input';
 import { PomodoroTaskUpdateManyWithoutProjectNestedInput } from '../pomodoro-task/pomodoro-task-update-many-without-project-nested.input';
 
 @InputType()
@@ -50,6 +52,7 @@ export class DefinedProjectUpdateWithoutPomodoroSessionsInput {
     updatedAt?: DateTimeFieldUpdateOperationsInput;
 
     @Field(() => DefinedClientUpdateOneRequiredWithoutProjectsNestedInput, {nullable:true})
+    @Type(() => DefinedClientUpdateOneRequiredWithoutProjectsNestedInput)
     client?: DefinedClientUpdateOneRequiredWithoutProjectsNestedInput;
 
     @Field(() => DefinedInternalNoteUpdateManyWithoutProjectNestedInput, {nullable:true})
@@ -57,6 +60,10 @@ export class DefinedProjectUpdateWithoutPomodoroSessionsInput {
 
     @Field(() => DefinedIntakeFormUpdateManyWithoutProjectNestedInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => DefinedInvoiceUpdateManyWithoutProjectNestedInput, {nullable:true})
+    @Type(() => DefinedInvoiceUpdateManyWithoutProjectNestedInput)
+    invoices?: DefinedInvoiceUpdateManyWithoutProjectNestedInput;
 
     @Field(() => PomodoroTaskUpdateManyWithoutProjectNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUpdateManyWithoutProjectNestedInput;

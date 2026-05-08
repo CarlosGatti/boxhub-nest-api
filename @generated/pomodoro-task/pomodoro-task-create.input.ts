@@ -29,6 +29,7 @@ export class PomodoroTaskCreateInput {
     user!: UserCreateNestedOneWithoutPomodoroTasksInput;
 
     @Field(() => DefinedProjectCreateNestedOneWithoutPomodoroTasksInput, {nullable:true})
+    @Type(() => DefinedProjectCreateNestedOneWithoutPomodoroTasksInput)
     project?: DefinedProjectCreateNestedOneWithoutPomodoroTasksInput;
 
     @Field(() => PomodoroSessionCreateNestedManyWithoutTaskInput, {nullable:true})

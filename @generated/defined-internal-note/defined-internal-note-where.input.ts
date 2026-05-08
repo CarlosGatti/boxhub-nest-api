@@ -5,9 +5,9 @@ import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DefinedClientNullableRelationFilter } from '../defined-client/defined-client-nullable-relation-filter.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectNullableRelationFilter } from '../defined-project/defined-project-nullable-relation-filter.input';
 import { UserRelationFilter } from '../user/user-relation-filter.input';
-import { Type } from 'class-transformer';
 
 @InputType()
 export class DefinedInternalNoteWhereInput {
@@ -43,9 +43,11 @@ export class DefinedInternalNoteWhereInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => DefinedClientNullableRelationFilter, {nullable:true})
+    @Type(() => DefinedClientNullableRelationFilter)
     client?: DefinedClientNullableRelationFilter;
 
     @Field(() => DefinedProjectNullableRelationFilter, {nullable:true})
+    @Type(() => DefinedProjectNullableRelationFilter)
     project?: DefinedProjectNullableRelationFilter;
 
     @Field(() => UserRelationFilter, {nullable:true})

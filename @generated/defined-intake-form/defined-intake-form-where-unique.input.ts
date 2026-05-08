@@ -11,6 +11,7 @@ import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DefinedClientRelationFilter } from '../defined-client/defined-client-relation-filter.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectNullableRelationFilter } from '../defined-project/defined-project-nullable-relation-filter.input';
 import { DefinedIntakeAnswerListRelationFilter } from '../defined-intake-answer/defined-intake-answer-list-relation-filter.input';
 
@@ -69,9 +70,11 @@ export class DefinedIntakeFormWhereUniqueInput {
     updatedAt?: DateTimeFilter;
 
     @Field(() => DefinedClientRelationFilter, {nullable:true})
+    @Type(() => DefinedClientRelationFilter)
     client?: DefinedClientRelationFilter;
 
     @Field(() => DefinedProjectNullableRelationFilter, {nullable:true})
+    @Type(() => DefinedProjectNullableRelationFilter)
     project?: DefinedProjectNullableRelationFilter;
 
     @Field(() => DefinedIntakeAnswerListRelationFilter, {nullable:true})

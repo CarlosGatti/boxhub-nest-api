@@ -3,6 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { DefinedIntakeFormType } from '../prisma/defined-intake-form-type.enum';
 import { DefinedIntakeFormStatus } from '../prisma/defined-intake-form-status.enum';
 import { DefinedClientCreateNestedOneWithoutIntakeFormsInput } from '../defined-client/defined-client-create-nested-one-without-intake-forms.input';
+import { Type } from 'class-transformer';
 import { DefinedProjectCreateNestedOneWithoutIntakeFormsInput } from '../defined-project/defined-project-create-nested-one-without-intake-forms.input';
 
 @InputType()
@@ -42,8 +43,10 @@ export class DefinedIntakeFormCreateWithoutAnswersInput {
     updatedAt?: Date | string;
 
     @Field(() => DefinedClientCreateNestedOneWithoutIntakeFormsInput, {nullable:false})
+    @Type(() => DefinedClientCreateNestedOneWithoutIntakeFormsInput)
     client!: DefinedClientCreateNestedOneWithoutIntakeFormsInput;
 
     @Field(() => DefinedProjectCreateNestedOneWithoutIntakeFormsInput, {nullable:true})
+    @Type(() => DefinedProjectCreateNestedOneWithoutIntakeFormsInput)
     project?: DefinedProjectCreateNestedOneWithoutIntakeFormsInput;
 }

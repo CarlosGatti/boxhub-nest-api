@@ -1,7 +1,7 @@
 interface Attachments {
   filename: string;
   path: string;
-  cid: string;
+  cid?: string;
 }
 
 type MailPath =
@@ -13,10 +13,12 @@ type MailPath =
   | 'resident_rejected'
   | 'email-verification'
   | 'defined_lead_notification'
-  | 'defined_lead_client_welcome';
+  | 'defined_lead_client_welcome'
+  | 'defined_invoice_email';
 
 interface IMailSendDTO {
   to: string;
+  cc?: string | string[];
   subject: string;
   path: MailPath;
   variables?: any;
