@@ -34,6 +34,7 @@ import { BucketShareUncheckedCreateNestedManyWithoutUserInput } from '../bucket-
 import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-unchecked-create-nested-many-without-user.input';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-author.input';
 import { DefinedInvoiceUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-invoice/defined-invoice-unchecked-create-nested-many-without-created-by.input';
+import { DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-proposal/defined-proposal-unchecked-create-nested-many-without-created-by.input';
 import { PomodoroTaskUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-user.input';
 import { PomodoroSessionUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-user.input';
 import { PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-create-nested-one-without-user.input';
@@ -207,6 +208,10 @@ export class UserUncheckedCreateWithoutCommentsInput {
     @Field(() => DefinedInvoiceUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
     @Type(() => DefinedInvoiceUncheckedCreateNestedManyWithoutCreatedByInput)
     definedInvoicesCreated?: DefinedInvoiceUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    @Type(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput)
+    definedProposalsCreated?: DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput;
 
     @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutUserInput;

@@ -29,6 +29,7 @@ import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.modul
 import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.module';
 import { DefinedModule } from '../apps/defined/defined.module';
 import { DefinedInvoicesModule } from '../apps/defined-invoices/defined-invoices.module';
+import { DefinedProposalsModule } from '../apps/defined-proposals/defined-proposals.module';
 import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
 
 @Module({
@@ -111,6 +112,8 @@ import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
     DefinedModule,
     // Defined invoices backoffice
     DefinedInvoicesModule,
+    // Defined proposals backoffice
+    DefinedProposalsModule,
     // Pomodoro focus/tasks sessions
     PomodoroModule,
   ],

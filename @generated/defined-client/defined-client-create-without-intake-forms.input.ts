@@ -5,6 +5,7 @@ import { Int } from '@nestjs/graphql';
 import { DefinedProjectCreateNestedManyWithoutClientInput } from '../defined-project/defined-project-create-nested-many-without-client.input';
 import { Type } from 'class-transformer';
 import { DefinedInvoiceCreateNestedManyWithoutClientInput } from '../defined-invoice/defined-invoice-create-nested-many-without-client.input';
+import { DefinedProposalCreateNestedManyWithoutClientInput } from '../defined-proposal/defined-proposal-create-nested-many-without-client.input';
 import { DefinedInternalNoteCreateNestedManyWithoutClientInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-client.input';
 
 @InputType()
@@ -80,6 +81,10 @@ export class DefinedClientCreateWithoutIntakeFormsInput {
     @Field(() => DefinedInvoiceCreateNestedManyWithoutClientInput, {nullable:true})
     @Type(() => DefinedInvoiceCreateNestedManyWithoutClientInput)
     invoices?: DefinedInvoiceCreateNestedManyWithoutClientInput;
+
+    @Field(() => DefinedProposalCreateNestedManyWithoutClientInput, {nullable:true})
+    @Type(() => DefinedProposalCreateNestedManyWithoutClientInput)
+    proposals?: DefinedProposalCreateNestedManyWithoutClientInput;
 
     @Field(() => DefinedInternalNoteCreateNestedManyWithoutClientInput, {nullable:true})
     internalNotes?: DefinedInternalNoteCreateNestedManyWithoutClientInput;

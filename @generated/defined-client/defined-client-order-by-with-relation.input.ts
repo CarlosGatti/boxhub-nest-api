@@ -5,6 +5,7 @@ import { SortOrderInput } from '../prisma/sort-order.input';
 import { DefinedProjectOrderByRelationAggregateInput } from '../defined-project/defined-project-order-by-relation-aggregate.input';
 import { Type } from 'class-transformer';
 import { DefinedInvoiceOrderByRelationAggregateInput } from '../defined-invoice/defined-invoice-order-by-relation-aggregate.input';
+import { DefinedProposalOrderByRelationAggregateInput } from '../defined-proposal/defined-proposal-order-by-relation-aggregate.input';
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
 import { DefinedIntakeFormOrderByRelationAggregateInput } from '../defined-intake-form/defined-intake-form-order-by-relation-aggregate.input';
 
@@ -84,6 +85,10 @@ export class DefinedClientOrderByWithRelationInput {
     @Field(() => DefinedInvoiceOrderByRelationAggregateInput, {nullable:true})
     @Type(() => DefinedInvoiceOrderByRelationAggregateInput)
     invoices?: DefinedInvoiceOrderByRelationAggregateInput;
+
+    @Field(() => DefinedProposalOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => DefinedProposalOrderByRelationAggregateInput)
+    proposals?: DefinedProposalOrderByRelationAggregateInput;
 
     @Field(() => DefinedInternalNoteOrderByRelationAggregateInput, {nullable:true})
     internalNotes?: DefinedInternalNoteOrderByRelationAggregateInput;

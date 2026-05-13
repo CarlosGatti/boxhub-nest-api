@@ -9,6 +9,7 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DefinedProjectListRelationFilter } from '../defined-project/defined-project-list-relation-filter.input';
 import { Type } from 'class-transformer';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
+import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
 
@@ -97,6 +98,10 @@ export class DefinedClientWhereInput {
     @Field(() => DefinedInvoiceListRelationFilter, {nullable:true})
     @Type(() => DefinedInvoiceListRelationFilter)
     invoices?: DefinedInvoiceListRelationFilter;
+
+    @Field(() => DefinedProposalListRelationFilter, {nullable:true})
+    @Type(() => DefinedProposalListRelationFilter)
+    proposals?: DefinedProposalListRelationFilter;
 
     @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
     internalNotes?: DefinedInternalNoteListRelationFilter;

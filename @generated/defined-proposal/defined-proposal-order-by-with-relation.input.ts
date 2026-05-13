@@ -1,0 +1,93 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { SortOrder } from '../prisma/sort-order.enum';
+import { SortOrderInput } from '../prisma/sort-order.input';
+import { DefinedClientOrderByWithRelationInput } from '../defined-client/defined-client-order-by-with-relation.input';
+import { Type } from 'class-transformer';
+import { DefinedProjectOrderByWithRelationInput } from '../defined-project/defined-project-order-by-with-relation.input';
+import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { DefinedProposalSectionOrderByRelationAggregateInput } from '../defined-proposal-section/defined-proposal-section-order-by-relation-aggregate.input';
+import { DefinedProposalPricingOptionOrderByRelationAggregateInput } from '../defined-proposal-pricing-option/defined-proposal-pricing-option-order-by-relation-aggregate.input';
+
+@InputType()
+export class DefinedProposalOrderByWithRelationInput {
+
+    @Field(() => SortOrder, {nullable:true})
+    id?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    clientId?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    projectId?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    title?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    subtitle?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    status?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    summary?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    contentJson?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    currency?: keyof typeof SortOrder;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    shareToken?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    shareTokenCreatedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    shareTokenExpiresAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    shareRevokedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    sentAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    viewedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    approvedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    declinedAt?: SortOrderInput;
+
+    @Field(() => SortOrderInput, {nullable:true})
+    createdById?: SortOrderInput;
+
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    updatedAt?: keyof typeof SortOrder;
+
+    @Field(() => DefinedClientOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedClientOrderByWithRelationInput)
+    client?: DefinedClientOrderByWithRelationInput;
+
+    @Field(() => DefinedProjectOrderByWithRelationInput, {nullable:true})
+    @Type(() => DefinedProjectOrderByWithRelationInput)
+    project?: DefinedProjectOrderByWithRelationInput;
+
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    @Type(() => UserOrderByWithRelationInput)
+    createdBy?: UserOrderByWithRelationInput;
+
+    @Field(() => DefinedProposalSectionOrderByRelationAggregateInput, {nullable:true})
+    sections?: DefinedProposalSectionOrderByRelationAggregateInput;
+
+    @Field(() => DefinedProposalPricingOptionOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => DefinedProposalPricingOptionOrderByRelationAggregateInput)
+    pricingOptions?: DefinedProposalPricingOptionOrderByRelationAggregateInput;
+}

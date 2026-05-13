@@ -39,6 +39,7 @@ import { BucketShareUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-
 import { BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput } from '../bucket-vision-board/bucket-vision-board-unchecked-update-many-without-user-nested.input';
 import { DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-author-nested.input';
 import { DefinedInvoiceUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-invoice/defined-invoice-unchecked-update-many-without-created-by-nested.input';
+import { DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-proposal/defined-proposal-unchecked-update-many-without-created-by-nested.input';
 import { PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-user-nested.input';
 import { PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-update-one-without-user-nested.input';
@@ -212,6 +213,10 @@ export class UserUncheckedUpdateWithoutStorageMembershipsInput {
     @Field(() => DefinedInvoiceUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     @Type(() => DefinedInvoiceUncheckedUpdateManyWithoutCreatedByNestedInput)
     definedInvoicesCreated?: DefinedInvoiceUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    @Type(() => DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput)
+    definedProposalsCreated?: DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput;
 
     @Field(() => PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput;

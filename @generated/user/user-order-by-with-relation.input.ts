@@ -32,6 +32,7 @@ import { BucketShareOrderByRelationAggregateInput } from '../bucket-share/bucket
 import { BucketVisionBoardOrderByRelationAggregateInput } from '../bucket-vision-board/bucket-vision-board-order-by-relation-aggregate.input';
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
 import { DefinedInvoiceOrderByRelationAggregateInput } from '../defined-invoice/defined-invoice-order-by-relation-aggregate.input';
+import { DefinedProposalOrderByRelationAggregateInput } from '../defined-proposal/defined-proposal-order-by-relation-aggregate.input';
 import { PomodoroTaskOrderByRelationAggregateInput } from '../pomodoro-task/pomodoro-task-order-by-relation-aggregate.input';
 import { PomodoroSessionOrderByRelationAggregateInput } from '../pomodoro-session/pomodoro-session-order-by-relation-aggregate.input';
 import { PomodoroUserSettingsOrderByWithRelationInput } from '../pomodoro-user-settings/pomodoro-user-settings-order-by-with-relation.input';
@@ -208,6 +209,10 @@ export class UserOrderByWithRelationInput {
     @Field(() => DefinedInvoiceOrderByRelationAggregateInput, {nullable:true})
     @Type(() => DefinedInvoiceOrderByRelationAggregateInput)
     definedInvoicesCreated?: DefinedInvoiceOrderByRelationAggregateInput;
+
+    @Field(() => DefinedProposalOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => DefinedProposalOrderByRelationAggregateInput)
+    definedProposalsCreated?: DefinedProposalOrderByRelationAggregateInput;
 
     @Field(() => PomodoroTaskOrderByRelationAggregateInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskOrderByRelationAggregateInput;

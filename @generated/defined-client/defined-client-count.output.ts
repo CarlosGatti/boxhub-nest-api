@@ -12,6 +12,9 @@ export class DefinedClientCount {
     invoices?: number;
 
     @Field(() => Int, {nullable:false})
+    proposals?: number;
+
+    @Field(() => Int, {nullable:false})
     internalNotes?: number;
 
     @Field(() => Int, {nullable:false})

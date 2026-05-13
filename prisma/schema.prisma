@@ -183,6 +183,7 @@ model User {
   // Defined backoffice (internal)
   definedInternalNotes DefinedInternalNote[]
   definedInvoicesCreated DefinedInvoice[] @relation("DefinedInvoiceCreator")
+  definedProposalsCreated DefinedProposal[] @relation("DefinedProposalCreator")
 
   // Pomodoro
   pomodoroTasks    PomodoroTask[]
@@ -1507,6 +1508,31 @@ enum DefinedInvoicePaymentStatus {
   REFUNDED
 }
 
+enum DefinedProposalStatus {
+  DRAFT
+  SENT
+  VIEWED
+  APPROVED
+  DECLINED
+  ARCHIVED
+}
+
+enum DefinedProposalSectionType {
+  TEXT
+  OBJECTIVES
+  DELIVERABLES
+  PRICING
+  TIMELINE
+  TERMS
+  CUSTOM
+}
+
+enum DefinedProposalPricingType {
+  ONE_TIME
+  MONTHLY
+  CUSTOM
+}
+
 enum PomodoroTaskStatus {
   TODO
   DOING
@@ -1578,6 +1604,7 @@ model DefinedClient {
 
   projects      DefinedProject[]
   invoices      DefinedInvoice[]
+  proposals     DefinedProposal[]
   internalNotes DefinedInternalNote[]
   intakeForms   DefinedIntakeForm[]
 
@@ -1606,6 +1633,7 @@ model DefinedProject {
   internalNotes DefinedInternalNote[]
   intakeForms   DefinedIntakeForm[]
   invoices      DefinedInvoice[]
+  proposals     DefinedProposal[]
   pomodoroTasks PomodoroTask[]
   pomodoroSessions PomodoroSession[]
 
@@ -1668,6 +1696,79 @@ model DefinedInvoiceItem {
 
   @@index([invoiceId])
   @@index([sortOrder])
+}
+
+model DefinedProposal {
+  id                 Int                         @id @default(autoincrement())
+  clientId           Int
+  projectId          Int?
+  title              String
+  subtitle           String?
+  status             DefinedProposalStatus       @default(DRAFT)
+  summary            String?                     @db.Text
+  contentJson        Json?
+  currency           String                      @default("USD")
+  shareToken         String?                     @unique
+  shareTokenCreatedAt DateTime?
+  shareTokenExpiresAt DateTime?
+  shareRevokedAt     DateTime?
+  sentAt             DateTime?
+  viewedAt           DateTime?
+  approvedAt         DateTime?
+  declinedAt         DateTime?
+  createdById        Int?
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+
+  client         DefinedClient                  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project        DefinedProject?                @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdBy      User?                          @relation("DefinedProposalCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  sections       DefinedProposalSection[]
+  pricingOptions DefinedProposalPricingOption[]
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([shareToken])
+}
+
+model DefinedProposalSection {
+  id         Int                       @id @default(autoincrement())
+  proposalId Int
+  type       DefinedProposalSectionType @default(TEXT)
+  title      String
+  body       String?                   @db.Text
+  contentJson Json?
+  order      Int                       @default(0)
+  createdAt  DateTime                  @default(now())
+  updatedAt  DateTime                  @updatedAt
+
+  proposal DefinedProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@index([order])
+}
+
+model DefinedProposalPricingOption {
+  id            Int                        @id @default(autoincrement())
+  proposalId    Int
+  title         String
+  description   String?                    @db.Text
+  type          DefinedProposalPricingType @default(ONE_TIME)
+  amount        Decimal?                   @db.Decimal(20, 2)
+  currency      String                     @default("USD")
+  billingNote   String?
+  features      String[]                   @default([])
+  isRecommended Boolean                    @default(false)
+  order         Int                        @default(0)
+  createdAt     DateTime                   @default(now())
+  updatedAt     DateTime                   @updatedAt
+
+  proposal DefinedProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@index([order])
 }
 
 model PomodoroTask {

@@ -38,6 +38,7 @@ import { BucketShareListRelationFilter } from '../bucket-share/bucket-share-list
 import { BucketVisionBoardListRelationFilter } from '../bucket-vision-board/bucket-vision-board-list-relation-filter.input';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
+import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 import { PomodoroUserSettingsNullableRelationFilter } from '../pomodoro-user-settings/pomodoro-user-settings-nullable-relation-filter.input';
@@ -223,6 +224,10 @@ export class UserWhereUniqueInput {
     @Field(() => DefinedInvoiceListRelationFilter, {nullable:true})
     @Type(() => DefinedInvoiceListRelationFilter)
     definedInvoicesCreated?: DefinedInvoiceListRelationFilter;
+
+    @Field(() => DefinedProposalListRelationFilter, {nullable:true})
+    @Type(() => DefinedProposalListRelationFilter)
+    definedProposalsCreated?: DefinedProposalListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

@@ -16,6 +16,7 @@ import { Type } from 'class-transformer';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
+import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 
@@ -83,6 +84,10 @@ export class DefinedProjectWhereUniqueInput {
     @Field(() => DefinedInvoiceListRelationFilter, {nullable:true})
     @Type(() => DefinedInvoiceListRelationFilter)
     invoices?: DefinedInvoiceListRelationFilter;
+
+    @Field(() => DefinedProposalListRelationFilter, {nullable:true})
+    @Type(() => DefinedProposalListRelationFilter)
+    proposals?: DefinedProposalListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

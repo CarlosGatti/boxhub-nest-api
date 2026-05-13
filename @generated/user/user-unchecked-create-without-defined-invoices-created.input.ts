@@ -34,6 +34,7 @@ import { BucketGoalUncheckedCreateNestedManyWithoutUserInput } from '../bucket-g
 import { BucketShareUncheckedCreateNestedManyWithoutUserInput } from '../bucket-share/bucket-share-unchecked-create-nested-many-without-user.input';
 import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../bucket-vision-board/bucket-vision-board-unchecked-create-nested-many-without-user.input';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-author.input';
+import { DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-proposal/defined-proposal-unchecked-create-nested-many-without-created-by.input';
 import { PomodoroTaskUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-user.input';
 import { PomodoroSessionUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-user.input';
 import { PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-create-nested-one-without-user.input';
@@ -206,6 +207,10 @@ export class UserUncheckedCreateWithoutDefinedInvoicesCreatedInput {
 
     @Field(() => DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput, {nullable:true})
     definedInternalNotes?: DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput;
+
+    @Field(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    @Type(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput)
+    definedProposalsCreated?: DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput;
 
     @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutUserInput;
