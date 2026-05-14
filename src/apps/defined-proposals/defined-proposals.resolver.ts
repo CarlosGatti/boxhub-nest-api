@@ -12,6 +12,7 @@ import { CurrentUser } from '../../domains/user/current-user.decorator';
 import { CreateDefinedProposalInput } from './dto/create-defined-proposal.input';
 import { UpdateDefinedProposalInput } from './dto/update-defined-proposal.input';
 import { DefinedProposalsService } from './defined-proposals.service';
+import { DefinedProposalValidationResult } from './types/defined-proposal-validation-result.type';
 
 @Resolver(() => DefinedProposal)
 @UseGuards(JwtAuthGuard, AppPermissionGuard)
@@ -79,12 +80,31 @@ export class DefinedProposalsResolver {
   }
 
   @RequireApp('DEFINED')
+  @Mutation(() => DefinedProposalValidationResult, {
+    name: 'validateDefinedProposal',
+  })
+  async validateDefinedProposal(@Args('id', { type: () => Int }) id: number) {
+    return this.definedProposalsService.validateProposal(id);
+  }
+
+  @RequireApp('DEFINED')
   @Mutation(() => DefinedProposal, { name: 'publishDefinedProposal' })
   async publishDefinedProposal(
     @Args('id', { type: () => Int }) id: number,
     @CurrentUser() user: User,
   ) {
     return this.definedProposalsService.publishProposal(id, user.id);
+  }
+
+  @RequireApp('DEFINED')
+  @Mutation(() => DefinedProposal, {
+    name: 'regenerateDefinedProposalShareToken',
+  })
+  async regenerateDefinedProposalShareToken(
+    @Args('id', { type: () => Int }) id: number,
+    @CurrentUser() user: User,
+  ) {
+    return this.definedProposalsService.regenerateProposalShareToken(id, user.id);
   }
 
   @RequireApp('DEFINED')
