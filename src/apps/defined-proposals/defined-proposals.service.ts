@@ -24,6 +24,7 @@ import {
   DefinedProposalValidationError,
   DefinedProposalValidationResult,
 } from './types/defined-proposal-validation-result.type';
+import { isProposalEditable } from './utils/proposal-status-policy';
 
 const PROPOSAL_INCLUDE = {
   sections: { orderBy: { order: 'asc' as const } },
@@ -131,13 +132,11 @@ export class DefinedProposalsService {
     return this.prisma.$transaction(async (tx) => {
       const current = await this.ensureProposal(id, tx);
 
-      if (
-        current.status !== DefinedProposalStatus.DRAFT &&
-        current.status !== DefinedProposalStatus.SENT
-      ) {
-        throw new BadRequestException(
-          'Only DRAFT and SENT proposals can be edited',
-        );
+      if (!isProposalEditable(current.status)) {
+        if (current.status === DefinedProposalStatus.ARCHIVED) {
+          throw new BadRequestException('Archived proposals cannot be edited.');
+        }
+        throw new BadRequestException('Proposal cannot be edited in current status.');
       }
 
       const data: Prisma.DefinedProposalUpdateInput = {
@@ -184,11 +183,17 @@ export class DefinedProposalsService {
       await createLog({
         action: LogAction.CUSTOM_ACTION,
         userId,
-        details: 'Defined proposal updated',
+        details:
+          current.status === DefinedProposalStatus.DRAFT
+            ? 'Defined proposal updated'
+            : 'Defined proposal updated after publication',
         route: 'updateDefinedProposal',
         metadata: {
           proposalId: proposal.id,
+          previousStatus: current.status,
           status: proposal.status,
+          editedAfterPublish: current.status !== DefinedProposalStatus.DRAFT,
+          editedAt: new Date().toISOString(),
         },
       });
 
