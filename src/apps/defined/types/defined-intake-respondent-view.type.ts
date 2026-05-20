@@ -1,7 +1,23 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
+import { DefinedIntakeAnswerType } from '@generated/prisma/defined-intake-answer-type.enum';
 import { DefinedIntakeFormStatus } from '@generated/prisma/defined-intake-form-status.enum';
 import { DefinedIntakeFormType } from '@generated/prisma/defined-intake-form-type.enum';
+
+@ObjectType()
+export class DefinedIntakeRespondentAnswer {
+  @Field(() => String)
+  questionKey: string;
+
+  @Field(() => String, { nullable: true })
+  questionLabel?: string | null;
+
+  @Field(() => DefinedIntakeAnswerType)
+  answerType: DefinedIntakeAnswerType;
+
+  @Field(() => GraphQLJSON)
+  answerValue: unknown;
+}
 
 @ObjectType()
 export class DefinedIntakeRespondentView {
@@ -26,4 +42,7 @@ export class DefinedIntakeRespondentView {
 
   @Field(() => String, { nullable: true })
   projectName?: string | null;
+
+  @Field(() => [DefinedIntakeRespondentAnswer])
+  answers: DefinedIntakeRespondentAnswer[];
 }

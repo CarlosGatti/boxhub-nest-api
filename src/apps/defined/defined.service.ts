@@ -524,7 +524,13 @@ export class DefinedService {
         shareToken: normalized,
         shareRevokedAt: null,
       },
-      include: { project: true, client: true },
+      include: {
+        project: true,
+        client: true,
+        answers: {
+          orderBy: { createdAt: 'asc' },
+        },
+      },
     });
 
     if (!form) {
@@ -554,6 +560,12 @@ export class DefinedService {
       template: this.getIntakeTemplate(form.formType),
       clientDisplayName,
       projectName: form.project?.name ?? null,
+      answers: form.answers.map((answer) => ({
+        questionKey: answer.questionKey,
+        questionLabel: answer.questionLabel,
+        answerType: answer.answerType,
+        answerValue: answer.answerValue,
+      })),
     };
   }
 
