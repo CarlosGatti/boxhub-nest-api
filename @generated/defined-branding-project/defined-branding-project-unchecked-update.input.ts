@@ -1,0 +1,74 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { IntFieldUpdateOperationsInput } from '../prisma/int-field-update-operations.input';
+import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
+import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
+import { EnumDefinedBrandingProjectStatusFieldUpdateOperationsInput } from '../prisma/enum-defined-branding-project-status-field-update-operations.input';
+import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
+import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { GraphQLJSON } from 'graphql-type-json';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { DefinedBrandingSectionUncheckedUpdateManyWithoutBrandingProjectNestedInput } from '../defined-branding-section/defined-branding-section-unchecked-update-many-without-branding-project-nested.input';
+import { DefinedBrandingAssetUncheckedUpdateManyWithoutBrandingProjectNestedInput } from '../defined-branding-asset/defined-branding-asset-unchecked-update-many-without-branding-project-nested.input';
+
+@InputType()
+export class DefinedBrandingProjectUncheckedUpdateInput {
+
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    id?: IntFieldUpdateOperationsInput;
+
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    clientId?: IntFieldUpdateOperationsInput;
+
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    projectId?: NullableIntFieldUpdateOperationsInput;
+
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: StringFieldUpdateOperationsInput;
+
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    slug?: StringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    concept?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => EnumDefinedBrandingProjectStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: EnumDefinedBrandingProjectStatusFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isPublic?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => BoolFieldUpdateOperationsInput, {nullable:true})
+    isFeatured?: BoolFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    coverImageUrl?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    brandManualPdfUrl?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    sourcePdfFileName?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => GraphQLJSON, {nullable:true})
+    metadata?: any;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DefinedBrandingSectionUncheckedUpdateManyWithoutBrandingProjectNestedInput, {nullable:true})
+    sections?: DefinedBrandingSectionUncheckedUpdateManyWithoutBrandingProjectNestedInput;
+
+    @Field(() => DefinedBrandingAssetUncheckedUpdateManyWithoutBrandingProjectNestedInput, {nullable:true})
+    assets?: DefinedBrandingAssetUncheckedUpdateManyWithoutBrandingProjectNestedInput;
+}

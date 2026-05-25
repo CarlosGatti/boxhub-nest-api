@@ -5,6 +5,7 @@ import { DefinedClientType } from '../prisma/defined-client-type.enum';
 import { DefinedProjectUncheckedCreateNestedManyWithoutClientInput } from '../defined-project/defined-project-unchecked-create-nested-many-without-client.input';
 import { Type } from 'class-transformer';
 import { DefinedInvoiceUncheckedCreateNestedManyWithoutClientInput } from '../defined-invoice/defined-invoice-unchecked-create-nested-many-without-client.input';
+import { DefinedBrandingProjectUncheckedCreateNestedManyWithoutClientInput } from '../defined-branding-project/defined-branding-project-unchecked-create-nested-many-without-client.input';
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutClientInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-client.input';
 import { DefinedIntakeFormUncheckedCreateNestedManyWithoutClientInput } from '../defined-intake-form/defined-intake-form-unchecked-create-nested-many-without-client.input';
 
@@ -84,6 +85,9 @@ export class DefinedClientUncheckedCreateWithoutProposalsInput {
     @Field(() => DefinedInvoiceUncheckedCreateNestedManyWithoutClientInput, {nullable:true})
     @Type(() => DefinedInvoiceUncheckedCreateNestedManyWithoutClientInput)
     invoices?: DefinedInvoiceUncheckedCreateNestedManyWithoutClientInput;
+
+    @Field(() => DefinedBrandingProjectUncheckedCreateNestedManyWithoutClientInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectUncheckedCreateNestedManyWithoutClientInput;
 
     @Field(() => DefinedInternalNoteUncheckedCreateNestedManyWithoutClientInput, {nullable:true})
     internalNotes?: DefinedInternalNoteUncheckedCreateNestedManyWithoutClientInput;

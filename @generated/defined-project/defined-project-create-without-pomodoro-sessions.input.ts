@@ -10,6 +10,7 @@ import { DefinedInternalNoteCreateNestedManyWithoutProjectInput } from '../defin
 import { DefinedIntakeFormCreateNestedManyWithoutProjectInput } from '../defined-intake-form/defined-intake-form-create-nested-many-without-project.input';
 import { DefinedInvoiceCreateNestedManyWithoutProjectInput } from '../defined-invoice/defined-invoice-create-nested-many-without-project.input';
 import { DefinedProposalCreateNestedManyWithoutProjectInput } from '../defined-proposal/defined-proposal-create-nested-many-without-project.input';
+import { DefinedBrandingProjectCreateNestedManyWithoutProjectInput } from '../defined-branding-project/defined-branding-project-create-nested-many-without-project.input';
 import { PomodoroTaskCreateNestedManyWithoutProjectInput } from '../pomodoro-task/pomodoro-task-create-nested-many-without-project.input';
 
 @InputType()
@@ -65,6 +66,9 @@ export class DefinedProjectCreateWithoutPomodoroSessionsInput {
     @Field(() => DefinedProposalCreateNestedManyWithoutProjectInput, {nullable:true})
     @Type(() => DefinedProposalCreateNestedManyWithoutProjectInput)
     proposals?: DefinedProposalCreateNestedManyWithoutProjectInput;
+
+    @Field(() => DefinedBrandingProjectCreateNestedManyWithoutProjectInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectCreateNestedManyWithoutProjectInput;
 
     @Field(() => PomodoroTaskCreateNestedManyWithoutProjectInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskCreateNestedManyWithoutProjectInput;

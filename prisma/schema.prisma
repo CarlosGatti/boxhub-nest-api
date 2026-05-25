@@ -102,26 +102,26 @@ model Category {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  email          String    @unique
-  password       String
-  firstName      String
-  lastName       String
-  nickname       String?
-  public         Boolean   @default(false)
-  role           Role      @default(USER)
-  emailVerified  Boolean   @default(false)
-  verificationTokenHash    String?
+  id                         Int       @id @default(autoincrement())
+  email                      String    @unique
+  password                   String
+  firstName                  String
+  lastName                   String
+  nickname                   String?
+  public                     Boolean   @default(false)
+  role                       Role      @default(USER)
+  emailVerified              Boolean   @default(false)
+  verificationTokenHash      String?
   verificationTokenExpiresAt DateTime?
-  profilePicture String?
-  about          String?
-  contactPhone   String? // ← NOVO CAMPO
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  isPremium      Boolean   @default(false)
-  subscriptionId String? // LemonSqueezy ID
-  expiresAt      DateTime?
-  willExpireAt   DateTime? // Expiração futura agendada
+  profilePicture             String?
+  about                      String?
+  contactPhone               String? // ← NOVO CAMPO
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+  isPremium                  Boolean   @default(false)
+  subscriptionId             String? // LemonSqueezy ID
+  expiresAt                  DateTime?
+  willExpireAt               DateTime? // Expiração futura agendada
 
   // Discart-me specific
   apartment          String?
@@ -174,16 +174,16 @@ model User {
   reviewCardPremiumRequests ReviewCardPremiumRequest[]
 
   // Bucket List (goals + memories)
-  bucketGoals BucketGoal[]
+  bucketGoals  BucketGoal[]
   bucketShares BucketShare[]
 
   // Bucket Vision Board
   bucketVisionBoards BucketVisionBoard[]
 
   // Defined backoffice (internal)
-  definedInternalNotes DefinedInternalNote[]
-  definedInvoicesCreated DefinedInvoice[] @relation("DefinedInvoiceCreator")
-  definedProposalsCreated DefinedProposal[] @relation("DefinedProposalCreator")
+  definedInternalNotes    DefinedInternalNote[]
+  definedInvoicesCreated  DefinedInvoice[]      @relation("DefinedInvoiceCreator")
+  definedProposalsCreated DefinedProposal[]     @relation("DefinedProposalCreator")
 
   // Pomodoro
   pomodoroTasks    PomodoroTask[]
@@ -842,7 +842,7 @@ model FeedSource {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  collection  FeedCollection    @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collection  FeedCollection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   items       FeedItem[]
   events      FeedEvent[]
   nudges      FeedSourceNudge[]
@@ -878,22 +878,22 @@ model FeedItem {
 }
 
 model FeedItemState {
-  id         Int                @id @default(autoincrement())
-  userId     Int
-  itemId     Int
-  readStatus FeedItemReadStatus @default(UNREAD)
-  saveStatus FeedItemSaveStatus @default(NONE)
-  visibility FeedItemVisibility @default(VISIBLE)
-  openedAt   DateTime?
-  skippedAt  DateTime?
-  skipCount  Int                @default(0)
-  actionCount Int               @default(0)
-  lastAction FeedItemLastAction?
-  readAt     DateTime?
-  savedAt    DateTime?
-  hiddenAt   DateTime?
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
+  id          Int                 @id @default(autoincrement())
+  userId      Int
+  itemId      Int
+  readStatus  FeedItemReadStatus  @default(UNREAD)
+  saveStatus  FeedItemSaveStatus  @default(NONE)
+  visibility  FeedItemVisibility  @default(VISIBLE)
+  openedAt    DateTime?
+  skippedAt   DateTime?
+  skipCount   Int                 @default(0)
+  actionCount Int                 @default(0)
+  lastAction  FeedItemLastAction?
+  readAt      DateTime?
+  savedAt     DateTime?
+  hiddenAt    DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
   user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   item FeedItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
@@ -946,16 +946,16 @@ model FeedSourceNudge {
 }
 
 model FeedSourcePreference {
-  id               Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   userId           Int
   sourceId         Int
-  notifyOnNew      Boolean  @default(false)
-  isMuted          Boolean  @default(false)
+  notifyOnNew      Boolean   @default(false)
+  isMuted          Boolean   @default(false)
   mutedUntil       DateTime?
-  consecutiveSkips Int      @default(0)
+  consecutiveSkips Int       @default(0)
   lastInteractedAt DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   source FeedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
@@ -1190,13 +1190,13 @@ enum BucketShareType {
 }
 
 model BucketShare {
-  id        Int            @id @default(autoincrement())
+  id        Int             @id @default(autoincrement())
   userId    Int
-  token     String         @unique
+  token     String          @unique
   type      BucketShareType
   title     String?
   payload   Json
-  createdAt DateTime       @default(now())
+  createdAt DateTime        @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -1205,23 +1205,23 @@ model BucketShare {
 }
 
 model BucketGoal {
-  id                    Int             @id @default(autoincrement())
-  userId                Int
-  title                 String
-  description           String?
-  type                  BucketGoalType  @default(GENERAL)
-  status                BucketGoalStatus @default(IDEA)
-  priority              Int             @default(0)
-  details               Json?
-  detailsSchemaVersion  Int             @default(1)
-  coverUrl              String?
-  tags                  String[]        @default([])
-  targetDate            DateTime?
-  completedAt           DateTime?
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  id                   Int              @id @default(autoincrement())
+  userId               Int
+  title                String
+  description          String?
+  type                 BucketGoalType   @default(GENERAL)
+  status               BucketGoalStatus @default(IDEA)
+  priority             Int              @default(0)
+  details              Json?
+  detailsSchemaVersion Int              @default(1)
+  coverUrl             String?
+  tags                 String[]         @default([])
+  targetDate           DateTime?
+  completedAt          DateTime?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
 
-  user  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   logs  BucketGoalLog[]
   pins  BucketGoalPin[]
   media BucketGoalMedia[]
@@ -1238,15 +1238,15 @@ model BucketGoal {
 }
 
 model BucketGoalLog {
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   goalId     Int
   note       String
   happenedAt DateTime
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  goal   BucketGoal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
-  media  BucketGoalMedia[]
+  goal  BucketGoal        @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  media BucketGoalMedia[]
 
   @@index([goalId])
   @@index([happenedAt])
@@ -1254,17 +1254,17 @@ model BucketGoalLog {
 }
 
 model BucketGoalPin {
-  id       Int            @id @default(autoincrement())
-  goalId   Int
-  lat      Float
-  lng      Float
-  label    String?
-  source   BucketPinSource @default(MANUAL)
-  placeId  String?
-  address  String?
-  raw      Json?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id        Int             @id @default(autoincrement())
+  goalId    Int
+  lat       Float
+  lng       Float
+  label     String?
+  source    BucketPinSource @default(MANUAL)
+  placeId   String?
+  address   String?
+  raw       Json?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
   goal BucketGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
 
@@ -1274,14 +1274,14 @@ model BucketGoalPin {
 }
 
 model BucketGoalMedia {
-  id       Int           @id @default(autoincrement())
-  goalId   Int?
-  logId    Int?
-  url      String
-  type     BucketMediaType @default(IMAGE)
-  metadata Json?
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id        Int             @id @default(autoincrement())
+  goalId    Int?
+  logId     Int?
+  url       String
+  type      BucketMediaType @default(IMAGE)
+  metadata  Json?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
   goal BucketGoal?    @relation(fields: [goalId], references: [id], onDelete: Cascade)
   log  BucketGoalLog? @relation(fields: [logId], references: [id], onDelete: Cascade)
@@ -1323,9 +1323,9 @@ enum BucketVisionLayoutMode {
 }
 
 model BucketVisionBoard {
-  id         Int                   @id @default(autoincrement())
+  id         Int                    @id @default(autoincrement())
   userId     Int
-  title      String                @default("Your Vision Board")
+  title      String                 @default("Your Vision Board")
   periodType BucketVisionPeriodType @default(YEAR)
   year       Int?
   periodKey  String?
@@ -1334,14 +1334,14 @@ model BucketVisionBoard {
   theme      String?
   layoutMode BucketVisionLayoutMode @default(FORM)
   coverUrl   String?
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
 
-  user     User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sections BucketVisionSection[]
-  items    BucketVisionItem[]
+  user      User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections  BucketVisionSection[]
+  items     BucketVisionItem[]
   goalLinks BucketVisionGoalLink[]
-  checkins BucketVisionCheckin[]
+  checkins  BucketVisionCheckin[]
 
   @@unique([userId, year])
   @@index([userId])
@@ -1350,14 +1350,14 @@ model BucketVisionBoard {
 }
 
 model BucketVisionSection {
-  id        Int                   @id @default(autoincrement())
+  id        Int                     @id @default(autoincrement())
   boardId   Int
   type      BucketVisionSectionType
   title     String?
   content   Json?
-  order     Int                   @default(0)
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @updatedAt
+  order     Int                     @default(0)
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
 
   board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
@@ -1366,17 +1366,17 @@ model BucketVisionSection {
 }
 
 model BucketVisionItem {
-  id       Int            @id @default(autoincrement())
-  boardId  Int
-  type     BucketVisionItemType
-  text     String?
-  url      String?
-  color    String?
-  metadata Json?
-  order    Int            @default(0)
-  layout   Json?
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id        Int                  @id @default(autoincrement())
+  boardId   Int
+  type      BucketVisionItemType
+  text      String?
+  url       String?
+  color     String?
+  metadata  Json?
+  order     Int                  @default(0)
+  layout    Json?
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
 
   board BucketVisionBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
 
@@ -1578,6 +1578,40 @@ enum DefinedIntakeAnswerType {
   JSON
 }
 
+enum DefinedBrandingProjectStatus {
+  DRAFT
+  ACTIVE
+  IN_REVIEW
+  COMPLETED
+  ARCHIVED
+}
+
+enum DefinedBrandingSectionType {
+  OVERVIEW
+  CONCEPT
+  LOGO
+  COLORS
+  TYPOGRAPHY
+  VISUAL_IDENTITY
+  APPLICATIONS
+  MOCKUPS
+  DELIVERABLES
+  NOTES
+  CUSTOM
+}
+
+enum DefinedBrandingAssetType {
+  PDF_MANUAL
+  LOGO
+  IMAGE
+  MOCKUP
+  COLOR_PALETTE
+  TYPOGRAPHY
+  SOURCE_FILE
+  EXPORT
+  OTHER
+}
+
 model DefinedClient {
   id              Int               @id @default(autoincrement())
   type            DefinedClientType
@@ -1602,11 +1636,12 @@ model DefinedClient {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  projects      DefinedProject[]
-  invoices      DefinedInvoice[]
-  proposals     DefinedProposal[]
-  internalNotes DefinedInternalNote[]
-  intakeForms   DefinedIntakeForm[]
+  projects         DefinedProject[]
+  invoices         DefinedInvoice[]
+  proposals        DefinedProposal[]
+  brandingProjects DefinedBrandingProject[]
+  internalNotes    DefinedInternalNote[]
+  intakeForms      DefinedIntakeForm[]
 
   @@index([email])
   @@index([companyName])
@@ -1615,26 +1650,27 @@ model DefinedClient {
 }
 
 model DefinedProject {
-  id          Int                      @id @default(autoincrement())
+  id          Int                       @id @default(autoincrement())
   clientId    Int
   name        String
   serviceType DefinedProjectServiceType
-  status      DefinedProjectStatus     @default(DRAFT)
+  status      DefinedProjectStatus      @default(DRAFT)
   budget      Float?
   deadline    DateTime?
   source      String?
   assignedTo  String?
   supplierId  Int?
   notes       String?
-  createdAt   DateTime                 @default(now())
-  updatedAt   DateTime                 @updatedAt
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
 
-  client        DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  internalNotes DefinedInternalNote[]
-  intakeForms   DefinedIntakeForm[]
-  invoices      DefinedInvoice[]
-  proposals     DefinedProposal[]
-  pomodoroTasks PomodoroTask[]
+  client           DefinedClient            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  internalNotes    DefinedInternalNote[]
+  intakeForms      DefinedIntakeForm[]
+  invoices         DefinedInvoice[]
+  proposals        DefinedProposal[]
+  brandingProjects DefinedBrandingProject[]
+  pomodoroTasks    PomodoroTask[]
   pomodoroSessions PomodoroSession[]
 
   @@index([clientId])
@@ -1644,33 +1680,33 @@ model DefinedProject {
 }
 
 model DefinedInvoice {
-  id                    Int                         @id @default(autoincrement())
-  projectId             Int
-  clientId              Int
-  invoiceNumber         String                      @unique
-  status                DefinedInvoiceStatus        @default(DRAFT)
-  paymentStatus         DefinedInvoicePaymentStatus @default(UNPAID)
-  currency              String                      @default("USD")
-  issueDate             DateTime                    @default(now())
-  dueDate               DateTime?
-  sentAt                DateTime?
-  paidAt                DateTime?
-  subtotal              Decimal                     @db.Decimal(20, 2)
-  discountAmount        Decimal                     @default(0) @db.Decimal(20, 2)
-  taxAmount             Decimal                     @default(0) @db.Decimal(20, 2)
-  total                 Decimal                     @db.Decimal(20, 2)
-  paymentInstructions   String?
-  notes                 String?
-  terms                 String?
-  publicToken           String?                     @unique
-  pdfUrl                String?
-  createdById           Int?
-  createdAt             DateTime                    @default(now())
-  updatedAt             DateTime                    @updatedAt
+  id                  Int                         @id @default(autoincrement())
+  projectId           Int
+  clientId            Int
+  invoiceNumber       String                      @unique
+  status              DefinedInvoiceStatus        @default(DRAFT)
+  paymentStatus       DefinedInvoicePaymentStatus @default(UNPAID)
+  currency            String                      @default("USD")
+  issueDate           DateTime                    @default(now())
+  dueDate             DateTime?
+  sentAt              DateTime?
+  paidAt              DateTime?
+  subtotal            Decimal                     @db.Decimal(20, 2)
+  discountAmount      Decimal                     @default(0) @db.Decimal(20, 2)
+  taxAmount           Decimal                     @default(0) @db.Decimal(20, 2)
+  total               Decimal                     @db.Decimal(20, 2)
+  paymentInstructions String?
+  notes               String?
+  terms               String?
+  publicToken         String?                     @unique
+  pdfUrl              String?
+  createdById         Int?
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @updatedAt
 
-  project   DefinedProject      @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  client    DefinedClient       @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  createdBy User?               @relation("DefinedInvoiceCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  project   DefinedProject       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  client    DefinedClient        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdBy User?                @relation("DefinedInvoiceCreator", fields: [createdById], references: [id], onDelete: SetNull)
   items     DefinedInvoiceItem[]
 
   @@index([projectId])
@@ -1682,15 +1718,15 @@ model DefinedInvoice {
 }
 
 model DefinedInvoiceItem {
-  id          Int            @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   invoiceId   Int
   description String
-  quantity    Decimal        @default(1) @db.Decimal(20, 2)
-  unitPrice   Decimal        @db.Decimal(20, 2)
-  total       Decimal        @db.Decimal(20, 2)
-  sortOrder   Int            @default(0)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  quantity    Decimal  @default(1) @db.Decimal(20, 2)
+  unitPrice   Decimal  @db.Decimal(20, 2)
+  total       Decimal  @db.Decimal(20, 2)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   invoice DefinedInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 
@@ -1699,26 +1735,26 @@ model DefinedInvoiceItem {
 }
 
 model DefinedProposal {
-  id                 Int                         @id @default(autoincrement())
-  clientId           Int
-  projectId          Int?
-  title              String
-  subtitle           String?
-  status             DefinedProposalStatus       @default(DRAFT)
-  summary            String?                     @db.Text
-  contentJson        Json?
-  currency           String                      @default("USD")
-  shareToken         String?                     @unique
+  id                  Int                   @id @default(autoincrement())
+  clientId            Int
+  projectId           Int?
+  title               String
+  subtitle            String?
+  status              DefinedProposalStatus @default(DRAFT)
+  summary             String?               @db.Text
+  contentJson         Json?
+  currency            String                @default("USD")
+  shareToken          String?               @unique
   shareTokenCreatedAt DateTime?
   shareTokenExpiresAt DateTime?
-  shareRevokedAt     DateTime?
-  sentAt             DateTime?
-  viewedAt           DateTime?
-  approvedAt         DateTime?
-  declinedAt         DateTime?
-  createdById        Int?
-  createdAt          DateTime                    @default(now())
-  updatedAt          DateTime                    @updatedAt
+  shareRevokedAt      DateTime?
+  sentAt              DateTime?
+  viewedAt            DateTime?
+  approvedAt          DateTime?
+  declinedAt          DateTime?
+  createdById         Int?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 
   client         DefinedClient                  @relation(fields: [clientId], references: [id], onDelete: Cascade)
   project        DefinedProject?                @relation(fields: [projectId], references: [id], onDelete: SetNull)
@@ -1734,15 +1770,15 @@ model DefinedProposal {
 }
 
 model DefinedProposalSection {
-  id         Int                       @id @default(autoincrement())
-  proposalId Int
-  type       DefinedProposalSectionType @default(TEXT)
-  title      String
-  body       String?                   @db.Text
+  id          Int                        @id @default(autoincrement())
+  proposalId  Int
+  type        DefinedProposalSectionType @default(TEXT)
+  title       String
+  body        String?                    @db.Text
   contentJson Json?
-  order      Int                       @default(0)
-  createdAt  DateTime                  @default(now())
-  updatedAt  DateTime                  @updatedAt
+  order       Int                        @default(0)
+  createdAt   DateTime                   @default(now())
+  updatedAt   DateTime                   @updatedAt
 
   proposal DefinedProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
 
@@ -1771,6 +1807,77 @@ model DefinedProposalPricingOption {
   @@index([order])
 }
 
+model DefinedBrandingProject {
+  id                Int                          @id @default(autoincrement())
+  clientId          Int
+  projectId         Int?
+  title             String
+  slug              String                       @unique
+  description       String?                      @db.Text
+  concept           String?                      @db.Text
+  status            DefinedBrandingProjectStatus @default(DRAFT)
+  isPublic          Boolean                      @default(false)
+  publishedAt       DateTime?
+  isFeatured        Boolean                      @default(false)
+  coverImageUrl     String?
+  brandManualPdfUrl String?
+  sourcePdfFileName String?
+  metadata          Json?
+  createdAt         DateTime                     @default(now())
+  updatedAt         DateTime                     @updatedAt
+
+  client   DefinedClient            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project  DefinedProject?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  sections DefinedBrandingSection[]
+  assets   DefinedBrandingAsset[]
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([status])
+  @@index([slug])
+  @@index([createdAt])
+  @@index([isPublic, status, publishedAt(sort: Desc)])
+}
+
+model DefinedBrandingSection {
+  id                Int                        @id @default(autoincrement())
+  brandingProjectId Int
+  type              DefinedBrandingSectionType
+  title             String
+  body              String?                    @db.Text
+  contentJson       Json?
+  order             Int                        @default(0)
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
+
+  brandingProject DefinedBrandingProject @relation(fields: [brandingProjectId], references: [id], onDelete: Cascade)
+
+  @@index([brandingProjectId])
+  @@index([order])
+  @@index([type])
+}
+
+model DefinedBrandingAsset {
+  id                Int                      @id @default(autoincrement())
+  brandingProjectId Int
+  type              DefinedBrandingAssetType
+  name              String
+  fileUrl           String
+  fileName          String?
+  mimeType          String?
+  notes             String?                  @db.Text
+  metadata          Json?
+  order             Int                      @default(0)
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+
+  brandingProject DefinedBrandingProject @relation(fields: [brandingProjectId], references: [id], onDelete: Cascade)
+
+  @@index([brandingProjectId])
+  @@index([type])
+  @@index([order])
+}
+
 model PomodoroTask {
   id          Int                @id @default(autoincrement())
   userId      Int
@@ -1781,8 +1888,8 @@ model PomodoroTask {
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
 
-  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project  DefinedProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project  DefinedProject?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
   sessions PomodoroSession[]
 
   @@index([userId])
@@ -1792,7 +1899,7 @@ model PomodoroTask {
 }
 
 model PomodoroSession {
-  id              Int                  @id @default(autoincrement())
+  id              Int                   @id @default(autoincrement())
   userId          Int
   taskId          Int?
   projectId       Int?
@@ -1804,8 +1911,8 @@ model PomodoroSession {
   resumedAt       DateTime?
   completedAt     DateTime?
   cancelledAt     DateTime?
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 
   user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   task    PomodoroTask?   @relation(fields: [taskId], references: [id], onDelete: SetNull)
@@ -1822,15 +1929,15 @@ model PomodoroSession {
 }
 
 model PomodoroUserSettings {
-  userId           Int     @id
-  focusMinutes     Int     @default(25)
-  shortBreakMinutes Int    @default(5)
-  longBreakMinutes Int     @default(15)
-  longBreakEvery   Int     @default(4)
-  autoStartBreaks  Boolean @default(false)
-  autoStartFocus   Boolean @default(false)
-  timezone         String  @default("UTC")
-  updatedAt        DateTime @updatedAt
+  userId            Int      @id
+  focusMinutes      Int      @default(25)
+  shortBreakMinutes Int      @default(5)
+  longBreakMinutes  Int      @default(15)
+  longBreakEvery    Int      @default(4)
+  autoStartBreaks   Boolean  @default(false)
+  autoStartFocus    Boolean  @default(false)
+  timezone          String   @default("UTC")
+  updatedAt         DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -1855,23 +1962,23 @@ model DefinedInternalNote {
 }
 
 model DefinedIntakeForm {
-  id          Int                  @id @default(autoincrement())
-  clientId    Int
-  projectId   Int?
-  formType    DefinedIntakeFormType
-  status      DefinedIntakeFormStatus @default(DRAFT)
-  title       String
-  description String?
-  shareToken  String?              @unique
+  id                  Int                     @id @default(autoincrement())
+  clientId            Int
+  projectId           Int?
+  formType            DefinedIntakeFormType
+  status              DefinedIntakeFormStatus @default(DRAFT)
+  title               String
+  description         String?
+  shareToken          String?                 @unique
   shareTokenCreatedAt DateTime?
   shareTokenExpiresAt DateTime?
-  shareRevokedAt DateTime?
-  submittedAt DateTime?
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  shareRevokedAt      DateTime?
+  submittedAt         DateTime?
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
 
-  client  DefinedClient   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  project DefinedProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  client  DefinedClient         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project DefinedProject?       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   answers DefinedIntakeAnswer[]
 
   @@index([clientId])
@@ -1881,14 +1988,14 @@ model DefinedIntakeForm {
 }
 
 model DefinedIntakeAnswer {
-  id           Int                    @id @default(autoincrement())
-  intakeFormId Int
-  questionKey  String
+  id            Int                     @id @default(autoincrement())
+  intakeFormId  Int
+  questionKey   String
   questionLabel String?
-  answerType   DefinedIntakeAnswerType
-  answerValue  Json
-  createdAt    DateTime               @default(now())
-  updatedAt    DateTime               @updatedAt
+  answerType    DefinedIntakeAnswerType
+  answerValue   Json
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
 
   intakeForm DefinedIntakeForm @relation(fields: [intakeFormId], references: [id], onDelete: Cascade)
 

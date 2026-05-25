@@ -6,6 +6,7 @@ import { DefinedProjectOrderByRelationAggregateInput } from '../defined-project/
 import { Type } from 'class-transformer';
 import { DefinedInvoiceOrderByRelationAggregateInput } from '../defined-invoice/defined-invoice-order-by-relation-aggregate.input';
 import { DefinedProposalOrderByRelationAggregateInput } from '../defined-proposal/defined-proposal-order-by-relation-aggregate.input';
+import { DefinedBrandingProjectOrderByRelationAggregateInput } from '../defined-branding-project/defined-branding-project-order-by-relation-aggregate.input';
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
 import { DefinedIntakeFormOrderByRelationAggregateInput } from '../defined-intake-form/defined-intake-form-order-by-relation-aggregate.input';
 
@@ -89,6 +90,9 @@ export class DefinedClientOrderByWithRelationInput {
     @Field(() => DefinedProposalOrderByRelationAggregateInput, {nullable:true})
     @Type(() => DefinedProposalOrderByRelationAggregateInput)
     proposals?: DefinedProposalOrderByRelationAggregateInput;
+
+    @Field(() => DefinedBrandingProjectOrderByRelationAggregateInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectOrderByRelationAggregateInput;
 
     @Field(() => DefinedInternalNoteOrderByRelationAggregateInput, {nullable:true})
     internalNotes?: DefinedInternalNoteOrderByRelationAggregateInput;

@@ -10,6 +10,7 @@ import { DefinedInternalNote } from '../defined-internal-note/defined-internal-n
 import { DefinedIntakeForm } from '../defined-intake-form/defined-intake-form.model';
 import { DefinedInvoice } from '../defined-invoice/defined-invoice.model';
 import { DefinedProposal } from '../defined-proposal/defined-proposal.model';
+import { DefinedBrandingProject } from '../defined-branding-project/defined-branding-project.model';
 import { PomodoroTask } from '../pomodoro-task/pomodoro-task.model';
 import { PomodoroSession } from '../pomodoro-session/pomodoro-session.model';
 import { DefinedProjectCount } from './defined-project-count.output';
@@ -70,6 +71,9 @@ export class DefinedProject {
 
     @Field(() => [DefinedProposal], {nullable:true})
     proposals?: Array<DefinedProposal>;
+
+    @Field(() => [DefinedBrandingProject], {nullable:true})
+    brandingProjects?: Array<DefinedBrandingProject>;
 
     @Field(() => [PomodoroTask], {nullable:true})
     pomodoroTasks?: Array<PomodoroTask>;

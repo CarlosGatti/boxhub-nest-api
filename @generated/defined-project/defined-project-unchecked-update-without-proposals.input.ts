@@ -13,6 +13,7 @@ import { DefinedInternalNoteUncheckedUpdateManyWithoutProjectNestedInput } from 
 import { DefinedIntakeFormUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-intake-form/defined-intake-form-unchecked-update-many-without-project-nested.input';
 import { DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-invoice/defined-invoice-unchecked-update-many-without-project-nested.input';
 import { Type } from 'class-transformer';
+import { DefinedBrandingProjectUncheckedUpdateManyWithoutProjectNestedInput } from '../defined-branding-project/defined-branding-project-unchecked-update-many-without-project-nested.input';
 import { PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-project-nested.input';
 import { PomodoroSessionUncheckedUpdateManyWithoutProjectNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-project-nested.input';
 
@@ -67,6 +68,9 @@ export class DefinedProjectUncheckedUpdateWithoutProposalsInput {
     @Field(() => DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
     @Type(() => DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput)
     invoices?: DefinedInvoiceUncheckedUpdateManyWithoutProjectNestedInput;
+
+    @Field(() => DefinedBrandingProjectUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectUncheckedUpdateManyWithoutProjectNestedInput;
 
     @Field(() => PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutProjectNestedInput;

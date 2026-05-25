@@ -10,6 +10,7 @@ import { DefinedProjectListRelationFilter } from '../defined-project/defined-pro
 import { Type } from 'class-transformer';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
 import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
+import { DefinedBrandingProjectListRelationFilter } from '../defined-branding-project/defined-branding-project-list-relation-filter.input';
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
 
@@ -102,6 +103,9 @@ export class DefinedClientWhereInput {
     @Field(() => DefinedProposalListRelationFilter, {nullable:true})
     @Type(() => DefinedProposalListRelationFilter)
     proposals?: DefinedProposalListRelationFilter;
+
+    @Field(() => DefinedBrandingProjectListRelationFilter, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectListRelationFilter;
 
     @Field(() => DefinedInternalNoteListRelationFilter, {nullable:true})
     internalNotes?: DefinedInternalNoteListRelationFilter;

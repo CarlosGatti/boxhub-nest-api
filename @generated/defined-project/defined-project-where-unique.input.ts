@@ -17,6 +17,7 @@ import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/
 import { DefinedIntakeFormListRelationFilter } from '../defined-intake-form/defined-intake-form-list-relation-filter.input';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
 import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
+import { DefinedBrandingProjectListRelationFilter } from '../defined-branding-project/defined-branding-project-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 
@@ -88,6 +89,9 @@ export class DefinedProjectWhereUniqueInput {
     @Field(() => DefinedProposalListRelationFilter, {nullable:true})
     @Type(() => DefinedProposalListRelationFilter)
     proposals?: DefinedProposalListRelationFilter;
+
+    @Field(() => DefinedBrandingProjectListRelationFilter, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

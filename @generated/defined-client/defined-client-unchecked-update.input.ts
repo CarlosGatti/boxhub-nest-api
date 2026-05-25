@@ -10,6 +10,7 @@ import { DefinedProjectUncheckedUpdateManyWithoutClientNestedInput } from '../de
 import { Type } from 'class-transformer';
 import { DefinedInvoiceUncheckedUpdateManyWithoutClientNestedInput } from '../defined-invoice/defined-invoice-unchecked-update-many-without-client-nested.input';
 import { DefinedProposalUncheckedUpdateManyWithoutClientNestedInput } from '../defined-proposal/defined-proposal-unchecked-update-many-without-client-nested.input';
+import { DefinedBrandingProjectUncheckedUpdateManyWithoutClientNestedInput } from '../defined-branding-project/defined-branding-project-unchecked-update-many-without-client-nested.input';
 import { DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-client-nested.input';
 import { DefinedIntakeFormUncheckedUpdateManyWithoutClientNestedInput } from '../defined-intake-form/defined-intake-form-unchecked-update-many-without-client-nested.input';
 
@@ -93,6 +94,9 @@ export class DefinedClientUncheckedUpdateInput {
     @Field(() => DefinedProposalUncheckedUpdateManyWithoutClientNestedInput, {nullable:true})
     @Type(() => DefinedProposalUncheckedUpdateManyWithoutClientNestedInput)
     proposals?: DefinedProposalUncheckedUpdateManyWithoutClientNestedInput;
+
+    @Field(() => DefinedBrandingProjectUncheckedUpdateManyWithoutClientNestedInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectUncheckedUpdateManyWithoutClientNestedInput;
 
     @Field(() => DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput, {nullable:true})
     internalNotes?: DefinedInternalNoteUncheckedUpdateManyWithoutClientNestedInput;

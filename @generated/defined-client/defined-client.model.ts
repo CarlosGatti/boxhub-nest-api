@@ -6,6 +6,7 @@ import { Int } from '@nestjs/graphql';
 import { DefinedProject } from '../defined-project/defined-project.model';
 import { DefinedInvoice } from '../defined-invoice/defined-invoice.model';
 import { DefinedProposal } from '../defined-proposal/defined-proposal.model';
+import { DefinedBrandingProject } from '../defined-branding-project/defined-branding-project.model';
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
 import { DefinedIntakeForm } from '../defined-intake-form/defined-intake-form.model';
 import { DefinedClientCount } from './defined-client-count.output';
@@ -87,6 +88,9 @@ export class DefinedClient {
 
     @Field(() => [DefinedProposal], {nullable:true})
     proposals?: Array<DefinedProposal>;
+
+    @Field(() => [DefinedBrandingProject], {nullable:true})
+    brandingProjects?: Array<DefinedBrandingProject>;
 
     @Field(() => [DefinedInternalNote], {nullable:true})
     internalNotes?: Array<DefinedInternalNote>;

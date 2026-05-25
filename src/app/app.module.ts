@@ -28,6 +28,7 @@ import { BucketModule } from '../modules/bucket/bucket.module';
 import { BucketVisionModule } from '../modules/bucket-vision/bucket-vision.module';
 import { DefinedLeadsModule } from '../domains/defined-leads/defined-leads.module';
 import { DefinedModule } from '../apps/defined/defined.module';
+import { DefinedBrandingModule } from '../apps/defined-branding/defined-branding.module';
 import { DefinedInvoicesModule } from '../apps/defined-invoices/defined-invoices.module';
 import { DefinedProposalsModule } from '../apps/defined-proposals/defined-proposals.module';
 import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
@@ -110,6 +111,8 @@ import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
     DefinedLeadsModule,
     // Defined internal backoffice
     DefinedModule,
+    // Defined branding backoffice
+    DefinedBrandingModule,
     // Defined invoices backoffice
     DefinedInvoicesModule,
     // Defined proposals backoffice

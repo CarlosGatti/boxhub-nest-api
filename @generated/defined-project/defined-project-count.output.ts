@@ -18,6 +18,9 @@ export class DefinedProjectCount {
     proposals?: number;
 
     @Field(() => Int, {nullable:false})
+    brandingProjects?: number;
+
+    @Field(() => Int, {nullable:false})
     pomodoroTasks?: number;
 
     @Field(() => Int, {nullable:false})

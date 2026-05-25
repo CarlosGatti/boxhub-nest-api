@@ -9,6 +9,7 @@ import { DefinedProjectUpdateManyWithoutClientNestedInput } from '../defined-pro
 import { Type } from 'class-transformer';
 import { DefinedInvoiceUpdateManyWithoutClientNestedInput } from '../defined-invoice/defined-invoice-update-many-without-client-nested.input';
 import { DefinedProposalUpdateManyWithoutClientNestedInput } from '../defined-proposal/defined-proposal-update-many-without-client-nested.input';
+import { DefinedBrandingProjectUpdateManyWithoutClientNestedInput } from '../defined-branding-project/defined-branding-project-update-many-without-client-nested.input';
 import { DefinedIntakeFormUpdateManyWithoutClientNestedInput } from '../defined-intake-form/defined-intake-form-update-many-without-client-nested.input';
 
 @InputType()
@@ -88,6 +89,9 @@ export class DefinedClientUpdateWithoutInternalNotesInput {
     @Field(() => DefinedProposalUpdateManyWithoutClientNestedInput, {nullable:true})
     @Type(() => DefinedProposalUpdateManyWithoutClientNestedInput)
     proposals?: DefinedProposalUpdateManyWithoutClientNestedInput;
+
+    @Field(() => DefinedBrandingProjectUpdateManyWithoutClientNestedInput, {nullable:true})
+    brandingProjects?: DefinedBrandingProjectUpdateManyWithoutClientNestedInput;
 
     @Field(() => DefinedIntakeFormUpdateManyWithoutClientNestedInput, {nullable:true})
     intakeForms?: DefinedIntakeFormUpdateManyWithoutClientNestedInput;
