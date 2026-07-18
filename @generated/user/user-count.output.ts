@@ -102,6 +102,27 @@ export class UserCount {
     definedProposalsCreated?: number;
 
     @Field(() => Int, {nullable:false})
+    definedAcademyCoursesCreated?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyResourcesCreated?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyShortLinksCreated?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyEnrollments?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyLessonProgress?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyReferralsAsReferrer?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademyReferralsAsReferred?: number;
+
+    @Field(() => Int, {nullable:false})
     pomodoroTasks?: number;
 
     @Field(() => Int, {nullable:false})

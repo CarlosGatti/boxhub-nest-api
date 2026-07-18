@@ -34,6 +34,13 @@ import { BucketVisionBoardCreateNestedManyWithoutUserInput } from '../bucket-vis
 import { DefinedInternalNoteCreateNestedManyWithoutAuthorInput } from '../defined-internal-note/defined-internal-note-create-nested-many-without-author.input';
 import { DefinedInvoiceCreateNestedManyWithoutCreatedByInput } from '../defined-invoice/defined-invoice-create-nested-many-without-created-by.input';
 import { DefinedProposalCreateNestedManyWithoutCreatedByInput } from '../defined-proposal/defined-proposal-create-nested-many-without-created-by.input';
+import { DefinedAcademyCourseCreateNestedManyWithoutCreatedByInput } from '../defined-academy-course/defined-academy-course-create-nested-many-without-created-by.input';
+import { DefinedAcademyResourceCreateNestedManyWithoutCreatedByInput } from '../defined-academy-resource/defined-academy-resource-create-nested-many-without-created-by.input';
+import { DefinedAcademyShortLinkCreateNestedManyWithoutCreatedByInput } from '../defined-academy-short-link/defined-academy-short-link-create-nested-many-without-created-by.input';
+import { DefinedAcademyEnrollmentCreateNestedManyWithoutUserInput } from '../defined-academy-enrollment/defined-academy-enrollment-create-nested-many-without-user.input';
+import { DefinedAcademyLessonProgressCreateNestedManyWithoutUserInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-create-nested-many-without-user.input';
+import { DefinedAcademyReferralCreateNestedManyWithoutReferrerUserInput } from '../defined-academy-referral/defined-academy-referral-create-nested-many-without-referrer-user.input';
+import { DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput } from '../defined-academy-referral/defined-academy-referral-create-nested-many-without-referred-user.input';
 import { PomodoroTaskCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-create-nested-many-without-user.input';
 import { PomodoroSessionCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-create-nested-many-without-user.input';
 import { PomodoroUserSettingsCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-create-nested-one-without-user.input';
@@ -208,6 +215,27 @@ export class UserCreateWithoutBucketSharesInput {
     @Field(() => DefinedProposalCreateNestedManyWithoutCreatedByInput, {nullable:true})
     @Type(() => DefinedProposalCreateNestedManyWithoutCreatedByInput)
     definedProposalsCreated?: DefinedProposalCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyCourseCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyResourceCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyShortLinkCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyEnrollmentCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentCreateNestedManyWithoutUserInput;
+
+    @Field(() => DefinedAcademyLessonProgressCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressCreateNestedManyWithoutUserInput;
+
+    @Field(() => DefinedAcademyReferralCreateNestedManyWithoutReferrerUserInput, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralCreateNestedManyWithoutReferrerUserInput;
+
+    @Field(() => DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput;
 
     @Field(() => PomodoroTaskCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskCreateNestedManyWithoutUserInput;

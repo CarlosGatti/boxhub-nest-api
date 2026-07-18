@@ -33,6 +33,12 @@ import { BucketVisionBoardOrderByRelationAggregateInput } from '../bucket-vision
 import { DefinedInternalNoteOrderByRelationAggregateInput } from '../defined-internal-note/defined-internal-note-order-by-relation-aggregate.input';
 import { DefinedInvoiceOrderByRelationAggregateInput } from '../defined-invoice/defined-invoice-order-by-relation-aggregate.input';
 import { DefinedProposalOrderByRelationAggregateInput } from '../defined-proposal/defined-proposal-order-by-relation-aggregate.input';
+import { DefinedAcademyCourseOrderByRelationAggregateInput } from '../defined-academy-course/defined-academy-course-order-by-relation-aggregate.input';
+import { DefinedAcademyResourceOrderByRelationAggregateInput } from '../defined-academy-resource/defined-academy-resource-order-by-relation-aggregate.input';
+import { DefinedAcademyShortLinkOrderByRelationAggregateInput } from '../defined-academy-short-link/defined-academy-short-link-order-by-relation-aggregate.input';
+import { DefinedAcademyEnrollmentOrderByRelationAggregateInput } from '../defined-academy-enrollment/defined-academy-enrollment-order-by-relation-aggregate.input';
+import { DefinedAcademyLessonProgressOrderByRelationAggregateInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-order-by-relation-aggregate.input';
+import { DefinedAcademyReferralOrderByRelationAggregateInput } from '../defined-academy-referral/defined-academy-referral-order-by-relation-aggregate.input';
 import { PomodoroTaskOrderByRelationAggregateInput } from '../pomodoro-task/pomodoro-task-order-by-relation-aggregate.input';
 import { PomodoroSessionOrderByRelationAggregateInput } from '../pomodoro-session/pomodoro-session-order-by-relation-aggregate.input';
 import { PomodoroUserSettingsOrderByWithRelationInput } from '../pomodoro-user-settings/pomodoro-user-settings-order-by-with-relation.input';
@@ -213,6 +219,27 @@ export class UserOrderByWithRelationInput {
     @Field(() => DefinedProposalOrderByRelationAggregateInput, {nullable:true})
     @Type(() => DefinedProposalOrderByRelationAggregateInput)
     definedProposalsCreated?: DefinedProposalOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyCourseOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyResourceOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyShortLinkOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyEnrollmentOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyLessonProgressOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyReferralOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyReferralOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralOrderByRelationAggregateInput;
 
     @Field(() => PomodoroTaskOrderByRelationAggregateInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskOrderByRelationAggregateInput;

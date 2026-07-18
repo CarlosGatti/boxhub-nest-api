@@ -5,6 +5,7 @@ import { SortOrderInput } from '../prisma/sort-order.input';
 import { UserAppAccessOrderByRelationAggregateInput } from '../user-app-access/user-app-access-order-by-relation-aggregate.input';
 import { FeedbackOrderByRelationAggregateInput } from '../feedback/feedback-order-by-relation-aggregate.input';
 import { HomeOpsHouseholdOrderByRelationAggregateInput } from '../home-ops-household/home-ops-household-order-by-relation-aggregate.input';
+import { DefinedAcademyOrderByRelationAggregateInput } from '../defined-academy/defined-academy-order-by-relation-aggregate.input';
 
 @InputType()
 export class AppOrderByWithRelationInput {
@@ -35,4 +36,7 @@ export class AppOrderByWithRelationInput {
 
     @Field(() => HomeOpsHouseholdOrderByRelationAggregateInput, {nullable:true})
     homeOpsHouseholds?: HomeOpsHouseholdOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyOrderByRelationAggregateInput, {nullable:true})
+    definedAcademies?: DefinedAcademyOrderByRelationAggregateInput;
 }

@@ -39,6 +39,13 @@ import { BucketVisionBoardUpdateManyWithoutUserNestedInput } from '../bucket-vis
 import { DefinedInternalNoteUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-update-many-without-author-nested.input';
 import { DefinedInvoiceUpdateManyWithoutCreatedByNestedInput } from '../defined-invoice/defined-invoice-update-many-without-created-by-nested.input';
 import { DefinedProposalUpdateManyWithoutCreatedByNestedInput } from '../defined-proposal/defined-proposal-update-many-without-created-by-nested.input';
+import { DefinedAcademyCourseUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-course/defined-academy-course-update-many-without-created-by-nested.input';
+import { DefinedAcademyResourceUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-resource/defined-academy-resource-update-many-without-created-by-nested.input';
+import { DefinedAcademyShortLinkUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-short-link/defined-academy-short-link-update-many-without-created-by-nested.input';
+import { DefinedAcademyEnrollmentUpdateManyWithoutUserNestedInput } from '../defined-academy-enrollment/defined-academy-enrollment-update-many-without-user-nested.input';
+import { DefinedAcademyLessonProgressUpdateManyWithoutUserNestedInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-update-many-without-user-nested.input';
+import { DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput } from '../defined-academy-referral/defined-academy-referral-update-many-without-referrer-user-nested.input';
+import { DefinedAcademyReferralUpdateManyWithoutReferredUserNestedInput } from '../defined-academy-referral/defined-academy-referral-update-many-without-referred-user-nested.input';
 import { PomodoroTaskUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-update-many-without-user-nested.input';
 import { PomodoroSessionUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-update-one-without-user-nested.input';
@@ -213,6 +220,27 @@ export class UserUpdateWithoutRatingsAsSellerInput {
     @Field(() => DefinedProposalUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     @Type(() => DefinedProposalUpdateManyWithoutCreatedByNestedInput)
     definedProposalsCreated?: DefinedProposalUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyCourseUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyResourceUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyShortLinkUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyEnrollmentUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedAcademyLessonProgressUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput;
+
+    @Field(() => DefinedAcademyReferralUpdateManyWithoutReferredUserNestedInput, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralUpdateManyWithoutReferredUserNestedInput;
 
     @Field(() => PomodoroTaskUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUpdateManyWithoutUserNestedInput;

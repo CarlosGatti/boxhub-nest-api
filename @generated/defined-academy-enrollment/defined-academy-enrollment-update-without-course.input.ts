@@ -1,0 +1,40 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { EnumDefinedAcademyEnrollmentStatusFieldUpdateOperationsInput } from '../prisma/enum-defined-academy-enrollment-status-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { UserUpdateOneRequiredWithoutDefinedAcademyEnrollmentsNestedInput } from '../user/user-update-one-required-without-defined-academy-enrollments-nested.input';
+import { Type } from 'class-transformer';
+import { DefinedAcademyLessonProgressUpdateManyWithoutEnrollmentNestedInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-update-many-without-enrollment-nested.input';
+
+@InputType()
+export class DefinedAcademyEnrollmentUpdateWithoutCourseInput {
+
+    @Field(() => EnumDefinedAcademyEnrollmentStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: EnumDefinedAcademyEnrollmentStatusFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    enrolledAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    lastAccessedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => UserUpdateOneRequiredWithoutDefinedAcademyEnrollmentsNestedInput, {nullable:true})
+    @Type(() => UserUpdateOneRequiredWithoutDefinedAcademyEnrollmentsNestedInput)
+    user?: UserUpdateOneRequiredWithoutDefinedAcademyEnrollmentsNestedInput;
+
+    @Field(() => DefinedAcademyLessonProgressUpdateManyWithoutEnrollmentNestedInput, {nullable:true})
+    progress?: DefinedAcademyLessonProgressUpdateManyWithoutEnrollmentNestedInput;
+}

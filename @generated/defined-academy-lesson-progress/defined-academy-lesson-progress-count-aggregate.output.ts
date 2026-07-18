@@ -1,0 +1,46 @@
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
+
+@ObjectType()
+export class DefinedAcademyLessonProgressCountAggregate {
+
+    @Field(() => Int, {nullable:false})
+    id!: number;
+
+    @Field(() => Int, {nullable:false})
+    enrollmentId!: number;
+
+    @Field(() => Int, {nullable:false})
+    lessonId!: number;
+
+    @Field(() => Int, {nullable:false})
+    userId!: number;
+
+    @Field(() => Int, {nullable:false})
+    status!: number;
+
+    @Field(() => Int, {nullable:false})
+    progressPercentage!: number;
+
+    @Field(() => Int, {nullable:false})
+    lastPositionSeconds!: number;
+
+    @Field(() => Int, {nullable:false})
+    startedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    completedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    lastAccessedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    createdAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    updatedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    _all!: number;
+}

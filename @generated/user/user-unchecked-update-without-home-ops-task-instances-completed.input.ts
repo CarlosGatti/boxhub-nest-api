@@ -40,6 +40,13 @@ import { BucketVisionBoardUncheckedUpdateManyWithoutUserNestedInput } from '../b
 import { DefinedInternalNoteUncheckedUpdateManyWithoutAuthorNestedInput } from '../defined-internal-note/defined-internal-note-unchecked-update-many-without-author-nested.input';
 import { DefinedInvoiceUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-invoice/defined-invoice-unchecked-update-many-without-created-by-nested.input';
 import { DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-proposal/defined-proposal-unchecked-update-many-without-created-by-nested.input';
+import { DefinedAcademyCourseUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-course/defined-academy-course-unchecked-update-many-without-created-by-nested.input';
+import { DefinedAcademyResourceUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-resource/defined-academy-resource-unchecked-update-many-without-created-by-nested.input';
+import { DefinedAcademyShortLinkUncheckedUpdateManyWithoutCreatedByNestedInput } from '../defined-academy-short-link/defined-academy-short-link-unchecked-update-many-without-created-by-nested.input';
+import { DefinedAcademyEnrollmentUncheckedUpdateManyWithoutUserNestedInput } from '../defined-academy-enrollment/defined-academy-enrollment-unchecked-update-many-without-user-nested.input';
+import { DefinedAcademyLessonProgressUncheckedUpdateManyWithoutUserNestedInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-unchecked-update-many-without-user-nested.input';
+import { DefinedAcademyReferralUncheckedUpdateManyWithoutReferrerUserNestedInput } from '../defined-academy-referral/defined-academy-referral-unchecked-update-many-without-referrer-user-nested.input';
+import { DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput } from '../defined-academy-referral/defined-academy-referral-unchecked-update-many-without-referred-user-nested.input';
 import { PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-unchecked-update-many-without-user-nested.input';
 import { PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-update-one-without-user-nested.input';
@@ -217,6 +224,27 @@ export class UserUncheckedUpdateWithoutHomeOpsTaskInstancesCompletedInput {
     @Field(() => DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
     @Type(() => DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput)
     definedProposalsCreated?: DefinedProposalUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyCourseUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyResourceUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyShortLinkUncheckedUpdateManyWithoutCreatedByNestedInput, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkUncheckedUpdateManyWithoutCreatedByNestedInput;
+
+    @Field(() => DefinedAcademyEnrollmentUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedAcademyLessonProgressUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressUncheckedUpdateManyWithoutUserNestedInput;
+
+    @Field(() => DefinedAcademyReferralUncheckedUpdateManyWithoutReferrerUserNestedInput, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralUncheckedUpdateManyWithoutReferrerUserNestedInput;
+
+    @Field(() => DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput;
 
     @Field(() => PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedUpdateManyWithoutUserNestedInput;

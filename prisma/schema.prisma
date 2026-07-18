@@ -185,6 +185,15 @@ model User {
   definedInvoicesCreated  DefinedInvoice[]      @relation("DefinedInvoiceCreator")
   definedProposalsCreated DefinedProposal[]     @relation("DefinedProposalCreator")
 
+  // Defined Academy
+  definedAcademyCoursesCreated   DefinedAcademyCourse[]   @relation("DefinedAcademyCourseCreator")
+  definedAcademyResourcesCreated DefinedAcademyResource[] @relation("DefinedAcademyResourceCreator")
+  definedAcademyShortLinksCreated DefinedAcademyShortLink[] @relation("DefinedAcademyShortLinkCreator")
+  definedAcademyEnrollments      DefinedAcademyEnrollment[]
+  definedAcademyLessonProgress   DefinedAcademyLessonProgress[]
+  definedAcademyReferralsAsReferrer DefinedAcademyReferral[] @relation("DefinedAcademyReferrer")
+  definedAcademyReferralsAsReferred DefinedAcademyReferral[] @relation("DefinedAcademyReferred")
+
   // Pomodoro
   pomodoroTasks    PomodoroTask[]
   pomodoroSessions PomodoroSession[]
@@ -453,6 +462,7 @@ model App {
   users             UserAppAccess[]
   feedbacks         Feedback[]
   homeOpsHouseholds HomeOpsHousehold[] @relation("HomeOpsHouseholdApp")
+  definedAcademies  DefinedAcademy[]   @relation("DefinedAcademyApp")
 }
 
 model UserAppAccess {
@@ -2001,4 +2011,433 @@ model DefinedIntakeAnswer {
 
   @@index([intakeFormId])
   @@index([questionKey])
+}
+
+// --- Defined Academy (educational platform) ---
+
+enum DefinedAcademyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum DefinedAcademyCourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DefinedAcademyCourseVisibility {
+  PUBLIC
+  AUTHENTICATED
+  PRIVATE
+}
+
+enum DefinedAcademyContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DefinedAcademyLessonType {
+  VIDEO
+  ARTICLE
+  RESOURCE
+  MIXED
+}
+
+enum DefinedAcademyResourceType {
+  PDF
+  IMAGE
+  FILE
+  TEXT
+  GUIDE
+  TEMPLATE
+  CHECKLIST
+  EXTERNAL_LINK
+  EMBED
+}
+
+enum DefinedAcademyResourceStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DefinedAcademyEnrollmentStatus {
+  ENROLLED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum DefinedAcademyLessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum DefinedAcademyPartnerStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum DefinedAcademyShortLinkStatus {
+  ACTIVE
+  DISABLED
+  EXPIRED
+}
+
+enum DefinedAcademyReferralCampaignStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum DefinedAcademyReferralSourceType {
+  SCHOOL
+  PARTNER
+  PROFESSIONAL
+  LINKEDIN
+  EMAIL
+  EVENT
+  SOCIAL
+  ORGANIC
+  OTHER
+}
+
+enum DefinedAcademyReferralStatus {
+  VISITED
+  REGISTERED
+  ENROLLED
+  INVALID
+  EXPIRED
+}
+
+model DefinedAcademy {
+  id          Int                  @id @default(autoincrement())
+  appId       Int?
+  name        String
+  slug        String               @unique
+  description String?
+  status      DefinedAcademyStatus @default(DRAFT)
+  logoUrl     String?
+  settings    Json?
+  publishedAt DateTime?
+  archivedAt  DateTime?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  app                 App?                             @relation("DefinedAcademyApp", fields: [appId], references: [id], onDelete: SetNull)
+  courses             DefinedAcademyCourse[]
+  resources           DefinedAcademyResource[]
+  partners            DefinedAcademyPartner[]
+  partnerCategories   DefinedAcademyPartnerCategory[]
+  shortLinks          DefinedAcademyShortLink[]
+  referralCampaigns   DefinedAcademyReferralCampaign[]
+  referrals           DefinedAcademyReferral[]
+
+  @@index([status])
+  @@index([appId])
+}
+
+model DefinedAcademyCourse {
+  id                      Int                            @id @default(autoincrement())
+  academyId               Int
+  title                   String
+  slug                    String
+  summary                 String?
+  description             String?
+  coverImageUrl           String?
+  status                  DefinedAcademyCourseStatus     @default(DRAFT)
+  visibility              DefinedAcademyCourseVisibility @default(PUBLIC)
+  level                   String?
+  estimatedDurationMinutes Int?
+  sortOrder               Int                            @default(0)
+  publishedAt             DateTime?
+  createdById             Int?
+  createdAt               DateTime                       @default(now())
+  updatedAt               DateTime                       @updatedAt
+
+  academy     DefinedAcademy              @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  createdBy   User?                       @relation("DefinedAcademyCourseCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  modules     DefinedAcademyModule[]
+  enrollments DefinedAcademyEnrollment[]
+  shortLinks  DefinedAcademyShortLink[]
+  referralCampaigns DefinedAcademyReferralCampaign[]
+
+  @@unique([academyId, slug])
+  @@index([academyId])
+  @@index([academyId, status])
+  @@index([academyId, sortOrder])
+}
+
+model DefinedAcademyModule {
+  id          Int                         @id @default(autoincrement())
+  courseId    Int
+  title       String
+  description String?
+  sortOrder   Int                         @default(0)
+  status      DefinedAcademyContentStatus @default(DRAFT)
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @updatedAt
+
+  course  DefinedAcademyCourse  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons DefinedAcademyLesson[]
+
+  @@index([courseId])
+  @@index([courseId, sortOrder])
+}
+
+model DefinedAcademyLesson {
+  id                  Int                         @id @default(autoincrement())
+  moduleId            Int
+  title               String
+  slug                String
+  summary             String?
+  description         String?
+  lessonType          DefinedAcademyLessonType    @default(VIDEO)
+  videoUrl            String?
+  videoProvider       String?
+  videoDurationSeconds Int?
+  bodyContent         String?
+  sortOrder           Int                         @default(0)
+  status              DefinedAcademyContentStatus @default(DRAFT)
+  visibility          DefinedAcademyCourseVisibility @default(PUBLIC)
+  isPreview           Boolean                     @default(false)
+  publishedAt         DateTime?
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @updatedAt
+
+  module    DefinedAcademyModule           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  resources DefinedAcademyResource[]
+  progress  DefinedAcademyLessonProgress[]
+
+  @@unique([moduleId, slug])
+  @@index([moduleId])
+  @@index([moduleId, sortOrder])
+}
+
+model DefinedAcademyResource {
+  id           Int                          @id @default(autoincrement())
+  academyId    Int
+  lessonId     Int?
+  title        String
+  description  String?
+  type         DefinedAcademyResourceType
+  fileUrl      String?
+  externalUrl  String?
+  textContent  String?
+  mimeType     String?
+  fileName     String?
+  fileSize     Int?
+  sortOrder    Int                          @default(0)
+  visibility   DefinedAcademyCourseVisibility @default(PUBLIC)
+  status       DefinedAcademyResourceStatus @default(DRAFT)
+  downloadable Boolean                      @default(true)
+  createdById  Int?
+  createdAt    DateTime                     @default(now())
+  updatedAt    DateTime                     @updatedAt
+
+  academy   DefinedAcademy        @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  lesson    DefinedAcademyLesson? @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdBy User?                 @relation("DefinedAcademyResourceCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  shortLinks DefinedAcademyShortLink[]
+  referralCampaigns DefinedAcademyReferralCampaign[]
+
+  @@index([academyId])
+  @@index([lessonId])
+  @@index([academyId, status])
+}
+
+model DefinedAcademyEnrollment {
+  id             Int                            @id @default(autoincrement())
+  courseId       Int
+  userId         Int
+  status         DefinedAcademyEnrollmentStatus @default(ENROLLED)
+  enrolledAt     DateTime                       @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+  lastAccessedAt DateTime?
+  createdAt      DateTime                       @default(now())
+  updatedAt      DateTime                       @updatedAt
+
+  course   DefinedAcademyCourse           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  user     User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress DefinedAcademyLessonProgress[]
+
+  @@unique([courseId, userId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model DefinedAcademyLessonProgress {
+  id                  Int                                @id @default(autoincrement())
+  enrollmentId        Int
+  lessonId            Int
+  userId              Int
+  status              DefinedAcademyLessonProgressStatus @default(NOT_STARTED)
+  progressPercentage  Int                                @default(0)
+  lastPositionSeconds Int?
+  startedAt           DateTime?
+  completedAt         DateTime?
+  lastAccessedAt      DateTime?
+  createdAt           DateTime                           @default(now())
+  updatedAt           DateTime                           @updatedAt
+
+  enrollment DefinedAcademyEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lesson     DefinedAcademyLesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  user       User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
+
+model DefinedAcademyPartnerCategory {
+  id          Int      @id @default(autoincrement())
+  academyId   Int
+  name        String
+  slug        String
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  academy  DefinedAcademy        @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  partners DefinedAcademyPartner[]
+
+  @@unique([academyId, slug])
+  @@index([academyId])
+}
+
+model DefinedAcademyPartner {
+  id          Int                         @id @default(autoincrement())
+  academyId   Int
+  categoryId  Int?
+  name        String
+  slug        String
+  description String?
+  websiteUrl  String?
+  contactUrl  String?
+  logoUrl     String?
+  location    String?
+  status      DefinedAcademyPartnerStatus @default(DRAFT)
+  featured    Boolean                     @default(false)
+  sortOrder   Int                         @default(0)
+  createdAt   DateTime                    @default(now())
+  updatedAt   DateTime                    @updatedAt
+
+  academy  DefinedAcademy                 @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  category DefinedAcademyPartnerCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  shortLinks DefinedAcademyShortLink[]
+  referralCampaigns DefinedAcademyReferralCampaign[]
+  referrals DefinedAcademyReferral[]
+
+  @@unique([academyId, slug])
+  @@index([academyId])
+  @@index([academyId, status])
+}
+
+model DefinedAcademyShortLink {
+  id                 Int                           @id @default(autoincrement())
+  academyId          Int
+  code               String                        @unique
+  destinationUrl     String
+  resourceId         Int?
+  courseId           Int?
+  partnerId          Int?
+  referralCampaignId Int?
+  status             DefinedAcademyShortLinkStatus @default(ACTIVE)
+  expiresAt          DateTime?
+  visitCount         Int                           @default(0)
+  createdById        Int?
+  createdAt          DateTime                      @default(now())
+  updatedAt          DateTime                      @updatedAt
+
+  academy          DefinedAcademy                  @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  resource         DefinedAcademyResource?         @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+  course           DefinedAcademyCourse?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  partner          DefinedAcademyPartner?          @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  referralCampaign DefinedAcademyReferralCampaign? @relation(fields: [referralCampaignId], references: [id], onDelete: SetNull)
+  createdBy        User?                           @relation("DefinedAcademyShortLinkCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  events           DefinedAcademyShortLinkEvent[]
+
+  @@index([academyId])
+  @@index([status])
+}
+
+model DefinedAcademyShortLinkEvent {
+  id                  Int      @id @default(autoincrement())
+  shortLinkId         Int
+  occurredAt          DateTime @default(now())
+  userId              Int?
+  anonymousSessionHash String?
+  referrer            String?
+  userAgentSummary    String?
+  campaignMetadata    Json?
+
+  shortLink DefinedAcademyShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
+
+  @@index([shortLinkId])
+  @@index([shortLinkId, occurredAt])
+}
+
+model DefinedAcademyReferralCampaign {
+  id          Int                                  @id @default(autoincrement())
+  academyId   Int
+  name        String
+  code        String
+  description String?
+  sourceType  DefinedAcademyReferralSourceType     @default(OTHER)
+  partnerId   Int?
+  courseId    Int?
+  resourceId  Int?
+  status      DefinedAcademyReferralCampaignStatus @default(DRAFT)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  metadata    Json?
+  createdAt   DateTime                             @default(now())
+  updatedAt   DateTime                             @updatedAt
+
+  academy    DefinedAcademy           @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  partner    DefinedAcademyPartner?   @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  course     DefinedAcademyCourse?    @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  resource   DefinedAcademyResource?  @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+  shortLinks DefinedAcademyShortLink[]
+  referrals  DefinedAcademyReferral[]
+
+  @@unique([academyId, code])
+  @@index([academyId])
+  @@index([academyId, status])
+}
+
+model DefinedAcademyReferral {
+  id                   Int                        @id @default(autoincrement())
+  academyId            Int
+  campaignId           Int?
+  referrerUserId       Int?
+  partnerId            Int?
+  referredUserId       Int?
+  referralCode         String
+  status               DefinedAcademyReferralStatus @default(VISITED)
+  firstVisitedAt       DateTime                   @default(now())
+  registeredAt         DateTime?
+  enrolledAt           DateTime?
+  attributionExpiresAt DateTime?
+  metadata             Json?
+  createdAt            DateTime                   @default(now())
+  updatedAt            DateTime                   @updatedAt
+
+  academy      DefinedAcademy                  @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  campaign     DefinedAcademyReferralCampaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  referrerUser User?                           @relation("DefinedAcademyReferrer", fields: [referrerUserId], references: [id], onDelete: SetNull)
+  referredUser User?                           @relation("DefinedAcademyReferred", fields: [referredUserId], references: [id], onDelete: SetNull)
+  partner      DefinedAcademyPartner?          @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+
+  @@index([academyId])
+  @@index([referralCode])
+  @@index([referredUserId])
+  @@index([referrerUserId])
 }

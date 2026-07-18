@@ -38,6 +38,12 @@ import { BucketVisionBoardListRelationFilter } from '../bucket-vision-board/buck
 import { DefinedInternalNoteListRelationFilter } from '../defined-internal-note/defined-internal-note-list-relation-filter.input';
 import { DefinedInvoiceListRelationFilter } from '../defined-invoice/defined-invoice-list-relation-filter.input';
 import { DefinedProposalListRelationFilter } from '../defined-proposal/defined-proposal-list-relation-filter.input';
+import { DefinedAcademyCourseListRelationFilter } from '../defined-academy-course/defined-academy-course-list-relation-filter.input';
+import { DefinedAcademyResourceListRelationFilter } from '../defined-academy-resource/defined-academy-resource-list-relation-filter.input';
+import { DefinedAcademyShortLinkListRelationFilter } from '../defined-academy-short-link/defined-academy-short-link-list-relation-filter.input';
+import { DefinedAcademyEnrollmentListRelationFilter } from '../defined-academy-enrollment/defined-academy-enrollment-list-relation-filter.input';
+import { DefinedAcademyLessonProgressListRelationFilter } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-list-relation-filter.input';
+import { DefinedAcademyReferralListRelationFilter } from '../defined-academy-referral/defined-academy-referral-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 import { PomodoroUserSettingsNullableRelationFilter } from '../pomodoro-user-settings/pomodoro-user-settings-nullable-relation-filter.input';
@@ -227,6 +233,27 @@ export class UserWhereInput {
     @Field(() => DefinedProposalListRelationFilter, {nullable:true})
     @Type(() => DefinedProposalListRelationFilter)
     definedProposalsCreated?: DefinedProposalListRelationFilter;
+
+    @Field(() => DefinedAcademyCourseListRelationFilter, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseListRelationFilter;
+
+    @Field(() => DefinedAcademyResourceListRelationFilter, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceListRelationFilter;
+
+    @Field(() => DefinedAcademyShortLinkListRelationFilter, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkListRelationFilter;
+
+    @Field(() => DefinedAcademyEnrollmentListRelationFilter, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentListRelationFilter;
+
+    @Field(() => DefinedAcademyLessonProgressListRelationFilter, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressListRelationFilter;
+
+    @Field(() => DefinedAcademyReferralListRelationFilter, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralListRelationFilter;
+
+    @Field(() => DefinedAcademyReferralListRelationFilter, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

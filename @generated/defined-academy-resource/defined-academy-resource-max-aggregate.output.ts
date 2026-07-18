@@ -1,0 +1,67 @@
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
+import { DefinedAcademyResourceType } from '../prisma/defined-academy-resource-type.enum';
+import { DefinedAcademyCourseVisibility } from '../prisma/defined-academy-course-visibility.enum';
+import { DefinedAcademyResourceStatus } from '../prisma/defined-academy-resource-status.enum';
+
+@ObjectType()
+export class DefinedAcademyResourceMaxAggregate {
+
+    @Field(() => Int, {nullable:true})
+    id?: number;
+
+    @Field(() => Int, {nullable:true})
+    academyId?: number;
+
+    @Field(() => Int, {nullable:true})
+    lessonId?: number;
+
+    @Field(() => String, {nullable:true})
+    title?: string;
+
+    @Field(() => String, {nullable:true})
+    description?: string;
+
+    @Field(() => DefinedAcademyResourceType, {nullable:true})
+    type?: keyof typeof DefinedAcademyResourceType;
+
+    @Field(() => String, {nullable:true})
+    fileUrl?: string;
+
+    @Field(() => String, {nullable:true})
+    externalUrl?: string;
+
+    @Field(() => String, {nullable:true})
+    textContent?: string;
+
+    @Field(() => String, {nullable:true})
+    mimeType?: string;
+
+    @Field(() => String, {nullable:true})
+    fileName?: string;
+
+    @Field(() => Int, {nullable:true})
+    fileSize?: number;
+
+    @Field(() => Int, {nullable:true})
+    sortOrder?: number;
+
+    @Field(() => DefinedAcademyCourseVisibility, {nullable:true})
+    visibility?: keyof typeof DefinedAcademyCourseVisibility;
+
+    @Field(() => DefinedAcademyResourceStatus, {nullable:true})
+    status?: keyof typeof DefinedAcademyResourceStatus;
+
+    @Field(() => Boolean, {nullable:true})
+    downloadable?: boolean;
+
+    @Field(() => Int, {nullable:true})
+    createdById?: number;
+
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}

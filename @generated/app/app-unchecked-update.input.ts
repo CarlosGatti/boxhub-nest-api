@@ -7,6 +7,7 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { UserAppAccessUncheckedUpdateManyWithoutAppNestedInput } from '../user-app-access/user-app-access-unchecked-update-many-without-app-nested.input';
 import { FeedbackUncheckedUpdateManyWithoutTargetAppNestedInput } from '../feedback/feedback-unchecked-update-many-without-target-app-nested.input';
 import { HomeOpsHouseholdUncheckedUpdateManyWithoutAppNestedInput } from '../home-ops-household/home-ops-household-unchecked-update-many-without-app-nested.input';
+import { DefinedAcademyUncheckedUpdateManyWithoutAppNestedInput } from '../defined-academy/defined-academy-unchecked-update-many-without-app-nested.input';
 
 @InputType()
 export class AppUncheckedUpdateInput {
@@ -37,4 +38,7 @@ export class AppUncheckedUpdateInput {
 
     @Field(() => HomeOpsHouseholdUncheckedUpdateManyWithoutAppNestedInput, {nullable:true})
     homeOpsHouseholds?: HomeOpsHouseholdUncheckedUpdateManyWithoutAppNestedInput;
+
+    @Field(() => DefinedAcademyUncheckedUpdateManyWithoutAppNestedInput, {nullable:true})
+    definedAcademies?: DefinedAcademyUncheckedUpdateManyWithoutAppNestedInput;
 }

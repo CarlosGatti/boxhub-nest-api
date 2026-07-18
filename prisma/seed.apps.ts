@@ -66,6 +66,11 @@ async function main() {
       name: 'Defined',
       description: 'Defined internal backoffice',
     },
+    {
+      code: 'ACADEMY',
+      name: 'Defined Academy',
+      description: 'Educational resources and learning programs',
+    },
   ];
 
   for (const app of apps) {

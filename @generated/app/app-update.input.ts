@@ -6,6 +6,7 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { UserAppAccessUpdateManyWithoutAppNestedInput } from '../user-app-access/user-app-access-update-many-without-app-nested.input';
 import { FeedbackUpdateManyWithoutTargetAppNestedInput } from '../feedback/feedback-update-many-without-target-app-nested.input';
 import { HomeOpsHouseholdUpdateManyWithoutAppNestedInput } from '../home-ops-household/home-ops-household-update-many-without-app-nested.input';
+import { DefinedAcademyUpdateManyWithoutAppNestedInput } from '../defined-academy/defined-academy-update-many-without-app-nested.input';
 
 @InputType()
 export class AppUpdateInput {
@@ -33,4 +34,7 @@ export class AppUpdateInput {
 
     @Field(() => HomeOpsHouseholdUpdateManyWithoutAppNestedInput, {nullable:true})
     homeOpsHouseholds?: HomeOpsHouseholdUpdateManyWithoutAppNestedInput;
+
+    @Field(() => DefinedAcademyUpdateManyWithoutAppNestedInput, {nullable:true})
+    definedAcademies?: DefinedAcademyUpdateManyWithoutAppNestedInput;
 }

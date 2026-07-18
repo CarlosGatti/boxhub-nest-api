@@ -32,6 +32,12 @@ import { BucketVisionBoard } from '../bucket-vision-board/bucket-vision-board.mo
 import { DefinedInternalNote } from '../defined-internal-note/defined-internal-note.model';
 import { DefinedInvoice } from '../defined-invoice/defined-invoice.model';
 import { DefinedProposal } from '../defined-proposal/defined-proposal.model';
+import { DefinedAcademyCourse } from '../defined-academy-course/defined-academy-course.model';
+import { DefinedAcademyResource } from '../defined-academy-resource/defined-academy-resource.model';
+import { DefinedAcademyShortLink } from '../defined-academy-short-link/defined-academy-short-link.model';
+import { DefinedAcademyEnrollment } from '../defined-academy-enrollment/defined-academy-enrollment.model';
+import { DefinedAcademyLessonProgress } from '../defined-academy-lesson-progress/defined-academy-lesson-progress.model';
+import { DefinedAcademyReferral } from '../defined-academy-referral/defined-academy-referral.model';
 import { PomodoroTask } from '../pomodoro-task/pomodoro-task.model';
 import { PomodoroSession } from '../pomodoro-session/pomodoro-session.model';
 import { PomodoroUserSettings } from '../pomodoro-user-settings/pomodoro-user-settings.model';
@@ -207,6 +213,27 @@ export class User {
 
     @Field(() => [DefinedProposal], {nullable:true})
     definedProposalsCreated?: Array<DefinedProposal>;
+
+    @Field(() => [DefinedAcademyCourse], {nullable:true})
+    definedAcademyCoursesCreated?: Array<DefinedAcademyCourse>;
+
+    @Field(() => [DefinedAcademyResource], {nullable:true})
+    definedAcademyResourcesCreated?: Array<DefinedAcademyResource>;
+
+    @Field(() => [DefinedAcademyShortLink], {nullable:true})
+    definedAcademyShortLinksCreated?: Array<DefinedAcademyShortLink>;
+
+    @Field(() => [DefinedAcademyEnrollment], {nullable:true})
+    definedAcademyEnrollments?: Array<DefinedAcademyEnrollment>;
+
+    @Field(() => [DefinedAcademyLessonProgress], {nullable:true})
+    definedAcademyLessonProgress?: Array<DefinedAcademyLessonProgress>;
+
+    @Field(() => [DefinedAcademyReferral], {nullable:true})
+    definedAcademyReferralsAsReferrer?: Array<DefinedAcademyReferral>;
+
+    @Field(() => [DefinedAcademyReferral], {nullable:true})
+    definedAcademyReferralsAsReferred?: Array<DefinedAcademyReferral>;
 
     @Field(() => [PomodoroTask], {nullable:true})
     pomodoroTasks?: Array<PomodoroTask>;

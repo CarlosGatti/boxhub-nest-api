@@ -5,6 +5,7 @@ import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-str
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { UserAppAccessUpdateManyWithoutAppNestedInput } from '../user-app-access/user-app-access-update-many-without-app-nested.input';
 import { HomeOpsHouseholdUpdateManyWithoutAppNestedInput } from '../home-ops-household/home-ops-household-update-many-without-app-nested.input';
+import { DefinedAcademyUpdateManyWithoutAppNestedInput } from '../defined-academy/defined-academy-update-many-without-app-nested.input';
 
 @InputType()
 export class AppUpdateWithoutFeedbacksInput {
@@ -29,4 +30,7 @@ export class AppUpdateWithoutFeedbacksInput {
 
     @Field(() => HomeOpsHouseholdUpdateManyWithoutAppNestedInput, {nullable:true})
     homeOpsHouseholds?: HomeOpsHouseholdUpdateManyWithoutAppNestedInput;
+
+    @Field(() => DefinedAcademyUpdateManyWithoutAppNestedInput, {nullable:true})
+    definedAcademies?: DefinedAcademyUpdateManyWithoutAppNestedInput;
 }

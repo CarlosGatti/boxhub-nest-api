@@ -1,0 +1,59 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { IntFieldUpdateOperationsInput } from '../prisma/int-field-update-operations.input';
+import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
+import { EnumDefinedAcademyCourseStatusFieldUpdateOperationsInput } from '../prisma/enum-defined-academy-course-status-field-update-operations.input';
+import { EnumDefinedAcademyCourseVisibilityFieldUpdateOperationsInput } from '../prisma/enum-defined-academy-course-visibility-field-update-operations.input';
+import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
+import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+
+@InputType()
+export class DefinedAcademyCourseUncheckedUpdateManyWithoutAcademyInput {
+
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    id?: IntFieldUpdateOperationsInput;
+
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: StringFieldUpdateOperationsInput;
+
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    slug?: StringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    summary?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    description?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    coverImageUrl?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => EnumDefinedAcademyCourseStatusFieldUpdateOperationsInput, {nullable:true})
+    status?: EnumDefinedAcademyCourseStatusFieldUpdateOperationsInput;
+
+    @Field(() => EnumDefinedAcademyCourseVisibilityFieldUpdateOperationsInput, {nullable:true})
+    visibility?: EnumDefinedAcademyCourseVisibilityFieldUpdateOperationsInput;
+
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    level?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    estimatedDurationMinutes?: NullableIntFieldUpdateOperationsInput;
+
+    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
+    sortOrder?: IntFieldUpdateOperationsInput;
+
+    @Field(() => NullableDateTimeFieldUpdateOperationsInput, {nullable:true})
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput;
+
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    createdById?: NullableIntFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
+
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    updatedAt?: DateTimeFieldUpdateOperationsInput;
+}

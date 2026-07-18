@@ -31,6 +31,7 @@ import { DefinedModule } from '../apps/defined/defined.module';
 import { DefinedBrandingModule } from '../apps/defined-branding/defined-branding.module';
 import { DefinedInvoicesModule } from '../apps/defined-invoices/defined-invoices.module';
 import { DefinedProposalsModule } from '../apps/defined-proposals/defined-proposals.module';
+import { DefinedAcademyModule } from '../apps/defined-academy/defined-academy.module';
 import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
 
 @Module({
@@ -117,6 +118,8 @@ import { PomodoroModule } from '../domains/pomodoro/pomodoro.module';
     DefinedInvoicesModule,
     // Defined proposals backoffice
     DefinedProposalsModule,
+    // Defined Academy (education platform)
+    DefinedAcademyModule,
     // Pomodoro focus/tasks sessions
     PomodoroModule,
   ],

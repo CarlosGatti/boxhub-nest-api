@@ -35,6 +35,13 @@ import { BucketVisionBoardUncheckedCreateNestedManyWithoutUserInput } from '../b
 import { DefinedInternalNoteUncheckedCreateNestedManyWithoutAuthorInput } from '../defined-internal-note/defined-internal-note-unchecked-create-nested-many-without-author.input';
 import { DefinedInvoiceUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-invoice/defined-invoice-unchecked-create-nested-many-without-created-by.input';
 import { DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-proposal/defined-proposal-unchecked-create-nested-many-without-created-by.input';
+import { DefinedAcademyCourseUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-academy-course/defined-academy-course-unchecked-create-nested-many-without-created-by.input';
+import { DefinedAcademyResourceUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-academy-resource/defined-academy-resource-unchecked-create-nested-many-without-created-by.input';
+import { DefinedAcademyShortLinkUncheckedCreateNestedManyWithoutCreatedByInput } from '../defined-academy-short-link/defined-academy-short-link-unchecked-create-nested-many-without-created-by.input';
+import { DefinedAcademyEnrollmentUncheckedCreateNestedManyWithoutUserInput } from '../defined-academy-enrollment/defined-academy-enrollment-unchecked-create-nested-many-without-user.input';
+import { DefinedAcademyLessonProgressUncheckedCreateNestedManyWithoutUserInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-unchecked-create-nested-many-without-user.input';
+import { DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferrerUserInput } from '../defined-academy-referral/defined-academy-referral-unchecked-create-nested-many-without-referrer-user.input';
+import { DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput } from '../defined-academy-referral/defined-academy-referral-unchecked-create-nested-many-without-referred-user.input';
 import { PomodoroTaskUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-user.input';
 import { PomodoroSessionUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-user.input';
 import { PomodoroUserSettingsUncheckedCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-create-nested-one-without-user.input';
@@ -212,6 +219,27 @@ export class UserUncheckedCreateWithoutRatingsAsBuyerInput {
     @Field(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
     @Type(() => DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput)
     definedProposalsCreated?: DefinedProposalUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyCourseUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyCoursesCreated?: DefinedAcademyCourseUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyResourceUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyResourcesCreated?: DefinedAcademyResourceUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyShortLinkUncheckedCreateNestedManyWithoutCreatedByInput, {nullable:true})
+    definedAcademyShortLinksCreated?: DefinedAcademyShortLinkUncheckedCreateNestedManyWithoutCreatedByInput;
+
+    @Field(() => DefinedAcademyEnrollmentUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyEnrollments?: DefinedAcademyEnrollmentUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => DefinedAcademyLessonProgressUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyLessonProgress?: DefinedAcademyLessonProgressUncheckedCreateNestedManyWithoutUserInput;
+
+    @Field(() => DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferrerUserInput, {nullable:true})
+    definedAcademyReferralsAsReferrer?: DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferrerUserInput;
+
+    @Field(() => DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput, {nullable:true})
+    definedAcademyReferralsAsReferred?: DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput;
 
     @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutUserInput;

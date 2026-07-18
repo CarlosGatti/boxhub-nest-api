@@ -13,4 +13,7 @@ export class AppCount {
 
     @Field(() => Int, {nullable:false})
     homeOpsHouseholds?: number;
+
+    @Field(() => Int, {nullable:false})
+    definedAcademies?: number;
 }

@@ -4,6 +4,7 @@ import { ID } from '@nestjs/graphql';
 import { UserAppAccess } from '../user-app-access/user-app-access.model';
 import { Feedback } from '../feedback/feedback.model';
 import { HomeOpsHousehold } from '../home-ops-household/home-ops-household.model';
+import { DefinedAcademy } from '../defined-academy/defined-academy.model';
 import { AppCount } from './app-count.output';
 
 @ObjectType()
@@ -35,6 +36,9 @@ export class App {
 
     @Field(() => [HomeOpsHousehold], {nullable:true})
     homeOpsHouseholds?: Array<HomeOpsHousehold>;
+
+    @Field(() => [DefinedAcademy], {nullable:true})
+    definedAcademies?: Array<DefinedAcademy>;
 
     @Field(() => AppCount, {nullable:false})
     _count?: AppCount;

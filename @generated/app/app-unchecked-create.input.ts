@@ -4,6 +4,7 @@ import { Int } from '@nestjs/graphql';
 import { UserAppAccessUncheckedCreateNestedManyWithoutAppInput } from '../user-app-access/user-app-access-unchecked-create-nested-many-without-app.input';
 import { FeedbackUncheckedCreateNestedManyWithoutTargetAppInput } from '../feedback/feedback-unchecked-create-nested-many-without-target-app.input';
 import { HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput } from '../home-ops-household/home-ops-household-unchecked-create-nested-many-without-app.input';
+import { DefinedAcademyUncheckedCreateNestedManyWithoutAppInput } from '../defined-academy/defined-academy-unchecked-create-nested-many-without-app.input';
 
 @InputType()
 export class AppUncheckedCreateInput {
@@ -34,4 +35,7 @@ export class AppUncheckedCreateInput {
 
     @Field(() => HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput, {nullable:true})
     homeOpsHouseholds?: HomeOpsHouseholdUncheckedCreateNestedManyWithoutAppInput;
+
+    @Field(() => DefinedAcademyUncheckedCreateNestedManyWithoutAppInput, {nullable:true})
+    definedAcademies?: DefinedAcademyUncheckedCreateNestedManyWithoutAppInput;
 }
