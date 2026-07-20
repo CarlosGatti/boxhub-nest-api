@@ -1269,7 +1269,7 @@ export class DefinedAcademyService {
     return category;
   }
 
-  private async ensurePartner(academyId: number, partnerId: number) {
+  async ensurePartner(academyId: number, partnerId: number) {
     const partner = await this.prisma.definedAcademyPartner.findUnique({
       where: { id: partnerId },
     });

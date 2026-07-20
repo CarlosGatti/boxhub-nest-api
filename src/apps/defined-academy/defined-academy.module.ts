@@ -9,11 +9,15 @@ import { DefinedAcademyReferralService } from './defined-academy-referral.servic
 import { DefinedAcademyShortLinkService } from './defined-academy-shortlink.service';
 import { DefinedAcademyResolver } from './defined-academy.resolver';
 import { DefinedAcademyService } from './defined-academy.service';
+import { DefinedAcademyUploadController } from './upload/defined-academy-upload.controller';
+import { DefinedAcademyUploadService } from './upload/defined-academy-upload.service';
 
 @Module({
   imports: [AuthModule],
+  controllers: [DefinedAcademyUploadController],
   providers: [
     DefinedAcademyService,
+    DefinedAcademyUploadService,
     DefinedAcademyShortLinkService,
     DefinedAcademyReferralService,
     DefinedAcademyLearnerService,

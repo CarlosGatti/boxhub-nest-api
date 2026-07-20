@@ -63,6 +63,11 @@ async function bootstrap() {
     // Bucket List (goals, memories, events, travel)
     "bucket-goals/cover",
     "bucket-goals/media",
+    // Defined Academy
+    "academy/programs/cover",
+    "academy/logo",
+    "academy/partners/logo",
+    "academy/resources",
   ];
 
   if (!existsSync(uploadsDir)) {
