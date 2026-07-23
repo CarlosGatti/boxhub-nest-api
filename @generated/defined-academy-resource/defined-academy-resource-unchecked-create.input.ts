@@ -6,6 +6,7 @@ import { DefinedAcademyCourseVisibility } from '../prisma/defined-academy-course
 import { DefinedAcademyResourceStatus } from '../prisma/defined-academy-resource-status.enum';
 import { DefinedAcademyShortLinkUncheckedCreateNestedManyWithoutResourceInput } from '../defined-academy-short-link/defined-academy-short-link-unchecked-create-nested-many-without-resource.input';
 import { DefinedAcademyReferralCampaignUncheckedCreateNestedManyWithoutResourceInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-unchecked-create-nested-many-without-resource.input';
+import { DefinedAcademyCareerStageContentUncheckedCreateNestedManyWithoutResourceInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-unchecked-create-nested-many-without-resource.input';
 
 @InputType()
 export class DefinedAcademyResourceUncheckedCreateInput {
@@ -72,4 +73,7 @@ export class DefinedAcademyResourceUncheckedCreateInput {
 
     @Field(() => DefinedAcademyReferralCampaignUncheckedCreateNestedManyWithoutResourceInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignUncheckedCreateNestedManyWithoutResourceInput;
+
+    @Field(() => DefinedAcademyCareerStageContentUncheckedCreateNestedManyWithoutResourceInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentUncheckedCreateNestedManyWithoutResourceInput;
 }

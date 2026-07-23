@@ -10,6 +10,7 @@ import { DefinedAcademyModuleCreateNestedManyWithoutCourseInput } from '../defin
 import { DefinedAcademyEnrollmentCreateNestedManyWithoutCourseInput } from '../defined-academy-enrollment/defined-academy-enrollment-create-nested-many-without-course.input';
 import { DefinedAcademyShortLinkCreateNestedManyWithoutCourseInput } from '../defined-academy-short-link/defined-academy-short-link-create-nested-many-without-course.input';
 import { DefinedAcademyReferralCampaignCreateNestedManyWithoutCourseInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-create-nested-many-without-course.input';
+import { DefinedAcademyCareerStageContentCreateNestedManyWithoutCourseInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-create-nested-many-without-course.input';
 
 @InputType()
 export class DefinedAcademyCourseCreateInput {
@@ -71,4 +72,7 @@ export class DefinedAcademyCourseCreateInput {
 
     @Field(() => DefinedAcademyReferralCampaignCreateNestedManyWithoutCourseInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignCreateNestedManyWithoutCourseInput;
+
+    @Field(() => DefinedAcademyCareerStageContentCreateNestedManyWithoutCourseInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentCreateNestedManyWithoutCourseInput;
 }

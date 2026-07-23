@@ -13,6 +13,8 @@ import { DefinedAcademyPartnerUpdateManyWithoutAcademyNestedInput } from '../def
 import { DefinedAcademyPartnerCategoryUpdateManyWithoutAcademyNestedInput } from '../defined-academy-partner-category/defined-academy-partner-category-update-many-without-academy-nested.input';
 import { DefinedAcademyShortLinkUpdateManyWithoutAcademyNestedInput } from '../defined-academy-short-link/defined-academy-short-link-update-many-without-academy-nested.input';
 import { DefinedAcademyReferralCampaignUpdateManyWithoutAcademyNestedInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-update-many-without-academy-nested.input';
+import { DefinedAcademyCareerJourneyUpdateOneWithoutAcademyNestedInput } from '../defined-academy-career-journey/defined-academy-career-journey-update-one-without-academy-nested.input';
+import { DefinedAcademyUserCareerProfileUpdateManyWithoutAcademyNestedInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-update-many-without-academy-nested.input';
 
 @InputType()
 export class DefinedAcademyUpdateWithoutReferralsInput {
@@ -67,4 +69,10 @@ export class DefinedAcademyUpdateWithoutReferralsInput {
 
     @Field(() => DefinedAcademyReferralCampaignUpdateManyWithoutAcademyNestedInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignUpdateManyWithoutAcademyNestedInput;
+
+    @Field(() => DefinedAcademyCareerJourneyUpdateOneWithoutAcademyNestedInput, {nullable:true})
+    careerJourney?: DefinedAcademyCareerJourneyUpdateOneWithoutAcademyNestedInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileUpdateManyWithoutAcademyNestedInput, {nullable:true})
+    careerProfiles?: DefinedAcademyUserCareerProfileUpdateManyWithoutAcademyNestedInput;
 }

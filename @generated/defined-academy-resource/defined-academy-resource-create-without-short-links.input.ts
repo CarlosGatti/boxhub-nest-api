@@ -9,6 +9,7 @@ import { DefinedAcademyLessonCreateNestedOneWithoutResourcesInput } from '../def
 import { UserCreateNestedOneWithoutDefinedAcademyResourcesCreatedInput } from '../user/user-create-nested-one-without-defined-academy-resources-created.input';
 import { Type } from 'class-transformer';
 import { DefinedAcademyReferralCampaignCreateNestedManyWithoutResourceInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-create-nested-many-without-resource.input';
+import { DefinedAcademyCareerStageContentCreateNestedManyWithoutResourceInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-create-nested-many-without-resource.input';
 
 @InputType()
 export class DefinedAcademyResourceCreateWithoutShortLinksInput {
@@ -70,4 +71,7 @@ export class DefinedAcademyResourceCreateWithoutShortLinksInput {
 
     @Field(() => DefinedAcademyReferralCampaignCreateNestedManyWithoutResourceInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignCreateNestedManyWithoutResourceInput;
+
+    @Field(() => DefinedAcademyCareerStageContentCreateNestedManyWithoutResourceInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentCreateNestedManyWithoutResourceInput;
 }

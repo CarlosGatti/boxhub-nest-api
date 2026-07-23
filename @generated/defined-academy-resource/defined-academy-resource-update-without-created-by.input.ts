@@ -13,6 +13,7 @@ import { DefinedAcademyUpdateOneRequiredWithoutResourcesNestedInput } from '../d
 import { DefinedAcademyLessonUpdateOneWithoutResourcesNestedInput } from '../defined-academy-lesson/defined-academy-lesson-update-one-without-resources-nested.input';
 import { DefinedAcademyShortLinkUpdateManyWithoutResourceNestedInput } from '../defined-academy-short-link/defined-academy-short-link-update-many-without-resource-nested.input';
 import { DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-update-many-without-resource-nested.input';
+import { DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-update-many-without-resource-nested.input';
 
 @InputType()
 export class DefinedAcademyResourceUpdateWithoutCreatedByInput {
@@ -73,4 +74,7 @@ export class DefinedAcademyResourceUpdateWithoutCreatedByInput {
 
     @Field(() => DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput;
+
+    @Field(() => DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput;
 }

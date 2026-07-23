@@ -48,6 +48,7 @@ import { DefinedAcademyEnrollmentUncheckedUpdateManyWithoutUserNestedInput } fro
 import { DefinedAcademyLessonProgressUncheckedUpdateManyWithoutUserNestedInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-unchecked-update-many-without-user-nested.input';
 import { DefinedAcademyReferralUncheckedUpdateManyWithoutReferrerUserNestedInput } from '../defined-academy-referral/defined-academy-referral-unchecked-update-many-without-referrer-user-nested.input';
 import { DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput } from '../defined-academy-referral/defined-academy-referral-unchecked-update-many-without-referred-user-nested.input';
+import { DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutUserNestedInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-unchecked-update-many-without-user-nested.input';
 import { PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-unchecked-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUncheckedUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-unchecked-update-one-without-user-nested.input';
 
@@ -248,6 +249,9 @@ export class UserUncheckedUpdateWithoutPomodoroTasksInput {
 
     @Field(() => DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput, {nullable:true})
     definedAcademyReferralsAsReferred?: DefinedAcademyReferralUncheckedUpdateManyWithoutReferredUserNestedInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutUserNestedInput;
 
     @Field(() => PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroSessions?: PomodoroSessionUncheckedUpdateManyWithoutUserNestedInput;

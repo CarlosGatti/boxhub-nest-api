@@ -46,6 +46,7 @@ import { DefinedAcademyShortLinkUpdateManyWithoutCreatedByNestedInput } from '..
 import { DefinedAcademyEnrollmentUpdateManyWithoutUserNestedInput } from '../defined-academy-enrollment/defined-academy-enrollment-update-many-without-user-nested.input';
 import { DefinedAcademyLessonProgressUpdateManyWithoutUserNestedInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-update-many-without-user-nested.input';
 import { DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput } from '../defined-academy-referral/defined-academy-referral-update-many-without-referrer-user-nested.input';
+import { DefinedAcademyUserCareerProfileUpdateManyWithoutUserNestedInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-update-many-without-user-nested.input';
 import { PomodoroTaskUpdateManyWithoutUserNestedInput } from '../pomodoro-task/pomodoro-task-update-many-without-user-nested.input';
 import { PomodoroSessionUpdateManyWithoutUserNestedInput } from '../pomodoro-session/pomodoro-session-update-many-without-user-nested.input';
 import { PomodoroUserSettingsUpdateOneWithoutUserNestedInput } from '../pomodoro-user-settings/pomodoro-user-settings-update-one-without-user-nested.input';
@@ -241,6 +242,9 @@ export class UserUpdateWithoutDefinedAcademyReferralsAsReferredInput {
 
     @Field(() => DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput, {nullable:true})
     definedAcademyReferralsAsReferrer?: DefinedAcademyReferralUpdateManyWithoutReferrerUserNestedInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileUpdateManyWithoutUserNestedInput, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileUpdateManyWithoutUserNestedInput;
 
     @Field(() => PomodoroTaskUpdateManyWithoutUserNestedInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUpdateManyWithoutUserNestedInput;

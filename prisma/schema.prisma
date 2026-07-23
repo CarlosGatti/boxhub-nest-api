@@ -193,6 +193,7 @@ model User {
   definedAcademyLessonProgress   DefinedAcademyLessonProgress[]
   definedAcademyReferralsAsReferrer DefinedAcademyReferral[] @relation("DefinedAcademyReferrer")
   definedAcademyReferralsAsReferred DefinedAcademyReferral[] @relation("DefinedAcademyReferred")
+  definedAcademyCareerProfiles      DefinedAcademyUserCareerProfile[]
 
   // Pomodoro
   pomodoroTasks    PomodoroTask[]
@@ -2137,6 +2138,8 @@ model DefinedAcademy {
   shortLinks          DefinedAcademyShortLink[]
   referralCampaigns   DefinedAcademyReferralCampaign[]
   referrals           DefinedAcademyReferral[]
+  careerJourney       DefinedAcademyCareerJourney?
+  careerProfiles      DefinedAcademyUserCareerProfile[]
 
   @@index([status])
   @@index([appId])
@@ -2166,6 +2169,7 @@ model DefinedAcademyCourse {
   enrollments DefinedAcademyEnrollment[]
   shortLinks  DefinedAcademyShortLink[]
   referralCampaigns DefinedAcademyReferralCampaign[]
+  careerStageLinks  DefinedAcademyCareerStageContent[]
 
   @@unique([academyId, slug])
   @@index([academyId])
@@ -2245,6 +2249,7 @@ model DefinedAcademyResource {
   createdBy User?                 @relation("DefinedAcademyResourceCreator", fields: [createdById], references: [id], onDelete: SetNull)
   shortLinks DefinedAcademyShortLink[]
   referralCampaigns DefinedAcademyReferralCampaign[]
+  careerStageLinks  DefinedAcademyCareerStageContent[]
 
   @@index([academyId])
   @@index([lessonId])
@@ -2440,4 +2445,114 @@ model DefinedAcademyReferral {
   @@index([referralCode])
   @@index([referredUserId])
   @@index([referrerUserId])
+}
+
+enum DefinedAcademyCareerJourneyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum DefinedAcademyCareerStageContentType {
+  COURSE
+  RESOURCE
+}
+
+model DefinedAcademyCareerJourney {
+  id          Int                               @id @default(autoincrement())
+  academyId   Int                               @unique
+  title       String
+  slug        String
+  description String?
+  status      DefinedAcademyCareerJourneyStatus @default(DRAFT)
+  createdAt   DateTime                          @default(now())
+  updatedAt   DateTime                          @updatedAt
+
+  academy  DefinedAcademy                    @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  stages   DefinedAcademyCareerStage[]
+  profiles DefinedAcademyUserCareerProfile[]
+
+  @@unique([academyId, slug])
+  @@index([academyId, status])
+}
+
+model DefinedAcademyCareerStage {
+  id          Int      @id @default(autoincrement())
+  journeyId   Int
+  title       String
+  slug        String
+  description String?
+  summary     String?
+  iconKey     String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  journey         DefinedAcademyCareerJourney                 @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  contentLinks    DefinedAcademyCareerStageContent[]
+  currentProfiles DefinedAcademyUserCareerProfile[]           @relation("DefinedAcademyCurrentCareerStage")
+  completions     DefinedAcademyUserCareerStageCompletion[]
+
+  @@unique([journeyId, slug])
+  @@index([journeyId])
+  @@index([journeyId, sortOrder])
+}
+
+model DefinedAcademyCareerStageContent {
+  id          Int                                  @id @default(autoincrement())
+  stageId     Int
+  contentType DefinedAcademyCareerStageContentType
+  courseId    Int?
+  resourceId  Int?
+  label       String?
+  sortOrder   Int                                  @default(0)
+  createdAt   DateTime                             @default(now())
+  updatedAt   DateTime                             @updatedAt
+
+  stage    DefinedAcademyCareerStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  course   DefinedAcademyCourse?     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  resource DefinedAcademyResource?   @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@index([stageId])
+  @@index([stageId, sortOrder])
+  @@index([courseId])
+  @@index([resourceId])
+}
+
+model DefinedAcademyUserCareerProfile {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  academyId      Int
+  journeyId      Int
+  currentStageId Int?
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user         User                                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  academy      DefinedAcademy                            @relation(fields: [academyId], references: [id], onDelete: Cascade)
+  journey      DefinedAcademyCareerJourney               @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  currentStage DefinedAcademyCareerStage?                @relation("DefinedAcademyCurrentCareerStage", fields: [currentStageId], references: [id], onDelete: SetNull)
+  completions  DefinedAcademyUserCareerStageCompletion[]
+
+  @@unique([userId, academyId])
+  @@index([userId])
+  @@index([academyId])
+  @@index([journeyId])
+  @@index([currentStageId])
+}
+
+model DefinedAcademyUserCareerStageCompletion {
+  id          Int      @id @default(autoincrement())
+  profileId   Int
+  stageId     Int
+  completedAt DateTime @default(now())
+  notes       String?
+
+  profile DefinedAcademyUserCareerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  stage   DefinedAcademyCareerStage         @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, stageId])
+  @@index([profileId])
+  @@index([stageId])
 }

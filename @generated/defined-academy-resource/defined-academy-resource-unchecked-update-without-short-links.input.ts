@@ -10,6 +10,7 @@ import { EnumDefinedAcademyResourceStatusFieldUpdateOperationsInput } from '../p
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { DefinedAcademyReferralCampaignUncheckedUpdateManyWithoutResourceNestedInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-unchecked-update-many-without-resource-nested.input';
+import { DefinedAcademyCareerStageContentUncheckedUpdateManyWithoutResourceNestedInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-unchecked-update-many-without-resource-nested.input';
 
 @InputType()
 export class DefinedAcademyResourceUncheckedUpdateWithoutShortLinksInput {
@@ -73,4 +74,7 @@ export class DefinedAcademyResourceUncheckedUpdateWithoutShortLinksInput {
 
     @Field(() => DefinedAcademyReferralCampaignUncheckedUpdateManyWithoutResourceNestedInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignUncheckedUpdateManyWithoutResourceNestedInput;
+
+    @Field(() => DefinedAcademyCareerStageContentUncheckedUpdateManyWithoutResourceNestedInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentUncheckedUpdateManyWithoutResourceNestedInput;
 }

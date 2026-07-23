@@ -18,6 +18,7 @@ import { DefinedAcademyModuleListRelationFilter } from '../defined-academy-modul
 import { DefinedAcademyEnrollmentListRelationFilter } from '../defined-academy-enrollment/defined-academy-enrollment-list-relation-filter.input';
 import { DefinedAcademyShortLinkListRelationFilter } from '../defined-academy-short-link/defined-academy-short-link-list-relation-filter.input';
 import { DefinedAcademyReferralCampaignListRelationFilter } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-list-relation-filter.input';
+import { DefinedAcademyCareerStageContentListRelationFilter } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-list-relation-filter.input';
 
 @InputType()
 export class DefinedAcademyCourseWhereUniqueInput {
@@ -100,4 +101,7 @@ export class DefinedAcademyCourseWhereUniqueInput {
 
     @Field(() => DefinedAcademyReferralCampaignListRelationFilter, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignListRelationFilter;
+
+    @Field(() => DefinedAcademyCareerStageContentListRelationFilter, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentListRelationFilter;
 }

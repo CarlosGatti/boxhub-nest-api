@@ -10,6 +10,7 @@ import { DefinedAcademyLesson } from '../defined-academy-lesson/defined-academy-
 import { User } from '../user/user.model';
 import { DefinedAcademyShortLink } from '../defined-academy-short-link/defined-academy-short-link.model';
 import { DefinedAcademyReferralCampaign } from '../defined-academy-referral-campaign/defined-academy-referral-campaign.model';
+import { DefinedAcademyCareerStageContent } from '../defined-academy-career-stage-content/defined-academy-career-stage-content.model';
 import { DefinedAcademyResourceCount } from './defined-academy-resource-count.output';
 
 @ObjectType()
@@ -86,6 +87,9 @@ export class DefinedAcademyResource {
 
     @Field(() => [DefinedAcademyReferralCampaign], {nullable:true})
     referralCampaigns?: Array<DefinedAcademyReferralCampaign>;
+
+    @Field(() => [DefinedAcademyCareerStageContent], {nullable:true})
+    careerStageLinks?: Array<DefinedAcademyCareerStageContent>;
 
     @Field(() => DefinedAcademyResourceCount, {nullable:false})
     _count?: DefinedAcademyResourceCount;

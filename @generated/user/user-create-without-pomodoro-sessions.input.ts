@@ -42,6 +42,7 @@ import { DefinedAcademyEnrollmentCreateNestedManyWithoutUserInput } from '../def
 import { DefinedAcademyLessonProgressCreateNestedManyWithoutUserInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-create-nested-many-without-user.input';
 import { DefinedAcademyReferralCreateNestedManyWithoutReferrerUserInput } from '../defined-academy-referral/defined-academy-referral-create-nested-many-without-referrer-user.input';
 import { DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput } from '../defined-academy-referral/defined-academy-referral-create-nested-many-without-referred-user.input';
+import { DefinedAcademyUserCareerProfileCreateNestedManyWithoutUserInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-create-nested-many-without-user.input';
 import { PomodoroTaskCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-create-nested-many-without-user.input';
 import { PomodoroUserSettingsCreateNestedOneWithoutUserInput } from '../pomodoro-user-settings/pomodoro-user-settings-create-nested-one-without-user.input';
 
@@ -239,6 +240,9 @@ export class UserCreateWithoutPomodoroSessionsInput {
 
     @Field(() => DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput, {nullable:true})
     definedAcademyReferralsAsReferred?: DefinedAcademyReferralCreateNestedManyWithoutReferredUserInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileCreateNestedManyWithoutUserInput;
 
     @Field(() => PomodoroTaskCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskCreateNestedManyWithoutUserInput;

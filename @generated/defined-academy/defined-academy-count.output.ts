@@ -25,4 +25,7 @@ export class DefinedAcademyCount {
 
     @Field(() => Int, {nullable:false})
     referrals?: number;
+
+    @Field(() => Int, {nullable:false})
+    careerProfiles?: number;
 }

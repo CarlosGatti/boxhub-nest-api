@@ -11,6 +11,10 @@ import { DefinedAcademyResolver } from './defined-academy.resolver';
 import { DefinedAcademyService } from './defined-academy.service';
 import { DefinedAcademyUploadController } from './upload/defined-academy-upload.controller';
 import { DefinedAcademyUploadService } from './upload/defined-academy-upload.service';
+import { DefinedAcademyCareerService } from './defined-academy-career.service';
+import { DefinedAcademyCareerPublicResolver } from './defined-academy-career-public.resolver';
+import { DefinedAcademyCareerLearnerResolver } from './defined-academy-career-learner.resolver';
+import { DefinedAcademyCareerResolver } from './defined-academy-career.resolver';
 
 @Module({
   imports: [AuthModule],
@@ -22,9 +26,13 @@ import { DefinedAcademyUploadService } from './upload/defined-academy-upload.ser
     DefinedAcademyReferralService,
     DefinedAcademyLearnerService,
     DefinedAcademyAnalyticsService,
+    DefinedAcademyCareerService,
     DefinedAcademyResolver,
     DefinedAcademyPublicResolver,
     DefinedAcademyLearnerResolver,
+    DefinedAcademyCareerPublicResolver,
+    DefinedAcademyCareerLearnerResolver,
+    DefinedAcademyCareerResolver,
     PrismaService,
   ],
   exports: [
@@ -33,6 +41,7 @@ import { DefinedAcademyUploadService } from './upload/defined-academy-upload.ser
     DefinedAcademyReferralService,
     DefinedAcademyLearnerService,
     DefinedAcademyAnalyticsService,
+    DefinedAcademyCareerService,
   ],
 })
 export class DefinedAcademyModule {}

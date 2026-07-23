@@ -10,4 +10,7 @@ export class DefinedAcademyResourceCount {
 
     @Field(() => Int, {nullable:false})
     referralCampaigns?: number;
+
+    @Field(() => Int, {nullable:false})
+    careerStageLinks?: number;
 }

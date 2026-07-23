@@ -16,6 +16,8 @@ import { DefinedAcademyPartnerCategoryListRelationFilter } from '../defined-acad
 import { DefinedAcademyShortLinkListRelationFilter } from '../defined-academy-short-link/defined-academy-short-link-list-relation-filter.input';
 import { DefinedAcademyReferralCampaignListRelationFilter } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-list-relation-filter.input';
 import { DefinedAcademyReferralListRelationFilter } from '../defined-academy-referral/defined-academy-referral-list-relation-filter.input';
+import { DefinedAcademyCareerJourneyNullableRelationFilter } from '../defined-academy-career-journey/defined-academy-career-journey-nullable-relation-filter.input';
+import { DefinedAcademyUserCareerProfileListRelationFilter } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-list-relation-filter.input';
 
 @InputType()
 export class DefinedAcademyWhereInput {
@@ -88,4 +90,10 @@ export class DefinedAcademyWhereInput {
 
     @Field(() => DefinedAcademyReferralListRelationFilter, {nullable:true})
     referrals?: DefinedAcademyReferralListRelationFilter;
+
+    @Field(() => DefinedAcademyCareerJourneyNullableRelationFilter, {nullable:true})
+    careerJourney?: DefinedAcademyCareerJourneyNullableRelationFilter;
+
+    @Field(() => DefinedAcademyUserCareerProfileListRelationFilter, {nullable:true})
+    careerProfiles?: DefinedAcademyUserCareerProfileListRelationFilter;
 }

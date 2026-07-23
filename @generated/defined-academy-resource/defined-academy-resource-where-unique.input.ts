@@ -17,6 +17,7 @@ import { UserNullableRelationFilter } from '../user/user-nullable-relation-filte
 import { Type } from 'class-transformer';
 import { DefinedAcademyShortLinkListRelationFilter } from '../defined-academy-short-link/defined-academy-short-link-list-relation-filter.input';
 import { DefinedAcademyReferralCampaignListRelationFilter } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-list-relation-filter.input';
+import { DefinedAcademyCareerStageContentListRelationFilter } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-list-relation-filter.input';
 
 @InputType()
 export class DefinedAcademyResourceWhereUniqueInput {
@@ -102,4 +103,7 @@ export class DefinedAcademyResourceWhereUniqueInput {
 
     @Field(() => DefinedAcademyReferralCampaignListRelationFilter, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignListRelationFilter;
+
+    @Field(() => DefinedAcademyCareerStageContentListRelationFilter, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentListRelationFilter;
 }

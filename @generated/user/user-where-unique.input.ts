@@ -45,6 +45,7 @@ import { DefinedAcademyShortLinkListRelationFilter } from '../defined-academy-sh
 import { DefinedAcademyEnrollmentListRelationFilter } from '../defined-academy-enrollment/defined-academy-enrollment-list-relation-filter.input';
 import { DefinedAcademyLessonProgressListRelationFilter } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-list-relation-filter.input';
 import { DefinedAcademyReferralListRelationFilter } from '../defined-academy-referral/defined-academy-referral-list-relation-filter.input';
+import { DefinedAcademyUserCareerProfileListRelationFilter } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-list-relation-filter.input';
 import { PomodoroTaskListRelationFilter } from '../pomodoro-task/pomodoro-task-list-relation-filter.input';
 import { PomodoroSessionListRelationFilter } from '../pomodoro-session/pomodoro-session-list-relation-filter.input';
 import { PomodoroUserSettingsNullableRelationFilter } from '../pomodoro-user-settings/pomodoro-user-settings-nullable-relation-filter.input';
@@ -255,6 +256,9 @@ export class UserWhereUniqueInput {
 
     @Field(() => DefinedAcademyReferralListRelationFilter, {nullable:true})
     definedAcademyReferralsAsReferred?: DefinedAcademyReferralListRelationFilter;
+
+    @Field(() => DefinedAcademyUserCareerProfileListRelationFilter, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileListRelationFilter;
 
     @Field(() => PomodoroTaskListRelationFilter, {nullable:true})
     pomodoroTasks?: PomodoroTaskListRelationFilter;

@@ -38,6 +38,7 @@ import { DefinedAcademyShortLink } from '../defined-academy-short-link/defined-a
 import { DefinedAcademyEnrollment } from '../defined-academy-enrollment/defined-academy-enrollment.model';
 import { DefinedAcademyLessonProgress } from '../defined-academy-lesson-progress/defined-academy-lesson-progress.model';
 import { DefinedAcademyReferral } from '../defined-academy-referral/defined-academy-referral.model';
+import { DefinedAcademyUserCareerProfile } from '../defined-academy-user-career-profile/defined-academy-user-career-profile.model';
 import { PomodoroTask } from '../pomodoro-task/pomodoro-task.model';
 import { PomodoroSession } from '../pomodoro-session/pomodoro-session.model';
 import { PomodoroUserSettings } from '../pomodoro-user-settings/pomodoro-user-settings.model';
@@ -234,6 +235,9 @@ export class User {
 
     @Field(() => [DefinedAcademyReferral], {nullable:true})
     definedAcademyReferralsAsReferred?: Array<DefinedAcademyReferral>;
+
+    @Field(() => [DefinedAcademyUserCareerProfile], {nullable:true})
+    definedAcademyCareerProfiles?: Array<DefinedAcademyUserCareerProfile>;
 
     @Field(() => [PomodoroTask], {nullable:true})
     pomodoroTasks?: Array<PomodoroTask>;

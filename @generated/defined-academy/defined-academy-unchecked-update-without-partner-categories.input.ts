@@ -14,6 +14,8 @@ import { DefinedAcademyPartnerUncheckedUpdateManyWithoutAcademyNestedInput } fro
 import { DefinedAcademyShortLinkUncheckedUpdateManyWithoutAcademyNestedInput } from '../defined-academy-short-link/defined-academy-short-link-unchecked-update-many-without-academy-nested.input';
 import { DefinedAcademyReferralCampaignUncheckedUpdateManyWithoutAcademyNestedInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-unchecked-update-many-without-academy-nested.input';
 import { DefinedAcademyReferralUncheckedUpdateManyWithoutAcademyNestedInput } from '../defined-academy-referral/defined-academy-referral-unchecked-update-many-without-academy-nested.input';
+import { DefinedAcademyCareerJourneyUncheckedUpdateOneWithoutAcademyNestedInput } from '../defined-academy-career-journey/defined-academy-career-journey-unchecked-update-one-without-academy-nested.input';
+import { DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutAcademyNestedInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-unchecked-update-many-without-academy-nested.input';
 
 @InputType()
 export class DefinedAcademyUncheckedUpdateWithoutPartnerCategoriesInput {
@@ -71,4 +73,10 @@ export class DefinedAcademyUncheckedUpdateWithoutPartnerCategoriesInput {
 
     @Field(() => DefinedAcademyReferralUncheckedUpdateManyWithoutAcademyNestedInput, {nullable:true})
     referrals?: DefinedAcademyReferralUncheckedUpdateManyWithoutAcademyNestedInput;
+
+    @Field(() => DefinedAcademyCareerJourneyUncheckedUpdateOneWithoutAcademyNestedInput, {nullable:true})
+    careerJourney?: DefinedAcademyCareerJourneyUncheckedUpdateOneWithoutAcademyNestedInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutAcademyNestedInput, {nullable:true})
+    careerProfiles?: DefinedAcademyUserCareerProfileUncheckedUpdateManyWithoutAcademyNestedInput;
 }

@@ -123,6 +123,9 @@ export class UserCount {
     definedAcademyReferralsAsReferred?: number;
 
     @Field(() => Int, {nullable:false})
+    definedAcademyCareerProfiles?: number;
+
+    @Field(() => Int, {nullable:false})
     pomodoroTasks?: number;
 
     @Field(() => Int, {nullable:false})

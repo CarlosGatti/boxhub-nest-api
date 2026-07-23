@@ -10,6 +10,7 @@ import { DefinedAcademyModule } from '../defined-academy-module/defined-academy-
 import { DefinedAcademyEnrollment } from '../defined-academy-enrollment/defined-academy-enrollment.model';
 import { DefinedAcademyShortLink } from '../defined-academy-short-link/defined-academy-short-link.model';
 import { DefinedAcademyReferralCampaign } from '../defined-academy-referral-campaign/defined-academy-referral-campaign.model';
+import { DefinedAcademyCareerStageContent } from '../defined-academy-career-stage-content/defined-academy-career-stage-content.model';
 import { DefinedAcademyCourseCount } from './defined-academy-course-count.output';
 
 @ObjectType()
@@ -80,6 +81,9 @@ export class DefinedAcademyCourse {
 
     @Field(() => [DefinedAcademyReferralCampaign], {nullable:true})
     referralCampaigns?: Array<DefinedAcademyReferralCampaign>;
+
+    @Field(() => [DefinedAcademyCareerStageContent], {nullable:true})
+    careerStageLinks?: Array<DefinedAcademyCareerStageContent>;
 
     @Field(() => DefinedAcademyCourseCount, {nullable:false})
     _count?: DefinedAcademyCourseCount;

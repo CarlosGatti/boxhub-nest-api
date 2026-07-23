@@ -2,6 +2,7 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
+  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -33,6 +34,7 @@ export class UpdateDefinedAcademyResourceInput {
 
   @Field(() => DefinedAcademyResourceType, { nullable: true })
   @IsOptional()
+  @IsEnum(DefinedAcademyResourceType)
   type?: DefinedAcademyResourceType;
 
   @Field(() => String, { nullable: true })
@@ -79,6 +81,7 @@ export class UpdateDefinedAcademyResourceInput {
 
   @Field(() => DefinedAcademyCourseVisibility, { nullable: true })
   @IsOptional()
+  @IsEnum(DefinedAcademyCourseVisibility)
   visibility?: DefinedAcademyCourseVisibility;
 
   @Field(() => Boolean, { nullable: true })
@@ -88,5 +91,6 @@ export class UpdateDefinedAcademyResourceInput {
 
   @Field(() => DefinedAcademyResourceStatus, { nullable: true })
   @IsOptional()
+  @IsEnum(DefinedAcademyResourceStatus)
   status?: DefinedAcademyResourceStatus;
 }

@@ -8,6 +8,7 @@ import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relatio
 import { Type } from 'class-transformer';
 import { DefinedAcademyShortLinkOrderByRelationAggregateInput } from '../defined-academy-short-link/defined-academy-short-link-order-by-relation-aggregate.input';
 import { DefinedAcademyReferralCampaignOrderByRelationAggregateInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-order-by-relation-aggregate.input';
+import { DefinedAcademyCareerStageContentOrderByRelationAggregateInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-order-by-relation-aggregate.input';
 
 @InputType()
 export class DefinedAcademyResourceOrderByWithRelationInput {
@@ -84,4 +85,7 @@ export class DefinedAcademyResourceOrderByWithRelationInput {
 
     @Field(() => DefinedAcademyReferralCampaignOrderByRelationAggregateInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyCareerStageContentOrderByRelationAggregateInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentOrderByRelationAggregateInput;
 }

@@ -10,6 +10,8 @@ import { DefinedAcademyPartnerCategoryOrderByRelationAggregateInput } from '../d
 import { DefinedAcademyShortLinkOrderByRelationAggregateInput } from '../defined-academy-short-link/defined-academy-short-link-order-by-relation-aggregate.input';
 import { DefinedAcademyReferralCampaignOrderByRelationAggregateInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-order-by-relation-aggregate.input';
 import { DefinedAcademyReferralOrderByRelationAggregateInput } from '../defined-academy-referral/defined-academy-referral-order-by-relation-aggregate.input';
+import { DefinedAcademyCareerJourneyOrderByWithRelationInput } from '../defined-academy-career-journey/defined-academy-career-journey-order-by-with-relation.input';
+import { DefinedAcademyUserCareerProfileOrderByRelationAggregateInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-order-by-relation-aggregate.input';
 
 @InputType()
 export class DefinedAcademyOrderByWithRelationInput {
@@ -73,4 +75,10 @@ export class DefinedAcademyOrderByWithRelationInput {
 
     @Field(() => DefinedAcademyReferralOrderByRelationAggregateInput, {nullable:true})
     referrals?: DefinedAcademyReferralOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyCareerJourneyOrderByWithRelationInput, {nullable:true})
+    careerJourney?: DefinedAcademyCareerJourneyOrderByWithRelationInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileOrderByRelationAggregateInput, {nullable:true})
+    careerProfiles?: DefinedAcademyUserCareerProfileOrderByRelationAggregateInput;
 }

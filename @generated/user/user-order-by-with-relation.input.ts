@@ -39,6 +39,7 @@ import { DefinedAcademyShortLinkOrderByRelationAggregateInput } from '../defined
 import { DefinedAcademyEnrollmentOrderByRelationAggregateInput } from '../defined-academy-enrollment/defined-academy-enrollment-order-by-relation-aggregate.input';
 import { DefinedAcademyLessonProgressOrderByRelationAggregateInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-order-by-relation-aggregate.input';
 import { DefinedAcademyReferralOrderByRelationAggregateInput } from '../defined-academy-referral/defined-academy-referral-order-by-relation-aggregate.input';
+import { DefinedAcademyUserCareerProfileOrderByRelationAggregateInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-order-by-relation-aggregate.input';
 import { PomodoroTaskOrderByRelationAggregateInput } from '../pomodoro-task/pomodoro-task-order-by-relation-aggregate.input';
 import { PomodoroSessionOrderByRelationAggregateInput } from '../pomodoro-session/pomodoro-session-order-by-relation-aggregate.input';
 import { PomodoroUserSettingsOrderByWithRelationInput } from '../pomodoro-user-settings/pomodoro-user-settings-order-by-with-relation.input';
@@ -240,6 +241,9 @@ export class UserOrderByWithRelationInput {
 
     @Field(() => DefinedAcademyReferralOrderByRelationAggregateInput, {nullable:true})
     definedAcademyReferralsAsReferred?: DefinedAcademyReferralOrderByRelationAggregateInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileOrderByRelationAggregateInput, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileOrderByRelationAggregateInput;
 
     @Field(() => PomodoroTaskOrderByRelationAggregateInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskOrderByRelationAggregateInput;

@@ -14,6 +14,7 @@ import { DefinedAcademyLessonUpdateOneWithoutResourcesNestedInput } from '../def
 import { UserUpdateOneWithoutDefinedAcademyResourcesCreatedNestedInput } from '../user/user-update-one-without-defined-academy-resources-created-nested.input';
 import { Type } from 'class-transformer';
 import { DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput } from '../defined-academy-referral-campaign/defined-academy-referral-campaign-update-many-without-resource-nested.input';
+import { DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput } from '../defined-academy-career-stage-content/defined-academy-career-stage-content-update-many-without-resource-nested.input';
 
 @InputType()
 export class DefinedAcademyResourceUpdateWithoutShortLinksInput {
@@ -75,4 +76,7 @@ export class DefinedAcademyResourceUpdateWithoutShortLinksInput {
 
     @Field(() => DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput, {nullable:true})
     referralCampaigns?: DefinedAcademyReferralCampaignUpdateManyWithoutResourceNestedInput;
+
+    @Field(() => DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput, {nullable:true})
+    careerStageLinks?: DefinedAcademyCareerStageContentUpdateManyWithoutResourceNestedInput;
 }

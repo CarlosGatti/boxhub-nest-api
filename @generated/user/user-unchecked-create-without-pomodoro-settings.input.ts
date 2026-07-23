@@ -43,6 +43,7 @@ import { DefinedAcademyEnrollmentUncheckedCreateNestedManyWithoutUserInput } fro
 import { DefinedAcademyLessonProgressUncheckedCreateNestedManyWithoutUserInput } from '../defined-academy-lesson-progress/defined-academy-lesson-progress-unchecked-create-nested-many-without-user.input';
 import { DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferrerUserInput } from '../defined-academy-referral/defined-academy-referral-unchecked-create-nested-many-without-referrer-user.input';
 import { DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput } from '../defined-academy-referral/defined-academy-referral-unchecked-create-nested-many-without-referred-user.input';
+import { DefinedAcademyUserCareerProfileUncheckedCreateNestedManyWithoutUserInput } from '../defined-academy-user-career-profile/defined-academy-user-career-profile-unchecked-create-nested-many-without-user.input';
 import { PomodoroTaskUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-task/pomodoro-task-unchecked-create-nested-many-without-user.input';
 import { PomodoroSessionUncheckedCreateNestedManyWithoutUserInput } from '../pomodoro-session/pomodoro-session-unchecked-create-nested-many-without-user.input';
 
@@ -243,6 +244,9 @@ export class UserUncheckedCreateWithoutPomodoroSettingsInput {
 
     @Field(() => DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput, {nullable:true})
     definedAcademyReferralsAsReferred?: DefinedAcademyReferralUncheckedCreateNestedManyWithoutReferredUserInput;
+
+    @Field(() => DefinedAcademyUserCareerProfileUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    definedAcademyCareerProfiles?: DefinedAcademyUserCareerProfileUncheckedCreateNestedManyWithoutUserInput;
 
     @Field(() => PomodoroTaskUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
     pomodoroTasks?: PomodoroTaskUncheckedCreateNestedManyWithoutUserInput;
