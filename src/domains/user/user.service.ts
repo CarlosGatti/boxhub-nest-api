@@ -1,4 +1,5 @@
 import { Prisma, User } from "@prisma/client";
+import { resolveAppBrandName, resolveFrontendUrl } from '../../core/auth/utils/resolve-frontend-url.util';
 
 import { BaseResult } from "src/shared/dto/base-error.dto";
 import { CreateUserWithoutPassword } from "./dto/createUser.dto";
@@ -140,8 +141,8 @@ export class UserService {
 
   async sendEmailVerification(user: User, token: string, appCode?: string): Promise<void> {
     const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
-    const frontendUrl = process.env.FRONTEND_URL || 'https://www.carlosgatti.com';
-    const verifyUrl = `${frontendUrl}/verify-email`;
+    const verifyUrl = `${resolveFrontendUrl(appCode)}/verify-email`;
+    const appName = resolveAppBrandName(appCode);
 
     const variables = {
       firstName: user.firstName,
@@ -149,10 +150,10 @@ export class UserService {
       token: token,
       logoUrl: logoUrl,
       verifyUrl: verifyUrl,
+      appName,
       year: new Date().getFullYear(),
     };
 
-    const appName = appCode === 'QRACK' ? 'QRACK' : appCode === 'RH' ? 'RH Solution Center' : 'carlosgatti.com';
     const subject = appCode
       ? `Verify Your Email Address - ${appName}`
       : "Verify Your Email Address - carlosgatti.com";
@@ -168,16 +169,17 @@ export class UserService {
   /** Send verification email with full backend link (for resend flow). */
   async sendEmailVerificationWithLink(user: User, verificationLink: string, appCode?: string): Promise<void> {
     const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
+    const appName = resolveAppBrandName(appCode);
 
     const variables = {
       firstName: user.firstName,
       lastName: user.lastName,
       verificationLink,
       logoUrl,
+      appName,
       year: new Date().getFullYear(),
     };
 
-    const appName = appCode === 'QRACK' ? 'QRACK' : appCode === 'RH' ? 'RH Solution Center' : 'carlosgatti.com';
     const subject = appCode
       ? `Verify Your Email Address - ${appName}`
       : "Verify Your Email Address - carlosgatti.com";

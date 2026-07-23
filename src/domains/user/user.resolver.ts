@@ -16,6 +16,7 @@ import { AdminGuard } from "src/core/auth/guards/admin.guard";
 import { MailService } from "src/core/services/providers/mail/mail.service";
 import { RegisterUserInput, LoginResult, RegisterResponse } from "./dto/user.dto";
 import { AuthService } from "src/core/auth/auth.service";
+import { buildVerifyEmailLink } from "src/core/auth/utils/resolve-frontend-url.util";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -210,8 +211,7 @@ export class UserResolver {
       if (!completeUser.emailVerified) {
         try {
           const token = await this.authService.generateAndStoreVerificationToken(completeUser.id);
-          const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
-          const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
+          const verifyLink = buildVerifyEmailLink(token, normalizedAppCode);
           await this.userService.sendEmailVerificationWithLink(completeUser as any, verifyLink, normalizedAppCode);
           console.log("📧 Email verification sent");
         } catch (emailError) {

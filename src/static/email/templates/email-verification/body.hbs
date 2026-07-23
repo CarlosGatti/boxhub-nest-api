@@ -58,19 +58,19 @@
       <div class="content">
         <div class="logo">
           <div style="font-size: 32px; font-weight: bold; color: #3182ce; margin-bottom: 24px;">
-            carlosgatti.com
+            {{#if appName}}{{appName}}{{else}}carlosgatti.com{{/if}}
           </div>
         </div>
         <div class="title">Verify Your Email Address</div>
         <div class="subtitle">
-          Thank you for creating your account on carlosgatti.com. Click the button below to verify this email address and
+          Thank you for creating your account on {{#if appName}}{{appName}}{{else}}carlosgatti.com{{/if}}. Click the button below to verify this email address and
           complete the registration process:
         </div>
         <a class="cta-button" href="{{#if verificationLink}}{{verificationLink}}{{else}}{{verifyUrl}}?token={{token}}{{/if}}" target="_blank">
           Verify My Email
         </a>
         <p class="footer">
-          © {{year}} carlosgatti.com — All Rights Reserved
+          © {{year}} {{#if appName}}{{appName}}{{else}}carlosgatti.com{{/if}} — All Rights Reserved
         </p>
       </div>
     </div>

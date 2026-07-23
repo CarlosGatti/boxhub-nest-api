@@ -15,6 +15,10 @@ import { hashSync } from "bcryptjs";
 import { PrismaService } from "src/core/prisma/prisma.service";
 import { LogAction } from "@prisma/client";
 import { createLog } from "../services/create-log";
+import {
+  buildVerifyEmailLink,
+  resolveFrontendUrl,
+} from "./utils/resolve-frontend-url.util";
 
 const RESEND_IP_WINDOW_MS = 60 * 1000;
 const RESEND_IP_MAX = 5;
@@ -251,7 +255,7 @@ export class AuthService {
     }
 
     const token = this.createJwt(user).token;
-    const frontendUrl = process.env.FRONTEND_URL || process.env.FRONTEND_URL_PROD || 'https://carlosgatti.com';
+    const frontendUrl = resolveFrontendUrl();
     const logoUrl = process.env.EMAIL_LOGO_URL || 'https://www.discart.me/static/email/img/logo-boxhub.png';
     const resetUrl = `${frontendUrl.replace(/\/$/, '')}/reset-password?token=${token}`;
 
@@ -327,8 +331,7 @@ export class AuthService {
     if (!user.emailVerified) {
       try {
         const verificationToken = await this.generateAndStoreVerificationToken(user.id);
-        const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
-        const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${verificationToken}`;
+        const verifyLink = buildVerifyEmailLink(verificationToken);
         await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
       } catch (emailErr) {
         console.error("Error sending verification email after password reset:", emailErr);
@@ -396,7 +399,11 @@ export class AuthService {
   }
 
   /** Resend verification email. Always returns generic 200 message (prevent email enumeration). */
-  async resendVerificationEmail(email: string, ip: string): Promise<BaseResult> {
+  async resendVerificationEmail(
+    email: string,
+    ip: string,
+    appCode?: string,
+  ): Promise<BaseResult> {
     const generic = { success: true, message: "If an account exists with this email, a verification email has been sent." };
     const normalizedEmail = email?.toLowerCase?.()?.trim() || '';
     if (!normalizedEmail) {
@@ -420,9 +427,8 @@ export class AuthService {
 
     try {
       const token = await this.generateAndStoreVerificationToken(user.id);
-      const apiUrl = process.env.PUBLIC_API_URL || process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
-      const verifyLink = `${apiUrl.replace(/\/$/, '')}/auth/verify-email?token=${token}`;
-      await this.usersService.sendEmailVerificationWithLink(user, verifyLink, undefined);
+      const verifyLink = buildVerifyEmailLink(token, appCode);
+      await this.usersService.sendEmailVerificationWithLink(user, verifyLink, appCode);
     } catch (err) {
       console.error("Error resending verification email:", err);
     }

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { ResendVerificationDto } from './dto/resend-verification.dto';
+import { buildVerifyEmailRedirectUrl } from './utils/resolve-frontend-url.util';
 
 @Controller('auth')
 export class AuthController {
@@ -14,42 +15,47 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const ip = (req.ip || req.socket?.remoteAddress || req.headers?.['x-forwarded-for'] || 'unknown').toString();
-    const result = await this.authService.resendVerificationEmail(dto?.email ?? '', ip);
+    const result = await this.authService.resendVerificationEmail(
+      dto?.email ?? '',
+      ip,
+      dto?.appCode,
+    );
     return res.status(200).json(result);
   }
 
   @Get('verify-email')
   async verifyEmail(
     @Query('token') token: string,
+    @Query('app') appCode: string | undefined,
     @Res() res: Response,
   ) {
     if (!token) {
-      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
       return res.redirect(
-        `${frontendUrl}/verify-email?error=missing_token`,
+        buildVerifyEmailRedirectUrl(appCode, { error: 'missing_token' }),
       );
     }
 
     try {
       const result = await this.authService.verifyEmail(token);
-      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
-      
+
       if (result.success) {
-        // Redirect to frontend with success message
         return res.redirect(
-          `${frontendUrl}/verify-email?success=true&message=${encodeURIComponent(result.message)}`,
-        );
-      } else {
-        // Redirect to frontend with error message
-        return res.redirect(
-          `${frontendUrl}/verify-email?error=${encodeURIComponent(result.message)}`,
+          buildVerifyEmailRedirectUrl(appCode, {
+            success: 'true',
+            message: result.message,
+          }),
         );
       }
+
+      return res.redirect(
+        buildVerifyEmailRedirectUrl(appCode, { error: result.message }),
+      );
     } catch (error) {
       console.error('Error verifying email:', error);
-      const frontendUrl = process.env.FRONTEND_URL || 'https://carlosgatti.com';
       return res.redirect(
-        `${frontendUrl}/verify-email?error=${encodeURIComponent('Invalid or expired token')}`,
+        buildVerifyEmailRedirectUrl(appCode, {
+          error: 'Invalid or expired token',
+        }),
       );
     }
   }
